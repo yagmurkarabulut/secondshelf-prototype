@@ -229,7 +229,7 @@ Open with `?mod=1` or a long press (800 ms) on the logo. It offers:
 - Mobile first: viewport meta with `viewport-fit=cover`, `min-height: 100dvh`, `env(safe-area-inset-*)`, max-width 430 px (centred in a phone frame on desktop). Input text ≥ 16 px. No hover-only interactions.
 - Web app manifest + `theme-color` so testers can Add to Home Screen.
 - Every colour, size, radius and shadow comes from `docs/design-system.md` tokens as CSS custom properties. No literal values in components.
-- Icons from the SecondShelf icon library (`assets/icons/`, inline SVG sprite).
+- Icons: only the SecondShelf icon library v2.0 (`assets/icons/sprite.svg`, 68 icons). Placement and colour rules: `docs/design-system.md` §7.
 - Fonts: Fraunces Bold (headings, 20px+) and Rubik 400/500 (everything else) from Google Fonts with `display=swap` and system fallbacks.
 - Colour roles: Pantry Green = primary actions and headings; **Ochre = rewards only** (coupon, Rescue Bonus); **Terracotta 700 = the single closing action of a flow** (Confirm drop-off, Confirm pickup) and highlights; Slate = problems. No red anywhere.
 - Accessibility: WCAG AA contrast, visible focus ring, labelled controls, `aria-live` for scanning / status changes.
@@ -252,7 +252,6 @@ Open with `?mod=1` or a long press (800 ms) on the logo. It offers:
 ## 12. Open decisions [TBD]
 - Coupon value, expiry, monthly cap and who funds them (Nino's three funding options)
 - ~~Fonts~~ decided: Fraunces + Rubik · ~~Icon colour~~ decided: icon tokens in `docs/design-system.md` (primary = Pantry Green)
-- The icon library SVGs are drawn in forest `#3F5B3A`: use the `svg-currentcolor/` set so the icon tokens apply
 - Venue name and map area per test city
 - Hosting: single HTML link or a GitHub Pages project
 - Whether simulated steps are labelled as demo for participants

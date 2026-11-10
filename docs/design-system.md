@@ -166,13 +166,74 @@ Nested rule: inner radius = outer radius − padding. In practice, anything insi
   - Respect `prefers-reduced-motion`
 
 ## 7. Iconography
-SecondShelf icon library (`assets/icons/`): 24px grid, 2px stroke, round caps and joins, no fills.
-- Use the `svg-currentcolor/` set or `sprite.svg` so colour comes from the icon tokens. The `svg/` set is hard-coded to forest `#3F5B3A`.
-- Every meaningful icon has a visible label and sits in a 44 × 44px target.
-- Key icons:
-  - Actions and markers: `tap-nfc`, `sealed-food` (leave), `pickup-bag` (take), `location`, `filter`, `continue`
-  - Status: `done`, `paused`, `needs-attention`
-  - Rewards and host: `coupon`, `rescue-bonus`, `community-shelf` (host)
+**SecondShelf icon library v2.0** in `assets/icons/`: 68 rounded line icons (12 reference icons redrawn softer + 56 for the app). It's also the **Icons** asset group in the design system artifact.
+
+### Style
+- 24 × 24 grid, 2px stroke, **round caps and joins**, generous corner radii, no fills.
+- Sizes:
+  - 24px default · 20px inside buttons and next to 14–16px text
+  - 32px in empty states · 16px only with a 1.5px stroke
+- Every icon sits in a **44 × 44px target**; any icon that carries meaning has a visible label. Status icons always pair with an Ink text label.
+
+### Files
+| Path | Use |
+|---|---|
+| `assets/icons/sprite.svg` | **Use in code.** Inline the sprite once, then `<svg class="icon" aria-hidden="true"><use href="#ss-done"/></svg>` |
+| `assets/icons/svg-currentcolor/` | Single files with `stroke="currentColor"` |
+| `assets/icons/svg/` | Pantry Green `#1F3D2B` files for Figma and documents |
+| `assets/icons/icons.json` | Name, id, label, description, category |
+| `assets/icons/preview.html` | Browsable preview with a colour switch |
+
+### Colour
+Set CSS `color` on the icon with an icon token (§2.3), never a raw hex:
+```css
+.icon{width:24px;height:24px;color:var(--icon-primary);flex:none}
+.icon--sm{width:20px;height:20px}
+.icon--secondary{color:var(--icon-secondary)} .icon--tertiary{color:var(--icon-tertiary)}
+.icon--accent{color:var(--icon-accent)} .icon--reward{color:var(--icon-reward)}
+.icon--on-primary{color:var(--icon-on-primary)} .icon--disabled{color:var(--icon-disabled)}
+.icon--success{color:var(--icon-success)} .icon--warning{color:var(--icon-warning)}
+.icon--problem{color:var(--icon-problem)} .icon--info{color:var(--icon-info)}
+```
+
+### Icon set (ids are `ss-<name>`)
+| Category | Icons |
+|---|---|
+| Reference | `community-shelf` · `sealed-food` · `pickup-bag` · `community-care` · `saved-food` · `filter` · `tap-nfc` · `done` · `paused` · `needs-attention` · `location` · `continue` |
+| Navigation | `home` · `map` · `list` · `coupon` · `profile` · `back` · `chevron-left` · `chevron-right` · `chevron-down` · `chevron-up` · `close` · `more` · `dashboard` |
+| Actions | `search` · `sort` · `plus` · `minus` · `edit` · `remove` · `undo` · `retry` · `camera` · `photo` · `qr-code` · `shelf-code` · `phone-tap` · `switch-role` · `share` |
+| Food and shelf | `shelf-full` · `venue` · `coffee` · `package` · `tin` · `pasta` · `best-before` · `sealed-badge` · `travel` · `calendar` |
+| Status and feedback | `info` · `help` · `pause` · `notification` · `reminder` · `checkbox` · `checkbox-empty` · `new` |
+| Rewards and impact | `rescue-bonus` · `impact` · `thank-you` · `redeem` |
+| Host and steward | `shelf-check` · `staff` · `agreement` · `starter-kit` · `activity` · `verified` |
+
+### Where each icon goes
+| Place | Icon(s) | Token |
+|---|---|---|
+| Consumer tab bar | `home` · `map` · `coupon` · `profile` | active `icon-primary`, inactive `icon-secondary` |
+| Host tab bar | `dashboard` · `shelf-check` · `redeem` · `profile` | same |
+| Top bar | `back`, `close`, `more` | `icon-primary` |
+| M01 Leave / Take cards | `sealed-food` / `pickup-bag` | `icon-primary` on a Leaf tile |
+| G01 travel prompt | `travel` | `icon-primary` |
+| G02 / R01 map and list | `location`, `list`, `map`, `search`, `filter`, `sort` | `icon-primary` |
+| G03 / R03 shelf details | `venue`, `paused` (hours), `best-before`, `sealed-badge`, `shelf-full` | `icon-secondary` for meta |
+| G04 / R04 / H05 tag tap | `phone-tap` (instruction), `tap-nfc` (button), `qr-code`, `shelf-code` | `icon-on-primary` on the task screen |
+| G05 photo | `camera`, `photo` (sample photo) | `icon-primary` |
+| G06 item list | `edit`, `remove`, `undo`, `plus` / `minus`, `best-before`, `sealed-badge` | `icon-primary` / `icon-secondary` |
+| G07 / G08 rewards | `thank-you`, `coupon`, `rescue-bonus` | `icon-reward` |
+| G09 rescue alert | `notification` + `saved-food` | `icon-success` |
+| G11 monthly impact | `impact`, `saved-food` | `icon-primary` |
+| R05 pickup list | `checkbox` / `checkbox-empty` | `icon-primary` / `border-strong` |
+| Reports and problems | `needs-attention`, `retry` | `icon-problem` |
+| New shelf highlight | `new` | `icon-accent` |
+| H01–H05 host onboarding | `community-shelf`, `agreement`, `verified`, `starter-kit` | `icon-primary` |
+| H06 dashboard | `activity`, `staff`, `coupon` | `icon-primary` / `icon-secondary` |
+| H08 daily check | `shelf-check`, `reminder`, `pause`, `shelf-full` | `icon-primary` |
+| Status labels | `done` · `paused` · `needs-attention` · `info` | success · warning · problem · info |
+| Empty states | the screen's main icon at 32px | `icon-tertiary` |
+| Role switch (M02) | `switch-role` | `icon-primary` |
+
+If a screen needs an icon that isn't here, add it to `assets/icons/` in the same style (24px grid, 2px rounded stroke) and list it in this table. Don't pull in another icon set.
 
 ## 8. Components
 Every component uses semantic tokens only and is built with all its states.
