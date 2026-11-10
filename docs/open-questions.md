@@ -89,3 +89,15 @@ Found while building the component gallery (`#/components`). Each row says what 
 | Q33 | M02 Me is not in phases 1–3, but the tab bar links to it | Tab bar | `#/me` falls back to Home for now | Open: build M02 next? |
 | Q34 | Segmented control: kit says segments ≥ 40px, Definition of done says tap targets ≥ 44px | G02 toggle, G08 tabs | 44px | Resolved in favour of 44px |
 | Q35 | M01-v2 frame vs spec | M01 | "Leave" / "Take" (Fraunces, arrow icons) → **Leave food** / **Find food** (`section` type, no arrows: not in the icon set); "Shelves near you" → **Points near you**; "Plain flour" → **All-purpose flour**; chips "Has space" / "Full today" → "4 spots" / **Full shelf** | Spec / kit win |
+
+## Build notes (interactive map, 10 Nov)
+
+The map tab now uses **Leaflet 1.9.4** + **Leaflet.markercluster 1.5.3** (open source, inlined in `index.html`, no CDN, no tile server, no API key) on a **mock neighbourhood** drawn in the kit's map tokens. Interactions: drag to pan, pinch / double-tap / wheel / keyboard zoom, +/− buttons (disabled at the limits), "Show my location", clustering, tap a marker for the point card, food and place search with suggestions, filter chips and filter sheet, Map / List toggle, count of shelves in view. Swapping to real map tiles later is a one-line change (a tile layer instead of the SVG overlay) once Q2 picks the cities.
+
+| # | Question | Where it shows up | Prototype now | Status |
+|---|---|---|---|---|
+| Q36 | Generated sample shelves: 29 fictional food places (cafés, bakeries, bistros, delis, pizzerias, tea room, canteen, grocers) next to the 3 spec venues, 32 in total as in the G02 frame. Each has a type, hours, free spots, status (3 full, 2 paused, 2 closed) and 1–4 shelf-stable packs | Map, list, search, point card | Names and data are generated (seeded, so they are the same on every phone). The 3 spec venues keep their spec distances. Home still shows only the 3 spec venues | Open: OK for tests? Replace per city with Q2 |
+| Q37 | Food catalogue for search (16 categories, shelf-stable only, e.g. Pasta, Pasta sauce, Rice, Canned soup, Canned fish, Canned beans, Crackers, Flour, Oats, Lentils, Bread, Biscuits, Cereal, Tea, Coffee, Jam) | Map search, list meta ("Penne 1 kg · 200 m · …") | Typing "pa" suggests Pasta, Pasta sauce (US-10) and the place Organic Pantry; picking a food filters the map and list ("12 shelves have pasta") | Open: confirm categories |
+| Q38 | Clusters (several shelves close together) have no recipe; a plain number would break "Numbers identify shelves, not item counts" | Map | Paper pill with Pantry Green outline, `community-shelf` icon and the count; read out as "n shelves here, zoom in"; explained in the filter sheet legend | Open: confirm style |
+| Q39 | "Nearby" = within 1 km; "Open now" hides closed shelves; "Has space" hides full, paused and closed shelves | Filter chips | As described | Open: confirm |
+| Q40 | The search filter button had no behaviour in the spec | G02 | Opens a "Filters" bottom sheet: the three filters and the marker legend | Open |

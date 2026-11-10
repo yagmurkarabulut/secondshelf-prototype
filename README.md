@@ -17,5 +17,5 @@ Built with Claude Code, screen by screen.
 - Moderator menu: add `?mod=1` to the link (phase 3)
 
 ## Working on it
-- Everything is in one self-contained `index.html` (inline CSS + vanilla JS, hash routing). Tokens are block 1 of the `<style>`; the icon sprite is inlined at the top of `<body>`.
+- Everything is in one self-contained `index.html` (inline CSS + vanilla JS, hash routing). The map uses Leaflet 1.9.4 (BSD-2) and Leaflet.markercluster 1.5.3 (MIT), inlined with their licence headers, on a mock neighbourhood: no tile server, no API key. Tokens are block 1 of the `<style>`; the icon sprite is inlined at the top of `<body>`.
 - Screenshots: run `python3 -m http.server 8123` in the repo, then `node tools/shot.js '#/components' out.png 390 844` (Playwright).

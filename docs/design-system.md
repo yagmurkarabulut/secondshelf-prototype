@@ -379,6 +379,8 @@ Added while building `index.html` (phase 1). Listed in `docs/open-questions.md` 
 | `--scrim` | `rgba(43,36,30,.4)` | Backdrop behind bottom sheets |
 | `--focus-on-dark` | `0 0 0 3px var(--paper-0)` | The "Paper ring" focus on dark fills that §6 describes |
 
+**Map cluster [NEW]** (from the interactive map): Paper pill, 2px `border-brand`, `community-shelf` 16px icon + count in `label` type, `text-brand`, `shadow-card`; only on the map. Kept visually different from the numbered Ink markers because numbers identify shelves (Q38).
+
 Recipe sizes from §3, §6 and §8 (type shorthands, icon sizes, 1.5px border, 32px marker, 6px band and step bar, 8px bonus bar, 72px item row, 64px settings row, 52 × 32 toggle) are also written as custom properties in `index.html` (block 1b), so components never hold literal values.
 
 ## 11. Frames
