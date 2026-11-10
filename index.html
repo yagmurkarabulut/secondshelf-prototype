@@ -106,7 +106,7 @@
   --size-settings-row:64px;         /* settings list */
   --size-status-row:48px;           /* item status list */
   --size-grabber-w:36px; --size-grabber-h:4px;
-  --size-segment-min:40px;
+  --size-segment-min:44px;          /* §8 says ≥ 40; §12 needs 44px targets */
   --size-sheet-max:85dvh;
   --focus-on-dark:0 0 0 3px var(--paper-0);
   --tint-on-dark:rgba(255,255,255,.12);  /* subtle fill on surface-brand (G04 illustration panel) */
@@ -929,8 +929,8 @@ const START = () => ({
     { name: 'Canned tuna', venue: 2, status: 'waiting' }
   ],
   coupons: [
-    { id: 'c1', venue: 1, state: 'active', code: 'SS-4817' },
-    { id: 'c0', venue: 3, state: 'used', code: 'SS-4790' }
+    { id: 'c1', venue: 3, state: 'active', code: 'SS-4817' },
+    { id: 'c0', venue: 2, state: 'used', code: 'SS-4790' }
   ],
   bonuses: [],
   draft: null,          // drop-off in progress: { shelf, photo, items, started }
@@ -1202,10 +1202,10 @@ const UI = {
     return `<li class="log__row"><span class="tile tile--sm tile--canvas">${icon(m[0], 'icon--sm')}</span><div class="grow"><p class="t-body">${m[1]}</p>${ref ? `<p class="t-small c-secondary">${esc(ref)}</p>` : ''}</div><span class="log__time">${esc(time)}</span></li>`;
   },
   statusList(items) {
-    const total = items.length, rows = items.slice(0, 4);
+    const total = items.reduce((n, r) => n + (r.qty || 1), 0), rows = items.slice(0, 4);
     return `<section class="statuslist" aria-labelledby="yf-title"><div class="statuslist__head"><h2 class="t-section" id="yf-title">Your food on shelves</h2><span class="pill">${total} item${total === 1 ? '' : 's'}</span></div>
       ${rows.map(r => { const done = r.status === 'done'; return `<div class="statuslist__row"><span class="tile tile--sm ${done ? '' : 'tile--canvas'}">${icon(done ? 'done' : 'paused', 'icon--sm ' + (done ? 'icon--success' : 'icon--warning'))}</span>
-        <span class="statuslist__name">${esc(r.name)} <small>· ${done ? 'Picked up' : 'On the shelf'}</small></span><span class="statuslist__venue">${esc(venue(r.venue).name)}</span></div>`; }).join('')}</section>`;
+        <span class="statuslist__name">${esc(r.name)}${r.qty > 1 ? ' ×' + r.qty : ''} <small>· ${done ? 'Picked up' : 'On the shelf'}</small></span><span class="statuslist__venue">${esc(venue(r.venue).name)}</span></div>`; }).join('')}</section>`;
   },
   pointFacts(v) {
     return `<ul class="facts"><li>${icon('tap-nfc')}NFC tag and QR code</li><li>${icon('sealed-badge')}Sealed, shelf-stable, within date</li></ul>`;
@@ -1921,7 +1921,7 @@ Views.giveItems = {
   },
   confirm() {
     const s = Store.state, d = s.draft, n = Flow.count(d.items), id = 'c' + Date.now(), bid = 'b' + Date.now();
-    s.shelfItems.unshift(...d.items.map(i => ({ name: (i.short || shortName(i.name)) + (i.qty > 1 ? ` ×${i.qty}` : ''), venue: d.shelf, status: 'waiting' })));
+    s.shelfItems.unshift(...d.items.map(i => ({ name: i.short || shortName(i.name), qty: i.qty, venue: d.shelf, status: 'waiting' })));
     s.coupons.unshift({ id, venue: d.shelf, state: 'active', code: 'SS-4821' });
     s.bonuses.unshift({ id: bid, venue: d.shelf, picked: 0, total: n });
     s.lastDrop = { venue: d.shelf, count: n, coupon: id, bonus: bid };
@@ -1968,9 +1968,11 @@ Views.coupons = {
       const s = Store.state, p = $('#coupons-panel', el);
       if (couponTab === 0) {
         const act = s.coupons.filter(x => x.state === 'active');
-        p.innerHTML = (act.length ? act.map(x => UI.coupon({ id: x.id, state: 'active', venue: venue(x.venue).name })).join('')
-          : `<div class="card">${UI.empty({ ic: 'coupon', title: 'No coupons yet', line: 'Leave food at a shelf to get a thank-you coupon.', action: `<a class="btn btn--primary" href="#/map">${icon('sealed-food')}<span>Leave food</span></a>` })}</div>`)
-          + s.bonuses.map(b => UI.rescueBonus({ picked: b.picked, total: b.total, venue: venue(b.venue).name, note: 'App-free pickups may be unlogged, so counts can be incomplete.' })).join('')
+        const card = x => UI.coupon({ id: x.id, state: 'active', venue: venue(x.venue).name });
+        const bonuses = s.bonuses.map(b => UI.rescueBonus({ picked: b.picked, total: b.total, venue: venue(b.venue).name, note: 'App-free pickups may be unlogged, so counts can be incomplete.' })).join('');
+        // newest coupon, then the Rescue Bonus it started, then older coupons (G08 frame order)
+        p.innerHTML = (act.length ? card(act[0]) + bonuses + act.slice(1).map(card).join('')
+          : `<div class="card">${UI.empty({ ic: 'coupon', title: 'No coupons yet', line: 'Leave food at a shelf to get a thank-you coupon.', action: `<a class="btn btn--primary" href="#/map">${icon('sealed-food')}<span>Leave food</span></a>` })}</div>` + bonuses)
           + UI.banner('info', 'Coupon value, expiry and monthly cap are still being agreed.');
       } else {
         const used = s.coupons.filter(x => x.state !== 'active');

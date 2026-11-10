@@ -12,6 +12,7 @@ Interaction Design Project · MID programme · Tallinn University · Kateřina F
 Built with Claude Code, screen by screen.
 
 - **Test link (GitHub Pages):** https://yagmurkarabulut.github.io/secondshelf-prototype/
+- Scenario A (giver): Home → Leave food → map → Café Daisy → tap the tag → photo → check items → thanks → coupons
 - Component gallery (hidden, for the team): https://yagmurkarabulut.github.io/secondshelf-prototype/#/components
 - Moderator menu: add `?mod=1` to the link (phase 3)
 

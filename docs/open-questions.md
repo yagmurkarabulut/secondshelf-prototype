@@ -71,3 +71,21 @@ Found while building the component gallery (`#/components`). Each row says what 
 | Q20 | G05 frame viewfinder is dark; §8 says `surface-subtle` | Photo capture frame | `surface-subtle` (design system wins on styling) | Design system wins |
 | Q21 | Home action-card descriptions come from M01-v2: "Pass on sealed food you won't eat" / "Find free food at shelves near you". Is "free food" fine under §7? | Action cards | Frame text kept | Open |
 | Q22 | App icon: no logo yet (Q6) | Home-screen icon | `community-shelf` icon in Paper on Pantry Green | Open (follows Q6) |
+
+## Build notes (phase 2: Scenario A, giver flow, 10 Nov)
+
+| # | Question | Where it shows up | Prototype now | Status |
+|---|---|---|---|---|
+| Q23 | `[FRAME]` G03 point card has no frame | G02 map, `#/point/:id` | Simplest version from US-02: a card over the map (and the same content as a page from Home): marker, distance · hours, availability chip, "NFC tag and QR code", "Sealed, shelf-stable, within date", **Leave food** (disabled on a Full shelf). "NFC tag and QR code" is new copy | Open: frame needed |
+| Q24 | `[FRAME]` G06a Reading and G06c Edit / add item have no frames | G06a, G06c | G06a = step header + photo with "Reading your photo" pill (1.5 s). G06c = bottom sheet with Item name, Best before (MM/YYYY), Quantity; buttons "Save" / "Add item"; name and best-before required | Open: frame needed |
+| Q25 | Map: the frame shows 32 unnumbered pins and "32 locations in this area" | G02 | Only the 3 sample shelves, numbered; the count pill counts what is shown ("3 locations in this area"). "Nearby" filter = within 1 km (assumed) | Open: how many sample shelves, and the Nearby distance |
+| Q26 | Pizza Nonna's closing time is not in the spec or frames (cut off in M01) | Home carousel, map list, point card | Hours line left out for Pizza Nonna | Open (Q2) |
+| Q27 | Brenda's start state | Home, Coupons | 4 items already on shelves (from M01-v2), one active coupon (Pizza Nonna, code SS-4817) and one used (Café Lumi, SS-4790), so the wallet reads Active (2) / Used (1) after the test drop-off, as in the G08 frame. New coupon uses the frame code SS-4821 | Open: confirm sample data |
+| Q28 | G04 frame vs spec | G04 | Spec wording for the instruction ("Hold your phone to the tag on the shelf") instead of the frame's longer line; spec **Tap shelf tag** button added; Close (not Back) on step 1 per the Step header recipe. QR fallback uses **Use sample QR code** only (no live camera scanning) | Spec wins; confirm QR |
+| Q29 | G05 / G06 frame wording | G05, G06 | "Enter items manually" → **Add items manually** (+ spec **Use sample photo**); "Add item / enter manually" → **Add item manually**; check "All 4 items are sealed, shelf-stable and within date" → **All items are sealed and within their date**; tomato soup BB 11/2027 → 08/2027 (spec sample) | Spec wins |
+| Q30 | G07 frame has no "How to use your coupon" line (US-06) | G07 | Added: "**How to use your coupon:** Show the counter code. It is not the shelf QR." (G08 copy). Rescue Bonus uses the kit card (Paper, gold bar) instead of the frame's Leaf panel | Spec / kit win |
+| Q31 | G08d: kit calls it a bottom sheet, the frame is a full page | G08d | Full page (frame wins on layout), route `#/coupons/code/:id`, Done goes back | Frame wins |
+| Q32 | G08 v2 frame: pill tabs, "Rescue Bonus pending" dark button, "picked up · recorded" | G08 | Kit segmented control; no button-looking bonus status; text "n of N picked up · pending". Order: newest coupon, its Rescue Bonus, older coupons, info note | Kit / spec win |
+| Q33 | M02 Me is not in phases 1–3, but the tab bar links to it | Tab bar | `#/me` falls back to Home for now | Open: build M02 next? |
+| Q34 | Segmented control: kit says segments ≥ 40px, Definition of done says tap targets ≥ 44px | G02 toggle, G08 tabs | 44px | Resolved in favour of 44px |
+| Q35 | M01-v2 frame vs spec | M01 | "Leave" / "Take" (Fraunces, arrow icons) → **Leave food** / **Find food** (`section` type, no arrows: not in the icon set); "Shelves near you" → **Points near you**; "Plain flour" → **All-purpose flour**; chips "Has space" / "Full today" → "4 spots" / **Full shelf** | Spec / kit win |
