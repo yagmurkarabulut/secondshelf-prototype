@@ -1,6 +1,6 @@
-# SecondShelf design system: UI Kit v0.4.1
+# SecondShelf design system: UI Kit v0.5
 
-> v0.3 approved by the team on 10 Nov 2026 (Kathy's kit + the warm Elements kit). **v0.4** (same day) adds the components and decisions from the main navigation frames (`frames/M01-home.png`, `G02-map.png`, `G08-coupons.png`, `M02-me.png`). New items are marked **v0.4**. **v0.4.1: the gradient background is removed; screens are flat Cream.**
+> v0.3 approved by the team on 10 Nov 2026 (Kathy's kit + the warm Elements kit). **v0.4** (same day) adds the components and decisions from the main navigation frames (`frames/M01-home.png`, `G02-map.png`, `G08-coupons.png`, `M02-me.png`). New items are marked **v0.4**. **v0.4.1: the gradient background is removed; screens are flat Cream.** **v0.5** (same day) merges the airy hi-fi mocks in `frames/` (G04–G08d, R01b–R06, H01–H07, M01-v2, M02-v2) and adds terracotta and gold to them; changes are marked **v0.5**.
 > Source of truth: the **SecondShelf** design system artifact (https://claude.ai/artifact/1hn8SCWXGTcBzaimeadbe1). This file mirrors it for Claude Code.
 > **Rules for Claude Code:**
 > - Use only these tokens.
@@ -28,7 +28,7 @@ Proportions: about **60% Cream and Paper · 30% Pantry Green and Ink · 10% Ochr
 | `ochre-800` | `#876326` | Ochre for text and icons on Cream and Paper |
 | `ochre-500` | `#BF8B2E` | **Ochre / gold**: reward fills, Ink text on it |
 | `ochre-100` | `#EFE5D1` | Ochre tint |
-| `sand-200` | `#E8D7B9` | **v0.4** Sand: segmented-control track |
+| `sand-200` | `#E8D7B9` | **v0.4** Sand: icon tile on the Ink host-mode card |
 | `clay-500` | `#8A6F4A` | Clay: tertiary and decorative icons only |
 | `ink-900` | `#2B241E` | Ink (warm) |
 | `stone-700` | `#5C554C` | Warm stone, secondary text |
@@ -36,8 +36,8 @@ Proportions: about **60% Cream and Paper · 30% Pantry Green and Ink · 10% Ochr
 | `stone-600` | `#6E665C` | Warm stone, tertiary text |
 | `stone-500` | `#8C8477` | Warm stone, control outlines, disabled |
 | `stone-300` | `#CFC6B6` | Warm stone, decorative dividers only |
-| `oat-200` | `#E9DFCC` | Oat |
-| `cream-100` | `#F4EDE1` | Cream (canvas) |
+| `oat-200` | `#E9DFCC` | Oat: notes, **v0.5** segmented track and step-progress track |
+| `cream-100` | `#F6F1E7` | **v0.5** Cream (canvas), Kathy's lighter cream |
 | `paper-0` | `#FFFFFF` | Paper |
 | `success-700` | `#2C6E46` | Success |
 | `warning-600` | `#A86A12` | Warning (icons only) |
@@ -48,22 +48,22 @@ Proportions: about **60% Cream and Paper · 30% Pantry Green and Ink · 10% Ochr
 ### 2.2 Text
 | Token | → | Contrast on Cream | Use |
 |---|---|---|---|
-| `text-primary` | ink-900 | 13.1 | Body, item names, input values |
-| `text-secondary` | stone-700 | 6.3 | Meta, descriptions, field labels |
-| `text-tertiary` | stone-600 | 4.9 | Placeholders, hints, timestamps. On Cream or Paper only, not on Oat |
-| `text-disabled` | stone-500 | 3.2 | Disabled only |
-| `text-brand` | green-900 | 10.3 | Headings, brand moments |
-| `text-accent` | terracotta-700 | 5.0 | Highlights, sparingly |
-| `text-reward` | ochre-800 | 4.7 | Reward labels on Cream and Paper |
-| `text-link` | green-900 | 10.3 | Links, always underlined |
+| `text-primary` | ink-900 | 13.6 | Body, item names, input values |
+| `text-secondary` | stone-700 | 6.5 | Meta, descriptions, field labels |
+| `text-tertiary` | stone-600 | 5.0 | Placeholders, hints, timestamps. On Cream or Paper only, not on Oat |
+| `text-disabled` | stone-500 | 3.3 | Disabled only |
+| `text-brand` | green-900 | 10.6 | **v0.5** Screen titles, headings, coupon value, impact numbers |
+| `text-accent` | terracotta-700 | 5.2 | Highlights, sparingly |
+| `text-reward` | ochre-800 | 4.9 | Reward labels on Cream and Paper |
+| `text-link` | green-900 | 10.6 | Links, always underlined |
 | `text-on-primary` | paper-0 | 11.9 on green | Text on Pantry Green |
 | `text-on-accent` | paper-0 | 5.8 on terracotta-700 | Text on terracotta buttons |
 | `text-on-reward` | ink-900 | 4.9 on ochre-500 | Text on ochre fills |
 | `text-on-inverse` | paper-0 | 15.3 on Ink · 7.6 on Forest | **v0.4** Main text on dark cards |
 | `text-on-inverse-secondary` | stone-200 | 11.5 on Ink · 5.7 on Forest | **v0.4** Supporting text on dark cards |
-| `text-on-unavailable` | paper-0 | 5.8 on terracotta-700 | **v0.4** Text on the "No spot available" chip |
-| `text-problem` | slate-600 | 5.2 | Error and problem messages |
-| `text-success` | success-700 | 5.3 | Short success text (prefer icon + Ink) |
+| `text-on-unavailable` | paper-0 | 5.8 on terracotta-700 | **v0.4** Text on the availability chip ("Full shelf", v0.5) |
+| `text-problem` | slate-600 | 5.4 | Error and problem messages |
+| `text-success` | success-700 | 5.5 | Short success text (prefer icon + Ink) |
 
 ### 2.3 Icons
 | Token | → | Use |
@@ -72,8 +72,8 @@ Proportions: about **60% Cream and Paper · 30% Pantry Green and Ink · 10% Ochr
 | `icon-secondary` | stone-700 | Meta icons, inactive tabs |
 | `icon-tertiary` | clay-500 | Decorative and illustrative only |
 | `icon-disabled` | stone-500 | Disabled |
-| `icon-accent` | terracotta-500 | Feature icons (new shelf, giver moments) |
-| `icon-reward` | ochre-800 | Coupon and Rescue Bonus |
+| `icon-accent` | terracotta-500 | Feature icons (new shelf, **v0.5** Leave food card) |
+| `icon-reward` | ochre-800 | Coupon, Rescue Bonus, search, **v0.5** Find food card |
 | `icon-on-primary` | paper-0 | On green or terracotta-700 fills |
 | `icon-neutral` | ink-900 | **v0.4** Inactive tab icons, neutral list icons |
 | `icon-on-inverse` | ochre-500 | **v0.4** Gold icons on **Ink only** (5.1:1). Never on Forest (2.5:1) |
@@ -86,42 +86,45 @@ Proportions: about **60% Cream and Paper · 30% Pantry Green and Ink · 10% Ochr
 | `surface-canvas` | cream-100 | Screen background, **flat** (no gradient) |
 | `surface-default` | paper-0 | Cards, sheets, inputs |
 | `surface-subtle` | oat-200 | Notes, tips, open decisions |
-| `surface-selected` | green-100 | Selected rows, completed steps, success banners |
+| `surface-selected` | green-100 | Selected rows, completed steps, success banners, **v0.5** impact card |
 | `surface-brand` | green-900 | Task screens (tap the tag), hero bands |
 | `surface-accent` | terracotta-500 | Feature blocks with 24px+ text only |
-| `surface-accent-subtle` | terracotta-100 | Quiet feature cards, Ink text |
-| `surface-reward` | ochre-500 | Coupon band, Rescue Bonus fill, Ink text |
-| `surface-reward-subtle` | ochre-100 | Reward banners, Ink text |
-| `surface-inverse` | ink-900 | **v0.4** Dark cards: Leave food, host mode, map markers, count pill |
-| `surface-brand-soft` | green-700 | **v0.4** Forest cards: coupon ticket, Find food, impact card, progress fill, toggle on |
+| `surface-accent-subtle` | terracotta-100 | Quiet feature cards, Ink text; **v0.5** Leave food icon tile |
+| `surface-reward` | ochre-500 | Coupon band (6px), **v0.5** Rescue Bonus progress fill; Ink text |
+| `surface-reward-subtle` | ochre-100 | Reward banners, Ink text; **v0.5** Find food and Rescue Bonus icon tiles |
+| `surface-inverse` | ink-900 | **v0.5** Host-mode card, map markers, count pill only |
+| `surface-brand-soft` | green-700 | Forest: toggle on. (**v0.5**: no longer used for the coupon, Find food or impact cards) |
 | `surface-indicator` | green-100 | **v0.4** Active tab pill, positive status tiles |
 | `surface-track` | cream-100 | **v0.4** Progress track, neutral chips (count, spots available) |
-| `surface-segment` | sand-200 | **v0.4** Segmented-control track |
-| `surface-unavailable` | terracotta-700 | **v0.4** Availability limits only ("No spot available", "Shelf full") with Paper text 5.8:1 |
+| `surface-segment` | oat-200 | **v0.5** Segmented-control track (Oat) |
+| `surface-unavailable` | terracotta-700 | Availability limits only (**v0.5** label "Full shelf") with Paper text 5.8:1 |
+| `surface-progress` | terracotta-500 | **v0.5 [NEW]** Step-progress fill (3.9:1 on Cream, 3.3:1 on the track) |
+| `surface-progress-track` | oat-200 | **v0.5 [NEW]** Track behind the step progress |
 | `border-subtle` | stone-300 | Decorative dividers |
 | `border-strong` | stone-500 | Inputs, checkboxes, outline controls (3:1) |
 | `border-brand` | green-900 | Secondary button outline, selected card |
 | `border-focus` | info-600 | Focus ring on light surfaces |
 | `action-primary` / `-hover` / `-pressed` | green-900 / green-700 / green-950 | Primary buttons |
-| `action-accent` / `-pressed` | terracotta-700 / terracotta-800 | **One closing action per flow**: Confirm drop-off, Confirm pickup |
+| `action-accent` / `-pressed` | terracotta-700 / terracotta-800 | **One closing action per flow**: Confirm drop-off, Confirm pickup, Go live. Never Clay. |
 | `action-disabled` | oat-200 | Disabled button fill (with `text-disabled`) |
-| `action-inverse` | ink-900 | **v0.4** Dark button (Show coupon), Paper text |
 | `map-park` · `map-marker` | green-100 · ink-900 | **v0.4** Map parks; marker fill (Paper number) |
 
 ### 2.5 Colour rules
 - **Ochre means "you earned something".** Use it only for coupons, the Rescue Bonus and thank-you moments.
 - **Terracotta is never an error or a warning.** Problems are Slate, calm and with a clear way forward.
-- **v0.4 Terracotta marks availability limits** ("No spot available", "Shelf full") as a `surface-unavailable` chip: Terracotta **700** + Paper text (5.84:1) + the `shelf-full` icon. White on Terracotta 500 is 4.39:1 and fails AA, so 500 is never used behind normal-size text.
-- **v0.4 Gold icons** appear only on Ink (`icon-on-inverse`) and, on light surfaces, for search and reward icons (`icon-reward`). On Forest, icons are Leaf.
+- **Terracotta marks availability limits** (**v0.5** label "Full shelf") as a `surface-unavailable` chip: Terracotta **700** + Paper text (5.84:1) + the `shelf-full` icon. White on Terracotta 500 is 4.39:1 and fails AA, so 500 is never used behind normal-size text.
+- **Gold icons** appear on Ink (`icon-on-inverse`) and, on light surfaces, as `icon-reward` (Ochre 800) for search, rewards and the Find food card. On Forest, icons are Leaf.
+- **v0.5 Where the warmth goes (airy style):** Terracotta 700 = the closing action and "Full shelf"; Terracotta 500 = step progress and the Leave food icon; Ochre 500 = coupon band and Rescue Bonus fill; Ochre 800 = reward and search icons. Everything else is Cream, Paper and Pantry Green.
+- **v0.5 Rescue Bonus bar**: Ochre 500 on the Cream track is 2.7:1, so the bar is always paired with the text "n of N picked up · pending", which carries the meaning.
 - **v0.4 Grey text**: never the frames' `#95918E` (3.1:1); use `text-secondary` or `text-tertiary`.
-- Never put Ochre 500 as text or icons on Cream (2.6:1); use `ochre-800`. Never put Ochre 800 text on the ochre tint (4.4:1); use Ink.
+- Never put Ochre 500 as text or icons on Cream (2.7:1); use `ochre-800`. Never put Ochre 800 text on the ochre tint (4.4:1); use Ink.
 - Normal-size text is never placed on `terracotta-500`.
 - Stone 300 and Oat are never the only boundary of a control.
 - Status = icon + shape + words. Never colour alone.
 
 ## 3. Typography
 
-Fraunces Bold brings warmth; Rubik keeps instructions clear. Two families only.
+Fraunces Bold brings warmth; Rubik keeps instructions clear. Two families only (**v0.5**: the mocks' DM Sans is replaced by Rubik).
 
 | Token / class | Font | Size / line | Weight | Tracking | Use |
 |---|---|---|---|---|---|
@@ -141,7 +144,7 @@ Fraunces Bold brings warmth; Rubik keeps instructions clear. Two families only.
 
 - Load: `https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&family=Rubik:wght@400;500&display=swap`
 - Stacks: `--font-serif: Fraunces, Georgia, serif` · `--font-sans: Rubik, system-ui, -apple-system, sans-serif`
-- **v0.4** Screen titles (Fraunces `display`/`heading-1`) are **Ink** on Cream (13.1:1); Fraunces headings on Paper cards stay `text-brand`. Section titles ("Your food on shelves", "Points near you") use **`section`**: Rubik 500 20/28, Ink. Sentence case everywhere (item names too: "Canned soup").
+- **v0.5** Screen titles (Fraunces `display`/`heading-1`) are **Pantry Green** (`text-brand`, 10.6:1 on Cream), as in the airy mocks. Fraunces headings on Paper cards are `text-brand` too. Section titles ("Your food on shelves", "Points near you") use **`section`**: Rubik 500 20/28, Ink. Sentence case everywhere (item names too: "Canned soup").
 - Fraunces is never used under 20px, on buttons or in labels.
 - Inputs are 16px (no iOS zoom). 12px is the floor, and never for instructions. Text reflows at 200%; labels are never truncated.
 
@@ -167,16 +170,18 @@ Fraunces Bold brings warmth; Rubik keeps instructions clear. Two families only.
 | `radius-none` | 0 | Print, signage, full-bleed images |
 | `radius-xs` | 4 | Checkbox, tiny tags |
 | `radius-sm` | 8 | Items **nested inside** a 16px card (thumbnails, status tiles, stepper buttons, QR sketch) |
-| `radius-md` | **12** | **Primary radius for controls**: buttons, inputs, banners, icon tiles |
+| `radius-md` | **12** | Inputs, banners, icon tiles, suggestions list (**v0.5**: buttons are pills) |
 | `radius-lg` | **16** | **v0.4 Cards** (from the frames): action cards, coupon ticket, list cards, shelf cards, dialogs |
 | `radius-xl` | 24 | Top corners of bottom sheets |
-| `radius-full` | 999 | Chips, badges, map markers, avatars, progress bars only |
+| `radius-full` | 999 | **v0.5** Buttons, steppers, search field, chips, badges, map markers, avatars, progress bars |
+
+**v0.5:** every button is a pill (`radius-full`); inputs stay 12px so text fields and buttons stay easy to tell apart.
 
 Nested rule: inner radius = outer radius − padding. In practice, items inside a 16px card use `radius-sm` (8px) or, for 44px icon tiles, `radius-md` (12px).
 
 ## 6. Background, elevation, focus, size, motion
 - **Background (v0.4.1)**: flat `surface-canvas` (Cream) on every standard screen. **No gradients anywhere.** Task screens use `surface-brand`.
-- `shadow-card`: `0 1px 2px rgba(43,36,30,.08), 0 8px 24px rgba(43,36,30,.08)`. For raised cards only; flat Paper on Cream is the default.
+- `shadow-card`: `0 1px 2px rgba(43,36,30,.08), 0 8px 24px rgba(43,36,30,.08)`. **v0.5** For tappable cards (action cards, shelf cards, coupon); flat Paper on Cream for everything else. The map search is flat with a `border-strong` outline.
 - `shadow-sheet`: `0 -4px 24px rgba(43,36,30,.12)`. For bottom sheets and fixed action bars.
 - `shadow-focus`: `0 0 0 2px #FFFFFF, 0 0 0 5px #2F6E8C`. On dark fills, use a Paper ring instead.
 - Sizes:
@@ -237,7 +242,7 @@ Set CSS `color` on the icon with an icon token (§2.3), never a raw hex:
 | Consumer tab bar | `home` · `map` · `coupon` · `profile` | active `icon-primary` on a Leaf pill, inactive `icon-neutral` |
 | Host tab bar | `dashboard` · `shelf-check` · `redeem` · `profile` | same |
 | Top bar | `back`, `close`, `more` | `icon-primary` |
-| M01 Leave food / Find food cards | `sealed-food` / `search` | `icon-on-inverse` (gold on Ink) / `icon-on-brand-soft` (Leaf on Forest) |
+| M01 Leave food / Find food cards | `sealed-food` / `search` | **v0.5** `icon-accent` on terracotta tint / `icon-reward` on ochre tint |
 | M01 Your food on shelves | `done` (picked up) / `paused` (waiting) | `icon-success` on Leaf tile / `icon-warning` on cream tile |
 | G02 map search | `search` · `filter` · `map` / `list` | `icon-reward` (search) · `icon-primary` |
 | G01 travel prompt | `travel` | `icon-primary` |
@@ -246,7 +251,7 @@ Set CSS `color` on the icon with an icon token (§2.3), never a raw hex:
 | G04 / R04 / H05 tag tap | `phone-tap` (instruction), `tap-nfc` (button), `qr-code`, `shelf-code` | `icon-on-primary` on the task screen |
 | G05 photo | `camera`, `photo` (sample photo) | `icon-primary` |
 | G06 item list | `edit`, `remove`, `undo`, `plus` / `minus`, `best-before`, `sealed-badge` | `icon-primary` / `icon-secondary` |
-| G07 / G08 rewards | `thank-you`, `coupon`, `rescue-bonus` | `icon-reward` |
+| G07 / G08 rewards | `thank-you`, `coupon`, `rescue-bonus` | `icon-reward` (Rescue Bonus on an ochre-tint tile) |
 | G09 rescue alert | `notification` + `saved-food` | `icon-success` |
 | G11 monthly impact | `impact`, `saved-food` | `icon-primary` |
 | R05 pickup list | `checkbox` / `checkbox-empty` | `icon-primary` / `border-strong` |
@@ -258,7 +263,7 @@ Set CSS `color` on the icon with an icon token (§2.3), never a raw hex:
 | Status labels | `done` · `paused` · `needs-attention` · `info` | success · warning · problem · info |
 | Empty states | the screen's main icon at 32px | `icon-tertiary` |
 | M02 settings | `sealed-food` (My items) · `notification` (Food alerts) · `info` (Sharing rules) · **`help`** (Help and FAQ) | `icon-primary`; alerts `icon-reward` on ochre tint |
-| M02 impact / host mode | `saved-food` / `community-shelf` | `icon-on-brand-soft` / `icon-reward` on Sand tile |
+| M02 impact / host mode | `saved-food` / `community-shelf` | **v0.5** `icon-primary` on Leaf / `icon-reward` on Sand tile (Ink card) |
 | Role switch (M02) | `switch-role` | `icon-primary` |
 
 If a screen needs an icon that isn't here, add it to `assets/icons/` in the same style (24px grid, 2px rounded stroke) and list it in this table. Don't pull in another icon set.
@@ -268,33 +273,39 @@ Every component uses semantic tokens only and is built with all its states.
 
 | Component | Recipe | States |
 |---|---|---|
-| **Button** | 48px, `radius-md`, padding 12/20, `button` type, optional 20px leading icon (gap 8) | Primary (`action-primary`) · Accent (`action-accent`, max one per flow) · Secondary (Paper + 1.5px `border-brand`) · **Dark** (`action-inverse`, v0.4) · Text link · default / hover / pressed / focus / loading / disabled |
+| **Button** | **v0.5 pill**: 48px, `radius-full`, padding 12/24, `button` type, optional 20px leading icon (gap 8) | Primary (`action-primary`) · Accent (`action-accent`, max one per flow) · Secondary (Paper + 1.5px `border-brand`) · Text link · (v0.4 Dark button removed) · default / hover / pressed / focus / loading / disabled |
 | **Input** | Label above (`label`, `text-secondary`, gap 8); field 48px, `radius-md`, 1.5px `border-strong`, Paper, 16px text, placeholder `text-tertiary` | default · focus (`border-brand` + `shadow-focus`) · filled · error (`text-problem` border + flag icon + message under the field) · disabled |
-| **Search field** | **v0.4 pill** (`radius-full`), 48px, Paper, `shadow-card`, gold `search` icon, placeholder `text-tertiary`; separate 48px round filter button; suggestions list below (Paper, `radius-md`) | empty · typing with suggestions · results |
+| **Search field** | Pill (`radius-full`), 48px, Paper, **v0.5 flat: 1.5px `border-strong`, no shadow**, gold `search` icon (`icon-reward`), placeholder `text-tertiary`; separate 48px round filter button; suggestions list below (Paper, `radius-md`) | empty · typing with suggestions · results |
 | **Filter chip** | `radius-full`, min 44px, `label` type, 16px side padding, gap 8 | default (Paper + `border-strong`) · selected (`action-primary` fill + tick + Paper text) |
 | **Checkbox row** | 24px box `radius-xs` in a 44px target, label `body` | unchecked · checked (`action-primary`) · disabled |
-| **Quantity stepper** | 44px buttons `radius-sm`, value `title` | default · min · max |
+| **Quantity stepper** | **v0.5 round**: 44px buttons `radius-full`, Paper + 1.5px `border-strong`, `minus`/`plus` in `icon-primary`; value `title` | default · min (minus disabled) · max |
 | **Card** | Paper, **`radius-lg` (16)**, padding 16, optional `shadow-card` | default · pressed · selected (`surface-selected` or `border-brand`) |
-| **Action card** (Home) **v0.4** | `radius-lg`, padding 16, 28px icon, title `section` in `text-on-inverse`, description `body-small` in `text-on-inverse-secondary`. **Leave food** on `surface-inverse` with gold `sealed-food`; **Find food** on `surface-brand-soft` with Leaf `search`. Same size = equal weight | default · pressed |
+| **Action card** (Home) **v0.5 airy** | Paper, `radius-lg`, `shadow-card`, padding 16; 44px icon tile (`radius-md`) with a 28px icon; title `section` Ink; description `body-small` `text-secondary`. **Leave food**: `surface-accent-subtle` tile + `sealed-food` in `icon-accent`. **Find food**: `surface-reward-subtle` tile + `search` in `icon-reward`. Same size = equal weight | default · pressed |
 | **Feature card** | `surface-accent-subtle`, `overline` in `text-accent`, `icon-accent` | default |
 | **Status label** | Status icon + `text-primary` label (problems may use `text-problem`) | done · waiting/paused · problem · info |
 | **Banner / toast** | `radius-md`, padding 12/16, icon + text + optional action | success (`surface-selected`) · info (`surface-subtle`) · problem (Paper + Slate text) · reward (`surface-reward-subtle`) |
-| **Coupon ticket** **v0.4** | `surface-brand-soft`, `radius-lg`, 6px gold band (`surface-reward`) on top; label `text-on-inverse-secondary`; value Fraunces 32/40 Paper; Leaf "Ready to use" chip; dashed tear line (`stone-200`) with two notches; validity + **Dark** Show button with `qr-code` | active · used · expired · pending; value and validity say "to be agreed" |
-| **Segmented control** **v0.4** | Pill track `surface-segment`, 4px padding; selected segment Paper + Rubik 500; ≥ 40px segments; `role=tablist` | Active (n) / Used (n) |
-| **Rescue Bonus card** **v0.4** | Paper `radius-lg`; 44px Leaf tile + `rescue-bonus`; title `title`, venue `text-secondary`; 8px bar, **Forest fill** on `surface-track`; text "n of N picked up · pending" (no targets or countdowns) | 0 · partial · complete · expired |
-| **NFC tap card** | On `surface-brand`: illustration, instruction in `text-on-primary`, status, fallback links | idle · scanning · found · not found · QR fallback |
-| **Food item row** | Thumb `radius-sm`, `title`, best-before `body-small`, sealed badge, stepper, remove | default · edited · removed (Undo toast) · checkbox variant (receiver) |
+| **Coupon ticket** **v0.5 light** | Paper, `radius-lg`, `shadow-card`, 6px gold band (`surface-reward`) on top; `coupon` icon `icon-reward` + label `text-secondary`; value Fraunces 32/40 `text-brand`; Leaf "Ready to use" chip (Ink text); dashed tear line (`border-subtle`) with two notches in the canvas colour; validity `text-secondary` + **Primary** pill Show button with `qr-code` | active · used · expired · pending; value and validity say "to be agreed" |
+| **Segmented control** | Pill track `surface-segment` (**v0.5 Oat**), 4px padding; selected segment Paper + Rubik 500; ≥ 40px segments; `role=tablist` | Active (n) / Used (n) |
+| **Rescue Bonus card** | Paper `radius-lg`; 44px `surface-reward-subtle` tile + `rescue-bonus` in `icon-reward`; title `title`, venue `text-secondary`; 8px bar, **v0.5 gold fill** (`surface-reward`) on `surface-track`; status as plain text "n of N picked up · pending" (never a button-looking chip; no targets or countdowns) | 0 · partial · complete · expired |
+| **NFC tap card** | (layout from G04 / R04 / H06 mocks) On `surface-brand`: illustration, instruction in `text-on-primary`, status, fallback links | idle · scanning · found · not found · QR fallback |
+| **Food item row** | Thumb `radius-sm`, `title`, best-before `body-small`, sealed badge, **round** stepper, 44px remove; min 72px rows (v0.5 ItemRows) | default · edited · removed (Undo toast) · checkbox variant (receiver) |
 | **Map marker** **v0.4** | 32px numbered circle: `map-marker` (Ink) fill, Paper number | default · selected (`action-primary` + Leaf halo) · full · paused · closed; legend "Numbers identify shelves, not item counts" |
-| **Map controls** **v0.4** | Pill search + filter button; scrolling filter chips (Open now · Has space · Nearby); count pill on `surface-inverse` ("32 locations in this area"); **Map / List toggle** at the bottom | — |
+| **Map controls** **v0.4** | Flat pill search + filter button (v0.5: `border-strong` outline, no shadow); scrolling filter chips (Open now · Has space · Nearby); count pill on `surface-inverse` ("32 locations in this area"); **Map / List toggle** at the bottom | — |
 | **Item status list** **v0.4** | Paper `radius-lg`; header `section` + count chip (`surface-track`) + chevron; 48px rows: 32px status tile (`radius-sm`) + name + venue `text-secondary`; hidden status label | picked up (Leaf + `done`) · waiting (cream + `paused`) |
-| **Shelf card** **v0.4** | Paper `radius-lg`, photo top, distance `text-brand` 14/500, venue `title`, closing time `text-secondary`, availability chip; horizontal carousel with 12px gaps | has space (`surface-track` chip) · **no space** (`surface-unavailable` chip + `shelf-full` icon) · closed |
-| **Availability chip** **v0.4** | `radius-full`, 32px, `label` type, nowrap | spots available · no spot available (Terracotta 700) |
+| **Shelf card** **v0.4** | Paper `radius-lg`, `shadow-card`, photo top, distance `text-brand` 14/500, venue `title`, closing time `text-secondary`, availability chip; horizontal carousel with 12px gaps | has space (`surface-track` chip) · **full** (`surface-unavailable` chip + `shelf-full` icon, **v0.5** label "Full shelf") · closed |
+| **Availability chip** **v0.4** | `radius-full`, 32px, `label` type, nowrap | spots available · Full shelf (Terracotta 700) |
 | **Settings list** **v0.4** | Paper `radius-lg`; ≥ 64px rows: 44px icon tile `radius-md` + title + subtitle `text-secondary` + chevron or toggle; `border-subtle` dividers | — |
 | **Toggle** **v0.4** | 52 × 32 pill, `role=switch` | on (Forest track + Cream knob) · off (`border-strong` outline + Paper knob) · disabled |
 | **Profile row / avatar** **v0.4** | 48px avatar (photo or initials on Oat), name `title`, email `text-secondary` | — |
-| **Impact card** **v0.4** | `surface-brand-soft`, label + captions `text-on-inverse-secondary`, numbers Fraunces 32/40 Paper, Leaf `saved-food` icon | — |
-| **Host-mode card** **v0.4** | `surface-inverse`, Sand icon tile with gold `community-shelf`, Paper title, `text-on-inverse-secondary` subtitle, chevron | — |
-| **Greeting header** **v0.4** | "Hi Brenda" in Fraunces `heading-1` Ink + avatar at right, on Cream | — |
+| **Impact card** **v0.5 light** | `surface-selected` (Leaf), label + captions `text-secondary`, numbers Fraunces 32/40 `text-brand`, `saved-food` in `icon-primary` | — |
+| **Host-mode card** **v0.4** | Stays `surface-inverse` (the only dark card in v0.5), Sand icon tile with gold `community-shelf`, Paper title, `text-on-inverse-secondary` subtitle, chevron | — |
+| **Greeting header** | "Hi Brenda" in Fraunces `heading-1` **`text-brand`** (v0.5) + avatar at right, on Cream | — |
+| **Step header** **v0.5 [NEW]** | 44px Back (Close on step 1), centred `overline` "Step n of 3" `text-secondary`, 6px bar `surface-progress` on `surface-progress-track`, title Fraunces `heading-1` `text-brand`; `role=progressbar` | step 1 · 2 · 3 |
+| **Counter QR sheet** **v0.5 [NEW, from G08d]** | Bottom sheet: coupon name, large QR on Paper, coupon code, "Show this to the staff", Close | active · used |
+| **Photo capture frame** **v0.5 [NEW, from G05]** | Viewfinder `radius-lg` on `surface-subtle`, Primary pill **Take photo**, Secondary **Use sample photo**, text link **Add items manually** | empty · captured · reading · unreadable |
+| **List result row** **v0.5 [NEW, from R01b]** | Paper row: numbered marker (same number as on the map), venue `title`, distance + hours `text-secondary`, availability chip, chevron | has space · full · closed |
+| **Verification status card** **v0.5 [NEW, from H04]** | Paper card: `verified` icon + status label + one line; pending uses `paused` + `icon-warning` | pending · verified · needs info |
+| **Benefit list** **v0.5 [NEW, from H01]** | Rows of 44px `surface-selected` icon tile + `title` + `body-small` | — |
 | **Steward check row** | Item + reason + **Keep / Remove** 44px buttons | to check · kept · removed · flagged |
 | **Activity log row** | Icon, event, time, anonymised donor ref | drop-off · pickup · coupon redeemed · check done |
 | **Top bar** | Back, title (`title`), optional action | default · on `surface-brand` |
@@ -303,11 +314,11 @@ Every component uses semantic tokens only and is built with all its states.
 | **Empty state** | 32px `icon-tertiary`, `heading-3`, one line, action | no results · no coupons · shelf empty |
 
 ## 9. Layout patterns
-- **Standard screen (v0.4.1):** flat `surface-canvas` → screen title (Fraunces, Ink) or greeting header → content stack of 16px cards (gap 16, gutter 20) → tab bar. Detail screens add a top bar with Back.
+- **Standard screen (v0.5):** flat `surface-canvas` (`#F6F1E7`) → screen title (Fraunces, Pantry Green) or greeting header → content stack of 16px cards (gap 16, gutter 20) → tab bar. Detail screens add a top bar with Back.
 - **Map screen (v0.4):** full-bleed map under the status bar; search, chips, count pill and Map / List toggle float above it; tab bar stays.
 - **Task screen** (tap the tag, check and tap, go live): `surface-brand`, Paper text, no tab bar, a clear Cancel.
-- **Confirmation screen:** `display` headline ("Thanks for sharing." / "Pickup logged."), a summary card and one next action. The giver's confirmation includes the coupon card.
-- **Flow steps:** an `overline` reading "Step n of 3": 1 Tap the tag · 2 Photograph your items (before placing) · 3 Check the items and place them.
+- **Confirmation screen:** `display` headline in `text-brand` ("Thanks for sharing." / "Pickup logged."), a summary card and one next action. The giver's confirmation includes the light coupon card.
+- **Flow steps (v0.5 Step header):** an `overline` reading "Step n of 3" over a Terracotta 500 progress bar: 1 Tap the tag · 2 Photograph your items (before placing) · 3 Check the items and place them.
 
 ## 10. CSS tokens
 ```css
@@ -317,7 +328,7 @@ Every component uses semantic tokens only and is built with all its states.
   --terracotta-800:#89432D; --terracotta-700:#A14C33; --terracotta-500:#C2593A; --terracotta-100:#F0DFD2;
   --ochre-800:#876326; --ochre-500:#BF8B2E; --ochre-100:#EFE5D1; --clay-500:#8A6F4A;
   --ink-900:#2B241E; --stone-700:#5C554C; --stone-600:#6E665C; --stone-500:#8C8477; --stone-300:#CFC6B6;
-  --oat-200:#E9DFCC; --cream-100:#F4EDE1; --paper-0:#FFFFFF;
+  --oat-200:#E9DFCC; --cream-100:#F6F1E7; --paper-0:#FFFFFF;
   --sand-200:#E8D7B9; --stone-200:#E6DED0;
   --map-land:#FFFFFF; --map-road:#D9DED8; --map-road-main:#798C75; --map-water:#85D5EB;
   --success-700:#2C6E46; --warning-600:#A86A12; --slate-600:#51666D; --info-600:#2F6E8C;
@@ -337,11 +348,12 @@ Every component uses semantic tokens only and is built with all its states.
   --surface-brand:var(--green-900); --surface-accent:var(--terracotta-500); --surface-accent-subtle:var(--terracotta-100);
   --surface-reward:var(--ochre-500); --surface-reward-subtle:var(--ochre-100);
   --surface-inverse:var(--ink-900); --surface-brand-soft:var(--green-700);
-  --surface-indicator:var(--green-100); --surface-track:var(--cream-100); --surface-segment:var(--sand-200); --surface-unavailable:var(--terracotta-700);
+  --surface-indicator:var(--green-100); --surface-track:var(--cream-100); --surface-segment:var(--oat-200); --surface-unavailable:var(--terracotta-700);
+  --surface-progress:var(--terracotta-500); --surface-progress-track:var(--oat-200);
   --border-subtle:var(--stone-300); --border-strong:var(--stone-500); --border-brand:var(--green-900); --border-focus:var(--info-600);
   --action-primary:var(--green-900); --action-primary-hover:var(--green-700); --action-primary-pressed:var(--green-950);
   --action-accent:var(--terracotta-700); --action-accent-pressed:var(--terracotta-800); --action-disabled:var(--oat-200);
-  --action-inverse:var(--ink-900); --map-park:var(--green-100); --map-marker:var(--ink-900);
+  --map-park:var(--green-100); --map-marker:var(--ink-900);
   /* type */
   --font-serif:Fraunces,Georgia,serif; --font-sans:Rubik,system-ui,-apple-system,sans-serif;
   /* spacing (multiples of 4) */
@@ -360,7 +372,7 @@ Every component uses semantic tokens only and is built with all its states.
 ```
 
 ## 11. Frames
-Put PNG exports at 2x in `frames/`, named by screen code (`frames/G04-tap-the-tag.png`). Frames in the repo: `M01-home`, `G02-map` (also used for R01), `G08-coupons`, `M02-me`. When a frame and this file disagree on styling, **this file wins**; v0.4 already resolves the known differences (grey text, gold icons on Forest, coupon values, unnumbered markers, terracotta chip contrast, help icon). Note the difference in `docs/open-questions.md`.
+Put PNG exports at 2x in `frames/`, named by screen code (`frames/G04-tap-the-tag.png`). Frames in the repo: `M01-home`, `G02-map` (also used for R01), `G08-coupons`, `M02-me`, plus the **v0.5 hi-fi mocks** (G04, G05, G06, G07, G08-coupons-v2, G08d, R01b, R03, R04, R05, R06, H01–H07, M01-home-v2, M02-me-v2). The mocks set **layout and the airy feel**; colours follow this file (see `docs/open-questions.md`, "Mocks vs kit"). When a frame and this file disagree on styling, **this file wins**; v0.4 already resolves the known differences (grey text, gold icons on Forest, coupon values, unnumbered markers, terracotta chip contrast, help icon). Note the difference in `docs/open-questions.md`.
 
 ## 12. Still open
 Coupon value and funding · logo and master identity (use the Fraunces Bold text wordmark for now) · dark mode (not planned) · photo style (use labelled warm placeholders on `surface-subtle`).

@@ -1,6 +1,6 @@
 # SecondShelf: hi-fi mobile web prototype
 
-> Draft v0.3 (10 Nov 2026). Sources: Service Blueprint Part II, 4.1 Low-Fidelity Prototypes, Low-Fidelity Usability Testing Protocol (Prague and Tbilisi results), SecondShelf UI Kit v0.4 and the main navigation frames in `frames/`.
+> Draft v0.3 (10 Nov 2026). Sources: Service Blueprint Part II, 4.1 Low-Fidelity Prototypes, Low-Fidelity Usability Testing Protocol (Prague and Tbilisi results), SecondShelf UI Kit v0.5, the main navigation frames and the 20 hi-fi mocks in `frames/`.
 > `[TBD]` = team decision still open. `[FRAME]` = add or confirm from the Figma frames.
 
 @docs/design-system.md
@@ -83,31 +83,31 @@ Codes follow the testing protocol. Exact names, order and states come from the F
 | O02 | How it works | `#/how` | [FRAME] |
 | O03 | Choose how you use it | `#/role` | [FRAME] |
 | O04 | Sharing rules | `#/rules` | [FRAME] |
-| M01 | Home | `#/home` | `frames/M01-home.png` |
-| M02 | Me | `#/me` | `frames/M02-me.png` |
+| M01 | Home | `#/home` | `frames/M01-home-v2.png` (airy, v0.5) · `frames/M01-home.png` |
+| M02 | Me | `#/me` | `frames/M02-me-v2.png` (airy, v0.5) · `frames/M02-me.png` |
 | G01 | Travel prompt (push + in-app) | `#/give/prompt` | [FRAME] |
 | G02 | Map (shared with R01) | `#/map` | `frames/G02-map.png` |
 | G03 | Point card | `#/point/:id` | [FRAME] |
-| G04 / G04b | Tap the tag / Tag found (+ not found, QR, shelf code) | `#/give/tap` | [FRAME] |
-| G05 | Take a photo | `#/give/photo` | [FRAME] |
+| G04 / G04b | Tap the tag / Tag found (+ not found, QR, shelf code) | `#/give/tap` | `frames/G04-tap-the-tag.png` (states [FRAME]) |
+| G05 | Take a photo | `#/give/photo` | `frames/G05-photograph-your-items.png` |
 | G06a | Reading your photo | `#/give/reading` | [FRAME] |
-| G06 / G06c | Confirm item list / Edit or add item | `#/give/items` | [FRAME] |
-| G07 | Thanks for sharing + split reward | `#/give/done` | [FRAME] |
-| G08 | Coupons (wallet) | `#/coupons` | `frames/G08-coupons.png` |
+| G06 / G06c | Confirm item list / Edit or add item | `#/give/items` | `frames/G06-check-and-place.png` (G06c [FRAME]) |
+| G07 | Thanks for sharing + split reward | `#/give/done` | `frames/G07-thanks-for-sharing.png` |
+| G08 / G08d | Coupons (wallet) / Show at the counter (QR sheet) | `#/coupons` | `frames/G08-coupons-v2.png`, `frames/G08d-show-at-counter.png` · `frames/G08-coupons.png` |
 | G09 / G09b | Rescue push / Rescue banner in app | overlay | [FRAME] |
 | G10 | Rescue Bonus progress | `#/bonus` | [FRAME] |
 | G11 | Monthly impact | `#/impact` | [FRAME] |
 | R01 | Find food (map opened from the Find food card, search focused) | `#/map?find=1` | uses `frames/G02-map.png` |
-| R02 | Search results (list) | `#/take/results` | [FRAME] |
-| R03 | Shelf listing | `#/take/point/:id` | [FRAME] |
-| R04 | Check and tap | `#/take/tap` | [FRAME] |
-| R05 | What are you taking | `#/take/items` | [FRAME] |
-| R06 | Pickup logged | `#/take/done` | [FRAME] |
-| H01 | Become a host | `#/host` | [FRAME] |
-| H02 | Venue details | `#/host/venue` | [FRAME] |
-| H03 / H03c | Host agreement / Application under review | `#/host/agreement` | [FRAME] |
-| H04 | Operator verification | `#/host/verify` | [FRAME] |
-| H05 | Starter kit checklist + activation tap | `#/host/kit` | [FRAME] |
+| R02 | Search results (list view of the map) | `#/take/results` | `frames/R01b-find-food-list.png` |
+| R03 | Shelf listing | `#/take/point/:id` | `frames/R03-shelf-listing.png` |
+| R04 | Check and tap | `#/take/tap` | `frames/R04-check-and-tap.png` |
+| R05 | What are you taking | `#/take/items` | `frames/R05-what-did-you-take.png` (title stays "What are you taking") |
+| R06 | Pickup logged | `#/take/done` | `frames/R06-pickup-logged.png` |
+| H01 | Become a host | `#/host` | `frames/H01-understand-the-service.png` |
+| H02 | Venue details | `#/host/venue` | `frames/H02-venue-details.png` |
+| H03 / H03c | Host agreement / Application under review | `#/host/agreement` | `frames/H03-responsibilities.png` (H03c [FRAME]) |
+| H04 | Operator verification | `#/host/verify` | `frames/H04-operator-verification.png` |
+| H05 | Starter kit checklist + activation tap + shelf is live | `#/host/kit` | `frames/H05-starter-kit.png`, `frames/H06-activate-go-live.png`, `frames/H07-shelf-is-live.png` (mock numbering differs, see Q10) |
 | H06 | Host dashboard | `#/host/dashboard` | [FRAME] |
 | H07 / H07b | Redeem coupon / Valid | `#/host/redeem` | [FRAME] |
 | H08 | Daily shelf check | `#/host/check` | [FRAME] |
@@ -205,9 +205,9 @@ Open with `?mod=1` or a long press (800 ms) on the logo. It offers:
 - Say **"still good"**, **"saved"** and **"pass it on"**. Never say "food waste", "leftovers", "charity" or "free food for the needy".
 - Use the same words for the same action everywhere: **Leave food** (giver entry) / **Find food** (receiver entry) / **Tap shelf tag** / **Confirm** / **Report**. Inside the pickup flow the verb is "take" ("What are you taking", "Take what you can use").
 - Sentence case for item names and labels ("Canned soup", not "Canned Soup").
-- Fixed strings: "Thanks for sharing." · "Pickup logged." · "Not here? Report missing stock" · "Care for the shelf, together." · "Every item you leave is welcome, even if the box is a little worn." · "Numbers identify shelves, not item counts."
+- Fixed strings: "Thanks for sharing." · "Pickup logged." · "Full shelf" (availability chip, v0.5) · "Not here? Report missing stock" · "Care for the shelf, together." · "Every item you leave is welcome, even if the box is a little worn." · "Numbers identify shelves, not item counts."
 - Unknown values show **To be agreed** (coupon value, expiry, monthly cap). Don't invent numbers.
-- Sample content (from the frames): user **Brenda Kowalska**; venues **Café Daisy** (200 m, closing 20:00, 4 spots), **Café Lumi** (1.2 km, closing 18:00, no spot), **Pizza Nonna** (2.1 km, 3 spots) [TBD per city]; items fusilli pasta 500 g (BB 2027-03), tomato soup ×2 (BB 2027-08), crackers (BB 2027-01), canned tuna, all-purpose flour; impact "11 items passed on · 8 saved by neighbours".
+- Sample content (from the frames): user **Brenda Kowalska**; venues **Café Daisy** (200 m, closing 20:00, 4 spots), **Café Lumi** (1.2 km, closing 18:00, Full shelf), **Pizza Nonna** (2.1 km, 3 spots) [TBD per city]; items fusilli pasta 500 g (BB 2027-03), tomato soup ×2 (BB 2027-08), crackers (BB 2027-01), canned tuna, all-purpose flour; impact "11 items passed on · 8 saved by neighbours".
 - Coupon value and validity show **"to be agreed"**, even though the G08 frame shows "€2 off" and "22 Nov 2026". Rescue Bonus says "2 of 4 picked up · pending", not "Only 2 more items to go!".
 
 ---
@@ -226,7 +226,8 @@ Open with `?mod=1` or a long press (800 ms) on the logo. It offers:
 | Host wants proof of activity (Prague P2) | Dashboard counts + activity log |
 | Reminders and several staff (Tbilisi P2) | Reminder setting + staff picker in H08 |
 | Redundant onboarding screens (Prague P2) | Merge where the frames allow [FRAME] |
-| Frame review, v0.4 (team, 10 Nov) | Grey text → `text-secondary`; "No spot available" chip on Terracotta 700; gold icons only on Ink; numbered markers + Map / List toggle; Help icon `help`; coupon values "to be agreed" |
+| Frame review, v0.4 (team, 10 Nov) | Grey text → `text-secondary`; availability chip on Terracotta 700; gold icons only on Ink; numbered markers + Map / List toggle; Help icon `help`; coupon values "to be agreed" |
+| Mock review, v0.5 (team, 10 Nov) | Airy style kept and warmed: lighter cream, Pantry Green titles, pill buttons, round steppers, light Home / coupon / impact cards, Terracotta step progress, gold Rescue Bonus fill, "Full shelf" chip, flat search; Dark button removed |
 
 ---
 
@@ -253,7 +254,7 @@ Recommendation: accounts for givers and hosts, optional for receivers. Decision 
 - Every colour, size, radius and shadow comes from `docs/design-system.md` tokens as CSS custom properties. No literal values in components.
 - Icons: only the SecondShelf icon library v2.0 (`assets/icons/sprite.svg`, 68 icons). Placement and colour rules: `docs/design-system.md` §7.
 - Fonts: Fraunces Bold (headings, 20px+) and Rubik 400/500 (everything else) from Google Fonts with `display=swap` and system fallbacks.
-- Colour roles: flat Cream background (no gradients); Pantry Green = primary buttons and Fraunces headings on Paper; **Forest** and **Ink** = dark cards (coupon ticket, Find food, impact / Leave food, host mode, map markers); **Ochre = rewards only** (coupon band, reward icons); **Terracotta 700 = the single closing action of a flow** and availability limits ("No spot available"); Slate = problems. No red anywhere.
+- Colour roles (v0.5, airy): flat Cream `#F6F1E7` background (no gradients); light Paper cards; **Pantry Green** = screen titles, Fraunces headings and primary (pill) buttons; **Ink** = host-mode card, map markers and count pill only; **Ochre = rewards** (coupon band, Rescue Bonus fill, Ochre 800 reward/search icons, Find food tile); **Terracotta 700 = the single closing action of a flow** and "Full shelf"; **Terracotta 500** = step progress and the Leave food icon; Slate = problems. No red anywhere.
 - Accessibility: WCAG AA contrast, visible focus ring, labelled controls, `aria-live` for scanning / status changes.
 
 ## 11. How to work in this repo
