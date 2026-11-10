@@ -520,11 +520,15 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{box-shadow:none}
 .item__thumb{width:var(--size-control);height:var(--size-control);border-radius:var(--radius-sm);background:var(--surface-selected);display:flex;align-items:center;justify-content:center;flex:none}
 .item__main{flex:1;min-width:0;display:flex;flex-direction:column;gap:var(--space-4)}
 .item__name{font:var(--type-title)}
-.item__meta{display:flex;flex-wrap:wrap;gap:var(--space-4) var(--space-12);font:var(--type-body-small);color:var(--text-secondary)}
+.item__meta{display:flex;flex-wrap:wrap;gap:var(--space-4) var(--space-8);font:var(--type-body-small);color:var(--text-secondary)}
 .item__meta span{display:inline-flex;align-items:center;gap:var(--space-4)}
 .item__meta .icon{width:var(--size-icon-16);height:var(--size-icon-16);stroke-width:1.5;color:var(--icon-secondary)}
-.item__tools{display:flex;flex-direction:column;justify-content:space-between;align-self:stretch;margin:calc(var(--space-8) * -1) calc(var(--space-12) * -1) calc(var(--space-8) * -1) calc(var(--space-8) * -1)}
-.item .stepper{margin-top:var(--space-8)}
+.item{position:relative}
+.item__tools{position:absolute;top:var(--space-8);right:var(--space-4);bottom:var(--space-8);display:flex;flex-direction:column;justify-content:space-between}
+.item:not(.item--check) .item__main{padding-right:var(--space-32)}
+.item__qty{display:flex;align-items:center;justify-content:space-between;gap:var(--space-8);margin-top:var(--space-8)}
+.item__sealed{display:inline-flex;align-items:center;gap:var(--space-4);font:var(--type-body-small);color:var(--text-secondary)}
+.item__sealed .icon{width:var(--size-icon-16);height:var(--size-icon-16);stroke-width:1.5;color:var(--icon-secondary)}
 .item.is-edited{background:var(--surface-selected)}
 .item--check{cursor:pointer;align-items:flex-start;gap:var(--space-12)}
 .item--check.is-checked{border-color:var(--border-brand)}
@@ -1080,8 +1084,8 @@ const UI = {
       <span class="item__thumb">${icon('sealed-food')}</span>
       <div class="item__main">
         <h3 class="item__name">${esc(name)}</h3>
-        <p class="item__meta"><span>${icon('best-before')}Best before ${esc(bb)}</span><span>${icon('sealed-badge')}Sealed</span></p>
-        ${UI.stepper({ id: 'q-' + id, value: qty, min: 1, max, label: `Quantity of ${name}` })}
+        <p class="item__meta"><span>${icon('best-before')}Best before ${esc(bb)}</span></p>
+        <div class="item__qty">${UI.stepper({ id: 'q-' + id, value: qty, min: 1, max, label: `Quantity of ${name}` })}<span class="item__sealed">${icon('sealed-badge')}Sealed</span></div>
       </div>
       <div class="item__tools">${UI.iconButton('edit', `Edit ${name}`, `data-edit="${id}"`)}${UI.iconButton('remove', `Remove ${name}`, `data-remove="${id}"`)}</div>
     </article>`;
@@ -1885,12 +1889,13 @@ Views.giveItems = {
     const openForm = (item) => {
       const editing = !!item;
       openSheet(editing ? 'Edit item' : 'Add item', itemForm({ ...(item || {}), submit: editing ? 'Save' : 'Add item' }));
-      const form = $('#item-form'), btn = $('[data-submit]', form), name = $('#f-name', form);
-      const valid = () => { btn.disabled = !name.value.trim(); };
-      name.addEventListener('input', valid); valid();
+      const form = $('#item-form'), btn = $('[data-submit]', form), name = $('#f-name', form), bb = $('#f-bb', form);
+      const ok = () => name.value.trim() && bb.value.trim();
+      const valid = () => { btn.disabled = !ok(); };
+      name.addEventListener('input', valid); bb.addEventListener('input', valid); valid();
       form.addEventListener('submit', e => {
-        e.preventDefault(); if (!name.value.trim()) return;
-        const data = { name: name.value.trim(), short: shortName(name.value), bb: $('#f-bb', form).value.trim() || 'To be checked', qty: +$('.stepper__value', form).textContent };
+        e.preventDefault(); if (!ok()) return;
+        const data = { name: name.value.trim(), short: shortName(name.value), bb: bb.value.trim(), qty: +$('.stepper__value', form).textContent };
         if (editing) { Object.assign(item, data); Store.log('item_edit', { id: item.id }); }
         else { d.items.push({ id: 'm' + Date.now(), ...data }); Store.log('item_add', {}); }
         closeSheet(); draw();
