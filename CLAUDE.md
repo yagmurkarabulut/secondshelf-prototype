@@ -253,7 +253,7 @@ Recommendation: accounts for givers and hosts, optional for receivers. Decision 
 - Every colour, size, radius and shadow comes from `docs/design-system.md` tokens as CSS custom properties. No literal values in components.
 - Icons: only the SecondShelf icon library v2.0 (`assets/icons/sprite.svg`, 68 icons). Placement and colour rules: `docs/design-system.md` §7.
 - Fonts: Fraunces Bold (headings, 20px+) and Rubik 400/500 (everything else) from Google Fonts with `display=swap` and system fallbacks.
-- Colour roles: warm gradient background; Pantry Green = primary buttons and Fraunces headings on Paper; **Forest** and **Ink** = dark cards (coupon ticket, Find food, impact / Leave food, host mode, map markers); **Ochre = rewards only** (coupon band, reward icons); **Terracotta 700 = the single closing action of a flow** and availability limits ("No spot available"); Slate = problems. No red anywhere.
+- Colour roles: flat Cream background (no gradients); Pantry Green = primary buttons and Fraunces headings on Paper; **Forest** and **Ink** = dark cards (coupon ticket, Find food, impact / Leave food, host mode, map markers); **Ochre = rewards only** (coupon band, reward icons); **Terracotta 700 = the single closing action of a flow** and availability limits ("No spot available"); Slate = problems. No red anywhere.
 - Accessibility: WCAG AA contrast, visible focus ring, labelled controls, `aria-live` for scanning / status changes.
 
 ## 11. How to work in this repo

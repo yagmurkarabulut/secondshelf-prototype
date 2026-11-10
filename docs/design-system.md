@@ -1,6 +1,6 @@
-# SecondShelf design system: UI Kit v0.4
+# SecondShelf design system: UI Kit v0.4.1
 
-> v0.3 approved by the team on 10 Nov 2026 (Kathy's kit + the warm Elements kit). **v0.4** (same day) adds the components and decisions from the main navigation frames (`frames/M01-home.png`, `G02-map.png`, `G08-coupons.png`, `M02-me.png`). New items are marked **v0.4**.
+> v0.3 approved by the team on 10 Nov 2026 (Kathy's kit + the warm Elements kit). **v0.4** (same day) adds the components and decisions from the main navigation frames (`frames/M01-home.png`, `G02-map.png`, `G08-coupons.png`, `M02-me.png`). New items are marked **v0.4**. **v0.4.1: the gradient background is removed; screens are flat Cream.**
 > Source of truth: the **SecondShelf** design system artifact (https://claude.ai/artifact/1hn8SCWXGTcBzaimeadbe1). This file mirrors it for Claude Code.
 > **Rules for Claude Code:**
 > - Use only these tokens.
@@ -28,9 +28,7 @@ Proportions: about **60% Cream and Paper · 30% Pantry Green and Ink · 10% Ochr
 | `ochre-800` | `#876326` | Ochre for text and icons on Cream and Paper |
 | `ochre-500` | `#BF8B2E` | **Ochre / gold**: reward fills, Ink text on it |
 | `ochre-100` | `#EFE5D1` | Ochre tint |
-| `gold-300` | `#D5B377` | **v0.4** Gold sand: top of the screen gradient (Ink on it 7.7:1; no Stone text) |
-| `sand-200` | `#E8D7B9` | **v0.4** Sand: gradient middle, segmented-control track |
-| `cream-50` | `#F1EADC` | **v0.4** Light cream: gradient bottom |
+| `sand-200` | `#E8D7B9` | **v0.4** Sand: segmented-control track |
 | `clay-500` | `#8A6F4A` | Clay: tertiary and decorative icons only |
 | `ink-900` | `#2B241E` | Ink (warm) |
 | `stone-700` | `#5C554C` | Warm stone, secondary text |
@@ -85,9 +83,7 @@ Proportions: about **60% Cream and Paper · 30% Pantry Green and Ink · 10% Ochr
 ### 2.4 Surfaces, borders, actions
 | Token | → | Use |
 |---|---|---|
-| `surface-canvas` | cream-100 | Flat background (sheets, bottom of the gradient) |
-| `gradient-canvas` | gold-300 → sand-200 → cream-50 | **v0.4** Standard screen background (see §6) |
-| `surface-canvas-top` | gold-300 | **v0.4** Status-bar area colour |
+| `surface-canvas` | cream-100 | Screen background, **flat** (no gradient) |
 | `surface-default` | paper-0 | Cards, sheets, inputs |
 | `surface-subtle` | oat-200 | Notes, tips, open decisions |
 | `surface-selected` | green-100 | Selected rows, completed steps, success banners |
@@ -145,7 +141,7 @@ Fraunces Bold brings warmth; Rubik keeps instructions clear. Two families only.
 
 - Load: `https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&family=Rubik:wght@400;500&display=swap`
 - Stacks: `--font-serif: Fraunces, Georgia, serif` · `--font-sans: Rubik, system-ui, -apple-system, sans-serif`
-- **v0.4** Screen titles (Fraunces `display`/`heading-1`) are **Ink** on the gradient (7.7:1); Fraunces headings on Paper cards stay `text-brand`. Section titles ("Your food on shelves", "Points near you") use **`section`**: Rubik 500 20/28, Ink. Sentence case everywhere (item names too: "Canned soup").
+- **v0.4** Screen titles (Fraunces `display`/`heading-1`) are **Ink** on Cream (13.1:1); Fraunces headings on Paper cards stay `text-brand`. Section titles ("Your food on shelves", "Points near you") use **`section`**: Rubik 500 20/28, Ink. Sentence case everywhere (item names too: "Canned soup").
 - Fraunces is never used under 20px, on buttons or in labels.
 - Inputs are 16px (no iOS zoom). 12px is the floor, and never for instructions. Text reflows at 200%; labels are never truncated.
 
@@ -179,7 +175,7 @@ Fraunces Bold brings warmth; Rubik keeps instructions clear. Two families only.
 Nested rule: inner radius = outer radius − padding. In practice, items inside a 16px card use `radius-sm` (8px) or, for 44px icon tiles, `radius-md` (12px).
 
 ## 6. Background, elevation, focus, size, motion
-- **v0.4 Background**: `--gradient-canvas: linear-gradient(180deg, #D5B377 0%, #E8D7B9 45%, #F1EADC 85%)` behind standard screens, no-repeat, over `cream-50`. Task screens stay `surface-brand`. Text in the top 160px is Ink only.
+- **Background (v0.4.1)**: flat `surface-canvas` (Cream) on every standard screen. **No gradients anywhere.** Task screens use `surface-brand`.
 - `shadow-card`: `0 1px 2px rgba(43,36,30,.08), 0 8px 24px rgba(43,36,30,.08)`. For raised cards only; flat Paper on Cream is the default.
 - `shadow-sheet`: `0 -4px 24px rgba(43,36,30,.12)`. For bottom sheets and fixed action bars.
 - `shadow-focus`: `0 0 0 2px #FFFFFF, 0 0 0 5px #2F6E8C`. On dark fills, use a Paper ring instead.
@@ -298,7 +294,7 @@ Every component uses semantic tokens only and is built with all its states.
 | **Profile row / avatar** **v0.4** | 48px avatar (photo or initials on Oat), name `title`, email `text-secondary` | — |
 | **Impact card** **v0.4** | `surface-brand-soft`, label + captions `text-on-inverse-secondary`, numbers Fraunces 32/40 Paper, Leaf `saved-food` icon | — |
 | **Host-mode card** **v0.4** | `surface-inverse`, Sand icon tile with gold `community-shelf`, Paper title, `text-on-inverse-secondary` subtitle, chevron | — |
-| **Greeting header** **v0.4** | "Hi Brenda" in Fraunces `heading-1` Ink + avatar at right, on the gradient | — |
+| **Greeting header** **v0.4** | "Hi Brenda" in Fraunces `heading-1` Ink + avatar at right, on Cream | — |
 | **Steward check row** | Item + reason + **Keep / Remove** 44px buttons | to check · kept · removed · flagged |
 | **Activity log row** | Icon, event, time, anonymised donor ref | drop-off · pickup · coupon redeemed · check done |
 | **Top bar** | Back, title (`title`), optional action | default · on `surface-brand` |
@@ -307,7 +303,7 @@ Every component uses semantic tokens only and is built with all its states.
 | **Empty state** | 32px `icon-tertiary`, `heading-3`, one line, action | no results · no coupons · shelf empty |
 
 ## 9. Layout patterns
-- **Standard screen (v0.4):** `gradient-canvas` → screen title (Fraunces, Ink) or greeting header → content stack of 16px cards (gap 16, gutter 20) → tab bar. Detail screens add a top bar with Back.
+- **Standard screen (v0.4.1):** flat `surface-canvas` → screen title (Fraunces, Ink) or greeting header → content stack of 16px cards (gap 16, gutter 20) → tab bar. Detail screens add a top bar with Back.
 - **Map screen (v0.4):** full-bleed map under the status bar; search, chips, count pill and Map / List toggle float above it; tab bar stays.
 - **Task screen** (tap the tag, check and tap, go live): `surface-brand`, Paper text, no tab bar, a clear Cancel.
 - **Confirmation screen:** `display` headline ("Thanks for sharing." / "Pickup logged."), a summary card and one next action. The giver's confirmation includes the coupon card.
@@ -322,7 +318,7 @@ Every component uses semantic tokens only and is built with all its states.
   --ochre-800:#876326; --ochre-500:#BF8B2E; --ochre-100:#EFE5D1; --clay-500:#8A6F4A;
   --ink-900:#2B241E; --stone-700:#5C554C; --stone-600:#6E665C; --stone-500:#8C8477; --stone-300:#CFC6B6;
   --oat-200:#E9DFCC; --cream-100:#F4EDE1; --paper-0:#FFFFFF;
-  --gold-300:#D5B377; --sand-200:#E8D7B9; --cream-50:#F1EADC; --stone-200:#E6DED0;
+  --sand-200:#E8D7B9; --stone-200:#E6DED0;
   --map-land:#FFFFFF; --map-road:#D9DED8; --map-road-main:#798C75; --map-water:#85D5EB;
   --success-700:#2C6E46; --warning-600:#A86A12; --slate-600:#51666D; --info-600:#2F6E8C;
   /* text */
@@ -340,9 +336,8 @@ Every component uses semantic tokens only and is built with all its states.
   --surface-canvas:var(--cream-100); --surface-default:var(--paper-0); --surface-subtle:var(--oat-200); --surface-selected:var(--green-100);
   --surface-brand:var(--green-900); --surface-accent:var(--terracotta-500); --surface-accent-subtle:var(--terracotta-100);
   --surface-reward:var(--ochre-500); --surface-reward-subtle:var(--ochre-100);
-  --surface-canvas-top:var(--gold-300); --surface-inverse:var(--ink-900); --surface-brand-soft:var(--green-700);
+  --surface-inverse:var(--ink-900); --surface-brand-soft:var(--green-700);
   --surface-indicator:var(--green-100); --surface-track:var(--cream-100); --surface-segment:var(--sand-200); --surface-unavailable:var(--terracotta-700);
-  --gradient-canvas:linear-gradient(180deg,#D5B377 0%,#E8D7B9 45%,#F1EADC 85%);
   --border-subtle:var(--stone-300); --border-strong:var(--stone-500); --border-brand:var(--green-900); --border-focus:var(--info-600);
   --action-primary:var(--green-900); --action-primary-hover:var(--green-700); --action-primary-pressed:var(--green-950);
   --action-accent:var(--terracotta-700); --action-accent-pressed:var(--terracotta-800); --action-disabled:var(--oat-200);
