@@ -1,0 +1,485 @@
+{
+  "name": "SecondShelf icons",
+  "version": "2.0",
+  "grid": 24,
+  "stroke": 2,
+  "style": "rounded line, round caps and joins, no fills",
+  "icons": [
+    {
+      "name": "community-shelf",
+      "id": "ss-community-shelf",
+      "label": "Community shelf",
+      "description": "Find a place to share",
+      "category": "reference"
+    },
+    {
+      "name": "sealed-food",
+      "id": "ss-sealed-food",
+      "label": "Sealed food",
+      "description": "Shelf-stable food only",
+      "category": "reference"
+    },
+    {
+      "name": "pickup-bag",
+      "id": "ss-pickup-bag",
+      "label": "Pickup bag",
+      "description": "Take what you can use",
+      "category": "reference"
+    },
+    {
+      "name": "community-care",
+      "id": "ss-community-care",
+      "label": "Community care",
+      "description": "A neighbourly welcome",
+      "category": "reference"
+    },
+    {
+      "name": "saved-food",
+      "id": "ss-saved-food",
+      "label": "Saved food",
+      "description": "Still good. Pass it on.",
+      "category": "reference"
+    },
+    {
+      "name": "filter",
+      "id": "ss-filter",
+      "label": "Filter",
+      "description": "Choose a food type",
+      "category": "reference"
+    },
+    {
+      "name": "tap-nfc",
+      "id": "ss-tap-nfc",
+      "label": "Tap NFC",
+      "description": "Open shelf information",
+      "category": "reference"
+    },
+    {
+      "name": "done",
+      "id": "ss-done",
+      "label": "Done",
+      "description": "Confirm a completed action",
+      "category": "reference"
+    },
+    {
+      "name": "paused",
+      "id": "ss-paused",
+      "label": "Paused",
+      "description": "Show a pause or time",
+      "category": "reference"
+    },
+    {
+      "name": "needs-attention",
+      "id": "ss-needs-attention",
+      "label": "Needs attention",
+      "description": "Explain an issue calmly",
+      "category": "reference"
+    },
+    {
+      "name": "location",
+      "id": "ss-location",
+      "label": "Location",
+      "description": "Find the shelf",
+      "category": "reference"
+    },
+    {
+      "name": "continue",
+      "id": "ss-continue",
+      "label": "Continue",
+      "description": "Move to the next step",
+      "category": "reference"
+    },
+    {
+      "name": "home",
+      "id": "ss-home",
+      "label": "Home",
+      "description": "Start screen (never 'Today')",
+      "category": "navigation"
+    },
+    {
+      "name": "map",
+      "id": "ss-map",
+      "label": "Map",
+      "description": "Map view of shelves",
+      "category": "navigation"
+    },
+    {
+      "name": "list",
+      "id": "ss-list",
+      "label": "List view",
+      "description": "Same shelves as a list",
+      "category": "navigation"
+    },
+    {
+      "name": "coupon",
+      "id": "ss-coupon",
+      "label": "Coupons",
+      "description": "Thank-you coupons tab",
+      "category": "navigation"
+    },
+    {
+      "name": "profile",
+      "id": "ss-profile",
+      "label": "Me",
+      "description": "Profile and settings tab",
+      "category": "navigation"
+    },
+    {
+      "name": "back",
+      "id": "ss-back",
+      "label": "Back",
+      "description": "Go to the previous screen",
+      "category": "navigation"
+    },
+    {
+      "name": "chevron-left",
+      "id": "ss-chevron-left",
+      "label": "Chevron left",
+      "description": "Previous",
+      "category": "navigation"
+    },
+    {
+      "name": "chevron-right",
+      "id": "ss-chevron-right",
+      "label": "Chevron right",
+      "description": "Open details",
+      "category": "navigation"
+    },
+    {
+      "name": "chevron-down",
+      "id": "ss-chevron-down",
+      "label": "Chevron down",
+      "description": "Expand",
+      "category": "navigation"
+    },
+    {
+      "name": "chevron-up",
+      "id": "ss-chevron-up",
+      "label": "Chevron up",
+      "description": "Collapse",
+      "category": "navigation"
+    },
+    {
+      "name": "close",
+      "id": "ss-close",
+      "label": "Close",
+      "description": "Dismiss (always in a 44px target)",
+      "category": "navigation"
+    },
+    {
+      "name": "more",
+      "id": "ss-more",
+      "label": "More",
+      "description": "More options",
+      "category": "navigation"
+    },
+    {
+      "name": "dashboard",
+      "id": "ss-dashboard",
+      "label": "Dashboard",
+      "description": "Host home",
+      "category": "navigation"
+    },
+    {
+      "name": "search",
+      "id": "ss-search",
+      "label": "Search",
+      "description": "Find food or shelves",
+      "category": "actions"
+    },
+    {
+      "name": "sort",
+      "id": "ss-sort",
+      "label": "Sort",
+      "description": "Distance, open now, date",
+      "category": "actions"
+    },
+    {
+      "name": "plus",
+      "id": "ss-plus",
+      "label": "Add",
+      "description": "Add an item",
+      "category": "actions"
+    },
+    {
+      "name": "minus",
+      "id": "ss-minus",
+      "label": "Remove one",
+      "description": "Stepper minus",
+      "category": "actions"
+    },
+    {
+      "name": "edit",
+      "id": "ss-edit",
+      "label": "Edit",
+      "description": "Edit an item",
+      "category": "actions"
+    },
+    {
+      "name": "remove",
+      "id": "ss-remove",
+      "label": "Delete",
+      "description": "Remove an item from the list",
+      "category": "actions"
+    },
+    {
+      "name": "undo",
+      "id": "ss-undo",
+      "label": "Undo",
+      "description": "Bring back a removed item",
+      "category": "actions"
+    },
+    {
+      "name": "retry",
+      "id": "ss-retry",
+      "label": "Try again",
+      "description": "Retry after a problem",
+      "category": "actions"
+    },
+    {
+      "name": "camera",
+      "id": "ss-camera",
+      "label": "Take a photo",
+      "description": "One photo for all items",
+      "category": "actions"
+    },
+    {
+      "name": "photo",
+      "id": "ss-photo",
+      "label": "Photo",
+      "description": "Item photo or sample photo",
+      "category": "actions"
+    },
+    {
+      "name": "qr-code",
+      "id": "ss-qr-code",
+      "label": "Scan QR code",
+      "description": "Fallback when NFC is not available",
+      "category": "actions"
+    },
+    {
+      "name": "shelf-code",
+      "id": "ss-shelf-code",
+      "label": "Type shelf code",
+      "description": "Second fallback: enter the code",
+      "category": "actions"
+    },
+    {
+      "name": "phone-tap",
+      "id": "ss-phone-tap",
+      "label": "Hold phone to tag",
+      "description": "Tap instruction and animation",
+      "category": "actions"
+    },
+    {
+      "name": "switch-role",
+      "id": "ss-switch-role",
+      "label": "Switch role",
+      "description": "Giver, receiver or host",
+      "category": "actions"
+    },
+    {
+      "name": "share",
+      "id": "ss-share",
+      "label": "Share",
+      "description": "Share a shelf with a neighbour",
+      "category": "actions"
+    },
+    {
+      "name": "shelf-full",
+      "id": "ss-shelf-full",
+      "label": "Shelf full",
+      "description": "No space for new drop-offs",
+      "category": "food-and-shelf"
+    },
+    {
+      "name": "venue",
+      "id": "ss-venue",
+      "label": "Café / venue",
+      "description": "A host venue",
+      "category": "food-and-shelf"
+    },
+    {
+      "name": "coffee",
+      "id": "ss-coffee",
+      "label": "Café cup",
+      "description": "Coffee coupon, café setting",
+      "category": "food-and-shelf"
+    },
+    {
+      "name": "package",
+      "id": "ss-package",
+      "label": "Package",
+      "description": "Boxed pantry item",
+      "category": "food-and-shelf"
+    },
+    {
+      "name": "tin",
+      "id": "ss-tin",
+      "label": "Tin",
+      "description": "Canned food",
+      "category": "food-and-shelf"
+    },
+    {
+      "name": "pasta",
+      "id": "ss-pasta",
+      "label": "Pasta",
+      "description": "Dry food category",
+      "category": "food-and-shelf"
+    },
+    {
+      "name": "best-before",
+      "id": "ss-best-before",
+      "label": "Best before",
+      "description": "Date shown on every item",
+      "category": "food-and-shelf"
+    },
+    {
+      "name": "sealed-badge",
+      "id": "ss-sealed-badge",
+      "label": "Sealed",
+      "description": "Sealed and within its date",
+      "category": "food-and-shelf"
+    },
+    {
+      "name": "travel",
+      "id": "ss-travel",
+      "label": "Going away",
+      "description": "Travel / weekend prompt",
+      "category": "food-and-shelf"
+    },
+    {
+      "name": "calendar",
+      "id": "ss-calendar",
+      "label": "Calendar",
+      "description": "Dates and schedules",
+      "category": "food-and-shelf"
+    },
+    {
+      "name": "info",
+      "id": "ss-info",
+      "label": "Info",
+      "description": "Helpful explanation",
+      "category": "status"
+    },
+    {
+      "name": "help",
+      "id": "ss-help",
+      "label": "Help",
+      "description": "How does this work?",
+      "category": "status"
+    },
+    {
+      "name": "pause",
+      "id": "ss-pause",
+      "label": "Pause point",
+      "description": "Pause new drop-offs",
+      "category": "status"
+    },
+    {
+      "name": "notification",
+      "id": "ss-notification",
+      "label": "Notification",
+      "description": "Rescue alerts, reminders",
+      "category": "status"
+    },
+    {
+      "name": "reminder",
+      "id": "ss-reminder",
+      "label": "Reminder",
+      "description": "Daily check reminder",
+      "category": "status"
+    },
+    {
+      "name": "checkbox",
+      "id": "ss-checkbox",
+      "label": "Checkbox (checked)",
+      "description": "Explicit selection",
+      "category": "status"
+    },
+    {
+      "name": "checkbox-empty",
+      "id": "ss-checkbox-empty",
+      "label": "Checkbox (empty)",
+      "description": "Not selected",
+      "category": "status"
+    },
+    {
+      "name": "new",
+      "id": "ss-new",
+      "label": "New",
+      "description": "New shelf or update",
+      "category": "status"
+    },
+    {
+      "name": "rescue-bonus",
+      "id": "ss-rescue-bonus",
+      "label": "Rescue Bonus",
+      "description": "Bonus that grows as items are picked up",
+      "category": "rewards"
+    },
+    {
+      "name": "impact",
+      "id": "ss-impact",
+      "label": "Monthly impact",
+      "description": "What you passed on",
+      "category": "rewards"
+    },
+    {
+      "name": "thank-you",
+      "id": "ss-thank-you",
+      "label": "Thank you",
+      "description": "Thanks for sharing",
+      "category": "rewards"
+    },
+    {
+      "name": "redeem",
+      "id": "ss-redeem",
+      "label": "Redeem coupon",
+      "description": "Scan at the counter",
+      "category": "rewards"
+    },
+    {
+      "name": "shelf-check",
+      "id": "ss-shelf-check",
+      "label": "Daily shelf check",
+      "description": "Steward routine",
+      "category": "host"
+    },
+    {
+      "name": "staff",
+      "id": "ss-staff",
+      "label": "Staff",
+      "description": "Any staff member can check",
+      "category": "host"
+    },
+    {
+      "name": "agreement",
+      "id": "ss-agreement",
+      "label": "Host agreement",
+      "description": "Duties and responsibilities",
+      "category": "host"
+    },
+    {
+      "name": "starter-kit",
+      "id": "ss-starter-kit",
+      "label": "Starter kit",
+      "description": "Sign, NFC plate, QR sticker",
+      "category": "host"
+    },
+    {
+      "name": "activity",
+      "id": "ss-activity",
+      "label": "Activity log",
+      "description": "Drop-offs, pickups, redemptions",
+      "category": "host"
+    },
+    {
+      "name": "verified",
+      "id": "ss-verified",
+      "label": "Verified venue",
+      "description": "Operator verification",
+      "category": "host"
+    }
+  ]
+}
