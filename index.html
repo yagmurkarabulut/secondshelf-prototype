@@ -133,6 +133,7 @@ h1,h2,h3,h4,p{margin:0}
 ul,ol{margin:0;padding:0;list-style:none}
 :focus{outline:none}
 :focus-visible{box-shadow:var(--shadow-focus);outline:none}
+h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{box-shadow:none}
 .vh{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 
 /* type classes (§3) */
@@ -512,7 +513,7 @@ ul,ol{margin:0;padding:0;list-style:none}
 .nfc__more{text-align:center}
 .on-brand .btn--link,.screen--brand .btn--link{color:var(--text-on-primary)}
 .on-brand .btn--link:active,.screen--brand .btn--link:active{background:var(--tint-on-dark)}
-.capture__overlay--dim{background:var(--scrim)}
+.capture__overlay.capture__overlay--dim{background:var(--scrim)}
 
 /* ---- Food item row ---- */
 .item{display:flex;gap:var(--space-12);align-items:flex-start;background:var(--surface-default);border-radius:var(--radius-lg);padding:var(--space-16);min-height:var(--size-row-min);border:var(--border-w) solid transparent;transition:background-color var(--motion-base) var(--ease)}
@@ -652,9 +653,10 @@ button.settings__row:active{background:var(--surface-canvas)}
 .capture__guide{position:absolute;inset:var(--space-24);border:2px dashed var(--border-strong);border-radius:var(--radius-md)}
 .capture__msg{position:relative;text-align:center;display:flex;flex-direction:column;align-items:center;gap:var(--space-8)}
 .capture__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.capture__overlay{position:absolute;inset:0;background:var(--surface-brand);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--space-12);color:var(--text-on-primary);font:var(--type-title)}
-.capture__overlay .spinner{width:var(--size-icon-32);height:var(--size-icon-32);border-width:3px}
-.capture__scan{position:absolute;left:0;right:0;height:3px;background:var(--surface-default);opacity:.8;animation:scan 1.5s var(--ease) infinite}
+.capture__overlay{position:absolute;inset:0;z-index:2;background:var(--surface-brand);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--space-12);color:var(--text-on-primary);font:var(--type-title)}
+.capture__badge{display:inline-flex;align-items:center;gap:var(--space-12);padding:var(--space-12) var(--space-20);border-radius:var(--radius-full);background:var(--surface-brand);color:var(--text-on-primary)}
+.capture__overlay .spinner{width:var(--size-icon-24);height:var(--size-icon-24);border-width:3px}
+.capture__scan{position:absolute;left:0;right:0;height:3px;z-index:1;background:var(--surface-default);opacity:.8;animation:scan 1.5s var(--ease) infinite}
 @keyframes scan{from{top:10%}to{top:90%}}
 
 /* ---- List result row ---- */
@@ -1169,7 +1171,7 @@ const UI = {
     const photo = src ? `<img class="capture__img" src="${esc(src)}" alt="Your photo">` : SAMPLE_PHOTO;
     let inner = `<div class="capture__guide"></div><div class="capture__msg">${icon('camera')}<p class="t-title">Your items only</p><p class="t-small c-secondary">on a table or in your hands</p></div>`;
     if (state === 'captured') inner = photo;
-    if (state === 'reading') inner = `<div class="capture__overlay" role="status"><span class="spinner" aria-hidden="true"></span><span>Reading your photo</span></div><span class="capture__scan" aria-hidden="true"></span>`;
+    if (state === 'reading') inner = `${src ? photo : ''}<span class="capture__scan" aria-hidden="true"></span><div class="capture__overlay${src ? ' capture__overlay--dim' : ''}" role="status"><span class="capture__badge"><span class="spinner" aria-hidden="true"></span><span>Reading your photo</span></span></div>`;
     if (state === 'unreadable') inner = src ? `${photo}<div class="capture__overlay capture__overlay--dim"></div>` : `<div class="capture__msg">${icon('needs-attention', 'icon--lg icon--problem')}</div>`;
     return `<div class="capture" data-capture="${state}">${inner}</div>${state === 'unreadable' ? `<div style="margin-top:var(--space-12)">${UI.banner('problem', 'Couldn’t read the photo')}</div>` : ''}`;
   },
