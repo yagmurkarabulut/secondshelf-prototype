@@ -10,3 +10,20 @@ Decisions the build needs but the team has not made yet. Claude Code adds to thi
 | Q4 | Label simulated steps (NFC, photo AI) as "demo" for participants? | G04, G05, R04 | Team | Open |
 | Q5 | Merge redundant onboarding screens (Prague P2) | O01–O04, H01–H03 | Team | Open: decide from frames |
 | Q6 | Logo / master identity | Header, onboarding | Team | Open: Fraunces Bold text wordmark for now |
+| Q7 | Accounts: required for givers and hosts, optional for receivers? (CLAUDE.md §9) | Login, coupons, alerts, host | Team | Recommended; prototype uses a fixed demo user |
+| Q8 | Food alerts (new in M02 frame): keep in this test round? | M02, banner | Team | Added as F-24, simulated |
+| Q9 | Real photos for venues and avatar (frames use stock-like photos) | M01, M02 | Team | Labelled placeholders in the prototype |
+
+## Frame vs kit decisions (10 Nov, main navigation frames)
+
+| Frame | Difference | Resolution |
+|---|---|---|
+| All | Grey text `#95918E` (3.1:1) | `text-secondary` / `text-tertiary` |
+| M01 | "No spot available" white on Terracotta 500 (4.39:1, fails) | `surface-unavailable` = Terracotta 700 (5.84:1) + `shelf-full` icon |
+| M01, G02, M02 | Gold icons on Forest (2.5:1) and Paper | Gold only on Ink; Leaf on Forest; gold on Paper only for search and rewards |
+| G08 | "€2 off", "Valid until 22 Nov 2026" | "to be agreed" until Q1 is decided; gold band added to the ticket |
+| G08 | "Only 2 more items to go!" | "2 of 4 picked up · pending" |
+| M01 | "Find food" vs spec "Take food" | Spec now uses **Find food** |
+| G02 | Unnumbered markers, no list view | Numbered markers, legend, Map / List toggle |
+| M02 | Help and FAQ with heart icon | `help` icon |
+| M01 | Title Case item names | Sentence case |

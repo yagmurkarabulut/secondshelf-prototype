@@ -42,7 +42,7 @@ Set `color` with the icon tokens from `docs/design-system.md`:
 |---|---|
 | Tab bar (consumer) | home · map · coupon · profile |
 | Tab bar (host) | dashboard · shelf-check · redeem · profile |
-| Home: Leave food / Take food | sealed-food / pickup-bag |
+| Home: Leave food / Find food | sealed-food / search |
 | G01 travel prompt | travel |
 | G04 / R04 / H05 tag tap | phone-tap (instruction), tap-nfc (button), qr-code and shelf-code (fallbacks) |
 | G05 photo | camera, photo (sample photo) |

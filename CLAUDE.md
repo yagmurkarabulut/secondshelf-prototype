@@ -1,6 +1,6 @@
 # SecondShelf: hi-fi mobile web prototype
 
-> Draft v0.2 (10 Nov 2026). Sources: Service Blueprint Part II, 4.1 Low-Fidelity Prototypes, Low-Fidelity Usability Testing Protocol (Prague and Tbilisi results), SecondShelf UI Kit v0.3 (approved by the team 10 Nov 2026).
+> Draft v0.3 (10 Nov 2026). Sources: Service Blueprint Part II, 4.1 Low-Fidelity Prototypes, Low-Fidelity Usability Testing Protocol (Prague and Tbilisi results), SecondShelf UI Kit v0.4 and the main navigation frames in `frames/`.
 > `[TBD]` = team decision still open. `[FRAME]` = add or confirm from the Figma frames.
 
 @docs/design-system.md
@@ -47,15 +47,15 @@ Most sharing-app users only take food, so supply from givers is the bottleneck. 
 | # | Feature | Role | Screens |
 |---|---|---|---|
 | F-01 | Onboarding and role choice (give / take / host), sharing rules | All | O01–O04 |
-| F-02 | Home with **Leave food** and **Take food** given equal weight | Giver, Receiver | M01 |
+| F-02 | Home: greeting, **Leave food** and **Find food** cards (equal size), "Your food on shelves" status list, "Points near you" shelf carousel | Giver, Receiver | M01 |
 | F-03 | Contextual travel / weekend prompt (no inventory tracking) | Giver | G01 |
-| F-04 | Map of pickup points: numbered markers, opening hours, shelf status (open / full / paused / closed), NFC/QR support, list view | All | G02, R01 |
+| F-04 | Map of pickup points: pill search + filter button, filter chips (Open now · Has space · Nearby), numbered markers + legend, count pill, **Map / List toggle**, shelf status (open / full / paused / closed), NFC/QR support | All | G02, R01 |
 | F-05 | Point card with rules shown before the trip | Giver | G03 |
 | F-06 | **NFC tag tap** with animated feedback; QR fallback; shelf-code fallback | Giver, Receiver, Host | G04, R04, H0x |
 | F-07 | **One photo** of all items → AI-proposed list (simulated) | Giver | G05, G06a |
 | F-08 | Confirm / edit item list, manual add, quantity stepper, required "sealed and in date" check | Giver | G06, G06c |
 | F-09 | **Split reward**: instant thank-you coupon + Rescue Bonus that grows as items are picked up | Giver | G07 |
-| F-10 | Coupon wallet with clear "how to use" | Giver | G08 |
+| F-10 | Coupon wallet: Active / Used segmented control, coupon ticket with Show button, Rescue Bonus card, clear "how to use" | Giver | G08 |
 | F-11 | Rescue push / in-app banner ("2 of your items were saved") and Rescue Bonus progress | Giver | G09, G09b, G10 |
 | F-12 | Monthly impact summary with a gentle buying tip | Giver | G11 |
 | F-13 | Search food with suggestions under the search bar, category filters, sort (distance, open now, date) | Receiver | R01, R02 |
@@ -67,7 +67,8 @@ Most sharing-app users only take food, so supply from givers is the bottleneck. 
 | F-19 | Redeem a coupon at the counter (valid / used / expired) | Host | H07, H07b |
 | F-20 | **Daily shelf check** (about 2 min): flagged items, keep / remove, confirm; reminders; any staff member can do it | Host | H08 |
 | F-21 | Pause the point (shelf full, café closed) | Host | H06/H08 |
-| F-22 | Profile / Me: role switch, coupons, settings | All | M02 |
+| F-22 | Me: profile row, monthly impact card, My items, Food alerts, Sharing rules, Help and FAQ, Switch to host mode, Log out (placeholder) | All | M02 |
+| F-24 | **Food alerts** (from the M02 frame): a receiver saves a food + distance ("Pasta within 1 km") and gets an in-app banner when it appears on a nearby shelf (simulated from the moderator menu) | Receiver | M02, banner |
 | F-23 | **Moderator tools** (test only): reset demo, jump to screen, choose scenario | Facilitator | hidden |
 
 ---
@@ -82,21 +83,21 @@ Codes follow the testing protocol. Exact names, order and states come from the F
 | O02 | How it works | `#/how` | [FRAME] |
 | O03 | Choose how you use it | `#/role` | [FRAME] |
 | O04 | Sharing rules | `#/rules` | [FRAME] |
-| M01 | Home | `#/home` | [FRAME] |
-| M02 | Me | `#/me` | [FRAME] |
+| M01 | Home | `#/home` | `frames/M01-home.png` |
+| M02 | Me | `#/me` | `frames/M02-me.png` |
 | G01 | Travel prompt (push + in-app) | `#/give/prompt` | [FRAME] |
-| G02 | Map | `#/map` | [FRAME] |
+| G02 | Map (shared with R01) | `#/map` | `frames/G02-map.png` |
 | G03 | Point card | `#/point/:id` | [FRAME] |
 | G04 / G04b | Tap the tag / Tag found (+ not found, QR, shelf code) | `#/give/tap` | [FRAME] |
 | G05 | Take a photo | `#/give/photo` | [FRAME] |
 | G06a | Reading your photo | `#/give/reading` | [FRAME] |
 | G06 / G06c | Confirm item list / Edit or add item | `#/give/items` | [FRAME] |
 | G07 | Thanks for sharing + split reward | `#/give/done` | [FRAME] |
-| G08 | Coupon wallet | `#/coupons` | [FRAME] |
+| G08 | Coupons (wallet) | `#/coupons` | `frames/G08-coupons.png` |
 | G09 / G09b | Rescue push / Rescue banner in app | overlay | [FRAME] |
 | G10 | Rescue Bonus progress | `#/bonus` | [FRAME] |
 | G11 | Monthly impact | `#/impact` | [FRAME] |
-| R01 | Search food on map | `#/take` | [FRAME] |
+| R01 | Find food (map opened from the Find food card, search focused) | `#/map?find=1` | uses `frames/G02-map.png` |
 | R02 | Search results (list) | `#/take/results` | [FRAME] |
 | R03 | Shelf listing | `#/take/point/:id` | [FRAME] |
 | R04 | Check and tap | `#/take/tap` | [FRAME] |
@@ -144,6 +145,10 @@ Codes follow the testing protocol. Exact names, order and states come from the F
   - Given R05, then each item has an **explicit checkbox** and a stepper for multiples. **Confirm pickup** is disabled until at least one item is ticked.
   - Given R06, then I see "Pickup logged." and the shelf count updates.
 - **US-13** As a receiver, I want to report a missing or damaged item from R03, R04 or R05.
+- **US-14** As a receiver, I want an alert when food I need appears nearby.
+  - Given M02, when I switch **Food alerts** on, then the row shows my saved alert ("Pasta within 1 km"); when the moderator triggers "Simulate: alert match", a banner says "Pasta is on a shelf 200 m away" with **View**.
+- **US-15** As a receiver, I want to start from Home.
+  - Given M01, when I tap **Find food**, then the map opens with the search field focused.
 
 ### Host / steward, Scenario C
 - **US-20** As a host, I want to understand my duties before I commit.
@@ -163,7 +168,7 @@ Codes follow the testing protocol. Exact names, order and states come from the F
 
 ### Global
 - Hash routing; the browser back button and the in-app back always work. Every screen except full-screen tasks shows the tab bar.
-- Tab bar: **Home**, **Map**, **Coupons**, **Me**. Never label Home "Today" (it confused Prague P2).
+- Tab bar: **Home**, **Map**, **Coupons**, **Me**; the active tab has a Leaf pill behind its icon. Never label Home "Today" (it confused Prague P2).
 - Host mode swaps the tabs for **Dashboard**, **Check**, **Redeem**, **Me**.
 - Transitions: push (slide left, 250 ms) forward, slide right back, fade (150 ms) for overlays. Respect `prefers-reduced-motion` (no slide, instant).
 - Feedback: every tap gives a visible pressed state. Successes use a toast or a full confirmation screen. Use `navigator.vibrate(30)` where supported for tag found / submit.
@@ -190,7 +195,7 @@ Open with `?mod=1` or a long press (800 ms) on the logo. It offers:
 - Reset demo
 - Choose scenario (A giver, B receiver, C host)
 - Jump to screen
-- Simulate: tag not found / photo unreadable / receiver picked up 2 items / travel prompt
+- Simulate: tag not found / photo unreadable / receiver picked up 2 items / travel prompt / alert match
 - Optional: export the event log (screen views, task start/end timestamps) as JSON, to measure drop-off < 90 s and host check < 2 min.
 
 ---
@@ -198,10 +203,12 @@ Open with `?mod=1` or a long press (800 ms) on the logo. It offers:
 ## 7. Content and wording
 
 - Say **"still good"**, **"saved"** and **"pass it on"**. Never say "food waste", "leftovers", "charity" or "free food for the needy".
-- Use the same verb for the same action everywhere: **Leave food** / **Take food** / **Tap shelf tag** / **Confirm** / **Report**.
+- Use the same words for the same action everywhere: **Leave food** (giver entry) / **Find food** (receiver entry) / **Tap shelf tag** / **Confirm** / **Report**. Inside the pickup flow the verb is "take" ("What are you taking", "Take what you can use").
+- Sentence case for item names and labels ("Canned soup", not "Canned Soup").
 - Fixed strings: "Thanks for sharing." · "Pickup logged." · "Not here? Report missing stock" · "Care for the shelf, together." · "Every item you leave is welcome, even if the box is a little worn." · "Numbers identify shelves, not item counts."
 - Unknown values show **To be agreed** (coupon value, expiry, monthly cap). Don't invent numbers.
-- Sample content: venue **Café Daisy** [TBD per city]; fusilli pasta 500 g (BB 2027-03), tomato soup ×2 (BB 2027-08), crackers (BB 2027-01).
+- Sample content (from the frames): user **Brenda Kowalska**; venues **Café Daisy** (200 m, closing 20:00, 4 spots), **Café Lumi** (1.2 km, closing 18:00, no spot), **Pizza Nonna** (2.1 km, 3 spots) [TBD per city]; items fusilli pasta 500 g (BB 2027-03), tomato soup ×2 (BB 2027-08), crackers (BB 2027-01), canned tuna, all-purpose flour; impact "11 items passed on · 8 saved by neighbours".
+- Coupon value and validity show **"to be agreed"**, even though the G08 frame shows "€2 off" and "22 Nov 2026". Rescue Bonus says "2 of 4 picked up · pending", not "Only 2 more items to go!".
 
 ---
 
@@ -219,10 +226,25 @@ Open with `?mod=1` or a long press (800 ms) on the logo. It offers:
 | Host wants proof of activity (Prague P2) | Dashboard counts + activity log |
 | Reminders and several staff (Tbilisi P2) | Reminder setting + staff picker in H08 |
 | Redundant onboarding screens (Prague P2) | Merge where the frames allow [FRAME] |
+| Frame review, v0.4 (team, 10 Nov) | Grey text → `text-secondary`; "No spot available" chip on Terracotta 700; gold icons only on Ink; numbered markers + Map / List toggle; Help icon `help`; coupon values "to be agreed" |
 
 ---
 
-## 9. Tech rules
+## 9. Accounts and tracking (team note, 10 Nov)
+
+**Prototype:** no real accounts. Brenda is a fixed demo user; "Log out" is a placeholder that returns to Welcome and keeps the demo state.
+
+**For the real service, who picked up what?** Without accounts, a pickup is logged by the NFC/QR tap (which shelf, when) plus the items ticked; the app knows *what* left the shelf, not *who* took it. That is enough for the map, the giver's Rescue Bonus count ("2 of 4 picked up") and the host's activity log, because those count items, not people.
+
+| Role | Account? | Why |
+|---|---|---|
+| **Giver** | **Required (light)**: email magic link or phone code, no password | Coupons and the Rescue Bonus belong to a person; the monthly cap and coupon-farming protection (F9) need an identity; drop-off logs give traceability (F5). |
+| **Host / steward** | **Required**, one venue account with named staff | Host agreement, operator verification, daily-check log ("who checked the shelf and when"), coupon redemption. |
+| **Receiver** | **Optional** | Dignity and low barrier: anyone can take food, with or without the app. Pickups log anonymously (device ID + tap). An account only adds Food alerts across devices and a pickup history. Fraud risk is low because the food is free and logs only adjust counts. |
+
+Recommendation: accounts for givers and hosts, optional for receivers. Decision pending in `docs/open-questions.md` (Q7).
+
+## 10. Tech rules
 
 - **Front end only.** No backend, no accounts, no API keys, no analytics services.
 - Default: one self-contained `index.html` (inline CSS + vanilla JS, hash routing), published as a link. Alternative `[TBD]`: Vite + vanilla/React, static build, deployed to GitHub Pages.
@@ -234,24 +256,26 @@ Open with `?mod=1` or a long press (800 ms) on the logo. It offers:
 - Colour roles: Pantry Green = primary actions and headings; **Ochre = rewards only** (coupon, Rescue Bonus); **Terracotta 700 = the single closing action of a flow** (Confirm drop-off, Confirm pickup) and highlights; Slate = problems. No red anywhere.
 - Accessibility: WCAG AA contrast, visible focus ring, labelled controls, `aria-live` for scanning / status changes.
 
-## 10. How to work in this repo
+## 11. How to work in this repo
 1. Read this file and `docs/design-system.md` before any change.
 2. Build order: tokens → components (all states) → screens in flow order (A, then B, then C) → moderator menu.
 3. Take one screen at a time. After each one, take a screenshot at 390 × 844 and compare it with its frame in `frames/`.
 4. If a frame and this spec disagree, the **frame wins on layout**, **`docs/design-system.md` wins on styling** (colours, type, radius, spacing) and the **spec wins on behaviour and wording**. Note the conflict in `docs/open-questions.md`.
 5. Never invent features, values or copy. Use `[TBD]` and add it to `docs/open-questions.md`.
 
-## 11. Definition of done
+## 12. Definition of done
 - [ ] Every screen in §4 exists, is reachable and matches its frame at 390 × 844 (also check 360 and 430 px)
 - [ ] Every acceptance criterion in §5 passes
 - [ ] Every critical interaction in §6 has normal, alternative and error states
-- [ ] Copy follows §7; no literal style values outside tokens
+- [ ] Copy follows §7; no literal style values outside tokens; no "€2" or real dates on coupons
 - [ ] Tap targets ≥ 44 px; contrast AA; reduced motion respected
 - [ ] Reset demo restores the start state; the link opens on iPhone Safari and Android Chrome
 
-## 12. Open decisions [TBD]
+## 13. Open decisions [TBD]
 - Coupon value, expiry, monthly cap and who funds them (Nino's three funding options)
 - ~~Fonts~~ decided: Fraunces + Rubik · ~~Icon colour~~ decided: icon tokens in `docs/design-system.md` (primary = Pantry Green)
-- Venue name and map area per test city
+- Venue name and map area per test city (frames use Café Daisy, Café Lumi, Pizza Nonna)
+- Accounts: required for givers and hosts, optional for receivers? (see §9, Q7)
+- Food alerts: keep in the test, or park for later? (Q8)
 - Hosting: single HTML link or a GitHub Pages project
 - Whether simulated steps are labelled as demo for participants
