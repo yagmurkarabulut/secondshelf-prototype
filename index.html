@@ -111,6 +111,7 @@
   --focus-on-dark:0 0 0 3px var(--paper-0);
   --tint-on-dark:rgba(255,255,255,.12);  /* subtle fill on surface-brand (G04 illustration panel) */
   --scrim:rgba(43,36,30,.4);             /* behind bottom sheets */
+  --tint-me:rgba(47,110,140,.2);          /* halo around the "you are here" dot (info-600 at 20%) */
 }
 
 /* =====================================================================
@@ -508,6 +509,11 @@ ul,ol{margin:0;padding:0;list-style:none}
 .nfc__note .icon{color:var(--icon-on-primary)}
 .nfc__qr{width:160px;height:160px;border-radius:var(--radius-md);border:2px dashed var(--text-on-primary);display:flex;align-items:center;justify-content:center}
 
+.nfc__more{text-align:center}
+.on-brand .btn--link,.screen--brand .btn--link{color:var(--text-on-primary)}
+.on-brand .btn--link:active,.screen--brand .btn--link:active{background:var(--tint-on-dark)}
+.capture__overlay--dim{background:var(--scrim)}
+
 /* ---- Food item row ---- */
 .item{display:flex;gap:var(--space-12);align-items:flex-start;background:var(--surface-default);border-radius:var(--radius-lg);padding:var(--space-16);min-height:var(--size-row-min);border:var(--border-w) solid transparent;transition:background-color var(--motion-base) var(--ease)}
 .item__thumb{width:var(--size-control);height:var(--size-control);border-radius:var(--radius-sm);background:var(--surface-selected);display:flex;align-items:center;justify-content:center;flex:none}
@@ -615,7 +621,7 @@ button.settings__row:active{background:var(--surface-canvas)}
 .hostcard .chev{color:var(--text-on-inverse)}
 
 /* ---- Greeting header ---- */
-.greet{display:flex;align-items:center;justify-content:space-between;gap:var(--space-16);margin-bottom:var(--space-24)}
+.greet{display:flex;align-items:center;justify-content:space-between;gap:var(--space-16);margin-bottom:var(--space-16)}
 
 /* ---- Bottom sheet ---- */
 .sheet-host{position:absolute;inset:0;z-index:50;display:none}
@@ -703,6 +709,57 @@ button.settings__row:active{background:var(--surface-canvas)}
 
 /* ---- Section header (Home) ---- */
 .sechead{display:flex;align-items:center;justify-content:space-between;gap:var(--space-12);min-height:var(--size-tap-min)}
+
+/* =====================================================================
+   4b. SCREENS (Scenario A)
+   ===================================================================== */
+.screen--brand .t-display,.screen--brand .t-h1{color:var(--text-on-primary)}
+.screen-title{margin-bottom:var(--space-16)}
+.lead{font:var(--type-body);color:var(--text-primary)}
+.center{text-align:center}
+.actions{display:flex;flex-direction:column;gap:var(--space-12);padding-top:var(--space-24)}
+.kv-lines .kv{padding:var(--space-12) 0}
+.kv-lines .kv + .kv{border-top:1px solid var(--border-subtle)}
+.howto{font:var(--type-body-small);color:var(--text-secondary);margin-top:var(--space-12)}
+.howto strong{color:var(--text-primary);font-weight:500}
+.banner--plain > .icon{color:var(--icon-info)}
+.illus{border-radius:var(--radius-lg);background:var(--surface-subtle);min-height:152px;position:relative;margin-bottom:var(--space-24)}
+.illus::before{content:"";position:absolute;inset:var(--space-12);border:var(--border-w) dashed var(--border-strong);border-radius:var(--radius-md)}
+.illus .placeholder{position:absolute;inset:0;font:var(--type-body-small)}
+.closebar{display:flex;justify-content:flex-end;margin:calc(var(--space-12) * -1) calc(var(--space-12) * -1) var(--space-8)}
+
+/* Home */
+.statuslist .statuslist__head h2{font:var(--type-section)}
+
+/* Tap the tag */
+.tap-title{text-align:center;margin-bottom:var(--space-8)}
+.tap-sub{text-align:center;font:var(--type-body-large);color:var(--text-on-primary);margin-bottom:var(--space-24)}
+.screen--brand .nfc__stage{min-height:200px}
+.nfc__status:empty{display:none}
+
+/* Map (G02 / R01) */
+.screen--map{padding:0;overflow:hidden}
+.map{position:absolute;inset:0;background:var(--map-land);overflow:hidden}
+.map__bg{position:absolute;inset:0;width:100%;height:100%}
+.map__pin{position:absolute;transform:translate(-50%,-50%);z-index:1}
+.map__me{position:absolute;left:50%;top:50%;width:18px;height:18px;border-radius:var(--radius-full);background:var(--icon-info);border:3px solid var(--surface-default);transform:translate(-50%,-50%);box-shadow:0 0 0 var(--space-8) var(--tint-me)}
+.maptop{position:absolute;left:0;right:0;top:0;z-index:3;padding:max(env(safe-area-inset-top),var(--space-16)) var(--space-20) var(--space-4)}
+.maptop .chips{margin:var(--space-8) calc(var(--space-20) * -1) 0;padding:var(--space-4) var(--space-20)}
+.screen--map.is-list .maptop{background:var(--surface-canvas)}
+.maplist{position:absolute;inset:0;overflow-y:auto;background:var(--surface-canvas);padding:0 var(--space-20) 112px;z-index:2}
+.maplist[hidden]{display:none}
+.maplist h2{margin:var(--space-8) 0 var(--space-12)}
+.mapbottom{position:absolute;left:var(--space-16);right:var(--space-16);bottom:var(--space-16);z-index:4;display:flex;flex-direction:column;align-items:center;gap:var(--space-12);pointer-events:none}
+.mapbottom > *{pointer-events:auto}
+.mapbottom .segmented{box-shadow:var(--shadow-card)}
+.pointcard{width:100%;background:var(--surface-default);border-radius:var(--radius-lg);box-shadow:var(--shadow-sheet);padding:var(--space-16);display:flex;flex-direction:column;gap:var(--space-12);animation:fade-in var(--motion-fast) var(--ease) both}
+.facts{display:flex;flex-direction:column;gap:var(--space-8);font:var(--type-body-small);color:var(--text-primary)}
+.facts li{display:flex;align-items:center;gap:var(--space-8)}
+.facts .icon{width:var(--size-icon-20);height:var(--size-icon-20);color:var(--icon-secondary)}
+.point-photo{height:160px;border-radius:var(--radius-lg);background:var(--surface-subtle);display:flex;align-items:center;justify-content:center;margin-bottom:var(--space-16)}
+
+/* Coupons */
+.coupons-panel{margin-top:var(--space-16)}
 
 /* =====================================================================
    5. COMPONENT GALLERY (#/components only)
@@ -831,10 +888,41 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
 /* =====================================================================
    STATE: memory + localStorage (try/catch), Reset demo restores START
    ===================================================================== */
-const STORE_KEY = 'secondshelf-demo-v1';
+const STORE_KEY = 'secondshelf-demo-v2';
+
+/* Sample venues (CLAUDE.md §7, frames M01/G02/G08d). Map positions are % of the map area. */
+const VENUES = [
+  { id: 1, name: 'Café Daisy', dist: '200 m', metres: 200, hours: 'Open until 20:00', spots: 4, full: false, open: true, shelf: 'shelf 2', addr: 'Aia 8', x: 58, y: 44 },
+  { id: 2, name: 'Café Lumi', dist: '1.2 km', metres: 1200, hours: 'Open until 18:00', spots: 0, full: true, open: true, shelf: '', addr: '', x: 22, y: 30 },
+  { id: 3, name: 'Pizza Nonna', dist: '2.1 km', metres: 2100, hours: '', spots: 3, full: false, open: true, shelf: '', addr: '', x: 76, y: 70 }
+];
+const venue = id => VENUES.find(v => v.id === +id) || VENUES[0];
+
+/* Scripted "AI" result for the one photo (CLAUDE.md §6) */
+const AI_ITEMS = () => [
+  { id: 'fusilli', name: 'Fusilli pasta, 500 g', short: 'Fusilli pasta', bb: '03/2027', qty: 1 },
+  { id: 'soup', name: 'Tomato soup, 400 g can', short: 'Tomato soup', bb: '08/2027', qty: 2 },
+  { id: 'crackers', name: 'Crackers, 200 g', short: 'Crackers', bb: '01/2027', qty: 1 }
+];
+
+/* Start state. Brenda is a returning giver: the M01-v2 frame shows 4 items already on shelves,
+   and the G08 frame shows Active (2) / Used (1) after today's drop-off. */
 const START = () => ({
   user: { name: 'Brenda Kowalska', first: 'Brenda', email: 'brenda@example.com', initials: 'BK' },
   mode: 'consumer',
+  shelfItems: [
+    { name: 'Tomato soup', venue: 1, status: 'done' },
+    { name: 'Fusilli pasta', venue: 1, status: 'waiting' },
+    { name: 'All-purpose flour', venue: 3, status: 'done' },
+    { name: 'Canned tuna', venue: 2, status: 'waiting' }
+  ],
+  coupons: [
+    { id: 'c1', venue: 1, state: 'active', code: 'SS-4817' },
+    { id: 'c0', venue: 3, state: 'used', code: 'SS-4790' }
+  ],
+  bonuses: [],
+  draft: null,          // drop-off in progress: { shelf, photo, items, started }
+  sim: { tagFail: false, photoFail: false },   // set from the moderator menu (phase 3)
   events: []
 });
 const Store = {
@@ -913,13 +1001,13 @@ const UI = {
     return `<span class="status${m[2]}">${icon(m[0], m[1])}<span>${esc(text)}</span></span>`;
   },
   banner(kind, html, { ic, action = '' } = {}) {
-    const def = { success: 'done', info: 'info', problem: 'needs-attention', reward: 'saved-food' }[kind];
+    const def = { success: 'done', info: 'info', problem: 'needs-attention', reward: 'saved-food', plain: 'info' }[kind];
     return `<div class="banner banner--${kind}" role="${kind === 'problem' ? 'alert' : 'status'}">${icon(ic || def)}<div class="banner__text">${html}</div>${action}</div>`;
   },
-  coupon({ state = 'active', venue = 'Café Daisy' } = {}) {
+  coupon({ id = 'c1', state = 'active', venue = 'Café Daisy' } = {}) {
     const chip = { active: '<span class="pill pill--leaf">Ready to use</span>', used: '<span class="pill pill--oat">Used</span>', expired: '<span class="pill pill--oat">Expired</span>', pending: '<span class="pill pill--reward">Pending</span>' }[state];
     const btn = state === 'active'
-      ? UI.button({ label: 'Show code', icon: 'qr-code', attrs: 'data-action="show-qr"' })
+      ? UI.button({ label: 'Show code', icon: 'qr-code', attrs: `data-href="#/coupons/code/${id}"` })
       : UI.button({ label: 'Show code', icon: 'qr-code', disabled: true });
     return `<article class="coupon is-${state}" aria-label="Thank-you coupon, ${state}">
       <div class="coupon__band"></div>
@@ -939,14 +1027,14 @@ const UI = {
       return `<button type="button" role="tab" class="segmented__seg" aria-selected="${i === selected}" data-seg-i="${i}">${o.icon ? icon(o.icon) : ''}<span>${esc(o.label)}</span></button>`;
     }).join('')}</div>`;
   },
-  rescueBonus({ picked = 0, total = 4, venue = 'Café Daisy', state } = {}) {
+  rescueBonus({ picked = 0, total = 4, venue = 'Café Daisy', state, note = '' } = {}) {
     state = state || (picked >= total ? 'complete' : 'pending');
     const text = state === 'expired' ? `${picked} of ${total} picked up · expired` : state === 'complete' ? `${total} of ${total} picked up` : `${picked} of ${total} picked up · pending`;
     return `<article class="bonus${state === 'expired' ? ' is-expired' : ''}">
       <div class="bonus__head"><span class="tile tile--reward">${icon('rescue-bonus', 'icon--reward')}</span>
         <div class="grow"><h3 class="t-title">Rescue Bonus</h3><p class="t-small c-secondary">${esc(venue)}</p></div></div>
       <div class="bonus__bar" role="img" aria-label="${text}">${Array.from({ length: total }, (_, i) => `<span class="bonus__seg${i < picked ? ' is-on' : ''}"></span>`).join('')}</div>
-      <p class="bonus__status">${text}</p>
+      <p class="bonus__status">${text}</p>${note ? `<p class="t-small c-secondary" style="margin-top:var(--space-4)">${esc(note)}</p>` : ''}
     </article>`;
   },
   stepHeader({ title, step, of = 3, first = false, back = 'back' }) {
@@ -960,14 +1048,15 @@ const UI = {
   topBar({ title, serif = false, back = true, action = '' }) {
     return `<header class="topbar">${back ? UI.iconButton('back', 'Back', 'data-action="back"') : ''}<h1 class="topbar__title${serif ? ' topbar__title--serif' : ''}">${esc(title)}</h1>${action}</header>`;
   },
-  nfc({ state = 'idle', id = 'nfc' } = {}) {
+  nfc({ state = 'idle', id = 'nfc', idleText = 'Hold your phone to the tag on the shelf' } = {}) {
     const core = { idle: 'phone-tap', scanning: 'tap-nfc', found: 'done', notfound: 'needs-attention', qr: 'qr-code' }[state];
-    const status = { idle: 'Hold your phone to the tag on the shelf', scanning: 'Scanning…', found: 'Tag found', notfound: 'Tag not found', qr: 'Scan the QR code' }[state];
+    const status = { idle: idleText, scanning: 'Scanning…', found: 'Tag found', notfound: 'Tag not found', qr: 'Scan the QR code' }[state];
     let art = `<div class="nfc__art" aria-hidden="true"><span class="nfc__ring"></span><span class="nfc__ring"></span><span class="nfc__ring"></span><span class="nfc__core nfc__phone">${icon(core)}</span></div>`;
     if (state === 'qr') art = `<div class="nfc__qr" aria-hidden="true">${icon('qr-code', 'icon--lg icon--on-primary')}</div>`;
     let actions = '';
     if (state === 'idle') actions = UI.button({ label: 'Tap shelf tag', variant: 'on-brand', icon: 'tap-nfc', block: true, attrs: `data-nfc-tap="${id}"` })
-      + UI.button({ label: 'Scan the QR code instead', variant: 'outline-on-brand', icon: 'qr-code', block: true, attrs: `data-nfc-qr="${id}"` });
+      + UI.button({ label: 'Scan the QR code instead', variant: 'outline-on-brand', icon: 'qr-code', block: true, attrs: `data-nfc-qr="${id}"` })
+      + `<div class="nfc__more">${UI.button({ label: 'Type shelf code', variant: 'link', icon: 'shelf-code', attrs: 'data-action="shelf-code"' })}</div>`;
     if (state === 'scanning') actions = UI.button({ label: 'Tap shelf tag', variant: 'on-brand', loading: true, block: true });
     if (state === 'notfound') actions = UI.button({ label: 'Try again', variant: 'on-brand', icon: 'retry', block: true, attrs: `data-nfc-tap="${id}"` })
       + UI.button({ label: 'Scan the QR code', variant: 'outline-on-brand', icon: 'qr-code', block: true, attrs: `data-nfc-qr="${id}"` })
@@ -1011,7 +1100,7 @@ const UI = {
   shelfCard({ n, dist, venue, hours, kind, spots }) {
     return `<a class="shelf${kind === 'closed' ? ' is-closed' : ''}" href="#/point/${n}">
       <div class="shelf__photo"><span class="placeholder">${icon('photo')}<span>Photo placeholder</span></span>${UI.marker(n)}</div>
-      <div class="shelf__body"><span class="shelf__dist">${esc(dist)}</span><span class="shelf__venue">${esc(venue)}</span><span class="shelf__hours">${esc(hours)}</span>${UI.avail(kind, spots)}</div></a>`;
+      <div class="shelf__body"><span class="shelf__dist">${esc(dist)}</span><span class="shelf__venue">${esc(venue)}</span>${hours ? `<span class="shelf__hours">${esc(hours)}</span>` : ''}${UI.avail(kind, spots)}</div></a>`;
   },
   resultRow({ n, venue, meta, kind, spots, selected = false }) {
     return `<a class="result${selected ? ' is-selected' : ''}" href="#/take/point/${n}">${UI.marker(n, selected ? 'selected' : kind === 'full' ? 'full' : kind === 'closed' ? 'closed' : 'default')}
@@ -1070,11 +1159,12 @@ const UI = {
       <dl style="width:100%"><div class="kv"><dt>Offer value</dt><dd>To be agreed</dd></div><div class="kv"><dt>Expiry</dt><dd>To be agreed</dd></div></dl>
     </div>`;
   },
-  capture(state = 'empty') {
+  capture(state = 'empty', src = '') {
+    const photo = src ? `<img class="capture__img" src="${esc(src)}" alt="Your photo">` : SAMPLE_PHOTO;
     let inner = `<div class="capture__guide"></div><div class="capture__msg">${icon('camera')}<p class="t-title">Your items only</p><p class="t-small c-secondary">on a table or in your hands</p></div>`;
-    if (state === 'captured') inner = `${SAMPLE_PHOTO}`;
+    if (state === 'captured') inner = photo;
     if (state === 'reading') inner = `<div class="capture__overlay" role="status"><span class="spinner" aria-hidden="true"></span><span>Reading your photo</span></div><span class="capture__scan" aria-hidden="true"></span>`;
-    if (state === 'unreadable') inner = `<div class="capture__msg">${icon('needs-attention', 'icon--lg icon--problem')}</div>`;
+    if (state === 'unreadable') inner = src ? `${photo}<div class="capture__overlay capture__overlay--dim"></div>` : `<div class="capture__msg">${icon('needs-attention', 'icon--lg icon--problem')}</div>`;
     return `<div class="capture" data-capture="${state}">${inner}</div>${state === 'unreadable' ? `<div style="margin-top:var(--space-12)">${UI.banner('problem', 'Couldn’t read the photo')}</div>` : ''}`;
   },
   verifyCard(state) {
@@ -1098,6 +1188,24 @@ const UI = {
   logRow({ kind, time, ref = '' }) {
     const m = { dropoff: ['sealed-food', 'Drop-off'], pickup: ['pickup-bag', 'Pickup'], redeem: ['coupon', 'Coupon redeemed'], check: ['shelf-check', 'Daily check done'] }[kind];
     return `<li class="log__row"><span class="tile tile--sm tile--canvas">${icon(m[0], 'icon--sm')}</span><div class="grow"><p class="t-body">${m[1]}</p>${ref ? `<p class="t-small c-secondary">${esc(ref)}</p>` : ''}</div><span class="log__time">${esc(time)}</span></li>`;
+  },
+  statusList(items) {
+    const total = items.length, rows = items.slice(0, 4);
+    return `<section class="statuslist" aria-labelledby="yf-title"><div class="statuslist__head"><h2 class="t-section" id="yf-title">Your food on shelves</h2><span class="pill">${total} item${total === 1 ? '' : 's'}</span></div>
+      ${rows.map(r => { const done = r.status === 'done'; return `<div class="statuslist__row"><span class="tile tile--sm ${done ? '' : 'tile--canvas'}">${icon(done ? 'done' : 'paused', 'icon--sm ' + (done ? 'icon--success' : 'icon--warning'))}</span>
+        <span class="statuslist__name">${esc(r.name)} <small>· ${done ? 'Picked up' : 'On the shelf'}</small></span><span class="statuslist__venue">${esc(venue(r.venue).name)}</span></div>`; }).join('')}</section>`;
+  },
+  pointFacts(v) {
+    return `<ul class="facts"><li>${icon('tap-nfc')}NFC tag and QR code</li><li>${icon('sealed-badge')}Sealed, shelf-stable, within date</li></ul>`;
+  },
+  pointCard(v) {
+    const kind = v.full ? 'full' : 'space';
+    return `<section class="pointcard" aria-labelledby="pc-title">
+      <div class="row">${UI.marker(v.id, 'selected')}<div class="grow"><h2 class="t-title" id="pc-title">${esc(v.name)}</h2><p class="t-small c-secondary">${esc(v.dist)}${v.hours ? ' · ' + esc(v.hours) : ''}</p></div>${UI.iconButton('close', 'Close', 'data-pc-close')}</div>
+      <div>${UI.avail(kind, v.spots + ' spots')}</div>
+      ${UI.pointFacts(v)}
+      ${UI.button({ label: 'Leave food', icon: 'sealed-food', block: true, disabled: v.full, attrs: `data-href="#/give/tap?shelf=${v.id}"` })}
+    </section>`;
   },
   empty({ ic, title, line, action = '' }) {
     return `<div class="empty">${icon(ic, 'icon--lg icon--tertiary')}<h2 class="t-h3">${esc(title)}</h2><p class="t-body c-secondary">${esc(line)}</p>${action}</div>`;
@@ -1164,9 +1272,11 @@ const Router = {
     return null;
   },
   go(hash) { if (location.hash === hash) this.render('none'); else location.hash = hash; },
+  replace(hash) { this._replace = true; location.replace(hash); },
   back() { if (this.stack.length > 1) history.back(); else this.go(DEFAULT_ROUTE); },
   direction(raw) {
     const s = this.stack;
+    if (this._replace) { this._replace = false; s[s.length - 1] = raw; return 'fwd'; }
     if (s.length > 1 && s[s.length - 2] === raw) { s.pop(); return 'back'; }
     if (s[s.length - 1] === raw) return 'none';
     s.push(raw); return s.length === 1 ? 'none' : 'fwd';
@@ -1177,9 +1287,11 @@ const Router = {
     if (!found) { location.replace('#' + DEFAULT_ROUTE.replace(/^#/, '')); return; }
     const dir = dirOverride || this.direction(raw);
     const { r, params } = found;
+    if (r.opts.guard && !r.opts.guard({ params, query })) { this.replace(r.opts.guardTo || DEFAULT_ROUTE); return; }
     const stage = $('#stage');
     const old = stage.firstElementChild && !stage.firstElementChild.classList.contains('leave-fwd') && !stage.firstElementChild.classList.contains('leave-back') ? stage.firstElementChild : null;
     $$('.screen', stage).forEach(s => { if (s !== old) s.remove(); });
+    if (old && old._cleanup) { old._cleanup(); old._cleanup = null; }
     const el = document.createElement('section');
     el.className = 'screen' + (r.opts.cls ? ' ' + r.opts.cls : '');
     el.setAttribute('aria-label', r.opts.title || 'SecondShelf');
@@ -1209,7 +1321,17 @@ const Router = {
 const Actions = {
   back: () => Router.back(),
   'show-qr': () => openSheet('Your coupon', UI.qrSheet() + `<div style="margin-top:var(--space-24)">${UI.button({ label: 'Done', icon: 'done', block: true, attrs: 'data-sheet-close' })}</div>`),
-  'shelf-code': () => openSheet('Type shelf code', UI.input({ id: 'shelfcode', label: 'Shelf code', placeholder: 'e.g. SS-0002', attrs: 'inputmode="text" autocapitalize="characters"' }) + `<div style="margin-top:var(--space-24)">${UI.button({ label: 'Confirm', block: true, attrs: 'data-sheet-close' })}</div>`)
+  'shelf-code': () => {
+    const body = () => `<form id="sc-form" novalidate>${UI.input({ id: 'shelfcode', label: 'Shelf code', placeholder: 'e.g. SS-0002', attrs: 'autocapitalize="characters" autocomplete="off"' })}<div style="margin-top:var(--space-24)">${UI.button({ label: 'Confirm', block: true, attrs: 'type="submit"' }).replace('type="button" ', '')}</div></form>`;
+    openSheet('Type shelf code', body());
+    $('#sc-form').addEventListener('submit', e => {
+      e.preventDefault();
+      const v = $('#shelfcode').value.trim();
+      if (!v) { const f = $('#shelfcode').closest('.field'); f.outerHTML = UI.input({ id: 'shelfcode', label: 'Shelf code', placeholder: 'e.g. SS-0002', error: 'Shelf code not found' }); $('#shelfcode').focus(); return; }
+      closeSheet();
+      document.dispatchEvent(new CustomEvent('shelfcode', { detail: v }));
+    });
+  }
 };
 document.addEventListener('click', e => {
   const t = e.target;
@@ -1266,17 +1388,24 @@ document.addEventListener('click', e => {
 
 /* NFC tap card controller (shared by G04, R04, H05) */
 const NFC = {
-  async tap(section, { onFound, fail = false } = {}) {
-    const id = section.dataset.nfc;
-    const swap = st => { const n = document.createElement('div'); n.innerHTML = UI.nfc({ state: st, id }); const fresh = n.firstElementChild; section.replaceWith(fresh); section = fresh; announce($('.nfc__status', fresh).textContent); return fresh; };
-    swap('scanning');
+  render(section, st, opts = {}) {
+    const n = document.createElement('div'); n.innerHTML = UI.nfc({ ...opts, state: st, id: section.dataset.nfc });
+    const fresh = n.firstElementChild; section.replaceWith(fresh);
+    const s = $('.nfc__status', fresh).textContent; if (s) announce(s);
+    return fresh;
+  },
+  async tap(section, { onFound, fail = false, opts = {} } = {}) {
+    section = this.render(section, 'scanning', opts);
     await wait(1200);
-    if (fail) { swap('notfound'); return; }
-    swap('found'); buzz();
+    if (fail) { this.render(section, 'notfound', opts); return; }
+    await this.found(section, { onFound, opts });
+  },
+  async found(section, { onFound, opts = {} } = {}) {
+    section = this.render(section, 'found', opts); buzz();
     await wait(600);
     onFound && onFound(section);
   },
-  qr(section) { const n = document.createElement('div'); n.innerHTML = UI.nfc({ state: 'qr', id: section.dataset.nfc }); section.replaceWith(n.firstElementChild); announce('Scan the QR code'); }
+  qr(section, opts = {}) { return this.render(section, 'qr', opts); }
 };
 
 /* =====================================================================
@@ -1426,7 +1555,7 @@ Views.components = {
 
       ${sec('qrsheet', 'Counter QR sheet', 'Bottom sheet from G08d: coupon name, large QR on Paper, code, Close.',
         st('Active') + `<div class="sheet sheet--static">${UI.qrSheet()}</div>` + st('Used') + `<div class="sheet sheet--static">${UI.qrSheet({ state: 'used' })}</div>` +
-        st('Live') + UI.button({ label: 'Show code', icon: 'qr-code', attrs: 'data-action="show-qr"' }))}
+        st('Live') + UI.button({ label: 'Show code', icon: 'qr-code', attrs: 'data-href="#/coupons/code/c1"' }))}
 
       ${sec('capture', 'Photo capture frame', 'Viewfinder radius-lg on surface-subtle; Take photo, Use sample photo, Add items manually.',
         st('Empty') + UI.capture('empty') + `<div class="stack-8" style="margin-top:var(--space-16)">${UI.button({ label: 'Take photo', icon: 'camera', block: true })}${UI.button({ label: 'Use sample photo', variant: 'secondary', icon: 'photo', block: true })}<div style="text-align:center">${UI.button({ label: 'Add items manually', variant: 'link' })}</div></div>` + st('Captured') + UI.capture('captured') + st('Reading') + UI.capture('reading') + st('Unreadable') + UI.capture('unreadable'))}
@@ -1520,11 +1649,364 @@ Views.components = {
   }
 };
 
+
+/* ---------- Drop-off draft helpers ---------- */
+let photoURL = '';   // object URL of the tester's photo (memory only)
+const Flow = {
+  start(shelf) {
+    Store.state.draft = { shelf: +shelf || 1, items: null, sealed: false, started: Date.now() };
+    Store.log('task_start', { task: 'dropoff', shelf: +shelf || 1 });
+  },
+  get d() { return Store.state.draft; },
+  count(items) { return items.reduce((n, i) => n + i.qty, 0); }
+};
+const hasDraft = () => !!Store.state.draft;
+
+/* ---------- M01 Home ---------- */
+Views.home = {
+  html() {
+    const s = Store.state;
+    return `${UI.greeting(s.user)}
+    <div class="stack">
+      <div class="action-cards">${UI.actionCard('leave')}${UI.actionCard('find')}</div>
+      ${UI.statusList(s.shelfItems)}
+      <section aria-labelledby="pn-title">
+        <div class="sechead"><h2 class="t-section" id="pn-title">Points near you</h2><a class="btn btn--link" href="#/map">Open map</a></div>
+        <div class="carousel">${VENUES.map(v => UI.shelfCard({ n: v.id, dist: v.dist, venue: v.name, hours: v.hours, kind: v.full ? 'full' : 'space', spots: v.spots + ' spots' })).join('')}</div>
+      </section>
+    </div>`;
+  }
+};
+
+/* ---------- G02 Map (R01 with ?find=1) ---------- */
+const MAP_SVG = `<svg class="map__bg" viewBox="0 0 390 760" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <rect width="390" height="760" style="fill:var(--map-land)"/>
+  <rect x="236" y="150" width="96" height="74" rx="6" style="fill:var(--map-park)"/>
+  <rect x="30" y="520" width="92" height="70" rx="6" style="fill:var(--map-park)"/>
+  <rect x="300" y="430" width="70" height="60" rx="6" style="fill:var(--map-park)"/>
+  <path d="M-20 630 C 70 600 150 640 230 680 S 360 720 410 700" style="fill:none;stroke:var(--map-water);stroke-width:34"/>
+  <g style="fill:none;stroke:var(--map-road);stroke-width:9;stroke-linecap:round">
+    <path d="M-10 70 H400 M-10 250 H400 M-10 330 H400 M-10 500 H400 M-10 760 H400"/>
+    <path d="M40 -10 V560 M110 -10 V600 M210 -10 V640 M330 -10 V720 M380 -10 V760"/>
+    <path d="M-10 410 L120 400 M230 440 L400 470 M110 160 L210 190"/>
+  </g>
+  <g style="fill:none;stroke:var(--map-road-main);stroke-width:6;stroke-linecap:round">
+    <path d="M160 -10 L175 300 L150 770"/><path d="M-10 380 L400 345"/><path d="M270 -10 L300 760"/>
+  </g>
+</svg>`;
+Views.map = {
+  html() {
+    return `<div class="map" data-map-bg>${MAP_SVG}<div id="pins"></div><span class="map__me" role="img" aria-label="You are here"></span></div>
+      <div class="maptop"><div id="map-search">${UI.search({ id: 'mapsearch' })}</div>
+        <div class="chips" role="group" aria-label="Filters">${['Open now', 'Has space', 'Nearby'].map(c => UI.chip(c)).join('')}</div></div>
+      <div class="maplist" id="maplist" hidden></div>
+      <div class="mapbottom" id="mapbottom"></div>`;
+  },
+  mount(el, { query }) {
+    el.classList.add('screen--map');
+    const st = { filters: new Set(), mode: query.view === 'list' ? 'list' : 'map', sel: query.shelf ? +query.shelf : null };
+    const visible = () => VENUES.filter(v => (!st.filters.has('Has space') || !v.full) && (!st.filters.has('Nearby') || v.metres <= 1000) && (!st.filters.has('Open now') || v.open));
+    const countText = n => `${n} location${n === 1 ? '' : 's'} in this area`;
+    const draw = () => {
+      const vs = visible();
+      if (st.sel && !vs.some(v => v.id === st.sel)) st.sel = null;
+      $('#pins', el).innerHTML = vs.map(v => `<button type="button" class="marker-btn map__pin" style="left:${v.x}%;top:${v.y}%" data-pin="${v.id}" aria-label="Shelf ${v.id}, ${esc(v.name)}${v.full ? ', full shelf' : ''}">${UI.marker(v.id, st.sel === v.id ? 'selected' : v.full ? 'full' : 'default').replace('role="img"', 'aria-hidden="true"')}</button>`).join('');
+      const list = $('#maplist', el);
+      el.classList.toggle('is-list', st.mode === 'list');
+      list.hidden = st.mode !== 'list';
+      if (st.mode === 'list') {
+        list.style.paddingTop = $('.maptop', el).offsetHeight + 'px';
+        list.innerHTML = `<h2 class="t-section">${countText(vs.length)}</h2><div class="stack-8">${vs.map(v => UI.resultRow({ n: v.id, venue: v.name, meta: v.dist + (v.hours ? ' · ' + v.hours : ''), kind: v.full ? 'full' : 'space', spots: v.spots + ' spots' }).replace(`href="#/take/point/${v.id}"`, `href="#/point/${v.id}"`)).join('')}</div>`;
+      }
+      const toggle = `<div>${UI.segmented([{ label: 'Map', icon: 'map' }, { label: 'List', icon: 'list' }], st.mode === 'list' ? 1 : 0, { id: 'mapmode' })}</div>`;
+      $('#mapbottom', el).innerHTML = st.sel && st.mode === 'map'
+        ? UI.pointCard(venue(st.sel))
+        : (st.mode === 'map' ? `<span class="countpill" role="status">${countText(vs.length)}</span>` : '') + toggle;
+    };
+    draw();
+    el.addEventListener('click', e => {
+      const pin = e.target.closest('[data-pin]');
+      if (pin) { st.sel = +pin.dataset.pin; draw(); announce(venue(st.sel).name); return; }
+      if (e.target.closest('[data-pc-close]')) { st.sel = null; draw(); return; }
+      if (e.target.closest('[data-map-bg]') && st.sel) { st.sel = null; draw(); }
+    });
+    el.addEventListener('chip', e => { e.detail.on ? st.filters.add(e.detail.label) : st.filters.delete(e.detail.label); draw(); });
+    el.addEventListener('seg', e => { if (e.detail.id === 'mapmode') { st.mode = e.detail.index ? 'list' : 'map'; st.sel = null; draw(); } });
+    // search with suggestions under the field
+    const SUG = ['Pasta', 'Pasta sauce'];
+    const box = $('#map-search', el);
+    const bind = () => {
+      const inp = $('#mapsearch', box);
+      inp.addEventListener('input', () => {
+        const v = inp.value;
+        const list = v.trim().length >= 2 ? SUG.filter(s => s.toLowerCase().startsWith(v.trim().toLowerCase())) : null;
+        box.innerHTML = UI.search({ id: 'mapsearch', value: v, suggestions: list });
+        bind();
+        const n = $('#mapsearch', box); n.focus(); n.setSelectionRange(v.length, v.length);
+      });
+    };
+    bind();
+    box.addEventListener('click', e => { const s = e.target.closest('[data-suggest]'); if (s) { box.innerHTML = UI.search({ id: 'mapsearch', value: s.dataset.suggest }); bind(); } });
+    if (query.find) setTimeout(() => $('#mapsearch', el).focus(), reduceMotion() ? 0 : 300);
+  }
+};
+
+/* ---------- G03 Point card (page, from Home and the list) ---------- */
+Views.point = {
+  html({ params }) {
+    const v = venue(params.id);
+    return `${UI.topBar({ title: v.name, serif: true })}
+      <div class="point-photo placeholder">${icon('photo', 'icon--lg')}<span>Photo placeholder</span></div>
+      <div class="stack">
+        <div class="row">${UI.marker(v.id)}<p class="t-body">${esc(v.dist)}${v.hours ? ' · ' + esc(v.hours) : ''}</p></div>
+        <div>${UI.avail(v.full ? 'full' : 'space', v.spots + ' spots')}</div>
+        <div class="card">${UI.pointFacts(v)}</div>
+        ${UI.button({ label: 'Leave food', icon: 'sealed-food', block: true, disabled: v.full, attrs: `data-href="#/give/tap?shelf=${v.id}"` })}
+      </div>`;
+  }
+};
+
+/* ---------- G04 Tap the tag ---------- */
+const TAP_OPTS = { idleText: '' };
+Views.giveTap = {
+  html({ query }) {
+    return `${UI.stepHeader({ title: 'Leave food', step: 1, first: true })}
+      <h2 class="t-display tap-title">Tap the tag</h2>
+      <p class="tap-sub">Hold your phone to the tag on the shelf</p>
+      <div id="nfc-slot">${UI.nfc({ state: 'idle', id: 'g04', ...TAP_OPTS })}</div>
+      <p class="nfc__note" style="margin-top:var(--space-16)">${icon('info')}<span>Look for the arrow on the sign. The tag is right below it.</span></p>`;
+  },
+  mount(el, { query }) {
+    if (!hasDraft() || (query.shelf && +query.shelf !== Flow.d.shelf)) { Flow.start(query.shelf || 1); }
+    // keep the fallback note between the stage and the buttons, as in the frame
+    const place = () => { const s = $('[data-nfc]', el), note = $('.nfc__note', el); $('.nfc__stage', s).after(note); };
+    place();
+    const next = () => Router.go('#/give/photo');
+    el.addEventListener('click', e => {
+      const sec = $('[data-nfc]', el);
+      if (e.target.closest('[data-nfc-tap]')) {
+        const fail = Store.state.sim.tagFail || query.fail === '1';
+        if (Store.state.sim.tagFail) { Store.state.sim.tagFail = false; Store.save(); }
+        Store.log('nfc_tap', { result: fail ? 'not_found' : 'found' });
+        const obs = new MutationObserver(place); obs.observe(el, { childList: true, subtree: true });
+        NFC.tap(sec, { fail, onFound: next, opts: TAP_OPTS }).then(() => obs.disconnect());
+      }
+      if (e.target.closest('[data-nfc-qr]')) { NFC.qr(sec, TAP_OPTS); place(); }
+      if (e.target.closest('[data-nfc-sampleqr]')) { NFC.found(sec, { onFound: next, opts: TAP_OPTS }); place(); }
+    });
+    const onCode = () => { NFC.found($('[data-nfc]', el), { onFound: next, opts: TAP_OPTS }); place(); };
+    document.addEventListener('shelfcode', onCode);
+    el._cleanup = () => document.removeEventListener('shelfcode', onCode);
+  }
+};
+
+/* ---------- G05 Take a photo ---------- */
+Views.givePhoto = {
+  html({ query }) {
+    const v = venue(Flow.d.shelf), err = query.error === '1';
+    return `${UI.stepHeader({ title: 'Leave food', step: 2 })}
+      <div class="stack">
+        ${UI.banner('success', `<strong>Tag found</strong> · ${esc(v.name)}${v.shelf ? ', ' + esc(v.shelf) : ''}`)}
+        <h2 class="t-h1">Photograph your items</h2>
+        <p class="lead">Photograph only your own items, before placing them. The photo suggests a list; it is not proof of delivery.</p>
+        <div>${err ? UI.capture('unreadable', photoURL) : UI.capture('empty')}</div>
+        <div class="stack-8">
+          ${UI.button({ label: 'Take photo', icon: 'camera', block: true, attrs: 'data-take' })}
+          <input type="file" accept="image/*" capture="environment" class="vh" id="photo-in" tabindex="-1" aria-hidden="true">
+          ${UI.button({ label: 'Use sample photo', variant: 'secondary', icon: 'photo', block: true, attrs: 'data-sample' })}
+          <div class="center">${UI.button({ label: 'Add items manually', variant: 'link', attrs: 'data-manual' })}</div>
+        </div>
+      </div>`;
+  },
+  mount(el) {
+    const inp = $('#photo-in', el);
+    el.addEventListener('click', e => {
+      if (e.target.closest('[data-take]')) inp.click();
+      if (e.target.closest('[data-sample]')) { photoURL = ''; Store.log('photo', { source: 'sample' }); Router.go('#/give/reading'); }
+      if (e.target.closest('[data-manual]')) { Flow.d.items = []; Store.save(); Store.log('photo', { source: 'manual' }); Router.go('#/give/items?add=1'); }
+    });
+    inp.addEventListener('change', () => {
+      const f = inp.files && inp.files[0]; if (!f) return;
+      try { if (photoURL) URL.revokeObjectURL(photoURL); photoURL = URL.createObjectURL(f); } catch (e) { photoURL = ''; }
+      Store.log('photo', { source: 'camera' }); Router.go('#/give/reading');
+    });
+  }
+};
+
+/* ---------- G06a Reading your photo ---------- */
+Views.giveReading = {
+  html() {
+    return `${UI.stepHeader({ title: 'Leave food', step: 2 })}
+      <div class="stack"><h2 class="t-h1">Photograph your items</h2>${UI.capture('reading', photoURL)}</div>`;
+  },
+  mount() {
+    setTimeout(() => {
+      if (!location.hash.startsWith('#/give/reading')) return;
+      if (Store.state.sim.photoFail) { Store.state.sim.photoFail = false; Store.save(); Store.log('photo_read', { result: 'unreadable' }); Router.replace('#/give/photo?error=1'); return; }
+      Flow.d.items = AI_ITEMS(); Store.save(); Store.log('photo_read', { result: 'ok' });
+      Router.replace('#/give/items');
+    }, 1500);
+  }
+};
+
+/* ---------- G06 Check your items (+ G06c edit / add sheet) ---------- */
+const shortName = n => String(n).split(',')[0].trim();
+function itemForm({ name = '', bb = '', qty = 1, submit }) {
+  return `<form id="item-form" class="stack" novalidate>
+    ${UI.input({ id: 'f-name', label: 'Item name', value: name, placeholder: 'e.g. Canned soup' })}
+    ${UI.input({ id: 'f-bb', label: 'Best before', value: bb, placeholder: 'MM/YYYY', attrs: 'inputmode="numeric" autocomplete="off"' })}
+    <div><span class="field__label">Quantity</span><div style="margin-top:var(--space-8)">${UI.stepper({ id: 'f-qty', value: qty, min: 1, max: 9 })}</div></div>
+    ${UI.button({ label: submit, icon: submit === 'Add item' ? 'plus' : 'done', block: true, attrs: 'type="submit" data-submit' }).replace('type="button" ', '')}
+  </form>`;
+}
+Views.giveItems = {
+  html() {
+    return `${UI.stepHeader({ title: 'Leave food', step: 3 })}
+      <h2 class="t-h1">Check your items</h2>
+      <p class="lead c-secondary" id="items-sub" style="margin:var(--space-4) 0 var(--space-16)"></p>
+      <div class="stack-8" id="items-list"></div>
+      <div class="center" style="margin:var(--space-8) 0 var(--space-16)">${UI.button({ label: 'Add item manually', variant: 'link', icon: 'plus', attrs: 'data-add' })}</div>
+      <div class="check-panel"><p class="t-body" style="padding-top:var(--space-4)">Place packs with labels and dates facing out.</p>
+        ${UI.checkbox({ id: 'sealed', label: 'All items are sealed and within their date', checked: !!Flow.d.sealed })}</div>
+      <div class="actions">${UI.button({ label: 'Confirm drop-off', variant: 'accent', icon: 'done', block: true, attrs: 'id="confirm"', disabled: true })}</div>`;
+  },
+  mount(el, { query }) {
+    const d = Flow.d; if (!d.items) d.items = AI_ITEMS();
+    const draw = () => {
+      $('#items-list', el).innerHTML = d.items.map(i => UI.foodItem(i)).join('');
+      sync();
+    };
+    const sync = () => {
+      const n = Flow.count(d.items);
+      $('#items-sub', el).textContent = `${n} item${n === 1 ? '' : 's'} · cans counted individually. Edit anything the photo got wrong.`;
+      $('#confirm', el).disabled = !(d.sealed && d.items.length);
+      Store.save();
+    };
+    const openForm = (item) => {
+      const editing = !!item;
+      openSheet(editing ? 'Edit item' : 'Add item', itemForm({ ...(item || {}), submit: editing ? 'Save' : 'Add item' }));
+      const form = $('#item-form'), btn = $('[data-submit]', form), name = $('#f-name', form);
+      const valid = () => { btn.disabled = !name.value.trim(); };
+      name.addEventListener('input', valid); valid();
+      form.addEventListener('submit', e => {
+        e.preventDefault(); if (!name.value.trim()) return;
+        const data = { name: name.value.trim(), short: shortName(name.value), bb: $('#f-bb', form).value.trim() || 'To be checked', qty: +$('.stepper__value', form).textContent };
+        if (editing) { Object.assign(item, data); Store.log('item_edit', { id: item.id }); }
+        else { d.items.push({ id: 'm' + Date.now(), ...data }); Store.log('item_add', {}); }
+        closeSheet(); draw();
+        if (editing) { const row = $(`[data-item="${item.id}"]`, el); row && row.classList.add('is-edited'); setTimeout(() => row && row.classList.remove('is-edited'), 1200); }
+      });
+    };
+    draw();
+    el.addEventListener('click', e => {
+      const rm = e.target.closest('[data-remove]');
+      if (rm) {
+        const idx = d.items.findIndex(i => i.id === rm.dataset.remove); const [gone] = d.items.splice(idx, 1);
+        draw(); Store.log('item_remove', { id: gone.id });
+        toast('info', `${esc(gone.name)} removed`, { action: 'Undo', ic: 'remove', onAction: () => { d.items.splice(idx, 0, gone); draw(); } });
+      }
+      const ed = e.target.closest('[data-edit]');
+      if (ed) openForm(d.items.find(i => i.id === ed.dataset.edit));
+      if (e.target.closest('[data-add]')) openForm(null);
+      if (e.target.closest('#confirm') && !$('#confirm', el).disabled) Views.giveItems.confirm();
+    });
+    el.addEventListener('stepper', e => { const it = d.items.find(i => 'q-' + i.id === e.detail.id); if (it) { it.qty = e.detail.value; sync(); } });
+    el.addEventListener('change', e => { if (e.target.id === 'sealed') { d.sealed = e.target.checked; sync(); } });
+    if (query.add) setTimeout(() => openForm(null), reduceMotion() ? 0 : 300);
+  },
+  confirm() {
+    const s = Store.state, d = s.draft, n = Flow.count(d.items), id = 'c' + Date.now(), bid = 'b' + Date.now();
+    s.shelfItems.unshift(...d.items.map(i => ({ name: (i.short || shortName(i.name)) + (i.qty > 1 ? ` ×${i.qty}` : ''), venue: d.shelf, status: 'waiting' })));
+    s.coupons.unshift({ id, venue: d.shelf, state: 'active', code: 'SS-4821' });
+    s.bonuses.unshift({ id: bid, venue: d.shelf, picked: 0, total: n });
+    s.lastDrop = { venue: d.shelf, count: n, coupon: id, bonus: bid };
+    Store.log('task_end', { task: 'dropoff', ms: Date.now() - d.started, items: n });
+    s.draft = null; Store.save(); buzz();
+    Router.replace('#/give/done');
+  }
+};
+
+/* ---------- G07 Thanks for sharing ---------- */
+Views.giveDone = {
+  html() {
+    const s = Store.state, L = s.lastDrop, v = venue(L.venue), b = s.bonuses.find(x => x.id === L.bonus) || { picked: 0, total: L.count };
+    return `<div class="closebar">${UI.iconButton('close', 'Close', 'data-href="#/home"')}</div>
+      <div class="illus"><span class="placeholder">${icon('photo')}<span>Illustration placeholder: packs land on the shelf</span></span></div>
+      <h1 class="t-display">Thanks for sharing.</h1>
+      <p class="t-body-large" style="margin:var(--space-8) 0 var(--space-24)">${L.count} item${L.count === 1 ? ' is' : 's are'} on the shelf at ${esc(v.name)}. People nearby can see them now.</p>
+      <div class="stack">
+        <article class="coupon" aria-label="Thank-you coupon"><div class="coupon__band"></div><div class="coupon__body">
+          <div class="coupon__head"><span class="coupon__kind">${icon('coupon', 'icon--reward')}<span class="t-overline">Thank-you coupon · Ready</span></span></div>
+          <dl class="kv-lines" style="margin-top:var(--space-4)"><div class="kv"><dt>Offer value</dt><dd>To be agreed</dd></div><div class="kv"><dt>Participating venue</dt><dd>${esc(v.name)}</dd></div><div class="kv"><dt>Expiry</dt><dd>To be agreed</dd></div></dl>
+          <p class="howto"><strong>How to use your coupon:</strong> Show the counter code. It is not the shelf QR.</p>
+        </div></article>
+        ${UI.rescueBonus({ picked: b.picked, total: b.total, venue: v.name, note: 'Grows as people pick up your items.' })}
+      </div>
+      <div class="actions">
+        ${UI.button({ label: 'Back to Home', icon: 'home', block: true, attrs: 'data-href="#/home"' })}
+        ${UI.button({ label: 'View coupon', variant: 'secondary', icon: 'coupon', block: true, attrs: 'data-href="#/coupons"' })}
+      </div>`;
+  }
+};
+
+/* ---------- G08 Coupons ---------- */
+let couponTab = 0;
+Views.coupons = {
+  html() {
+    const c = Store.state.coupons, a = c.filter(x => x.state === 'active').length, u = c.filter(x => x.state !== 'active').length;
+    return `<h1 class="t-h1 screen-title">Coupons</h1>
+      ${UI.segmented([`Active (${a})`, `Used (${u})`], couponTab, { id: 'coupons' })}
+      <div class="coupons-panel stack" id="coupons-panel" role="tabpanel"></div>`;
+  },
+  mount(el) {
+    const draw = () => {
+      const s = Store.state, p = $('#coupons-panel', el);
+      if (couponTab === 0) {
+        const act = s.coupons.filter(x => x.state === 'active');
+        p.innerHTML = (act.length ? act.map(x => UI.coupon({ id: x.id, state: 'active', venue: venue(x.venue).name })).join('')
+          : `<div class="card">${UI.empty({ ic: 'coupon', title: 'No coupons yet', line: 'Leave food at a shelf to get a thank-you coupon.', action: `<a class="btn btn--primary" href="#/map">${icon('sealed-food')}<span>Leave food</span></a>` })}</div>`)
+          + s.bonuses.map(b => UI.rescueBonus({ picked: b.picked, total: b.total, venue: venue(b.venue).name, note: 'App-free pickups may be unlogged, so counts can be incomplete.' })).join('')
+          + UI.banner('info', 'Coupon value, expiry and monthly cap are still being agreed.');
+      } else {
+        const used = s.coupons.filter(x => x.state !== 'active');
+        p.innerHTML = used.map(x => UI.coupon({ id: x.id, state: x.state, venue: venue(x.venue).name })).join('');
+      }
+    };
+    draw();
+    el.addEventListener('seg', e => { if (e.detail.id === 'coupons') { couponTab = e.detail.index; draw(); } });
+  }
+};
+
+/* ---------- G08d Show at the counter ---------- */
+Views.couponCode = {
+  html({ params }) {
+    const c = Store.state.coupons.find(x => x.id === params.id) || Store.state.coupons[0];
+    const v = venue(c.venue);
+    return `${UI.topBar({ title: 'Your coupon', serif: true })}
+      <div class="stack">
+        <div class="card">${UI.qrSheet({ state: c.state === 'active' ? 'active' : 'used', code: c.code, venue: v.name + (v.addr ? ' · ' + v.addr : '') })}</div>
+        ${UI.banner('plain', 'Not the shelf QR. This code is for the counter.', { ic: 'location' })}
+      </div>
+      <div class="spacer"></div>
+      <div class="actions">${UI.button({ label: 'Done', icon: 'done', block: true, attrs: 'data-action="back"' })}</div>`;
+  }
+};
+
 /* =====================================================================
-   ROUTES (§4). Phase 1: component gallery only.
+   ROUTES (§4)
    ===================================================================== */
-const DEFAULT_ROUTE = '#/components';
+const DEFAULT_ROUTE = '#/home';
 Router.add('/components', Views.components, { title: 'Components' });
+Router.add('/home', Views.home, { title: 'Home', tabs: '#/home' });
+Router.add('/map', Views.map, { title: 'Map', tabs: '#/map', cls: 'screen--map' });
+Router.add('/point/:id', Views.point, { title: 'Point', tabs: '#/map' });
+Router.add('/give/tap', Views.giveTap, { title: 'Tap the tag', cls: 'screen--brand with-actions' });
+Router.add('/give/photo', Views.givePhoto, { title: 'Photograph your items', guard: hasDraft, guardTo: '#/home' });
+Router.add('/give/reading', Views.giveReading, { title: 'Reading your photo', guard: hasDraft, guardTo: '#/home' });
+Router.add('/give/items', Views.giveItems, { title: 'Check your items', guard: hasDraft, guardTo: '#/home' });
+Router.add('/give/done', Views.giveDone, { title: 'Thanks for sharing', guard: () => !!Store.state.lastDrop, guardTo: '#/home' });
+Router.add('/coupons', Views.coupons, { title: 'Coupons', tabs: '#/coupons' });
+Router.add('/coupons/code/:id', Views.couponCode, { title: 'Your coupon', cls: 'with-actions' });
 
 /* =====================================================================
    BOOT
