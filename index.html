@@ -724,12 +724,12 @@ button.settings__row:active{background:var(--surface-canvas)}
 .lead{font:var(--type-body);color:var(--text-primary)}
 .center{text-align:center}
 .actions{display:flex;flex-direction:column;gap:var(--space-12);padding-top:var(--space-24)}
-.kv-lines .kv{padding:var(--space-12) 0}
+.kv-lines .kv{padding:var(--space-8) 0}
 .kv-lines .kv + .kv{border-top:1px solid var(--border-subtle)}
 .howto{font:var(--type-body-small);color:var(--text-secondary);margin-top:var(--space-12)}
 .howto strong{color:var(--text-primary);font-weight:500}
 .banner--plain > .icon{color:var(--icon-info)}
-.illus{border-radius:var(--radius-lg);background:var(--surface-subtle);min-height:152px;position:relative;margin-bottom:var(--space-24)}
+.illus{border-radius:var(--radius-lg);background:var(--surface-subtle);min-height:120px;position:relative;margin-bottom:var(--space-20)}
 .illus::before{content:"";position:absolute;inset:var(--space-12);border:var(--border-w) dashed var(--border-strong);border-radius:var(--radius-md)}
 .illus .placeholder{position:absolute;inset:0;font:var(--type-body-small)}
 .closebar{display:flex;justify-content:flex-end;margin:calc(var(--space-12) * -1) calc(var(--space-12) * -1) var(--space-8)}
@@ -1938,8 +1938,8 @@ Views.giveDone = {
     return `<div class="closebar">${UI.iconButton('close', 'Close', 'data-href="#/home"')}</div>
       <div class="illus"><span class="placeholder">${icon('photo')}<span>Illustration placeholder: packs land on the shelf</span></span></div>
       <h1 class="t-display">Thanks for sharing.</h1>
-      <p class="t-body-large" style="margin:var(--space-8) 0 var(--space-24)">${L.count} item${L.count === 1 ? ' is' : 's are'} on the shelf at ${esc(v.name)}. People nearby can see them now.</p>
-      <div class="stack">
+      <p class="t-body-large" style="margin:var(--space-8) 0 var(--space-16)">${L.count} item${L.count === 1 ? ' is' : 's are'} on the shelf at ${esc(v.name)}. People nearby can see them now.</p>
+      <div class="stack-8">
         <article class="coupon" aria-label="Thank-you coupon"><div class="coupon__band"></div><div class="coupon__body">
           <div class="coupon__head"><span class="coupon__kind">${icon('coupon', 'icon--reward')}<span class="t-overline">Thank-you coupon · Ready</span></span></div>
           <dl class="kv-lines" style="margin-top:var(--space-4)"><div class="kv"><dt>Offer value</dt><dd>To be agreed</dd></div><div class="kv"><dt>Participating venue</dt><dd>${esc(v.name)}</dd></div><div class="kv"><dt>Expiry</dt><dd>To be agreed</dd></div></dl>
@@ -1947,7 +1947,7 @@ Views.giveDone = {
         </div></article>
         ${UI.rescueBonus({ picked: b.picked, total: b.total, venue: v.name, note: 'Grows as people pick up your items.' })}
       </div>
-      <div class="actions">
+      <div class="actions" style="padding-top:var(--space-16)">
         ${UI.button({ label: 'Back to Home', icon: 'home', block: true, attrs: 'data-href="#/home"' })}
         ${UI.button({ label: 'View coupon', variant: 'secondary', icon: 'coupon', block: true, attrs: 'data-href="#/coupons"' })}
       </div>`;
