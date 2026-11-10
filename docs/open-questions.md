@@ -6,7 +6,7 @@ Decisions the build needs but the team has not made yet. Claude Code adds to thi
 |---|---|---|---|---|
 | Q1 | Coupon value, expiry, monthly cap and who funds them (Nino's three funding options) | G07, G08, H07, coupon card | Team | Open: UI shows "To be agreed" |
 | Q2 | Venue name and map area per test city (Prague, Tallinn, Tbilisi) | Map, listings, sample data | Each member | Open: "Café Daisy" placeholder |
-| Q3 | Hosting: single HTML link or GitHub Pages | Delivery | Yağmur | Leaning GitHub Pages |
+| Q3 | Hosting: single HTML link or GitHub Pages | Delivery | Yağmur | **GitHub Pages** (one self-contained `index.html`) |
 | Q4 | Label simulated steps (NFC, photo AI) as "demo" for participants? | G04, G05, R04 | Team | Open |
 | Q5 | Merge redundant onboarding screens (Prague P2) | O01–O04, H01–H03 | Team | Open: decide from frames |
 | Q6 | Logo / master identity | Header, onboarding | Team | Open: Fraunces Bold text wordmark for now |
@@ -53,3 +53,21 @@ Decisions the build needs but the team has not made yet. Claude Code adds to thi
 | 17 | Flat search | Search with shadow | **Mock**: flat + `border-strong` outline + gold icon |
 | 18 | Placeholder-only fields | Label above | **Kit** |
 | 19 | Green Show button | Dark (Ink) button | **Mock**: Dark button removed |
+
+## Build notes (phase 1: tokens and components, 10 Nov)
+
+Found while building the component gallery (`#/components`). Each row says what the prototype does now; change it when the team decides.
+
+| # | Question | Where it shows up | Prototype now | Status |
+|---|---|---|---|---|
+| Q12 | Labels for coupon states other than active, and for Rescue Bonus complete / expired, are not in the spec | Coupon ticket, Rescue Bonus card | Chips "Pending", "Used", "Expired"; bonus "4 of 4 picked up" and "2 of 4 picked up · expired" | Open |
+| Q13 | Map marker states full / paused / closed have no recipe in §8 | Map marker, legend | Full = Terracotta 700 fill + `shelf-full` badge; paused = dashed Paper + `paused` badge; closed = Oat fill + `close` badge | Open |
+| Q14 | Strings needed for states that no frame or spec shows | NFC card, inputs, empty states, H04, H06, H08 | "Scanning…", "Tag not found", "Use sample QR code", "Shelf code not found", "No coupons yet", "Choose Keep or Remove", "Verified", "Needs info", donor ref "Donor A7" | Open: please confirm or replace |
+| Q15 | Three tokens were missing: tint on dark, sheet scrim, focus ring on dark | G04, bottom sheets, focus | Added to `docs/design-system.md` §10b as **[NEW]** | Open: confirm |
+| Q16 | `[FRAME]` Frame vs spec wording: G04 says "Scan the shelf QR instead" / "Type the shelf code" | G04, R04 | Spec wording kept: "Scan the QR code instead" / "Type shelf code" | Spec wins |
+| Q17 | M02 frame impact caption "picked up by neighbours" vs spec "saved by neighbours" | Impact card | Spec wording kept: "saved by neighbours" | Spec wins |
+| Q18 | G08 frame coupon line "after your drop-off on 23 Oct" contains a real date | Coupon ticket | Date dropped: "Café Daisy · after your drop-off" (no real dates on coupons, CLAUDE.md §12) | Open |
+| Q19 | Step header: frames put the title left and "Step n of 3" right over a segmented bar; §8 says centred overline | Step header | Frame layout kept (title left, step right, one bar segment per step); overline style and Terracotta 500 fill from §8 | Frame wins on layout |
+| Q20 | G05 frame viewfinder is dark; §8 says `surface-subtle` | Photo capture frame | `surface-subtle` (design system wins on styling) | Design system wins |
+| Q21 | Home action-card descriptions come from M01-v2: "Pass on sealed food you won't eat" / "Find free food at shelves near you". Is "free food" fine under §7? | Action cards | Frame text kept | Open |
+| Q22 | App icon: no logo yet (Q6) | Home-screen icon | `community-shelf` icon in Paper on Pantry Green | Open (follows Q6) |

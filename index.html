@@ -1,0 +1,1538 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F6F1E7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="SecondShelf">
+<meta name="description" content="SecondShelf hi-fi prototype for moderated usability tests.">
+<title>SecondShelf</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&family=Rubik:wght@400;500&display=swap">
+<style>
+/* =====================================================================
+   1. TOKENS: docs/design-system.md §10, copied verbatim
+   ===================================================================== */
+:root{
+  /* primitives */
+  --green-950:#172E20; --green-900:#1F3D2B; --green-700:#3F5B3A; --green-100:#CFE3C8;
+  --terracotta-800:#89432D; --terracotta-700:#A14C33; --terracotta-500:#C2593A; --terracotta-100:#F0DFD2;
+  --ochre-800:#876326; --ochre-500:#BF8B2E; --ochre-100:#EFE5D1; --clay-500:#8A6F4A;
+  --ink-900:#2B241E; --stone-700:#5C554C; --stone-600:#6E665C; --stone-500:#8C8477; --stone-300:#CFC6B6;
+  --oat-200:#E9DFCC; --cream-100:#F6F1E7; --paper-0:#FFFFFF;
+  --sand-200:#E8D7B9; --stone-200:#E6DED0;
+  --map-land:#FFFFFF; --map-road:#D9DED8; --map-road-main:#798C75; --map-water:#85D5EB;
+  --success-700:#2C6E46; --warning-600:#A86A12; --slate-600:#51666D; --info-600:#2F6E8C;
+  /* text */
+  --text-primary:var(--ink-900); --text-secondary:var(--stone-700); --text-tertiary:var(--stone-600); --text-disabled:var(--stone-500);
+  --text-brand:var(--green-900); --text-accent:var(--terracotta-700); --text-reward:var(--ochre-800); --text-link:var(--green-900);
+  --text-on-primary:var(--paper-0); --text-on-accent:var(--paper-0); --text-on-reward:var(--ink-900);
+  --text-problem:var(--slate-600); --text-success:var(--success-700);
+  --text-on-inverse:var(--paper-0); --text-on-inverse-secondary:var(--stone-200); --text-on-unavailable:var(--paper-0);
+  /* icons */
+  --icon-primary:var(--green-900); --icon-secondary:var(--stone-700); --icon-tertiary:var(--clay-500); --icon-disabled:var(--stone-500);
+  --icon-accent:var(--terracotta-500); --icon-reward:var(--ochre-800); --icon-on-primary:var(--paper-0);
+  --icon-neutral:var(--ink-900); --icon-on-inverse:var(--ochre-500); --icon-on-brand-soft:var(--green-100);
+  --icon-success:var(--success-700); --icon-warning:var(--warning-600); --icon-problem:var(--slate-600); --icon-info:var(--info-600);
+  /* surfaces, borders, actions */
+  --surface-canvas:var(--cream-100); --surface-default:var(--paper-0); --surface-subtle:var(--oat-200); --surface-selected:var(--green-100);
+  --surface-brand:var(--green-900); --surface-accent:var(--terracotta-500); --surface-accent-subtle:var(--terracotta-100);
+  --surface-reward:var(--ochre-500); --surface-reward-subtle:var(--ochre-100);
+  --surface-inverse:var(--ink-900); --surface-brand-soft:var(--green-700);
+  --surface-indicator:var(--green-100); --surface-track:var(--cream-100); --surface-segment:var(--oat-200); --surface-unavailable:var(--terracotta-700);
+  --surface-progress:var(--terracotta-500); --surface-progress-track:var(--oat-200);
+  --border-subtle:var(--stone-300); --border-strong:var(--stone-500); --border-brand:var(--green-900); --border-focus:var(--info-600);
+  --action-primary:var(--green-900); --action-primary-hover:var(--green-700); --action-primary-pressed:var(--green-950);
+  --action-accent:var(--terracotta-700); --action-accent-pressed:var(--terracotta-800); --action-disabled:var(--oat-200);
+  --map-park:var(--green-100); --map-marker:var(--ink-900);
+  /* type */
+  --font-serif:Fraunces,Georgia,serif; --font-sans:Rubik,system-ui,-apple-system,sans-serif;
+  /* spacing (multiples of 4) */
+  --space-4:4px; --space-8:8px; --space-12:12px; --space-16:16px; --space-20:20px; --space-24:24px;
+  --space-28:28px; --space-32:32px; --space-40:40px; --space-48:48px; --space-56:56px; --space-64:64px;
+  /* radius */
+  --radius-none:0; --radius-xs:4px; --radius-sm:8px; --radius-md:12px; --radius-lg:16px; --radius-xl:24px; --radius-full:999px;
+  /* elevation and focus */
+  --shadow-card:0 1px 2px rgba(43,36,30,.08),0 8px 24px rgba(43,36,30,.08);
+  --shadow-sheet:0 -4px 24px rgba(43,36,30,.12);
+  --shadow-focus:0 0 0 2px #FFFFFF,0 0 0 5px #2F6E8C;
+  /* size and motion */
+  --size-tap-min:44px; --size-control:48px; --frame-max:430px; --size-avatar:48px; --size-tab-indicator:64px;
+  --motion-fast:150ms; --motion-base:250ms; --ease:cubic-bezier(.2,0,0,1);
+}
+
+/* =====================================================================
+   1b. Values written in design-system.md §3, §6 and §8 recipes,
+       expressed as custom properties so components stay token-only.
+   ===================================================================== */
+:root{
+  /* §3 type scale: weight size/line family */
+  --type-display:700 32px/40px var(--font-serif);
+  --type-heading-1:700 28px/36px var(--font-serif);
+  --type-heading-2:700 24px/32px var(--font-serif);
+  --type-heading-3:700 20px/28px var(--font-serif);
+  --type-section:500 20px/28px var(--font-sans);
+  --type-title:500 18px/24px var(--font-sans);
+  --type-body-large:400 18px/28px var(--font-sans);
+  --type-body:400 16px/24px var(--font-sans);
+  --type-button:500 16px/24px var(--font-sans);
+  --type-body-small:400 14px/20px var(--font-sans);
+  --type-label:500 14px/20px var(--font-sans);
+  --type-caption:400 12px/16px var(--font-sans);
+  --type-overline:500 12px/16px var(--font-sans);
+  --tracking-display:-0.02em; --tracking-heading:-0.01em; --tracking-overline:0.06em;
+  /* §6 sizes */
+  --size-icon-16:16px; --size-icon-20:20px; --size-icon-24:24px; --size-icon-32:32px;
+  --frame-w:390px; --frame-h:844px;
+  --size-tab-indicator-h:32px; --size-toggle-w:52px; --size-toggle-h:32px;
+  /* §8 recipe values */
+  --border-w:1.5px;                 /* outline controls, secondary button */
+  --size-checkbox:24px;             /* checkbox row */
+  --size-marker:32px;               /* map marker */
+  --size-chip:32px;                 /* availability chip */
+  --size-tile:44px;                 /* icon tile */
+  --size-tile-sm:32px;              /* item status tile */
+  --size-icon-tile:28px;            /* icon inside action-card tile */
+  --size-band:6px;                  /* coupon band */
+  --size-step-bar:6px;              /* step header progress */
+  --size-bonus-bar:8px;             /* Rescue Bonus bar */
+  --size-row-min:72px;              /* food item row */
+  --size-settings-row:64px;         /* settings list */
+  --size-status-row:48px;           /* item status list */
+  --size-grabber-w:36px; --size-grabber-h:4px;
+  --size-segment-min:40px;
+  --size-sheet-max:85dvh;
+  --focus-on-dark:0 0 0 3px var(--paper-0);
+  --tint-on-dark:rgba(255,255,255,.12);  /* subtle fill on surface-brand (G04 illustration panel) */
+  --scrim:rgba(43,36,30,.4);             /* behind bottom sheets */
+}
+
+/* =====================================================================
+   2. BASE
+   ===================================================================== */
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{
+  font:var(--type-body);color:var(--text-primary);background:var(--surface-canvas);
+  min-height:100dvh;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;
+}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0;padding:0;margin:0}
+a{color:var(--text-link)}
+a.action-card,a.shelf,a.result,a.avatar,a.tab,a.card{text-decoration:none;color:inherit}
+img,svg{display:block}
+h1,h2,h3,h4,p{margin:0}
+ul,ol{margin:0;padding:0;list-style:none}
+:focus{outline:none}
+:focus-visible{box-shadow:var(--shadow-focus);outline:none}
+.vh{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* type classes (§3) */
+.t-display{font:var(--type-display);letter-spacing:var(--tracking-display);color:var(--text-brand)}
+.t-h1{font:var(--type-heading-1);letter-spacing:var(--tracking-heading);color:var(--text-brand)}
+.t-h2{font:var(--type-heading-2);letter-spacing:var(--tracking-heading);color:var(--text-brand)}
+.t-h3{font:var(--type-heading-3);color:var(--text-brand)}
+.t-section{font:var(--type-section);color:var(--text-primary)}
+.t-title{font:var(--type-title)}
+.t-body-large{font:var(--type-body-large)}
+.t-body{font:var(--type-body)}
+.t-small{font:var(--type-body-small)}
+.t-label{font:var(--type-label)}
+.t-caption{font:var(--type-caption)}
+.t-overline{font:var(--type-overline);letter-spacing:var(--tracking-overline);text-transform:uppercase}
+.c-secondary{color:var(--text-secondary)}
+.c-tertiary{color:var(--text-tertiary)}
+.c-brand{color:var(--text-brand)}
+.c-accent{color:var(--text-accent)}
+.c-reward{color:var(--text-reward)}
+.c-problem{color:var(--text-problem)}
+
+/* icons (§7) */
+.icon{width:var(--size-icon-24);height:var(--size-icon-24);color:var(--icon-primary);flex:none}
+.icon--sm{width:var(--size-icon-20);height:var(--size-icon-20)}
+.icon--xs{width:var(--size-icon-16);height:var(--size-icon-16);stroke-width:1.5}
+.icon--lg{width:var(--size-icon-32);height:var(--size-icon-32)}
+.icon--tile{width:var(--size-icon-tile);height:var(--size-icon-tile)}
+.icon--secondary{color:var(--icon-secondary)} .icon--tertiary{color:var(--icon-tertiary)}
+.icon--accent{color:var(--icon-accent)} .icon--reward{color:var(--icon-reward)}
+.icon--on-primary{color:var(--icon-on-primary)} .icon--disabled{color:var(--icon-disabled)}
+.icon--neutral{color:var(--icon-neutral)} .icon--on-inverse{color:var(--icon-on-inverse)}
+.icon--success{color:var(--icon-success)} .icon--warning{color:var(--icon-warning)}
+.icon--problem{color:var(--icon-problem)} .icon--info{color:var(--icon-info)}
+
+/* =====================================================================
+   3. APP SHELL: phone-width column, centred in a frame on desktop
+   ===================================================================== */
+.app{
+  position:relative;margin:0 auto;width:100%;max-width:var(--frame-max);
+  height:100dvh;overflow:hidden;background:var(--surface-canvas);
+  display:flex;flex-direction:column;
+}
+@media (min-width:600px) and (min-height:700px){
+  body{background:var(--surface-subtle);display:flex;align-items:center;justify-content:center;padding:var(--space-24)}
+  .app{width:var(--frame-w);height:min(var(--frame-h),calc(100dvh - var(--space-48)));border-radius:var(--radius-xl);box-shadow:var(--shadow-card)}
+}
+.stage{position:relative;flex:1;min-height:0;overflow:hidden}
+.screen{
+  position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;
+  background:var(--surface-canvas);
+  padding:max(env(safe-area-inset-top),var(--space-24)) var(--space-20) var(--space-32);
+}
+.screen--brand{background:var(--surface-brand);color:var(--text-on-primary)}
+.screen--flush{padding-left:0;padding-right:0}
+.screen.with-actions{display:flex;flex-direction:column}
+.screen .spacer{flex:1}
+.stack{display:flex;flex-direction:column;gap:var(--space-16)}
+.stack-8{display:flex;flex-direction:column;gap:var(--space-8)}
+.stack-24{display:flex;flex-direction:column;gap:var(--space-24)}
+.row{display:flex;align-items:center;gap:var(--space-12)}
+.grow{flex:1;min-width:0}
+
+/* screen transitions (§6): push 250ms, fade 150ms for overlays */
+.screen.enter-fwd{animation:in-fwd var(--motion-base) var(--ease) both}
+.screen.leave-fwd{animation:out-fwd var(--motion-base) var(--ease) both}
+.screen.enter-back{animation:in-back var(--motion-base) var(--ease) both}
+.screen.leave-back{animation:out-back var(--motion-base) var(--ease) both}
+.screen.enter-fade{animation:fade-in var(--motion-fast) var(--ease) both}
+@keyframes in-fwd{from{transform:translateX(100%)}to{transform:none}}
+@keyframes out-fwd{from{transform:none}to{transform:translateX(-30%)}}
+@keyframes in-back{from{transform:translateX(-30%)}to{transform:none}}
+@keyframes out-back{from{transform:none}to{transform:translateX(100%)}}
+@keyframes fade-in{from{opacity:0}to{opacity:1}}
+.screen.leave-back{z-index:2}
+
+/* =====================================================================
+   4. COMPONENTS (§8)
+   ===================================================================== */
+
+/* ---- Button: v0.5 pill ---- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:var(--space-8);
+  min-height:var(--size-control);padding:var(--space-12) var(--space-24);
+  border-radius:var(--radius-full);border:var(--border-w) solid transparent;
+  font:var(--type-button);text-align:center;text-decoration:none;
+  transition:background-color var(--motion-fast) var(--ease),transform var(--motion-fast) var(--ease);
+  user-select:none;
+}
+.btn .icon{width:var(--size-icon-20);height:var(--size-icon-20);color:currentColor}
+.btn--block{display:flex;width:100%}
+.btn--primary{background:var(--action-primary);color:var(--text-on-primary)}
+.btn--accent{background:var(--action-accent);color:var(--text-on-accent)}
+.btn--secondary{background:var(--surface-default);color:var(--text-brand);border-color:var(--border-brand)}
+.btn--link{min-height:var(--size-tap-min);padding:var(--space-8) var(--space-4);color:var(--text-link);text-decoration:underline;text-underline-offset:3px;border-radius:var(--radius-sm)}
+.btn--on-brand{background:var(--surface-default);color:var(--text-brand)}
+.btn--outline-on-brand{background:transparent;color:var(--text-on-primary);border-color:var(--text-on-primary)}
+@media (hover:hover){
+  .btn--primary:hover:not(:disabled){background:var(--action-primary-hover)}
+  .btn--secondary:hover:not(:disabled){background:var(--surface-canvas)}
+}
+.btn--primary.is-hover{background:var(--action-primary-hover)}
+.btn--secondary.is-hover{background:var(--surface-canvas)}
+.btn--primary:active:not(:disabled),.btn--primary.is-pressed{background:var(--action-primary-pressed)}
+.btn--accent:active:not(:disabled),.btn--accent.is-pressed{background:var(--action-accent-pressed)}
+.btn--secondary:active:not(:disabled),.btn--secondary.is-pressed{background:var(--surface-selected)}
+.btn--on-brand:active:not(:disabled),.btn--on-brand.is-pressed{background:var(--surface-selected)}
+.btn--outline-on-brand:active:not(:disabled),.btn--outline-on-brand.is-pressed{background:var(--tint-on-dark)}
+.btn--link:active,.btn--link.is-pressed{background:var(--surface-subtle)}
+.btn:active:not(:disabled),.btn.is-pressed{transform:scale(.98)}
+.btn.is-focus,.btn:focus-visible{box-shadow:var(--shadow-focus)}
+.btn--on-brand:focus-visible,.btn--outline-on-brand:focus-visible,.screen--brand .btn:focus-visible{box-shadow:var(--focus-on-dark)}
+.btn:disabled,.btn[aria-disabled="true"]{background:var(--action-disabled);color:var(--text-disabled);border-color:transparent;cursor:not-allowed}
+.btn--link:disabled{background:none;color:var(--text-disabled)}
+.btn.is-loading{pointer-events:none}
+.spinner{width:var(--size-icon-20);height:var(--size-icon-20);border-radius:var(--radius-full);border:2px solid currentColor;border-right-color:transparent;animation:spin .8s linear infinite;flex:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ---- Icon button: 44px target ---- */
+.icon-btn{
+  width:var(--size-tap-min);height:var(--size-tap-min);display:inline-flex;align-items:center;justify-content:center;
+  border-radius:var(--radius-full);flex:none;color:var(--icon-primary);
+  transition:background-color var(--motion-fast) var(--ease);
+}
+.icon-btn:active,.icon-btn.is-pressed{background:var(--surface-subtle)}
+.screen--brand .icon-btn .icon,.on-brand .icon-btn .icon{color:var(--icon-on-primary)}
+.screen--brand .icon-btn:active,.on-brand .icon-btn:active{background:var(--tint-on-dark)}
+.screen--brand .icon-btn:focus-visible,.on-brand .icon-btn:focus-visible{box-shadow:var(--focus-on-dark)}
+
+/* ---- Input ---- */
+.field{display:flex;flex-direction:column;gap:var(--space-8)}
+.field__label{font:var(--type-label);color:var(--text-secondary)}
+.input{
+  width:100%;min-height:var(--size-control);padding:var(--space-12) var(--space-16);
+  border-radius:var(--radius-md);border:var(--border-w) solid var(--border-strong);
+  background:var(--surface-default);font:var(--type-body);color:var(--text-primary);
+  -webkit-appearance:none;appearance:none;
+}
+.input::placeholder{color:var(--text-tertiary)}
+.input:focus,.input.is-focus{border-color:var(--border-brand);box-shadow:var(--shadow-focus)}
+.field.is-error .input{border-color:var(--text-problem)}
+.field__error{display:flex;gap:var(--space-8);align-items:flex-start;font:var(--type-body-small);color:var(--text-problem)}
+.field__error .icon{color:var(--icon-problem);width:var(--size-icon-20);height:var(--size-icon-20)}
+.input:disabled{background:var(--surface-canvas);color:var(--text-disabled);border-color:var(--border-subtle)}
+.field.is-disabled .field__label{color:var(--text-disabled)}
+
+/* ---- Search field ---- */
+.search{display:flex;gap:var(--space-8);align-items:flex-start}
+.search__box{position:relative;flex:1;min-width:0}
+.search__field{
+  display:flex;align-items:center;gap:var(--space-8);min-height:var(--size-control);
+  padding:0 var(--space-4) 0 var(--space-16);border-radius:var(--radius-full);
+  background:var(--surface-default);border:var(--border-w) solid var(--border-strong);
+}
+.search__field:focus-within{border-color:var(--border-brand);box-shadow:var(--shadow-focus)}
+.search__field .icon{color:var(--icon-reward)}
+.search__input{flex:1;min-width:0;border:0;background:none;font:var(--type-body);padding:var(--space-12) 0;color:var(--text-primary)}
+.search__input::placeholder{color:var(--text-tertiary)}
+.search__input::-webkit-search-cancel-button{display:none}
+.search__clear{width:var(--size-tap-min);height:var(--size-tap-min)}
+.search__clear .icon{color:var(--icon-primary)}
+.search__filter{
+  width:var(--size-control);height:var(--size-control);border-radius:var(--radius-full);flex:none;
+  background:var(--surface-default);border:var(--border-w) solid var(--border-strong);
+  display:inline-flex;align-items:center;justify-content:center;
+}
+.search__filter:active{background:var(--surface-selected)}
+.suggest{
+  margin-top:var(--space-8);background:var(--surface-default);border-radius:var(--radius-md);
+  border:var(--border-w) solid var(--border-subtle);overflow:hidden;
+}
+.suggest__item{display:flex;align-items:center;gap:var(--space-12);width:100%;min-height:var(--size-control);padding:var(--space-12) var(--space-16);text-align:left;font:var(--type-body)}
+.suggest__item + .suggest__item{border-top:1px solid var(--border-subtle)}
+.suggest__item:active,.suggest__item[aria-selected="true"]{background:var(--surface-selected)}
+.suggest__item .icon{color:var(--icon-secondary);width:var(--size-icon-20);height:var(--size-icon-20)}
+.suggest__item mark{background:none;color:inherit;font-weight:500}
+
+/* ---- Filter chip ---- */
+.chips{display:flex;gap:var(--space-8);overflow-x:auto;scrollbar-width:none;padding:var(--space-4) 0}
+.chips::-webkit-scrollbar{display:none}
+.chip{
+  display:inline-flex;align-items:center;gap:var(--space-8);flex:none;
+  min-height:var(--size-tap-min);padding:0 var(--space-16);border-radius:var(--radius-full);
+  font:var(--type-label);white-space:nowrap;
+  background:var(--surface-default);color:var(--text-primary);border:var(--border-w) solid var(--border-strong);
+}
+.chip .icon{width:var(--size-icon-20);height:var(--size-icon-20);color:currentColor}
+.chip[aria-pressed="true"]{background:var(--action-primary);color:var(--text-on-primary);border-color:var(--action-primary)}
+.chip:active{transform:scale(.97)}
+
+/* ---- Checkbox row ---- */
+.check{display:flex;align-items:flex-start;gap:var(--space-12);min-height:var(--size-tap-min);padding:var(--space-8) 0;cursor:pointer;font:var(--type-body)}
+.check input{position:absolute;opacity:0;width:1px;height:1px}
+.check__box{
+  width:var(--size-checkbox);height:var(--size-checkbox);border-radius:var(--radius-xs);flex:none;margin-top:0;
+  border:var(--border-w) solid var(--border-strong);background:var(--surface-default);
+  display:inline-flex;align-items:center;justify-content:center;
+  transition:background-color var(--motion-fast) var(--ease);
+}
+.check__box .icon{width:var(--size-icon-16);height:var(--size-icon-16);color:var(--icon-on-primary);opacity:0;stroke-width:2.5}
+.check input:checked + .check__box{background:var(--action-primary);border-color:var(--action-primary)}
+.check input:checked + .check__box .icon{opacity:1}
+.check input:focus-visible + .check__box{box-shadow:var(--shadow-focus)}
+.check input:disabled + .check__box{background:var(--action-disabled);border-color:var(--border-subtle)}
+.check.is-disabled{color:var(--text-disabled);cursor:not-allowed}
+.check-panel{background:var(--surface-selected);border-radius:var(--radius-lg);padding:var(--space-12) var(--space-16)}
+
+/* ---- Quantity stepper: v0.5 round ---- */
+.stepper{display:inline-flex;align-items:center;gap:var(--space-12)}
+.stepper__btn{
+  width:var(--size-tap-min);height:var(--size-tap-min);border-radius:var(--radius-full);
+  background:var(--surface-default);border:var(--border-w) solid var(--border-strong);
+  display:inline-flex;align-items:center;justify-content:center;
+}
+.stepper__btn .icon{color:var(--icon-primary)}
+.stepper__btn:active:not(:disabled){background:var(--surface-selected)}
+.stepper__btn:disabled{border-color:var(--border-subtle);background:var(--surface-canvas);cursor:not-allowed}
+.stepper__btn:disabled .icon{color:var(--icon-disabled)}
+.stepper__value{font:var(--type-title);min-width:var(--space-24);text-align:center}
+
+/* ---- Card ---- */
+.card{background:var(--surface-default);border-radius:var(--radius-lg);padding:var(--space-16);border:var(--border-w) solid transparent}
+.card--shadow{box-shadow:var(--shadow-card)}
+.card--tap{display:block;width:100%;text-align:left;transition:transform var(--motion-fast) var(--ease)}
+.card--tap:active,.card.is-pressed{transform:scale(.98);background:var(--surface-subtle)}
+.card.is-selected{border-color:var(--border-brand)}
+.card--selected-fill{background:var(--surface-selected)}
+.card--subtle{background:var(--surface-subtle)}
+.card--flush{padding:0;overflow:hidden}
+
+/* ---- Icon tile ---- */
+.tile{width:var(--size-tile);height:var(--size-tile);border-radius:var(--radius-md);display:inline-flex;align-items:center;justify-content:center;flex:none;background:var(--surface-selected)}
+.tile--accent{background:var(--surface-accent-subtle)}
+.tile--reward{background:var(--surface-reward-subtle)}
+.tile--sand{background:var(--sand-200)}
+.tile--paper{background:var(--surface-default)}
+.tile--sm{width:var(--size-tile-sm);height:var(--size-tile-sm);border-radius:var(--radius-sm)}
+.tile--canvas{background:var(--surface-canvas)}
+
+/* ---- Action card (Home) ---- */
+.action-cards{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-16)}
+.action-card{
+  display:flex;flex-direction:column;gap:var(--space-12);text-align:left;
+  background:var(--surface-default);border-radius:var(--radius-lg);box-shadow:var(--shadow-card);padding:var(--space-16);
+  transition:transform var(--motion-fast) var(--ease);
+}
+.action-card:active,.action-card.is-pressed{transform:scale(.98);background:var(--surface-canvas)}
+.action-card__title{font:var(--type-section);color:var(--text-primary)}
+.action-card__desc{font:var(--type-body-small);color:var(--text-secondary)}
+
+/* ---- Feature card ---- */
+.feature{background:var(--surface-accent-subtle);border-radius:var(--radius-lg);padding:var(--space-16);display:flex;gap:var(--space-12);align-items:flex-start}
+.feature .t-overline{color:var(--text-accent)}
+
+/* ---- Status label ---- */
+.status{display:inline-flex;align-items:center;gap:var(--space-8);font:var(--type-label);color:var(--text-primary)}
+.status .icon{width:var(--size-icon-20);height:var(--size-icon-20)}
+.status--problem{color:var(--text-problem)}
+
+/* ---- Banner / toast ---- */
+.banner{display:flex;align-items:flex-start;gap:var(--space-12);border-radius:var(--radius-md);padding:var(--space-12) var(--space-16);font:var(--type-body)}
+.banner > .icon{margin-top:0}
+.banner__text{flex:1;min-width:0;align-self:center}
+.banner__text strong{font-weight:500}
+.banner__action{margin:calc(var(--space-12) * -1) calc(var(--space-8) * -1) calc(var(--space-12) * -1) 0;align-self:center}
+.banner--success{background:var(--surface-selected);color:var(--text-primary)}
+.banner--success > .icon{color:var(--icon-success)}
+.banner--info{background:var(--surface-subtle);color:var(--text-primary)}
+.banner--info > .icon{color:var(--icon-info)}
+.banner--problem{background:var(--surface-default);color:var(--text-problem);border:var(--border-w) solid var(--border-strong)}
+.banner--problem > .icon{color:var(--icon-problem)}
+.banner--reward{background:var(--surface-reward-subtle);color:var(--text-primary)}
+.banner--reward > .icon{color:var(--icon-reward)}
+.banner--plain{background:var(--surface-default)}
+.toast-host{position:absolute;left:var(--space-16);right:var(--space-16);bottom:calc(var(--space-16) + env(safe-area-inset-bottom));z-index:40;display:flex;flex-direction:column;gap:var(--space-8);pointer-events:none}
+.app.has-tabs .toast-host{bottom:calc(88px + env(safe-area-inset-bottom))}
+.toast{pointer-events:auto;box-shadow:var(--shadow-card);animation:fade-in var(--motion-fast) var(--ease) both}
+.toast.is-leaving{opacity:0;transition:opacity var(--motion-fast) var(--ease)}
+
+/* ---- Coupon ticket: v0.5 light ---- */
+.coupon{position:relative;background:var(--surface-default);border-radius:var(--radius-lg);box-shadow:var(--shadow-card);overflow:hidden}
+.coupon__band{height:var(--size-band);background:var(--surface-reward)}
+.coupon__body{padding:var(--space-16) var(--space-16) var(--space-12)}
+.coupon__head{display:flex;align-items:center;gap:var(--space-8);justify-content:space-between}
+.coupon__kind{display:flex;align-items:center;gap:var(--space-8);color:var(--text-secondary)}
+.coupon__title{margin-top:var(--space-8)}
+.coupon__meta{font:var(--type-body-small);color:var(--text-secondary);margin-top:var(--space-4)}
+.kv{display:flex;justify-content:space-between;gap:var(--space-16);font:var(--type-body);padding:var(--space-4) 0}
+.kv dt{color:var(--text-primary)}
+.kv dd{margin:0;font-weight:500;text-align:right}
+.coupon__terms{margin:var(--space-12) 0 0}
+.coupon__tear{position:relative;height:var(--space-24)}
+.coupon__tear::before{content:"";position:absolute;left:var(--space-16);right:var(--space-16);top:50%;border-top:var(--border-w) dashed var(--border-subtle)}
+.coupon__notch{position:absolute;top:50%;width:var(--space-20);height:var(--space-20);border-radius:var(--radius-full);background:var(--surface-canvas);transform:translateY(-50%)}
+.coupon__notch--l{left:calc(var(--space-12) * -1)} .coupon__notch--r{right:calc(var(--space-12) * -1)}
+.coupon__foot{display:flex;align-items:center;gap:var(--space-12);padding:0 var(--space-16) var(--space-16)}
+.coupon__foot p{flex:1;font:var(--type-body-small);color:var(--text-secondary)}
+.coupon__foot .btn{flex:none}
+.coupon.is-used .coupon__band,.coupon.is-expired .coupon__band{background:var(--surface-subtle)}
+.coupon.is-pending .coupon__band{background:var(--surface-reward-subtle)}
+.pill{display:inline-flex;align-items:center;gap:var(--space-4);min-height:var(--size-icon-24);padding:var(--space-4) var(--space-12);border-radius:var(--radius-full);font:var(--type-label);white-space:nowrap;background:var(--surface-track);color:var(--text-primary)}
+.pill .icon{width:var(--size-icon-16);height:var(--size-icon-16);stroke-width:1.5}
+.pill--leaf{background:var(--surface-selected)}
+.pill--oat{background:var(--surface-subtle)}
+.pill--reward{background:var(--surface-reward-subtle)}
+
+/* ---- Segmented control: v0.5 Oat ---- */
+.segmented{display:inline-flex;padding:var(--space-4);gap:var(--space-4);border-radius:var(--radius-full);background:var(--surface-segment)}
+.segmented--block{display:flex}
+.segmented__seg{
+  flex:1;min-height:var(--size-segment-min);padding:var(--space-8) var(--space-16);border-radius:var(--radius-full);
+  font:var(--type-body);color:var(--text-primary);display:inline-flex;align-items:center;justify-content:center;gap:var(--space-8);white-space:nowrap;
+}
+.segmented__seg .icon{width:var(--size-icon-20);height:var(--size-icon-20)}
+.segmented__seg[aria-selected="true"]{background:var(--surface-default);font-weight:500;box-shadow:0 1px 2px rgba(43,36,30,.08)}
+
+/* ---- Rescue Bonus card ---- */
+.bonus{background:var(--surface-default);border-radius:var(--radius-lg);padding:var(--space-16)}
+.bonus__head{display:flex;gap:var(--space-12);align-items:center}
+.bonus__bar{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:var(--space-4);margin-top:var(--space-16)}
+.bonus__seg{height:var(--size-bonus-bar);border-radius:var(--radius-full);background:var(--surface-track);box-shadow:inset 0 0 0 1px var(--border-subtle)}
+.bonus__seg.is-on{background:var(--surface-reward);box-shadow:none}
+.bonus.is-expired .bonus__seg.is-on{background:var(--surface-subtle)}
+.bonus__status{margin-top:var(--space-8);font:var(--type-body-small);color:var(--text-primary)}
+
+/* ---- Progress (generic) ---- */
+.progress{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:var(--space-8)}
+.progress__seg{height:var(--size-step-bar);border-radius:var(--radius-full);background:var(--surface-progress-track)}
+.progress__seg.is-on{background:var(--surface-progress)}
+.screen--brand .progress__seg,.on-brand .progress__seg{background:var(--surface-brand-soft)}
+.screen--brand .progress__seg.is-on,.on-brand .progress__seg.is-on{background:var(--surface-progress)}
+
+/* ---- Step header (v0.5) ---- */
+.stephead{display:flex;flex-direction:column;gap:var(--space-12);margin:calc(var(--space-8) * -1) 0 var(--space-24)}
+.stephead__bar{display:flex;align-items:center;gap:var(--space-8);margin-left:calc(var(--space-12) * -1)}
+.stephead__title{flex:1;min-width:0;font:var(--type-heading-2);letter-spacing:var(--tracking-heading);color:var(--text-brand)}
+.stephead__step{color:var(--text-secondary);white-space:nowrap}
+.screen--brand .stephead__title,.on-brand .stephead__title{color:var(--text-on-primary)}
+.screen--brand .stephead__step,.on-brand .stephead__step{color:var(--text-on-inverse-secondary)}
+
+/* ---- Top bar ---- */
+.topbar{display:flex;align-items:center;gap:var(--space-8);min-height:var(--size-control);margin:calc(var(--space-8) * -1) calc(var(--space-12) * -1) var(--space-16)}
+.topbar__title{flex:1;min-width:0;font:var(--type-title);color:var(--text-primary)}
+.topbar__title--serif{font:var(--type-heading-1);letter-spacing:var(--tracking-heading);color:var(--text-brand)}
+.on-brand .topbar__title,.screen--brand .topbar__title{color:var(--text-on-primary)}
+
+/* ---- NFC tap card ---- */
+.nfc{display:flex;flex-direction:column;gap:var(--space-16);color:var(--text-on-primary)}
+.nfc__stage{
+  position:relative;border-radius:var(--radius-lg);background:var(--tint-on-dark);
+  min-height:240px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--space-16);padding:var(--space-24);text-align:center;
+}
+.nfc__art{position:relative;width:128px;height:128px;display:flex;align-items:center;justify-content:center}
+.nfc__core{position:relative;z-index:1;width:72px;height:72px;border-radius:var(--radius-full);background:var(--surface-default);display:flex;align-items:center;justify-content:center;transition:background-color var(--motion-fast) var(--ease)}
+.nfc__core .icon{width:var(--size-icon-32);height:var(--size-icon-32);color:var(--icon-primary)}
+.nfc__ring{position:absolute;inset:28px;border-radius:var(--radius-full);border:2px solid var(--text-on-primary);opacity:0}
+.nfc[data-state="idle"] .nfc__ring{animation:pulse 2.4s var(--ease) infinite}
+.nfc[data-state="idle"] .nfc__ring:nth-child(2){animation-delay:.8s}
+.nfc[data-state="idle"] .nfc__ring:nth-child(3){animation-delay:1.6s}
+.nfc[data-state="idle"] .nfc__phone{animation:approach 2.4s var(--ease) infinite}
+.nfc[data-state="scanning"] .nfc__ring{animation:pulse 1.2s linear infinite}
+.nfc[data-state="scanning"] .nfc__ring:nth-child(2){animation-delay:.4s}
+.nfc[data-state="scanning"] .nfc__ring:nth-child(3){animation-delay:.8s}
+.nfc[data-state="found"] .nfc__core{background:var(--surface-selected)}
+.nfc[data-state="found"] .nfc__core .icon{color:var(--icon-success)}
+.nfc[data-state="notfound"] .nfc__core{background:var(--surface-subtle)}
+.nfc[data-state="notfound"] .nfc__core .icon{color:var(--icon-problem)}
+@keyframes pulse{0%{transform:scale(1);opacity:.7}100%{transform:scale(2.1);opacity:0}}
+@keyframes approach{0%,100%{transform:translateY(-6px)}50%{transform:translateY(4px)}}
+.nfc__status{font:var(--type-title);color:var(--text-on-primary)}
+.nfc__hint{font:var(--type-body);color:var(--text-on-inverse-secondary)}
+.nfc__actions{display:flex;flex-direction:column;gap:var(--space-12)}
+.nfc__note{display:flex;gap:var(--space-12);align-items:flex-start;font:var(--type-body);color:var(--text-on-primary)}
+.nfc__note .icon{color:var(--icon-on-primary)}
+.nfc__qr{width:160px;height:160px;border-radius:var(--radius-md);border:2px dashed var(--text-on-primary);display:flex;align-items:center;justify-content:center}
+
+/* ---- Food item row ---- */
+.item{display:flex;gap:var(--space-12);align-items:flex-start;background:var(--surface-default);border-radius:var(--radius-lg);padding:var(--space-16);min-height:var(--size-row-min);border:var(--border-w) solid transparent;transition:background-color var(--motion-base) var(--ease)}
+.item__thumb{width:var(--size-control);height:var(--size-control);border-radius:var(--radius-sm);background:var(--surface-selected);display:flex;align-items:center;justify-content:center;flex:none}
+.item__main{flex:1;min-width:0;display:flex;flex-direction:column;gap:var(--space-4)}
+.item__name{font:var(--type-title)}
+.item__meta{display:flex;flex-wrap:wrap;gap:var(--space-4) var(--space-12);font:var(--type-body-small);color:var(--text-secondary)}
+.item__meta span{display:inline-flex;align-items:center;gap:var(--space-4)}
+.item__meta .icon{width:var(--size-icon-16);height:var(--size-icon-16);stroke-width:1.5;color:var(--icon-secondary)}
+.item__tools{display:flex;flex-direction:column;justify-content:space-between;align-self:stretch;margin:calc(var(--space-8) * -1) calc(var(--space-12) * -1) calc(var(--space-8) * -1) calc(var(--space-8) * -1)}
+.item .stepper{margin-top:var(--space-8)}
+.item.is-edited{background:var(--surface-selected)}
+.item--check{cursor:pointer;align-items:flex-start;gap:var(--space-12)}
+.item--check.is-checked{border-color:var(--border-brand)}
+.item--check .check{padding:0;min-height:auto}
+.item__taking{display:flex;align-items:center;justify-content:space-between;margin-top:var(--space-8);font:var(--type-body-small);color:var(--text-secondary)}
+
+/* ---- Map marker ---- */
+.marker{
+  width:var(--size-marker);height:var(--size-marker);border-radius:var(--radius-full);flex:none;
+  background:var(--map-marker);color:var(--text-on-inverse);font:var(--type-label);
+  display:inline-flex;align-items:center;justify-content:center;border:2px solid var(--surface-default);
+  position:relative;
+}
+.marker--selected{background:var(--action-primary);box-shadow:0 0 0 var(--space-8) var(--surface-selected)}
+.marker--full{background:var(--surface-unavailable);color:var(--text-on-unavailable)}
+.marker--paused{background:var(--surface-default);color:var(--text-primary);border-color:var(--border-strong);border-style:dashed}
+.marker--closed{background:var(--action-disabled);color:var(--text-secondary);border-color:var(--border-strong)}
+.marker__badge{position:absolute;right:-8px;top:-8px;width:20px;height:20px;border-radius:var(--radius-full);background:var(--surface-default);display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgba(43,36,30,.2)}
+.marker__badge .icon{width:14px;height:14px;stroke-width:1.5}
+.marker-btn{width:var(--size-tap-min);height:var(--size-tap-min);display:inline-flex;align-items:center;justify-content:center;border-radius:var(--radius-full)}
+.legend{display:flex;flex-wrap:wrap;gap:var(--space-12) var(--space-16);font:var(--type-body-small);color:var(--text-secondary)}
+.legend li{display:inline-flex;align-items:center;gap:var(--space-8)}
+.legend .marker{width:var(--space-24);height:var(--space-24);font:var(--type-caption);border-width:1.5px}
+
+/* ---- Map controls ---- */
+.countpill{display:inline-flex;align-items:center;justify-content:center;min-height:var(--size-control);padding:var(--space-12) var(--space-24);border-radius:var(--radius-full);background:var(--surface-inverse);color:var(--text-on-inverse);font:var(--type-body)}
+.mapview{position:relative;border-radius:var(--radius-lg);overflow:hidden;background:var(--map-land)}
+.mapview svg.map-bg{width:100%;height:100%;position:absolute;inset:0}
+
+/* ---- Item status list ---- */
+.statuslist{background:var(--surface-default);border-radius:var(--radius-lg);padding:var(--space-16)}
+.statuslist__head{display:flex;align-items:center;gap:var(--space-8);min-height:var(--size-tap-min)}
+.statuslist__head h2{flex:1}
+.statuslist__row{display:flex;align-items:center;gap:var(--space-12);min-height:var(--size-status-row)}
+.statuslist__name{flex:1;min-width:0;font:var(--type-body)}
+.statuslist__name small{font:var(--type-body-small);color:var(--text-secondary)}
+.statuslist__venue{font:var(--type-body-small);color:var(--text-secondary);white-space:nowrap}
+
+/* ---- Availability chip ---- */
+.avail{display:inline-flex;align-items:center;gap:var(--space-4);min-height:var(--size-chip);padding:0 var(--space-12);border-radius:var(--radius-full);font:var(--type-label);white-space:nowrap;background:var(--surface-track);color:var(--text-primary)}
+.avail .icon{width:var(--size-icon-16);height:var(--size-icon-16);stroke-width:1.5;color:currentColor}
+.avail--full{background:var(--surface-unavailable);color:var(--text-on-unavailable)}
+.avail--closed{background:var(--surface-subtle);color:var(--text-primary)}
+.on-paper .avail--space{background:var(--surface-canvas)}
+
+/* ---- Shelf card + carousel ---- */
+.carousel{display:flex;gap:var(--space-12);overflow-x:auto;scroll-snap-type:x mandatory;margin:0 calc(var(--space-20) * -1);padding:var(--space-4) var(--space-20) var(--space-16);scrollbar-width:none}
+.carousel::-webkit-scrollbar{display:none}
+.shelf{flex:none;width:160px;scroll-snap-align:start;background:var(--surface-default);border-radius:var(--radius-lg);box-shadow:var(--shadow-card);overflow:hidden;text-align:left;display:flex;flex-direction:column}
+.shelf:active{transform:scale(.98)}
+.shelf__photo{position:relative;height:72px;background:var(--surface-subtle);display:flex;align-items:center;justify-content:center}
+.shelf__photo .marker{position:absolute;left:var(--space-8);bottom:calc(var(--space-16) * -1)}
+.shelf__body{padding:var(--space-24) var(--space-12) var(--space-12);display:flex;flex-direction:column;gap:var(--space-4);align-items:flex-start}
+.shelf__dist{font:var(--type-label);color:var(--text-brand)}
+.shelf__venue{font:var(--type-title)}
+.shelf__hours{font:var(--type-body-small);color:var(--text-secondary);margin-bottom:var(--space-4)}
+.shelf.is-closed .shelf__photo{opacity:.6}
+.placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--space-4);color:var(--text-secondary);font:var(--type-caption)}
+.placeholder .icon{color:var(--icon-tertiary)}
+
+/* ---- Settings list ---- */
+.settings{background:var(--surface-default);border-radius:var(--radius-lg);padding:0 var(--space-16)}
+.settings__row{display:flex;align-items:center;gap:var(--space-16);min-height:var(--size-settings-row);padding:var(--space-12) 0;width:100%;text-align:left}
+.settings__row + .settings__row{border-top:1px solid var(--border-subtle)}
+button.settings__row:active{background:var(--surface-canvas)}
+.settings__text{flex:1;min-width:0}
+.settings__title{font:var(--type-title)}
+.settings__sub{font:var(--type-body-small);color:var(--text-secondary)}
+
+/* ---- Toggle ---- */
+.toggle{position:relative;width:var(--size-toggle-w);height:var(--size-toggle-h);border-radius:var(--radius-full);flex:none;background:var(--surface-default);border:var(--border-w) solid var(--border-strong);transition:background-color var(--motion-fast) var(--ease)}
+.toggle::after{content:"";position:absolute;top:50%;left:var(--space-4);width:22px;height:22px;border-radius:var(--radius-full);background:var(--surface-default);box-shadow:0 0 0 var(--border-w) var(--border-strong);transform:translateY(-50%);transition:transform var(--motion-fast) var(--ease)}
+.toggle[aria-checked="true"]{background:var(--surface-brand-soft);border-color:var(--surface-brand-soft)}
+.toggle[aria-checked="true"]::after{transform:translate(19px,-50%);background:var(--surface-canvas);box-shadow:none}
+.toggle:disabled{background:var(--action-disabled);border-color:var(--border-subtle);cursor:not-allowed}
+.toggle:disabled::after{box-shadow:0 0 0 var(--border-w) var(--border-subtle)}
+.toggle-wrap{display:inline-flex;align-items:center;justify-content:center;min-width:var(--size-tap-min);min-height:var(--size-tap-min)}
+
+/* ---- Profile row / avatar ---- */
+.avatar{width:var(--size-avatar);height:var(--size-avatar);border-radius:var(--radius-full);background:var(--surface-subtle);color:var(--text-primary);font:var(--type-title);display:inline-flex;align-items:center;justify-content:center;flex:none}
+.profile{display:flex;align-items:center;gap:var(--space-16);width:100%;text-align:left}
+
+/* ---- Impact card ---- */
+.impact{background:var(--surface-selected);border-radius:var(--radius-lg);padding:var(--space-16)}
+.impact__head{display:flex;justify-content:space-between;align-items:center;color:var(--text-secondary)}
+.impact__nums{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-16);margin-top:var(--space-8)}
+.impact__num{font:var(--type-display);letter-spacing:var(--tracking-display);color:var(--text-brand)}
+.impact__cap{font:var(--type-body-small);color:var(--text-secondary)}
+
+/* ---- Host-mode card ---- */
+.hostcard{display:flex;align-items:center;gap:var(--space-16);width:100%;text-align:left;background:var(--surface-inverse);color:var(--text-on-inverse);border-radius:var(--radius-lg);padding:var(--space-16)}
+.hostcard:active{transform:scale(.98)}
+.hostcard:focus-visible{box-shadow:var(--shadow-focus)}
+.hostcard .settings__sub{color:var(--text-on-inverse-secondary)}
+.hostcard .chev{color:var(--text-on-inverse)}
+
+/* ---- Greeting header ---- */
+.greet{display:flex;align-items:center;justify-content:space-between;gap:var(--space-16);margin-bottom:var(--space-24)}
+
+/* ---- Bottom sheet ---- */
+.sheet-host{position:absolute;inset:0;z-index:50;display:none}
+.sheet-host.is-open{display:block}
+.sheet-scrim{position:absolute;inset:0;background:var(--scrim);animation:fade-in var(--motion-fast) var(--ease) both}
+.sheet{
+  position:absolute;left:0;right:0;bottom:0;max-height:var(--size-sheet-max);overflow-y:auto;
+  background:var(--surface-default);border-radius:var(--radius-xl) var(--radius-xl) 0 0;box-shadow:var(--shadow-sheet);
+  padding:var(--space-8) var(--space-20) calc(var(--space-24) + env(safe-area-inset-bottom));
+  animation:sheet-in var(--motion-base) var(--ease) both;
+}
+@keyframes sheet-in{from{transform:translateY(100%)}to{transform:none}}
+.sheet__grabber{width:var(--size-grabber-w);height:var(--size-grabber-h);border-radius:var(--radius-full);background:var(--border-strong);margin:0 auto var(--space-8)}
+.sheet__head{display:flex;align-items:center;gap:var(--space-8);margin-bottom:var(--space-16)}
+.sheet__head h2{flex:1}
+.sheet--static{position:relative;animation:none;box-shadow:var(--shadow-sheet);max-height:none}
+
+/* ---- Counter QR sheet ---- */
+.qrsheet{text-align:center;display:flex;flex-direction:column;align-items:center;gap:var(--space-8)}
+.qr{width:200px;height:200px;padding:var(--space-12);background:var(--surface-default);border:var(--border-w) solid var(--border-strong);border-radius:var(--radius-sm);color:var(--text-primary);margin:var(--space-8) 0}
+.qr svg{width:100%;height:100%}
+.qrsheet.is-used .qr{color:var(--text-disabled)}
+.qrsheet .kv{width:100%;text-align:left}
+.qrcode-text{font:var(--type-heading-2);letter-spacing:var(--tracking-heading);color:var(--text-brand)}
+
+/* ---- Photo capture frame ---- */
+.capture{position:relative;border-radius:var(--radius-lg);background:var(--surface-subtle);aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;padding:var(--space-24);overflow:hidden}
+.capture__guide{position:absolute;inset:var(--space-24);border:2px dashed var(--border-strong);border-radius:var(--radius-md)}
+.capture__msg{position:relative;text-align:center;display:flex;flex-direction:column;align-items:center;gap:var(--space-8)}
+.capture__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.capture__overlay{position:absolute;inset:0;background:var(--surface-brand);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--space-12);color:var(--text-on-primary);font:var(--type-title)}
+.capture__overlay .spinner{width:var(--size-icon-32);height:var(--size-icon-32);border-width:3px}
+.capture__scan{position:absolute;left:0;right:0;height:3px;background:var(--surface-default);opacity:.8;animation:scan 1.5s var(--ease) infinite}
+@keyframes scan{from{top:10%}to{top:90%}}
+
+/* ---- List result row ---- */
+.result{display:flex;align-items:center;gap:var(--space-16);width:100%;text-align:left;background:var(--surface-default);border-radius:var(--radius-lg);padding:var(--space-16);min-height:var(--size-row-min)}
+.result:active{background:var(--surface-canvas)}
+.result.is-selected{background:var(--surface-selected)}
+.result__main{flex:1;min-width:0;display:flex;flex-direction:column;gap:var(--space-4);align-items:flex-start}
+.result__meta{font:var(--type-body-small);color:var(--text-secondary)}
+
+/* ---- Verification status card / timeline ---- */
+.verify{display:flex;gap:var(--space-12);align-items:flex-start;background:var(--surface-default);border-radius:var(--radius-lg);padding:var(--space-16)}
+.verify__label{font:var(--type-title)}
+.verify__line{font:var(--type-body-small);color:var(--text-secondary)}
+
+/* ---- Benefit list ---- */
+.benefits{background:var(--surface-default);border-radius:var(--radius-lg);padding:var(--space-16);display:flex;flex-direction:column;gap:var(--space-16)}
+.benefit{display:flex;gap:var(--space-16);align-items:flex-start}
+
+/* ---- Steward check row ---- */
+.checkrow{background:var(--surface-default);border-radius:var(--radius-lg);padding:var(--space-16);border:var(--border-w) solid transparent;display:flex;flex-direction:column;gap:var(--space-12)}
+.checkrow__btns{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-8)}
+.checkrow__btns .btn{padding-left:var(--space-12);padding-right:var(--space-12)}
+.checkrow .btn[aria-pressed="true"]{background:var(--action-primary);color:var(--text-on-primary);border-color:var(--action-primary)}
+.checkrow.is-kept{background:var(--surface-selected)}
+.checkrow.is-removed{background:var(--surface-subtle)}
+.checkrow.is-flagged{border-color:var(--text-problem)}
+
+/* ---- Activity log row ---- */
+.log{background:var(--surface-default);border-radius:var(--radius-lg);padding:0 var(--space-16)}
+.log__row{display:flex;gap:var(--space-12);align-items:center;min-height:var(--size-settings-row);padding:var(--space-12) 0}
+.log__row + .log__row{border-top:1px solid var(--border-subtle)}
+.log__time{font:var(--type-body-small);color:var(--text-tertiary);white-space:nowrap}
+
+/* ---- Tab bar ---- */
+.tabbar{
+  flex:none;display:grid;grid-template-columns:repeat(4,1fr);background:var(--surface-default);
+  border-top:1px solid var(--border-subtle);padding:var(--space-8) var(--space-8) calc(var(--space-8) + env(safe-area-inset-bottom));
+}
+.tabbar[hidden]{display:none}
+.tab{display:flex;flex-direction:column;align-items:center;gap:var(--space-4);min-height:var(--size-control);padding:var(--space-4) 0;font:var(--type-label);color:var(--text-primary);text-decoration:none;font-weight:400;border-radius:var(--radius-md)}
+.tab__pill{width:var(--size-tab-indicator);height:var(--size-tab-indicator-h);border-radius:var(--radius-full);display:flex;align-items:center;justify-content:center;transition:background-color var(--motion-fast) var(--ease)}
+.tab .icon{color:var(--icon-neutral)}
+.tab[aria-current="page"]{font-weight:500}
+.tab[aria-current="page"] .tab__pill{background:var(--surface-indicator)}
+.tab[aria-current="page"] .icon{color:var(--icon-primary)}
+.tab:active .tab__pill{background:var(--surface-subtle)}
+.tabbar--static{border-radius:0 0 var(--radius-lg) var(--radius-lg)}
+
+/* ---- Empty state ---- */
+.empty{display:flex;flex-direction:column;align-items:center;text-align:center;gap:var(--space-8);padding:var(--space-48) var(--space-16)}
+.empty .btn{margin-top:var(--space-8)}
+
+/* ---- Section header (Home) ---- */
+.sechead{display:flex;align-items:center;justify-content:space-between;gap:var(--space-12);min-height:var(--size-tap-min)}
+
+/* =====================================================================
+   5. COMPONENT GALLERY (#/components only)
+   ===================================================================== */
+.gal h1{margin-bottom:var(--space-8)}
+.gal__intro{color:var(--text-secondary);font:var(--type-body-small);margin-bottom:var(--space-24)}
+.gal__toc{display:flex;flex-wrap:wrap;gap:var(--space-8);margin-bottom:var(--space-32)}
+.gal__toc a{font:var(--type-label);color:var(--text-link);padding:var(--space-4) var(--space-8);border-radius:var(--radius-xs);background:var(--surface-default)}
+.gal__sec{padding-top:var(--space-32);margin-top:var(--space-32);border-top:1px solid var(--border-subtle);scroll-margin-top:var(--space-16)}
+.gal__sec > h2{margin-bottom:var(--space-4)}
+.gal__sec > .gal__recipe{font:var(--type-caption);color:var(--text-secondary);margin-bottom:var(--space-16)}
+.gal__state{display:block;font:var(--type-overline);letter-spacing:var(--tracking-overline);text-transform:uppercase;color:var(--text-secondary);margin:var(--space-16) 0 var(--space-8)}
+.gal__brand{background:var(--surface-brand);border-radius:var(--radius-lg);padding:var(--space-16)}
+.gal__swatches{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-8)}
+.swatch{border-radius:var(--radius-md);overflow:hidden;background:var(--surface-default);border:1px solid var(--border-subtle);font:var(--type-caption)}
+.swatch__chip{height:40px}
+.swatch__name{padding:var(--space-4) var(--space-8);color:var(--text-primary);word-break:break-all}
+.gal__icons{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-8)}
+.gal__icon{display:flex;flex-direction:column;align-items:center;gap:var(--space-4);padding:var(--space-8) var(--space-4);background:var(--surface-default);border-radius:var(--radius-sm);font:var(--type-caption);color:var(--text-secondary);text-align:center;word-break:break-word}
+.gal__wrap{display:flex;flex-wrap:wrap;gap:var(--space-12);align-items:center}
+
+/* =====================================================================
+   6. REDUCED MOTION
+   ===================================================================== */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:1ms!important;animation-iteration-count:1!important;transition-duration:1ms!important;scroll-behavior:auto!important}
+  .nfc__ring{display:none}
+}
+</style>
+</head>
+<body>
+<!-- SecondShelf icon library v2.0 (assets/icons/sprite.svg), inlined -->
+<svg xmlns="http://www.w3.org/2000/svg" id="sprite" width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="ss-community-shelf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21.5V12.5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v9"/><path d="M5 15h14"/><path d="M5 19h14"/><path d="M9.6 10.5V8.3a2 2 0 0 1 2-2h.8a2 2 0 0 1 2 2v2.2"/><path d="M10.9 3.5h2.2"/></symbol>
+  <symbol id="ss-sealed-food" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2.5" width="8" height="3.5" rx="1.75"/><rect x="5.5" y="6" width="13" height="15.5" rx="4.5"/><rect x="9" y="11" width="6" height="5" rx="2"/></symbol>
+  <symbol id="ss-pickup-bag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 9.5h15l-.9 9.1a2.6 2.6 0 0 1-2.6 2.4H8a2.6 2.6 0 0 1-2.6-2.4z"/><path d="M8 9.5V6.6a2 2 0 0 1 4 0v2.9"/><path d="M12 9.5V6.6a2 2 0 0 1 4 0v2.9"/></symbol>
+  <symbol id="ss-community-care" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20c-.5 0-8-4.4-8.6-9.6C3 7.4 5.2 5 8 5c1.7 0 3.1.9 4 2.3C12.9 5.9 14.3 5 16 5c2.8 0 5 2.4 4.6 5.4C20 15.6 12.5 20 12 20z"/></symbol>
+  <symbol id="ss-saved-food" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 17.4C3.9 11.3 8.4 4.9 19.2 4.8c.1 10.6-6.3 15.2-12.6 12.6z"/><path d="M4.8 19.2l8.4-8.4"/></symbol>
+  <symbol id="ss-filter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3.5M12.5 7H20"/><circle cx="10" cy="7" r="2.2"/><path d="M4 12h9.5M18.5 12H20"/><circle cx="16" cy="12" r="2.2"/><path d="M4 17h1.5M10.5 17H20"/><circle cx="8" cy="17" r="2.2"/></symbol>
+  <symbol id="ss-tap-nfc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 9.6c.9 1.4.9 3.4 0 4.8"/><path d="M11 7.2c2 2.8 2 6.8 0 9.6"/><path d="M14.5 4.8c3.2 4.2 3.2 10.2 0 14.4"/><path d="M18 3c4 5.2 4 12.8 0 18"/></symbol>
+  <symbol id="ss-done" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.8l4.4 4.2L19 7.4"/></symbol>
+  <symbol id="ss-paused" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5V12l3 2"/></symbol>
+  <symbol id="ss-needs-attention" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 21V3.8"/><path d="M6.5 4.4l10.4 4.4a1 1 0 0 1 0 1.8L6.5 15"/></symbol>
+  <symbol id="ss-location" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.3c-.4 0-7-5.9-7-11.3a7 7 0 0 1 14 0c0 5.4-6.6 11.3-7 11.3z"/><circle cx="12" cy="10" r="2.6"/></symbol>
+  <symbol id="ss-continue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></symbol>
+  <symbol id="ss-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.6l7-5.8a1.6 1.6 0 0 1 2 0l7 5.8V18.5a2.5 2.5 0 0 1-2.5 2.5H15v-5a1.5 1.5 0 0 0-1.5-1.5h-3A1.5 1.5 0 0 0 9 16v5H6.5A2.5 2.5 0 0 1 4 18.5z"/></symbol>
+  <symbol id="ss-map" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.2a1.5 1.5 0 0 1 1-1.4l3.4-1.2a2 2 0 0 1 1.3 0l5.6 2a2 2 0 0 0 1.3 0l2.4-.9a1.5 1.5 0 0 1 2 1.4V17a1.5 1.5 0 0 1-1 1.4l-3.4 1.2a2 2 0 0 1-1.3 0l-5.6-2a2 2 0 0 0-1.3 0l-2.4.9a1.5 1.5 0 0 1-2-1.4z"/><path d="M8.5 4.6v12.8"/><path d="M15.5 6.6v12.8"/></symbol>
+  <symbol id="ss-list" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6.5h11M9 12h11M9 17.5h11"/><path d="M4.5 6.5h.01M4.5 12h.01M4.5 17.5h.01"/></symbol>
+  <symbol id="ss-coupon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8.5a2.5 2.5 0 0 1 2.5-2.5h12a2.5 2.5 0 0 1 2.5 2.5v1a2.5 2.5 0 0 0 0 5v1A2.5 2.5 0 0 1 18 18H6a2.5 2.5 0 0 1-2.5-2.5v-1a2.5 2.5 0 0 0 0-5z"/><path d="M14.5 8.5v.01M14.5 12v.01M14.5 15.5v.01"/></symbol>
+  <symbol id="ss-profile" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.8 20.2a7.2 7.2 0 0 1 14.4 0"/></symbol>
+  <symbol id="ss-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M11 6l-6 6 6 6"/></symbol>
+  <symbol id="ss-chevron-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6l-6 6 6 6"/></symbol>
+  <symbol id="ss-chevron-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 6l6 6-6 6"/></symbol>
+  <symbol id="ss-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9.5l6 6 6-6"/></symbol>
+  <symbol id="ss-chevron-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 14.5l6-6 6 6"/></symbol>
+  <symbol id="ss-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></symbol>
+  <symbol id="ss-more" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 12h.01M12 12h.01M18.5 12h.01"/></symbol>
+  <symbol id="ss-dashboard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="7" height="8" rx="2.5"/><rect x="13" y="4" width="7" height="5" rx="2.5"/><rect x="4" y="14" width="7" height="6" rx="2.5"/><rect x="13" y="11" width="7" height="9" rx="2.5"/></symbol>
+  <symbol id="ss-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></symbol>
+  <symbol id="ss-sort" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 4.5v15M4.5 16.5l3 3 3-3"/><path d="M16.5 19.5v-15M13.5 7.5l3-3 3 3"/></symbol>
+  <symbol id="ss-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="ss-minus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></symbol>
+  <symbol id="ss-edit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 19.5l.7-3.6a2 2 0 0 1 .5-1L15.3 5.3a2.1 2.1 0 0 1 3 0l.4.4a2.1 2.1 0 0 1 0 3L9.1 18.3a2 2 0 0 1-1 .5z"/><path d="M13.5 7l3.5 3.5"/></symbol>
+  <symbol id="ss-remove" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 7h15"/><path d="M9.5 7V5.6A1.6 1.6 0 0 1 11.1 4h1.8a1.6 1.6 0 0 1 1.6 1.6V7"/><path d="M6.5 7l.8 11.1A2.1 2.1 0 0 0 9.4 20h5.2a2.1 2.1 0 0 0 2.1-1.9L17.5 7"/><path d="M10.5 11v5M13.5 11v5"/></symbol>
+  <symbol id="ss-undo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 5l-4 4 4 4"/><path d="M4.5 9H14a5.5 5.5 0 0 1 0 11h-3.5"/></symbol>
+  <symbol id="ss-retry" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19.5 12a7.5 7.5 0 1 1-2.3-5.4"/><path d="M19.5 4.5v4.2h-4.2"/></symbol>
+  <symbol id="ss-camera" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9a2.5 2.5 0 0 1 2.5-2.5h1.3a1.5 1.5 0 0 0 1.2-.6l.7-.9a1.5 1.5 0 0 1 1.2-.6h2.2a1.5 1.5 0 0 1 1.2.6l.7.9a1.5 1.5 0 0 0 1.2.6h1.3A2.5 2.5 0 0 1 20 9v8.5a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 17.5z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+  <symbol id="ss-photo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="15" rx="3.5"/><circle cx="9" cy="9.8" r="1.6"/><path d="M4 17l4.3-4.3a1.5 1.5 0 0 1 2.1 0l2.4 2.4 1.9-1.9a1.5 1.5 0 0 1 2.1 0L20 16.4"/></symbol>
+  <symbol id="ss-qr-code" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6" height="6" rx="2"/><rect x="14" y="4" width="6" height="6" rx="2"/><rect x="4" y="14" width="6" height="6" rx="2"/><path d="M14 14h2.5M20 14v.01M14 17.5V20M17.5 17.5H20V20"/></symbol>
+  <symbol id="ss-shelf-code" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6.5" width="18" height="11" rx="3.5"/><path d="M7.5 12h.01M10.5 12h.01M13.5 12h.01M16.5 12h.01"/></symbol>
+  <symbol id="ss-phone-tap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2.5" width="9" height="19" rx="3"/><path d="M10 18h2"/><path d="M18.5 8.5c1.2 2 1.2 5 0 7"/><path d="M21 6.5c2 3.4 2 7.6 0 11"/></symbol>
+  <symbol id="ss-switch-role" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3.5l3 3-3 3"/><path d="M19 6.5H8.5A3.5 3.5 0 0 0 5 10v.5"/><path d="M8 20.5l-3-3 3-3"/><path d="M5 17.5h10.5A3.5 3.5 0 0 0 19 14v-.5"/></symbol>
+  <symbol id="ss-share" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="17.5" cy="5.5" r="2.5"/><circle cx="6.5" cy="12" r="2.5"/><circle cx="17.5" cy="18.5" r="2.5"/><path d="M8.7 10.8l6.6-4M8.7 13.2l6.6 4"/></symbol>
+  <symbol id="ss-shelf-full" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v15"/><path d="M4 12.5h16"/><path d="M4 21h16"/><rect x="7.5" y="7.5" width="3.5" height="3" rx="1.2"/><rect x="13" y="7" width="3.5" height="3.5" rx="1.2"/><rect x="7.5" y="15.5" width="3.5" height="3" rx="1.2"/><rect x="13" y="16" width="3.5" height="2.5" rx="1.2"/></symbol>
+  <symbol id="ss-venue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5l1.4-3.9A2.2 2.2 0 0 1 7.5 4h9a2.2 2.2 0 0 1 2.1 1.6L20 9.5"/><path d="M4 9.5a2.7 2.7 0 0 0 5.3 0 2.7 2.7 0 0 0 5.4 0 2.7 2.7 0 0 0 5.3 0"/><path d="M5.5 12.2v6.3a2.5 2.5 0 0 0 2.5 2.5h8a2.5 2.5 0 0 0 2.5-2.5v-6.3"/><path d="M10 21v-3.5a2 2 0 0 1 4 0V21"/></symbol>
+  <symbol id="ss-coffee" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9h11v4.5a5.5 5.5 0 0 1-5.5 5.5A5.5 5.5 0 0 1 5 13.5z"/><path d="M16 10.5h1a2.5 2.5 0 0 1 0 5h-1.4"/><path d="M8.5 3.5c-.8 1 .8 2 0 3M12.5 3.5c-.8 1 .8 2 0 3"/><path d="M5 21.5h11"/></symbol>
+  <symbol id="ss-package" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.9 3.6a2.2 2.2 0 0 1 2.2 0l5.8 3.3A2.2 2.2 0 0 1 20 8.8v6.4a2.2 2.2 0 0 1-1.1 1.9l-5.8 3.3a2.2 2.2 0 0 1-2.2 0l-5.8-3.3A2.2 2.2 0 0 1 4 15.2V8.8a2.2 2.2 0 0 1 1.1-1.9z"/><path d="M4.4 7.6L12 12l7.6-4.4M12 12v9"/></symbol>
+  <symbol id="ss-tin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3.5" width="12" height="17" rx="3.5"/><path d="M6 8h12M6 16h12"/></symbol>
+  <symbol id="ss-pasta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9h14l-1 8.5a3 3 0 0 1-3 2.5H9a3 3 0 0 1-3-2.5z"/><path d="M8 9V4.5M10.7 9V3.5M13.3 9V3.5M16 9V4.5"/></symbol>
+  <symbol id="ss-best-before" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5.5" width="16" height="15" rx="3.5"/><path d="M4 10h16"/><path d="M8.5 3.5v4M15.5 3.5v4"/><path d="M9.3 15.2l1.9 1.8 3.5-3.5"/></symbol>
+  <symbol id="ss-sealed-badge" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.2 3.4a2 2 0 0 1 1.6 0l5.5 2.3a1.5 1.5 0 0 1 .9 1.4v4.7c0 4.3-3 7.7-6.6 9.1a1.6 1.6 0 0 1-1.2 0C7.8 19.5 4.8 16.1 4.8 11.8V7.1a1.5 1.5 0 0 1 .9-1.4z"/><path d="M9 12l2 2 4-4"/></symbol>
+  <symbol id="ss-travel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7.5" width="16" height="12.5" rx="3.5"/><path d="M9 7.5V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1.5"/><path d="M8.5 7.5v12.5M15.5 7.5v12.5"/></symbol>
+  <symbol id="ss-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5.5" width="16" height="15" rx="3.5"/><path d="M4 10h16"/><path d="M8.5 3.5v4M15.5 3.5v4"/></symbol>
+  <symbol id="ss-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.2"/><path d="M12 7.8v.01"/></symbol>
+  <symbol id="ss-help" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.6a2.5 2.5 0 1 1 3.6 2.3c-.7.3-1.2 1-1.2 1.7v.4"/><path d="M12 17v.01"/></symbol>
+  <symbol id="ss-pause" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M10 9v6M14 9v6"/></symbol>
+  <symbol id="ss-notification" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.3 1.6a.8.8 0 0 1-.6 1.4H5.3a.8.8 0 0 1-.6-1.4z"/><path d="M10 21a2.3 2.3 0 0 0 4 0"/></symbol>
+  <symbol id="ss-reminder" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="7.5"/><path d="M12 9.5V13l2.3 1.6"/><path d="M4.5 5l2-2M19.5 5l-2-2"/></symbol>
+  <symbol id="ss-checkbox" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4.5"/><path d="M8 12.3l2.7 2.7L16 9.7"/></symbol>
+  <symbol id="ss-checkbox-empty" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4.5"/></symbol>
+  <symbol id="ss-new" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5c.7 3.8 2.7 5.8 6.5 6.5-3.8.7-5.8 2.7-6.5 6.5-.7-3.8-2.7-5.8-6.5-6.5 3.8-.7 5.8-2.7 6.5-6.5z"/><path d="M18.5 16.5v4M16.5 18.5h4"/></symbol>
+  <symbol id="ss-rescue-bonus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="9" width="16" height="4" rx="1.8"/><path d="M5.5 13v5.5A2.5 2.5 0 0 0 8 21h8a2.5 2.5 0 0 0 2.5-2.5V13"/><path d="M12 9v12"/><path d="M12 9C10.6 6 7 5.6 7 7.6 7 8.8 9 9 12 9zM12 9c1.4-3 5-3.4 5-1.4 0 1.2-2 1.4-5 1.4z"/></symbol>
+  <symbol id="ss-impact" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.5v-8"/><path d="M12 12.5C12 9 9.5 6.5 5.5 6.5 5.5 10 8 12.5 12 12.5z"/><path d="M12 14.5c0-3 2-5 5.5-5 0 3-2 5-5.5 5z"/><path d="M8 20.5h8"/></symbol>
+  <symbol id="ss-thank-you" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20c-.5 0-8-4.4-8.6-9.6C3 7.4 5.2 5 8 5c1.7 0 3.1.9 4 2.3C12.9 5.9 14.3 5 16 5c2.8 0 5 2.4 4.6 5.4C20 15.6 12.5 20 12 20z"/><path d="M9 11.5l2 2 4-4"/></symbol>
+  <symbol id="ss-redeem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8.5a2.5 2.5 0 0 1 2.5-2.5h12a2.5 2.5 0 0 1 2.5 2.5v1a2.5 2.5 0 0 0 0 5v1A2.5 2.5 0 0 1 18 18H6a2.5 2.5 0 0 1-2.5-2.5v-1a2.5 2.5 0 0 0 0-5z"/><path d="M8.5 12l2.2 2.2 4.3-4.3"/></symbol>
+  <symbol id="ss-shelf-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4.5" width="14" height="16.5" rx="3.5"/><path d="M9 4.5V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v.5"/><path d="M9 13l2 2 4-4"/></symbol>
+  <symbol id="ss-staff" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8.5" r="3.2"/><path d="M3.5 19.5a5.5 5.5 0 0 1 11 0"/><circle cx="16.8" cy="9.5" r="2.6"/><path d="M16.5 14.6a4.5 4.5 0 0 1 4.5 4.6"/></symbol>
+  <symbol id="ss-agreement" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3.5h7l4.5 4.5v10a2.5 2.5 0 0 1-2.5 2.5H7A2.5 2.5 0 0 1 4.5 18V6A2.5 2.5 0 0 1 7 3.5z"/><path d="M13.5 3.5V7a1.5 1.5 0 0 0 1.5 1.5h3.5"/><path d="M8.5 13h7M8.5 16.5h4.5"/></symbol>
+  <symbol id="ss-starter-kit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="8" width="17" height="12" rx="3"/><path d="M3.5 12.5h17"/><path d="M9.5 8V6a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v2"/><path d="M10.5 12.5v2h3v-2"/></symbol>
+  <symbol id="ss-activity" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 12.5h3.2l2.3-5 4 10 2.6-6.2 1.2 1.2h3.7"/></symbol>
+  <symbol id="ss-verified" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.2l2.4 2.4 4.6-4.6"/></symbol>
+</svg>
+<div class="app" id="app">
+  <main class="stage" id="stage" aria-live="off"></main>
+  <nav class="tabbar" id="tabbar" aria-label="Main" hidden></nav>
+  <div class="toast-host" id="toasts" aria-live="polite"></div>
+  <div class="sheet-host" id="sheet"></div>
+  <div class="vh" id="announcer" aria-live="polite"></div>
+</div>
+
+<script>
+'use strict';
+/* =====================================================================
+   HELPERS
+   ===================================================================== */
+const $ = (sel, root = document) => root.querySelector(sel);
+const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const icon = (name, cls = '', label = '') =>
+  `<svg class="icon ${cls}" ${label ? `role="img" aria-label="${esc(label)}"` : 'aria-hidden="true"'} focusable="false"><use href="#ss-${name}"/></svg>`;
+const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const buzz = () => { try { navigator.vibrate && navigator.vibrate(30); } catch (e) {} };
+const announce = msg => { const a = $('#announcer'); a.textContent = ''; setTimeout(() => a.textContent = msg, 30); };
+const wait = ms => new Promise(r => setTimeout(r, ms));
+
+/* =====================================================================
+   STATE: memory + localStorage (try/catch), Reset demo restores START
+   ===================================================================== */
+const STORE_KEY = 'secondshelf-demo-v1';
+const START = () => ({
+  user: { name: 'Brenda Kowalska', first: 'Brenda', email: 'brenda@example.com', initials: 'BK' },
+  mode: 'consumer',
+  events: []
+});
+const Store = {
+  state: null,
+  load() {
+    try { const raw = localStorage.getItem(STORE_KEY); this.state = raw ? Object.assign(START(), JSON.parse(raw)) : START(); }
+    catch (e) { this.state = START(); }
+  },
+  save() { try { localStorage.setItem(STORE_KEY, JSON.stringify(this.state)); } catch (e) {} },
+  reset() { this.state = START(); this.save(); },
+  log(type, data = {}) { this.state.events.push({ t: new Date().toISOString(), type, ...data }); this.save(); }
+};
+
+/* =====================================================================
+   UI LIBRARY: one function per component (§8), reused by every screen
+   ===================================================================== */
+const UI = {
+  button({ label, variant = 'primary', icon: ic, block = false, attrs = '', disabled = false, loading = false, state = '' } = {}) {
+    const cls = `btn btn--${variant}${block ? ' btn--block' : ''}${loading ? ' is-loading' : ''}${state ? ' ' + state : ''}`;
+    const lead = loading ? '<span class="spinner" aria-hidden="true"></span>' : (ic ? icon(ic) : '');
+    return `<button type="button" class="${cls}" ${disabled ? 'disabled' : ''} ${loading ? 'aria-busy="true"' : ''} ${attrs}>${lead}<span>${esc(label)}</span></button>`;
+  },
+  iconButton(name, label, attrs = '', cls = '') {
+    return `<button type="button" class="icon-btn ${cls}" aria-label="${esc(label)}" ${attrs}>${icon(name)}</button>`;
+  },
+  input({ id, label, value = '', placeholder = '', type = 'text', error = '', disabled = false, state = '', attrs = '' }) {
+    return `<div class="field${error ? ' is-error' : ''}${disabled ? ' is-disabled' : ''}">
+      <label class="field__label" for="${id}">${esc(label)}</label>
+      <input class="input ${state}" id="${id}" type="${type}" value="${esc(value)}" placeholder="${esc(placeholder)}" ${disabled ? 'disabled' : ''} ${error ? `aria-invalid="true" aria-describedby="${id}-err"` : ''} ${attrs}>
+      ${error ? `<p class="field__error" id="${id}-err">${icon('needs-attention')}<span>${esc(error)}</span></p>` : ''}
+    </div>`;
+  },
+  search({ id = 'search', value = '', placeholder = 'Search food', suggestions = null, filter = true }) {
+    const sugg = suggestions && suggestions.length ? `<ul class="suggest" id="${id}-list" role="listbox" aria-label="Suggestions">${suggestions.map(s =>
+      `<li role="none"><button type="button" class="suggest__item" role="option" data-suggest="${esc(s)}">${icon('search')}<span>${highlight(s, value)}</span></button></li>`).join('')}</ul>` : '';
+    return `<div class="search">
+      <div class="search__box">
+        <label class="search__field">
+          ${icon('search')}
+          <span class="vh">Search food</span>
+          <input class="search__input" id="${id}" type="search" value="${esc(value)}" placeholder="${esc(placeholder)}" autocomplete="off" ${sugg ? `aria-controls="${id}-list" aria-expanded="true"` : ''} role="combobox">
+          ${value ? `<button type="button" class="icon-btn search__clear" aria-label="Clear search" data-clear="${id}">${icon('close')}</button>` : ''}
+        </label>
+        ${sugg}
+      </div>
+      ${filter ? `<button type="button" class="search__filter" aria-label="Filters">${icon('filter')}</button>` : ''}
+    </div>`;
+  },
+  chip(label, { pressed = false, ic = '', attrs = '' } = {}) {
+    const lead = pressed ? icon('done') : (ic ? icon(ic) : '');
+    return `<button type="button" class="chip" aria-pressed="${pressed}" ${attrs}>${lead}<span>${esc(label)}</span></button>`;
+  },
+  checkbox({ id, label, checked = false, disabled = false, attrs = '' }) {
+    return `<label class="check${disabled ? ' is-disabled' : ''}" for="${id}">
+      <input type="checkbox" id="${id}" ${checked ? 'checked' : ''} ${disabled ? 'disabled' : ''} ${attrs}>
+      <span class="check__box">${icon('done')}</span><span>${label}</span></label>`;
+  },
+  stepper({ id, value = 1, min = 1, max = 9, label = 'Quantity' }) {
+    return `<div class="stepper" data-stepper="${id}" data-min="${min}" data-max="${max}" role="group" aria-label="${esc(label)}">
+      <button type="button" class="stepper__btn" data-step="-1" aria-label="Remove one" ${value <= min ? 'disabled' : ''}>${icon('minus')}</button>
+      <span class="stepper__value" aria-live="polite">${value}</span>
+      <button type="button" class="stepper__btn" data-step="1" aria-label="Add one" ${value >= max ? 'disabled' : ''}>${icon('plus')}</button>
+    </div>`;
+  },
+  actionCard(kind, state = '') {
+    const k = kind === 'leave'
+      ? { tile: 'tile--accent', ic: 'sealed-food', icls: 'icon--accent', title: 'Leave food', desc: 'Pass on sealed food you won’t eat', route: '#/map' }
+      : { tile: 'tile--reward', ic: 'search', icls: 'icon--reward', title: 'Find food', desc: 'Find free food at shelves near you', route: '#/map?find=1' };
+    return `<a class="action-card ${state}" href="${k.route}">
+      <span class="tile ${k.tile}">${icon(k.ic, 'icon--tile ' + k.icls)}</span>
+      <span class="action-card__title">${k.title}</span>
+      <span class="action-card__desc">${k.desc}</span></a>`;
+  },
+  statusLabel(kind, text) {
+    const m = { done: ['done', 'icon--success', ''], waiting: ['paused', 'icon--warning', ''], problem: ['needs-attention', 'icon--problem', ' status--problem'], info: ['info', 'icon--info', ''] }[kind];
+    return `<span class="status${m[2]}">${icon(m[0], m[1])}<span>${esc(text)}</span></span>`;
+  },
+  banner(kind, html, { ic, action = '' } = {}) {
+    const def = { success: 'done', info: 'info', problem: 'needs-attention', reward: 'saved-food' }[kind];
+    return `<div class="banner banner--${kind}" role="${kind === 'problem' ? 'alert' : 'status'}">${icon(ic || def)}<div class="banner__text">${html}</div>${action}</div>`;
+  },
+  coupon({ state = 'active', venue = 'Café Daisy' } = {}) {
+    const chip = { active: '<span class="pill pill--leaf">Ready to use</span>', used: '<span class="pill pill--oat">Used</span>', expired: '<span class="pill pill--oat">Expired</span>', pending: '<span class="pill pill--reward">Pending</span>' }[state];
+    const btn = state === 'active'
+      ? UI.button({ label: 'Show code', icon: 'qr-code', attrs: 'data-action="show-qr"' })
+      : UI.button({ label: 'Show code', icon: 'qr-code', disabled: true });
+    return `<article class="coupon is-${state}" aria-label="Thank-you coupon, ${state}">
+      <div class="coupon__band"></div>
+      <div class="coupon__body">
+        <div class="coupon__head"><span class="coupon__kind">${icon('coupon', 'icon--reward')}<span class="t-overline">Thank-you coupon</span></span>${chip}</div>
+        <h3 class="t-h2 coupon__title">Thanks for sharing.</h3>
+        <p class="coupon__meta">${esc(venue)} · after your drop-off</p>
+        <dl class="coupon__terms"><div class="kv"><dt>Offer value</dt><dd>To be agreed</dd></div><div class="kv"><dt>Expiry</dt><dd>To be agreed</dd></div></dl>
+      </div>
+      <div class="coupon__tear" aria-hidden="true"><span class="coupon__notch coupon__notch--l"></span><span class="coupon__notch coupon__notch--r"></span></div>
+      <div class="coupon__foot"><p>Show the counter code. It is not the shelf QR.</p>${btn}</div>
+    </article>`;
+  },
+  segmented(items, selected = 0, { id = 'seg', block = false } = {}) {
+    return `<div class="segmented${block ? ' segmented--block' : ''}" role="tablist" data-seg="${id}">${items.map((it, i) => {
+      const o = typeof it === 'string' ? { label: it } : it;
+      return `<button type="button" role="tab" class="segmented__seg" aria-selected="${i === selected}" data-seg-i="${i}">${o.icon ? icon(o.icon) : ''}<span>${esc(o.label)}</span></button>`;
+    }).join('')}</div>`;
+  },
+  rescueBonus({ picked = 0, total = 4, venue = 'Café Daisy', state } = {}) {
+    state = state || (picked >= total ? 'complete' : 'pending');
+    const text = state === 'expired' ? `${picked} of ${total} picked up · expired` : state === 'complete' ? `${total} of ${total} picked up` : `${picked} of ${total} picked up · pending`;
+    return `<article class="bonus${state === 'expired' ? ' is-expired' : ''}">
+      <div class="bonus__head"><span class="tile tile--reward">${icon('rescue-bonus', 'icon--reward')}</span>
+        <div class="grow"><h3 class="t-title">Rescue Bonus</h3><p class="t-small c-secondary">${esc(venue)}</p></div></div>
+      <div class="bonus__bar" role="img" aria-label="${text}">${Array.from({ length: total }, (_, i) => `<span class="bonus__seg${i < picked ? ' is-on' : ''}"></span>`).join('')}</div>
+      <p class="bonus__status">${text}</p>
+    </article>`;
+  },
+  stepHeader({ title, step, of = 3, first = false, back = 'back' }) {
+    const nav = first ? UI.iconButton('close', 'Close', `data-action="${back}"`) : UI.iconButton('back', 'Back', `data-action="${back}"`);
+    return `<header class="stephead">
+      <div class="stephead__bar">${nav}<h1 class="stephead__title">${esc(title)}</h1><span class="t-overline stephead__step">Step ${step} of ${of}</span></div>
+      <div class="progress" role="progressbar" aria-label="Step ${step} of ${of}" aria-valuemin="1" aria-valuemax="${of}" aria-valuenow="${step}">
+        ${Array.from({ length: of }, (_, i) => `<span class="progress__seg${i < step ? ' is-on' : ''}"></span>`).join('')}</div>
+    </header>`;
+  },
+  topBar({ title, serif = false, back = true, action = '' }) {
+    return `<header class="topbar">${back ? UI.iconButton('back', 'Back', 'data-action="back"') : ''}<h1 class="topbar__title${serif ? ' topbar__title--serif' : ''}">${esc(title)}</h1>${action}</header>`;
+  },
+  nfc({ state = 'idle', id = 'nfc' } = {}) {
+    const core = { idle: 'phone-tap', scanning: 'tap-nfc', found: 'done', notfound: 'needs-attention', qr: 'qr-code' }[state];
+    const status = { idle: 'Hold your phone to the tag on the shelf', scanning: 'Scanning…', found: 'Tag found', notfound: 'Tag not found', qr: 'Scan the QR code' }[state];
+    let art = `<div class="nfc__art" aria-hidden="true"><span class="nfc__ring"></span><span class="nfc__ring"></span><span class="nfc__ring"></span><span class="nfc__core nfc__phone">${icon(core)}</span></div>`;
+    if (state === 'qr') art = `<div class="nfc__qr" aria-hidden="true">${icon('qr-code', 'icon--lg icon--on-primary')}</div>`;
+    let actions = '';
+    if (state === 'idle') actions = UI.button({ label: 'Tap shelf tag', variant: 'on-brand', icon: 'tap-nfc', block: true, attrs: `data-nfc-tap="${id}"` })
+      + UI.button({ label: 'Scan the QR code instead', variant: 'outline-on-brand', icon: 'qr-code', block: true, attrs: `data-nfc-qr="${id}"` });
+    if (state === 'scanning') actions = UI.button({ label: 'Tap shelf tag', variant: 'on-brand', loading: true, block: true });
+    if (state === 'notfound') actions = UI.button({ label: 'Try again', variant: 'on-brand', icon: 'retry', block: true, attrs: `data-nfc-tap="${id}"` })
+      + UI.button({ label: 'Scan the QR code', variant: 'outline-on-brand', icon: 'qr-code', block: true, attrs: `data-nfc-qr="${id}"` })
+      + UI.button({ label: 'Type shelf code', variant: 'outline-on-brand', icon: 'shelf-code', block: true, attrs: 'data-action="shelf-code"' });
+    if (state === 'qr') actions = UI.button({ label: 'Use sample QR code', variant: 'on-brand', icon: 'qr-code', block: true, attrs: `data-nfc-sampleqr="${id}"` })
+      + UI.button({ label: 'Type shelf code', variant: 'outline-on-brand', icon: 'shelf-code', block: true, attrs: 'data-action="shelf-code"' });
+    return `<section class="nfc" data-state="${state}" data-nfc="${id}">
+      <div class="nfc__stage">${art}<p class="nfc__status" aria-live="polite">${status}</p></div>
+      <div class="nfc__actions">${actions}</div></section>`;
+  },
+  foodItem({ id, name, bb, qty = 1, max = 9, state = '' }) {
+    return `<article class="item ${state === 'edited' ? 'is-edited' : ''}" data-item="${id}">
+      <span class="item__thumb">${icon('sealed-food')}</span>
+      <div class="item__main">
+        <h3 class="item__name">${esc(name)}</h3>
+        <p class="item__meta"><span>${icon('best-before')}Best before ${esc(bb)}</span><span>${icon('sealed-badge')}Sealed</span></p>
+        ${UI.stepper({ id: 'q-' + id, value: qty, min: 1, max, label: `Quantity of ${name}` })}
+      </div>
+      <div class="item__tools">${UI.iconButton('edit', `Edit ${name}`, `data-edit="${id}"`)}${UI.iconButton('remove', `Remove ${name}`, `data-remove="${id}"`)}</div>
+    </article>`;
+  },
+  pickItem({ id, name, bb, onShelf = 1, checked = false, qty = 1 }) {
+    return `<article class="item item--check${checked ? ' is-checked' : ''}" data-pick="${id}">
+      ${UI.checkbox({ id: 'pick-' + id, label: `<span class="vh">${esc(name)}</span>`, checked, attrs: `data-pick-box="${id}"` })}
+      <div class="item__main">
+        <h3 class="item__name">${esc(name)}</h3>
+        <p class="item__meta"><span>BB ${esc(bb)}${onShelf > 1 ? ` · ${onShelf} on shelf` : ''}</span></p>
+        ${checked && onShelf > 1 ? `<div class="item__taking"><span>Taking</span>${UI.stepper({ id: 'take-' + id, value: qty, min: 1, max: onShelf, label: `How many ${name}` })}</div>` : ''}
+      </div></article>`;
+  },
+  marker(n, state = 'default') {
+    const badge = { full: icon('shelf-full', 'icon--accent'), paused: icon('paused', 'icon--warning'), closed: icon('close', 'icon--secondary') }[state];
+    const word = { default: '', selected: ', selected', full: ', full shelf', paused: ', paused', closed: ', closed' }[state];
+    return `<span class="marker marker--${state}" role="img" aria-label="Shelf ${n}${word}">${n}${badge ? `<span class="marker__badge">${badge}</span>` : ''}</span>`;
+  },
+  avail(kind, label) {
+    if (kind === 'full') return `<span class="avail avail--full">${icon('shelf-full')}<span>Full shelf</span></span>`;
+    if (kind === 'closed') return `<span class="avail avail--closed">${icon('paused')}<span>${esc(label || 'Closed')}</span></span>`;
+    return `<span class="avail avail--space">${esc(label)}</span>`;
+  },
+  shelfCard({ n, dist, venue, hours, kind, spots }) {
+    return `<a class="shelf${kind === 'closed' ? ' is-closed' : ''}" href="#/point/${n}">
+      <div class="shelf__photo"><span class="placeholder">${icon('photo')}<span>Photo placeholder</span></span>${UI.marker(n)}</div>
+      <div class="shelf__body"><span class="shelf__dist">${esc(dist)}</span><span class="shelf__venue">${esc(venue)}</span><span class="shelf__hours">${esc(hours)}</span>${UI.avail(kind, spots)}</div></a>`;
+  },
+  resultRow({ n, venue, meta, kind, spots, selected = false }) {
+    return `<a class="result${selected ? ' is-selected' : ''}" href="#/take/point/${n}">${UI.marker(n, selected ? 'selected' : kind === 'full' ? 'full' : kind === 'closed' ? 'closed' : 'default')}
+      <span class="result__main"><span class="t-title">${esc(venue)}</span><span class="result__meta">${esc(meta)}</span>${UI.avail(kind, spots)}</span>${icon('chevron-right')}</a>`;
+  },
+  settingsRow({ ic, tile = '', icls = '', title, sub, toggle = null, href = '' }) {
+    const right = toggle ? `<span class="toggle-wrap"><button type="button" class="toggle" role="switch" aria-checked="${toggle.on}" aria-label="${esc(title)}" ${toggle.disabled ? 'disabled' : ''} ${toggle.attrs || ''}></button></span>` : icon('chevron-right');
+    const tag = toggle ? 'div' : 'button';
+    return `<${tag} ${tag === 'button' ? 'type="button"' : ''} class="settings__row" ${href ? `data-href="${href}"` : ''}><span class="tile ${tile}">${icon(ic, icls)}</span>
+      <span class="settings__text"><span class="settings__title" style="display:block">${esc(title)}</span><span class="settings__sub">${esc(sub)}</span></span>${right}</${tag}>`;
+  },
+  toggle({ on = false, disabled = false, label = 'Toggle' } = {}) {
+    return `<span class="toggle-wrap"><button type="button" class="toggle" role="switch" aria-checked="${on}" aria-label="${esc(label)}" ${disabled ? 'disabled' : ''}></button></span>`;
+  },
+  profileRow(u) {
+    return `<button type="button" class="card profile"><span class="avatar" aria-hidden="true">${esc(u.initials)}</span>
+      <span class="grow"><span class="t-title" style="display:block">${esc(u.name)}</span><span class="t-small c-secondary">${esc(u.email)}</span></span>${icon('chevron-right')}</button>`;
+  },
+  impact({ month = 'November', passed = 11, saved = 8 } = {}) {
+    return `<section class="impact"><div class="impact__head"><span class="t-overline">My impact · ${esc(month)}</span>${icon('saved-food')}</div>
+      <div class="impact__nums"><div><p class="impact__num">${passed}</p><p class="impact__cap">items passed on</p></div>
+      <div><p class="impact__num">${saved}</p><p class="impact__cap">saved by neighbours</p></div></div></section>`;
+  },
+  hostCard() {
+    return `<button type="button" class="hostcard" data-action="host-mode"><span class="tile tile--sand">${icon('community-shelf', 'icon--on-inverse')}</span>
+      <span class="grow"><span class="t-title" style="display:block">Switch to host mode</span><span class="settings__sub">Run a community shelf at your café</span></span>${icon('chevron-right', 'chev')}</button>`;
+  },
+  greeting(u) {
+    return `<header class="greet"><h1 class="t-h1">Hi ${esc(u.first)}</h1><a href="#/me" class="avatar" aria-label="Me">${esc(u.initials)}</a></header>`;
+  },
+  tabBar(mode, current) {
+    const tabs = mode === 'host'
+      ? [['dashboard', 'Dashboard', '#/host/dashboard'], ['shelf-check', 'Check', '#/host/check'], ['redeem', 'Redeem', '#/host/redeem'], ['profile', 'Me', '#/me']]
+      : [['home', 'Home', '#/home'], ['map', 'Map', '#/map'], ['coupon', 'Coupons', '#/coupons'], ['profile', 'Me', '#/me']];
+    return tabs.map(([ic, label, href]) => `<a class="tab" href="${href}" ${current === href ? 'aria-current="page"' : ''}><span class="tab__pill">${icon(ic)}</span><span>${label}</span></a>`).join('');
+  },
+  qr(seed = 'SS-4821') {
+    // Schematic 21×21 QR-like pattern (not scannable), deterministic from the seed
+    let h = 0; for (const c of seed) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+    const rnd = () => (h = (h * 1664525 + 1013904223) >>> 0) / 4294967296;
+    const N = 21, cells = [];
+    const finder = (x, y) => { for (let i = 0; i < 7; i++) for (let j = 0; j < 7; j++) { const e = i === 0 || j === 0 || i === 6 || j === 6, c = i > 1 && i < 5 && j > 1 && j < 5; if (e || c) cells.push([x + i, y + j]); } };
+    const inFinder = (x, y) => (x < 8 && y < 8) || (x > 12 && y < 8) || (x < 8 && y > 12);
+    finder(0, 0); finder(14, 0); finder(0, 14);
+    for (let x = 0; x < N; x++) for (let y = 0; y < N; y++) if (!inFinder(x, y) && rnd() > .55) cells.push([x, y]);
+    return `<svg viewBox="0 0 ${N} ${N}" shape-rendering="crispEdges" aria-hidden="true">${cells.map(([x, y]) => `<rect x="${x}" y="${y}" width="1" height="1" fill="currentColor"/>`).join('')}</svg>`;
+  },
+  qrSheet({ state = 'active', code = 'SS-4821', venue = 'Café Daisy' } = {}) {
+    return `<div class="qrsheet${state === 'used' ? ' is-used' : ''}">
+      <p class="t-overline c-secondary">Show at the counter</p>
+      <h2 class="t-h2">Thank-you coupon</h2>
+      <p class="t-small c-secondary">${esc(venue)}</p>
+      <div class="qr" role="img" aria-label="Counter code ${esc(code)}">${UI.qr(code)}</div>
+      <p class="qrcode-text">${esc(code)}</p>
+      ${state === 'used' ? UI.statusLabel('done', 'Used') : '<p class="t-small c-secondary">Works once. Staff scan it at the counter.</p>'}
+      <dl style="width:100%"><div class="kv"><dt>Offer value</dt><dd>To be agreed</dd></div><div class="kv"><dt>Expiry</dt><dd>To be agreed</dd></div></dl>
+    </div>`;
+  },
+  capture(state = 'empty') {
+    let inner = `<div class="capture__guide"></div><div class="capture__msg">${icon('camera')}<p class="t-title">Your items only</p><p class="t-small c-secondary">on a table or in your hands</p></div>`;
+    if (state === 'captured') inner = `${SAMPLE_PHOTO}`;
+    if (state === 'reading') inner = `<div class="capture__overlay" role="status"><span class="spinner" aria-hidden="true"></span><span>Reading your photo</span></div><span class="capture__scan" aria-hidden="true"></span>`;
+    if (state === 'unreadable') inner = `<div class="capture__msg">${icon('needs-attention', 'icon--lg icon--problem')}</div>`;
+    return `<div class="capture" data-capture="${state}">${inner}</div>${state === 'unreadable' ? `<div style="margin-top:var(--space-12)">${UI.banner('problem', 'Couldn’t read the photo')}</div>` : ''}`;
+  },
+  verifyCard(state) {
+    const m = { pending: ['paused', 'icon--warning', 'Registration check', 'In progress'], verified: ['verified', 'icon--success', 'Registration check', 'Verified'], info: ['needs-attention', 'icon--problem', 'Registration check', 'Needs info'] }[state];
+    return `<div class="verify">${icon(m[0], m[1])}<div><p class="verify__label">${m[2]}</p><p class="verify__line">${m[3]}</p></div></div>`;
+  },
+  benefits() {
+    const rows = [['community-care', 'A neighbourly welcome', 'Givers and receivers visit your café'], ['paused', 'About 2 minutes a day', 'A short shelf check, with a reminder'], ['starter-kit', 'A free starter kit', 'Shelf, sign, NFC plate, QR and window sticker']];
+    return `<ul class="benefits">${rows.map(r => `<li class="benefit"><span class="tile">${icon(r[0])}</span><div><p class="t-title">${r[1]}</p><p class="t-small c-secondary">${r[2]}</p></div></li>`).join('')}</ul>`;
+  },
+  checkRow({ id, name, reason, state = 'tocheck' }) {
+    const keep = state === 'kept', rem = state === 'removed';
+    return `<article class="checkrow${keep ? ' is-kept' : rem ? ' is-removed' : state === 'flagged' ? ' is-flagged' : ''}" data-check="${id}">
+      <div class="row"><span class="item__thumb">${icon('sealed-food')}</span><div class="grow"><p class="t-title">${esc(name)}</p><p class="t-small c-secondary">${esc(reason)}</p></div></div>
+      ${state === 'flagged' ? UI.statusLabel('problem', 'Choose Keep or Remove') : ''}
+      <div class="checkrow__btns">
+        ${UI.button({ label: 'Keep', variant: 'secondary', icon: 'done', attrs: `aria-pressed="${keep}" data-decide="keep"` })}
+        ${UI.button({ label: 'Remove', variant: 'secondary', icon: 'remove', attrs: `aria-pressed="${rem}" data-decide="remove"` })}
+      </div></article>`;
+  },
+  logRow({ kind, time, ref = '' }) {
+    const m = { dropoff: ['sealed-food', 'Drop-off'], pickup: ['pickup-bag', 'Pickup'], redeem: ['coupon', 'Coupon redeemed'], check: ['shelf-check', 'Daily check done'] }[kind];
+    return `<li class="log__row"><span class="tile tile--sm tile--canvas">${icon(m[0], 'icon--sm')}</span><div class="grow"><p class="t-body">${m[1]}</p>${ref ? `<p class="t-small c-secondary">${esc(ref)}</p>` : ''}</div><span class="log__time">${esc(time)}</span></li>`;
+  },
+  empty({ ic, title, line, action = '' }) {
+    return `<div class="empty">${icon(ic, 'icon--lg icon--tertiary')}<h2 class="t-h3">${esc(title)}</h2><p class="t-body c-secondary">${esc(line)}</p>${action}</div>`;
+  }
+};
+function highlight(text, q) {
+  if (!q) return esc(text);
+  const i = text.toLowerCase().indexOf(q.toLowerCase());
+  if (i < 0) return esc(text);
+  return esc(text.slice(0, i)) + '<mark>' + esc(text.slice(i, i + q.length)) + '</mark>' + esc(text.slice(i + q.length));
+}
+/* Labelled warm placeholder for the sample photo (design-system §12) */
+const SAMPLE_PHOTO = `<div class="capture__img placeholder" style="background:var(--surface-subtle)">${icon('photo', 'icon--lg')}<span>Sample photo: pasta, 2 tins of soup, crackers</span></div>`;
+
+/* =====================================================================
+   OVERLAYS: toast + bottom sheet
+   ===================================================================== */
+function toast(kind, html, { action, onAction, ms = 5000, ic } = {}) {
+  const host = $('#toasts');
+  const el = document.createElement('div');
+  el.innerHTML = UI.banner(kind, html, { ic, action: action ? `<button type="button" class="btn btn--link banner__action">${icon('undo')}<span>${esc(action)}</span></button>` : '' });
+  const t = el.firstElementChild; t.classList.add('toast');
+  host.appendChild(t);
+  const close = () => { t.classList.add('is-leaving'); setTimeout(() => t.remove(), 160); };
+  if (action) $('.banner__action', t).addEventListener('click', () => { onAction && onAction(); close(); });
+  setTimeout(close, ms);
+  return close;
+}
+function openSheet(title, body, { onClose } = {}) {
+  const host = $('#sheet');
+  const lastFocus = document.activeElement;
+  host.innerHTML = `<div class="sheet-scrim" data-sheet-close></div>
+    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
+      <div class="sheet__grabber" aria-hidden="true"></div>
+      <div class="sheet__head"><h2 class="t-h3" id="sheet-title">${esc(title)}</h2>${UI.iconButton('close', 'Close', 'data-sheet-close')}</div>
+      ${body}</div>`;
+  host.classList.add('is-open');
+  const close = () => { host.classList.remove('is-open'); host.innerHTML = ''; onClose && onClose(); lastFocus && lastFocus.focus && lastFocus.focus(); };
+  $$('[data-sheet-close]', host).forEach(b => b.addEventListener('click', close));
+  setTimeout(() => { const f = $('.sheet button, .sheet input', host); f && f.focus(); }, 50);
+  host._close = close;
+  return close;
+}
+const closeSheet = () => { const h = $('#sheet'); h._close && h._close(); };
+
+/* =====================================================================
+   ROUTER: hash routes, push/back direction, tab bar visibility
+   ===================================================================== */
+const Router = {
+  routes: [],
+  stack: [],
+  add(pattern, view, opts = {}) {
+    const keys = [];
+    const re = new RegExp('^' + pattern.replace(/:([a-z]+)/g, (_, k) => (keys.push(k), '([^/]+)')) + '$');
+    this.routes.push({ pattern, re, keys, view, opts });
+  },
+  parse() {
+    const raw = location.hash.replace(/^#/, '') || '';
+    const [path, qs = ''] = raw.split('?');
+    return { path: path || '', query: Object.fromEntries(new URLSearchParams(qs)), raw };
+  },
+  match(path) {
+    for (const r of this.routes) { const m = path.match(r.re); if (m) return { r, params: Object.fromEntries(r.keys.map((k, i) => [k, decodeURIComponent(m[i + 1])])) }; }
+    return null;
+  },
+  go(hash) { if (location.hash === hash) this.render('none'); else location.hash = hash; },
+  back() { if (this.stack.length > 1) history.back(); else this.go(DEFAULT_ROUTE); },
+  direction(raw) {
+    const s = this.stack;
+    if (s.length > 1 && s[s.length - 2] === raw) { s.pop(); return 'back'; }
+    if (s[s.length - 1] === raw) return 'none';
+    s.push(raw); return s.length === 1 ? 'none' : 'fwd';
+  },
+  render(dirOverride) {
+    const { path, query, raw } = this.parse();
+    const found = this.match(path);
+    if (!found) { location.replace('#' + DEFAULT_ROUTE.replace(/^#/, '')); return; }
+    const dir = dirOverride || this.direction(raw);
+    const { r, params } = found;
+    const stage = $('#stage');
+    const old = stage.firstElementChild && !stage.firstElementChild.classList.contains('leave-fwd') && !stage.firstElementChild.classList.contains('leave-back') ? stage.firstElementChild : null;
+    $$('.screen', stage).forEach(s => { if (s !== old) s.remove(); });
+    const el = document.createElement('section');
+    el.className = 'screen' + (r.opts.cls ? ' ' + r.opts.cls : '');
+    el.setAttribute('aria-label', r.opts.title || 'SecondShelf');
+    el.innerHTML = r.view.html({ params, query });
+    stage.appendChild(el);
+    // tab bar
+    const tb = $('#tabbar');
+    if (r.opts.tabs) { tb.hidden = false; tb.innerHTML = UI.tabBar(Store.state.mode, r.opts.tabs); $('#app').classList.add('has-tabs'); }
+    else { tb.hidden = true; $('#app').classList.remove('has-tabs'); }
+    // transition
+    const anim = !reduceMotion() && old && dir !== 'none';
+    if (anim) {
+      el.classList.add(dir === 'back' ? 'enter-back' : 'enter-fwd');
+      old.classList.add(dir === 'back' ? 'leave-back' : 'leave-fwd');
+      setTimeout(() => { old.remove(); el.classList.remove('enter-back', 'enter-fwd'); }, 260);
+    } else if (old) old.remove();
+    document.title = (r.opts.title ? r.opts.title + ' · ' : '') + 'SecondShelf';
+    Store.log('view', { route: raw || path });
+    r.view.mount && r.view.mount(el, { params, query });
+    const h = $('h1', el); if (h && dir !== 'none') { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); }
+  }
+};
+
+/* =====================================================================
+   GLOBAL DELEGATED INTERACTIONS (work on every screen)
+   ===================================================================== */
+const Actions = {
+  back: () => Router.back(),
+  'show-qr': () => openSheet('Your coupon', UI.qrSheet() + `<div style="margin-top:var(--space-24)">${UI.button({ label: 'Done', icon: 'done', block: true, attrs: 'data-sheet-close' })}</div>`),
+  'shelf-code': () => openSheet('Type shelf code', UI.input({ id: 'shelfcode', label: 'Shelf code', placeholder: 'e.g. SS-0002', attrs: 'inputmode="text" autocapitalize="characters"' }) + `<div style="margin-top:var(--space-24)">${UI.button({ label: 'Confirm', block: true, attrs: 'data-sheet-close' })}</div>`)
+};
+document.addEventListener('click', e => {
+  const t = e.target;
+  // steppers
+  const sb = t.closest('[data-step]');
+  if (sb && !sb.disabled) {
+    const wrap = sb.closest('[data-stepper]');
+    const min = +wrap.dataset.min, max = +wrap.dataset.max;
+    const v = $('.stepper__value', wrap);
+    const n = Math.min(max, Math.max(min, +v.textContent + +sb.dataset.step));
+    v.textContent = n;
+    $('[data-step="-1"]', wrap).disabled = n <= min;
+    $('[data-step="1"]', wrap).disabled = n >= max;
+    wrap.dispatchEvent(new CustomEvent('stepper', { bubbles: true, detail: { id: wrap.dataset.stepper, value: n } }));
+    return;
+  }
+  // filter chips toggle
+  const ch = t.closest('.chip[aria-pressed]');
+  if (ch && !ch.hasAttribute('data-nochip')) {
+    const on = ch.getAttribute('aria-pressed') !== 'true';
+    ch.setAttribute('aria-pressed', on);
+    const lead = $('svg', ch); const label = $('span', ch).textContent;
+    if (on && !lead) ch.insertAdjacentHTML('afterbegin', icon('done'));
+    if (!on && lead && !ch.dataset.icon) lead.remove();
+    ch.dispatchEvent(new CustomEvent('chip', { bubbles: true, detail: { label, on } }));
+    return;
+  }
+  // segmented control
+  const seg = t.closest('.segmented__seg');
+  if (seg) {
+    const grp = seg.closest('[data-seg]');
+    $$('.segmented__seg', grp).forEach(s => s.setAttribute('aria-selected', s === seg));
+    grp.dispatchEvent(new CustomEvent('seg', { bubbles: true, detail: { id: grp.dataset.seg, index: +seg.dataset.segI } }));
+    return;
+  }
+  // toggles
+  const tg = t.closest('.toggle[role="switch"]');
+  if (tg && !tg.disabled) {
+    const on = tg.getAttribute('aria-checked') !== 'true';
+    tg.setAttribute('aria-checked', on);
+    tg.dispatchEvent(new CustomEvent('toggle', { bubbles: true, detail: { on } }));
+    return;
+  }
+  // search clear
+  const cl = t.closest('[data-clear]');
+  if (cl) { const inp = document.getElementById(cl.dataset.clear); inp.value = ''; inp.dispatchEvent(new Event('input', { bubbles: true })); inp.focus(); return; }
+  // named actions
+  const a = t.closest('[data-action]');
+  if (a && Actions[a.dataset.action]) { e.preventDefault(); Actions[a.dataset.action](a, e); return; }
+  // rows that navigate
+  const hr = t.closest('[data-href]');
+  if (hr) { Router.go(hr.dataset.href); }
+});
+
+/* NFC tap card controller (shared by G04, R04, H05) */
+const NFC = {
+  async tap(section, { onFound, fail = false } = {}) {
+    const id = section.dataset.nfc;
+    const swap = st => { const n = document.createElement('div'); n.innerHTML = UI.nfc({ state: st, id }); const fresh = n.firstElementChild; section.replaceWith(fresh); section = fresh; announce($('.nfc__status', fresh).textContent); return fresh; };
+    swap('scanning');
+    await wait(1200);
+    if (fail) { swap('notfound'); return; }
+    swap('found'); buzz();
+    await wait(600);
+    onFound && onFound(section);
+  },
+  qr(section) { const n = document.createElement('div'); n.innerHTML = UI.nfc({ state: 'qr', id: section.dataset.nfc }); section.replaceWith(n.firstElementChild); announce('Scan the QR code'); }
+};
+
+/* =====================================================================
+   VIEWS
+   ===================================================================== */
+const Views = {};
+
+/* ---------- Hidden component gallery: #/components ---------- */
+Views.components = {
+  html() {
+    const u = Store.state.user;
+    const sec = (id, title, recipe, body) => `<section class="gal__sec" id="c-${id}"><h2 class="t-h2">${title}</h2><p class="gal__recipe">${recipe}</p>${body}</section>`;
+    const st = s => `<span class="gal__state">${s}</span>`;
+    const sw = names => `<div class="gal__swatches">${names.map(n => `<div class="swatch"><div class="swatch__chip" style="background:var(--${n})"></div><div class="swatch__name">--${n}</div></div>`).join('')}</div>`;
+    const icons = $$('#sprite symbol').map(s => s.id.replace('ss-', ''));
+    const toc = ['tokens', 'type', 'icons', 'button', 'input', 'search', 'chip', 'checkbox', 'stepper', 'card', 'action', 'feature', 'status', 'banner', 'coupon', 'segmented', 'bonus', 'nfc', 'item', 'marker', 'mapctl', 'statuslist', 'shelf', 'avail', 'settings', 'toggle', 'profile', 'impact', 'host', 'greeting', 'stephead', 'qrsheet', 'capture', 'result', 'verify', 'benefit', 'checkrow', 'log', 'topbar', 'tabbar', 'sheet', 'empty'];
+    return `<div class="gal">
+      <h1 class="t-h1">Components</h1>
+      <p class="gal__intro">UI Kit v0.5 · hidden page for the team. Every component from design-system.md §8 with its states. Sample text comes from CLAUDE.md and the frames.</p>
+      <nav class="gal__toc" aria-label="Components">${toc.map(t => `<a href="#c-${t}" data-jump="c-${t}">${t}</a>`).join('')}</nav>
+
+      ${sec('tokens', 'Colour tokens', 'Semantic tokens only in components (§2).',
+        st('Text') + sw(['text-primary', 'text-secondary', 'text-tertiary', 'text-disabled', 'text-brand', 'text-accent', 'text-reward', 'text-problem', 'text-success']) +
+        st('Surfaces') + sw(['surface-canvas', 'surface-default', 'surface-subtle', 'surface-selected', 'surface-brand', 'surface-accent', 'surface-accent-subtle', 'surface-reward', 'surface-reward-subtle', 'surface-inverse', 'surface-brand-soft', 'surface-unavailable', 'surface-progress', 'surface-segment']) +
+        st('Actions and borders') + sw(['action-primary', 'action-primary-hover', 'action-primary-pressed', 'action-accent', 'action-accent-pressed', 'action-disabled', 'border-subtle', 'border-strong', 'border-brand', 'border-focus']) +
+        st('Icons') + sw(['icon-primary', 'icon-secondary', 'icon-tertiary', 'icon-accent', 'icon-reward', 'icon-on-inverse', 'icon-success', 'icon-warning', 'icon-problem', 'icon-info']))}
+
+      ${sec('type', 'Typography', 'Fraunces Bold 20px+ (Pantry Green); Rubik 400/500 for everything else (§3).',
+        `<div class="stack-8"><p class="t-display">Display 32/40</p><p class="t-h1">Heading 1 28/36</p><p class="t-h2">Heading 2 24/32</p><p class="t-h3">Heading 3 20/28</p>
+        <p class="t-section">Section 20/28</p><p class="t-title">Title 18/24</p><p class="t-body-large">Body large 18/28</p><p class="t-body">Body 16/24</p>
+        <p class="t-small">Body small 14/20</p><p class="t-label">Label 14/20</p><p class="t-caption">Caption 12/16</p><p class="t-overline">Overline 12/16</p></div>`)}
+
+      ${sec('icons', 'Icons', `SecondShelf icon library v2.0: ${icons.length} icons, 24px, colour from icon tokens (§7).`,
+        `<div class="gal__icons">${icons.map(n => `<div class="gal__icon">${icon(n)}<span>${n}</span></div>`).join('')}</div>
+        ${st('Sizes 16 · 20 · 24 · 32')}<div class="gal__wrap">${icon('saved-food', 'icon--xs')}${icon('saved-food', 'icon--sm')}${icon('saved-food')}${icon('saved-food', 'icon--lg')}</div>
+        ${st('Colour tokens')}<div class="gal__wrap">${['', 'icon--secondary', 'icon--tertiary', 'icon--accent', 'icon--reward', 'icon--success', 'icon--warning', 'icon--problem', 'icon--info', 'icon--disabled'].map(c => icon('community-shelf', c)).join('')}</div>`)}
+
+      ${sec('button', 'Button', 'v0.5 pill, 48px, padding 12/24, optional 20px leading icon. Accent = one closing action per flow.',
+        st('Primary') + `<div class="stack-8">${UI.button({ label: 'Take photo', icon: 'camera', block: true })}${UI.button({ label: 'Hover', block: true, state: 'is-hover' })}${UI.button({ label: 'Pressed', block: true, state: 'is-pressed' })}${UI.button({ label: 'Focus', block: true, state: 'is-focus' })}${UI.button({ label: 'Loading', block: true, loading: true })}${UI.button({ label: 'Disabled', block: true, disabled: true })}</div>` +
+        st('Accent (closing action)') + `<div class="stack-8">${UI.button({ label: 'Confirm drop-off', variant: 'accent', icon: 'done', block: true })}${UI.button({ label: 'Pressed', variant: 'accent', block: true, state: 'is-pressed' })}${UI.button({ label: 'Confirm drop-off', variant: 'accent', icon: 'done', block: true, disabled: true })}</div>` +
+        st('Secondary') + `<div class="stack-8">${UI.button({ label: 'Use sample photo', variant: 'secondary', icon: 'photo', block: true })}${UI.button({ label: 'Hover', variant: 'secondary', block: true, state: 'is-hover' })}${UI.button({ label: 'Pressed', variant: 'secondary', block: true, state: 'is-pressed' })}${UI.button({ label: 'Disabled', variant: 'secondary', block: true, disabled: true })}</div>` +
+        st('Text link') + `<div class="gal__wrap">${UI.button({ label: 'Add items manually', variant: 'link' })}${UI.button({ label: 'Pressed', variant: 'link', state: 'is-pressed' })}${UI.button({ label: 'Disabled', variant: 'link', disabled: true })}</div>` +
+        st('On a task screen (surface-brand)') + `<div class="gal__brand on-brand stack-8">${UI.button({ label: 'Tap shelf tag', variant: 'on-brand', icon: 'tap-nfc', block: true })}${UI.button({ label: 'Type shelf code', variant: 'outline-on-brand', icon: 'shelf-code', block: true })}</div>`)}
+
+      ${sec('input', 'Input', 'Label above, 48px field, radius-md, 1.5px border-strong, 16px text.',
+        `<div class="stack">${UI.input({ id: 'in1', label: 'Item name', placeholder: 'e.g. Canned soup' })}${UI.input({ id: 'in2', label: 'Item name', placeholder: 'e.g. Canned soup', state: 'is-focus' })}
+        ${UI.input({ id: 'in3', label: 'Item name', value: 'Fusilli pasta, 500 g' })}${UI.input({ id: 'in4', label: 'Shelf code', value: 'SS-00', error: 'Shelf code not found' })}
+        ${UI.input({ id: 'in5', label: 'Item name', value: 'Crackers, 200 g', disabled: true })}</div>`)}
+
+      ${sec('search', 'Search field', 'Flat pill, border-strong, gold search icon, round filter button, suggestions list. Type “pa” to try it.',
+        st('Empty (live)') + `<div id="gal-search">${UI.search({ id: 'gs' })}</div>` +
+        st('Typing with suggestions') + UI.search({ id: 'gs2', value: 'pa', suggestions: ['Pasta', 'Pasta sauce'] }) +
+        st('Results') + UI.search({ id: 'gs3', value: 'pasta' }))}
+
+      ${sec('chip', 'Filter chip', 'Pill, min 44px, label type. Selected = action-primary + tick.',
+        `<div class="chips">${UI.chip('Open now')}${UI.chip('Has space', { pressed: true })}${UI.chip('Nearby')}</div>
+        ${st('With icon')}<div class="chips">${UI.chip('Sort: nearest', { ic: 'sort', attrs: 'data-nochip' })}</div>`)}
+
+      ${sec('checkbox', 'Checkbox row', '24px box (radius-xs) in a 44px target.',
+        `${UI.checkbox({ id: 'cb1', label: 'All items are sealed and within their date' })}
+        ${UI.checkbox({ id: 'cb2', label: 'All items are sealed and within their date', checked: true })}
+        ${UI.checkbox({ id: 'cb3', label: 'All items are sealed and within their date', disabled: true })}
+        ${st('In a Leaf panel (G06)')}<div class="check-panel">${UI.checkbox({ id: 'cb4', label: 'All items are sealed and within their date', checked: true })}</div>`)}
+
+      ${sec('stepper', 'Quantity stepper', 'v0.5 round, 44px buttons.',
+        st('Default') + UI.stepper({ id: 's1', value: 2, min: 1, max: 4 }) + st('Min (minus disabled)') + UI.stepper({ id: 's2', value: 1, min: 1, max: 4 }) + st('Max (plus disabled)') + UI.stepper({ id: 's3', value: 4, min: 1, max: 4 }))}
+
+      ${sec('card', 'Card', 'Paper, radius-lg 16, padding 16, optional shadow-card.',
+        `<div class="stack"><div class="card">Default</div><div class="card card--shadow">With shadow-card (tappable)</div><div class="card is-pressed">Pressed</div><div class="card is-selected">Selected (border-brand)</div><div class="card card--selected-fill">Selected (surface-selected)</div></div>`)}
+
+      ${sec('action', 'Action card (Home)', 'Equal size. Leave food: terracotta tint tile; Find food: ochre tint tile.',
+        `<div class="action-cards">${UI.actionCard('leave')}${UI.actionCard('find')}</div>${st('Pressed')}<div class="action-cards">${UI.actionCard('leave', 'is-pressed')}${UI.actionCard('find', 'is-pressed')}</div>`)}
+
+      ${sec('feature', 'Feature card', 'surface-accent-subtle, overline text-accent, icon-accent.',
+        `<div class="feature">${icon('new', 'icon--accent')}<div><p class="t-overline">New shelf</p><p class="t-title">Café Daisy</p><p class="t-small c-secondary">200 m · Open until 20:00</p></div></div>`)}
+
+      ${sec('status', 'Status label', 'Status icon + Ink label. Never colour alone.',
+        `<div class="stack-8">${UI.statusLabel('done', 'Picked up')}${UI.statusLabel('waiting', 'On the shelf')}${UI.statusLabel('problem', 'Not here? Report missing stock')}${UI.statusLabel('info', 'Numbers identify shelves, not item counts.')}</div>`)}
+
+      ${sec('banner', 'Banner / toast', 'radius-md, padding 12/16, icon + text + optional action. No red.',
+        `<div class="stack-8">${UI.banner('success', '<strong>Tag found</strong> · Café Daisy, shelf 2')}
+        ${UI.banner('info', 'Coupon value, expiry and monthly cap are still being agreed.')}
+        ${UI.banner('problem', 'Couldn’t read the photo', { action: UI.button({ label: 'Try again', variant: 'link', icon: 'retry' }).replace('btn btn--link', 'btn btn--link banner__action') })}
+        ${UI.banner('reward', '2 of your items were saved')}</div>
+        ${st('Toast with Undo (5 s)')}${UI.button({ label: 'Show Undo toast', variant: 'secondary', attrs: 'data-gal="toast"' })}`)}
+
+      ${sec('coupon', 'Coupon ticket', 'v0.5 light: Paper, 6px gold band, coupon icon in icon-reward, tear line with notches, Primary Show button. Values say “To be agreed”.',
+        st('Active') + UI.coupon({ state: 'active' }) + st('Pending') + UI.coupon({ state: 'pending' }) + st('Used') + UI.coupon({ state: 'used' }) + st('Expired') + UI.coupon({ state: 'expired' }))}
+
+      ${sec('segmented', 'Segmented control', 'Oat pill track, 4px padding, selected segment Paper + Rubik 500, role=tablist.',
+        UI.segmented(['Active (2)', 'Used (1)'], 0, { id: 'g-seg' }) + st('Map / List toggle') + UI.segmented([{ label: 'Map', icon: 'map' }, { label: 'List', icon: 'list' }], 1, { id: 'g-ml' }))}
+
+      ${sec('bonus', 'Rescue Bonus card', 'Gold fill on the track, always with the text “n of N picked up · pending”. No targets or countdowns.',
+        `<div class="stack">${UI.rescueBonus({ picked: 0 })}${UI.rescueBonus({ picked: 2 })}${UI.rescueBonus({ picked: 4 })}${UI.rescueBonus({ picked: 2, state: 'expired' })}</div>`)}
+
+      ${sec('nfc', 'NFC tap card', 'Idle → Scanning 1.2 s → Found → auto-advance 600 ms. Alternative: QR. Error: not found → retry, QR, shelf code.',
+        st('Live (tap the button)') + `<div class="gal__brand on-brand" id="gal-nfc">${UI.nfc({ state: 'idle', id: 'g1' })}</div>` +
+        st('Scanning') + `<div class="gal__brand on-brand">${UI.nfc({ state: 'scanning', id: 'g2' })}</div>` +
+        st('Found') + `<div class="gal__brand on-brand">${UI.nfc({ state: 'found', id: 'g3' })}</div>` +
+        st('Not found') + `<div class="gal__brand on-brand">${UI.nfc({ state: 'notfound', id: 'g4' })}</div>` +
+        st('QR fallback') + `<div class="gal__brand on-brand">${UI.nfc({ state: 'qr', id: 'g5' })}</div>`)}
+
+      ${sec('item', 'Food item row', 'Thumb radius-sm, title, best-before, sealed badge, round stepper, 44px edit and remove; min 72px.',
+        st('Default') + `<div id="gal-items" class="stack-8">${UI.foodItem({ id: 'fusilli', name: 'Fusilli pasta, 500 g', bb: '03/2027' })}${UI.foodItem({ id: 'soup', name: 'Tomato soup, 400 g can', bb: '08/2027', qty: 2 })}</div>` +
+        st('Edited') + UI.foodItem({ id: 'crackers-e', name: 'Crackers, 200 g', bb: '01/2027', state: 'edited' }) +
+        st('Checkbox variant (receiver, R05)') + `<div class="stack-8">${UI.pickItem({ id: 'p1', name: 'Fusilli pasta, 500 g', bb: '03/2027', checked: true })}${UI.pickItem({ id: 'p2', name: 'Tomato soup, 400 g can', bb: '08/2027', onShelf: 2, checked: true })}${UI.pickItem({ id: 'p3', name: 'Crackers, 200 g', bb: '01/2027' })}</div>`)}
+
+      ${sec('marker', 'Map marker', '32px numbered circle, Ink fill, Paper number.',
+        `<div class="gal__wrap" style="padding:var(--space-12)">${UI.marker(1)}${UI.marker(2, 'selected')}${UI.marker(3, 'full')}${UI.marker(4, 'paused')}${UI.marker(5, 'closed')}</div>
+        ${st('Legend')}<ul class="legend"><li>${UI.marker(1)}Open</li><li>${UI.marker(2, 'full')}Full shelf</li><li>${UI.marker(3, 'paused')}Paused</li><li>${UI.marker(4, 'closed')}Closed</li></ul>
+        <p class="t-small c-secondary" style="margin-top:var(--space-8)">Numbers identify shelves, not item counts.</p>`)}
+
+      ${sec('mapctl', 'Map controls', 'Flat pill search + filter button, scrolling chips, count pill on surface-inverse, Map / List toggle.',
+        `<div class="stack">${UI.search({ id: 'mc' })}<div class="chips">${UI.chip('Open now')}${UI.chip('Has space')}${UI.chip('Nearby')}</div>
+        <div style="text-align:center"><span class="countpill">32 locations in this area</span></div>
+        <div style="text-align:center">${UI.segmented([{ label: 'Map', icon: 'map' }, { label: 'List', icon: 'list' }], 0, { id: 'mc-ml' })}</div></div>`)}
+
+      ${sec('statuslist', 'Item status list', 'Paper, header section + count chip + chevron, 48px rows with a 32px status tile.',
+        `<section class="statuslist"><div class="statuslist__head"><h2 class="t-section">Your food on shelves</h2><span class="pill">4 items</span>${icon('chevron-right')}</div>
+        ${[['done', 'Tomato soup', 'Picked up', 'Café Daisy'], ['waiting', 'Fusilli pasta', 'On the shelf', 'Café Daisy'], ['done', 'All-purpose flour', 'Picked up', 'Pizza Nonna'], ['waiting', 'Canned tuna', 'On the shelf', 'Café Lumi']].map(r =>
+          `<div class="statuslist__row"><span class="tile tile--sm ${r[0] === 'done' ? '' : 'tile--canvas'}">${icon(r[0] === 'done' ? 'done' : 'paused', 'icon--sm ' + (r[0] === 'done' ? 'icon--success' : 'icon--warning'))}</span>
+          <span class="statuslist__name">${r[1]} <small>· ${r[2]}</small></span><span class="statuslist__venue">${r[3]}</span></div>`).join('')}</section>`)}
+
+      ${sec('shelf', 'Shelf card', 'Paper, shadow-card, photo top, distance text-brand, venue title, closing time, availability chip; carousel with 12px gaps.',
+        `<div class="carousel">${UI.shelfCard({ n: 1, dist: '200 m', venue: 'Café Daisy', hours: 'Open until 20:00', kind: 'space', spots: '4 spots' })}${UI.shelfCard({ n: 2, dist: '1.2 km', venue: 'Café Lumi', hours: 'Open until 18:00', kind: 'full' })}${UI.shelfCard({ n: 3, dist: '2.1 km', venue: 'Pizza Nonna', hours: 'Closed now', kind: 'closed' })}</div>`)}
+
+      ${sec('avail', 'Availability chip', '32px pill, label type, nowrap. Full shelf = Terracotta 700 + Paper text + shelf-full.',
+        `<div class="gal__wrap">${UI.avail('space', '4 spots')}${UI.avail('full')}${UI.avail('closed')}</div>`)}
+
+      ${sec('settings', 'Settings list', 'Paper, ≥64px rows, 44px icon tile, title + subtitle, chevron or toggle.',
+        `<div class="settings">${UI.settingsRow({ ic: 'sealed-food', title: 'My items', sub: '4 on shelves' })}${UI.settingsRow({ ic: 'notification', tile: 'tile--reward', icls: 'icon--reward', title: 'Food alerts', sub: 'Pasta within 1 km', toggle: { on: true } })}${UI.settingsRow({ ic: 'info', title: 'Sharing rules', sub: 'Sealed, shelf-stable, within date' })}${UI.settingsRow({ ic: 'help', title: 'Help and FAQ', sub: 'Coupons, safety, contact' })}</div>`)}
+
+      ${sec('toggle', 'Toggle', '52 × 32 pill, role=switch.',
+        `<div class="gal__wrap">${UI.toggle({ on: true, label: 'On' })}${UI.toggle({ on: false, label: 'Off' })}${UI.toggle({ on: false, disabled: true, label: 'Disabled' })}${UI.toggle({ on: true, disabled: true, label: 'Disabled on' })}</div>`)}
+
+      ${sec('profile', 'Profile row / avatar', '48px avatar (initials on Oat), name title, email text-secondary.', UI.profileRow(u))}
+
+      ${sec('impact', 'Impact card', 'v0.5 light: Leaf, numbers Fraunces 32/40 text-brand.', UI.impact())}
+
+      ${sec('host', 'Host-mode card', 'The only dark card: Ink, Sand tile with gold community-shelf.', UI.hostCard())}
+
+      ${sec('greeting', 'Greeting header', 'Fraunces heading-1 text-brand + avatar.', UI.greeting(u))}
+
+      ${sec('stephead', 'Step header', 'Back (Close on step 1), title, “Step n of 3”, Terracotta 500 bar on Oat track.',
+        st('Step 1') + UI.stepHeader({ title: 'Leave food', step: 1, first: true }) + st('Step 2') + UI.stepHeader({ title: 'Leave food', step: 2 }) + st('Step 3') + UI.stepHeader({ title: 'Leave food', step: 3 }) +
+        st('On a task screen') + `<div class="gal__brand on-brand">${UI.stepHeader({ title: 'Leave food', step: 1, first: true })}</div>`)}
+
+      ${sec('qrsheet', 'Counter QR sheet', 'Bottom sheet from G08d: coupon name, large QR on Paper, code, Close.',
+        st('Active') + `<div class="sheet sheet--static">${UI.qrSheet()}</div>` + st('Used') + `<div class="sheet sheet--static">${UI.qrSheet({ state: 'used' })}</div>` +
+        st('Live') + UI.button({ label: 'Show code', icon: 'qr-code', attrs: 'data-action="show-qr"' }))}
+
+      ${sec('capture', 'Photo capture frame', 'Viewfinder radius-lg on surface-subtle; Take photo, Use sample photo, Add items manually.',
+        st('Empty') + UI.capture('empty') + `<div class="stack-8" style="margin-top:var(--space-16)">${UI.button({ label: 'Take photo', icon: 'camera', block: true })}${UI.button({ label: 'Use sample photo', variant: 'secondary', icon: 'photo', block: true })}<div style="text-align:center">${UI.button({ label: 'Add items manually', variant: 'link' })}</div></div>` + st('Captured') + UI.capture('captured') + st('Reading') + UI.capture('reading') + st('Unreadable') + UI.capture('unreadable'))}
+
+      ${sec('result', 'List result row', 'Numbered marker (same number as on the map), venue, distance + hours, availability chip, chevron.',
+        `<div class="stack-8">${UI.resultRow({ n: 1, venue: 'Café Daisy', meta: '200 m · Open until 20:00', kind: 'space', spots: '4 spots' })}${UI.resultRow({ n: 2, venue: 'Café Lumi', meta: '1.2 km · Open until 18:00', kind: 'full' })}${UI.resultRow({ n: 3, venue: 'Pizza Nonna', meta: '2.1 km · Closed now', kind: 'closed' })}${UI.resultRow({ n: 1, venue: 'Café Daisy', meta: '200 m · Open until 20:00', kind: 'space', spots: '4 spots', selected: true })}</div>`)}
+
+      ${sec('verify', 'Verification status card', 'verified icon + status label + one line; pending uses paused + icon-warning.',
+        `<div class="stack-8">${UI.verifyCard('pending')}${UI.verifyCard('verified')}${UI.verifyCard('info')}</div>`)}
+
+      ${sec('benefit', 'Benefit list', '44px surface-selected icon tile + title + body-small (H01).', UI.benefits())}
+
+      ${sec('checkrow', 'Steward check row', 'Item + reason + Keep / Remove 44px buttons.',
+        st('To check') + UI.checkRow({ id: 'k1', name: 'Crackers, 200 g', reason: 'Best before 01/2027' }) + st('Kept') + UI.checkRow({ id: 'k2', name: 'Crackers, 200 g', reason: 'Best before 01/2027', state: 'kept' }) +
+        st('Removed') + UI.checkRow({ id: 'k3', name: 'Crackers, 200 g', reason: 'Best before 01/2027', state: 'removed' }) + st('Flagged (unresolved on submit)') + UI.checkRow({ id: 'k4', name: 'Crackers, 200 g', reason: 'Best before 01/2027', state: 'flagged' }))}
+
+      ${sec('log', 'Activity log row', 'Icon, event, time, anonymised donor reference.',
+        `<ul class="log">${UI.logRow({ kind: 'dropoff', time: '09:12', ref: 'Donor A7' })}${UI.logRow({ kind: 'pickup', time: '11:40' })}${UI.logRow({ kind: 'redeem', time: '12:05', ref: 'Donor A7' })}${UI.logRow({ kind: 'check', time: '17:30' })}</ul>`)}
+
+      ${sec('topbar', 'Top bar', 'Back, title (title type), optional action.',
+        st('Default') + UI.topBar({ title: 'Café Daisy', action: UI.iconButton('more', 'More') }) + st('Serif (G08d)') + UI.topBar({ title: 'Your coupon', serif: true }) +
+        st('On surface-brand') + `<div class="gal__brand on-brand">${UI.topBar({ title: 'Café Daisy' })}</div>`)}
+
+      ${sec('tabbar', 'Tab bar', 'Paper, 4 tabs, active = 64 × 32 Leaf pill. Never “Today”.',
+        st('Consumer') + `<nav class="tabbar tabbar--static" aria-label="Example">${UI.tabBar('consumer', '#/home')}</nav>` + st('Host') + `<nav class="tabbar tabbar--static" aria-label="Example host">${UI.tabBar('host', '#/host/dashboard')}</nav>`)}
+
+      ${sec('sheet', 'Bottom sheet', 'Paper, radius-xl top, grabber, shadow-sheet.',
+        `<div class="stack-8">${UI.button({ label: 'Open manual add sheet', variant: 'secondary', icon: 'plus', block: true, attrs: 'data-gal="sheet"' })}${UI.button({ label: 'Open shelf code sheet', variant: 'secondary', icon: 'shelf-code', block: true, attrs: 'data-action="shelf-code"' })}</div>`)}
+
+      ${sec('empty', 'Empty state', '32px icon-tertiary, heading-3, one line, action.',
+        `<div class="card">${UI.empty({ ic: 'coupon', title: 'No coupons yet', line: 'Leave food at a shelf to get a thank-you coupon.', action: UI.button({ label: 'Leave food', icon: 'sealed-food' }) })}</div>`)}
+    </div>`;
+  },
+  mount(el) {
+    // live search with suggestions
+    const SUG = ['Pasta', 'Pasta sauce'];
+    const box = $('#gal-search', el);
+    const bindSearch = () => {
+      const inp = $('#gs', box);
+      inp.addEventListener('input', () => {
+        const v = inp.value;
+        const list = v.length >= 2 ? SUG.filter(s => s.toLowerCase().startsWith(v.toLowerCase())) : null;
+        box.innerHTML = UI.search({ id: 'gs', value: v, suggestions: list });
+        bindSearch();
+        const n = $('#gs', box); n.focus(); n.setSelectionRange(v.length, v.length);
+      });
+    };
+    bindSearch();
+    box.addEventListener('click', e => { const s = e.target.closest('[data-suggest]'); if (s) { box.innerHTML = UI.search({ id: 'gs', value: s.dataset.suggest }); bindSearch(); } });
+    // NFC live demo
+    el.addEventListener('click', e => {
+      const tap = e.target.closest('[data-nfc-tap]');
+      if (tap) {
+        const s = tap.closest('[data-nfc]');
+        NFC.tap(s, { onFound: async found => { await wait(1200); const n = document.createElement('div'); n.innerHTML = UI.nfc({ state: 'idle', id: found.dataset.nfc }); found.replaceWith(n.firstElementChild); } });
+      }
+      const q = e.target.closest('[data-nfc-qr]');
+      if (q) NFC.qr(q.closest('[data-nfc]'));
+      const sq = e.target.closest('[data-nfc-sampleqr]');
+      if (sq) { const s = sq.closest('[data-nfc]'); const n = document.createElement('div'); n.innerHTML = UI.nfc({ state: 'found', id: s.dataset.nfc }); s.replaceWith(n.firstElementChild); buzz(); }
+      const g = e.target.closest('[data-gal]');
+      if (g && g.dataset.gal === 'toast') toast('info', 'Crackers, 200 g removed', { action: 'Undo', ic: 'remove' });
+      if (g && g.dataset.gal === 'sheet') openSheet('Add item', `<div class="stack">${UI.input({ id: 'm-name', label: 'Item name', placeholder: 'e.g. Canned soup' })}${UI.input({ id: 'm-bb', label: 'Best before', type: 'month' })}<div><span class="field__label">Quantity</span><div style="margin-top:var(--space-8)">${UI.stepper({ id: 'm-q', value: 1 })}</div></div>${UI.button({ label: 'Add item', icon: 'plus', block: true, attrs: 'data-sheet-close' })}</div>`);
+      // remove with Undo on item rows
+      const rm = e.target.closest('[data-remove]');
+      if (rm) {
+        const row = rm.closest('[data-item]'); const name = $('.item__name', row).textContent;
+        const ph = document.createComment('removed'); row.replaceWith(ph);
+        toast('info', `${esc(name)} removed`, { action: 'Undo', ic: 'remove', onAction: () => ph.replaceWith(row) });
+      }
+      const ed = e.target.closest('[data-edit]');
+      if (ed) { const row = ed.closest('[data-item]'); row.classList.add('is-edited'); setTimeout(() => row.classList.remove('is-edited'), 1200); }
+      const pb = e.target.closest('.item--check');
+      const dec = e.target.closest('[data-decide]');
+      if (dec) {
+        const row = dec.closest('[data-check]');
+        const keep = dec.dataset.decide === 'keep';
+        row.classList.remove('is-kept', 'is-removed', 'is-flagged');
+        row.classList.add(keep ? 'is-kept' : 'is-removed');
+        $$('[data-decide]', row).forEach(b => b.setAttribute('aria-pressed', b === dec));
+        const flag = $('.status--problem', row); flag && flag.remove();
+      }
+      const jump = e.target.closest('[data-jump]');
+      if (jump) { e.preventDefault(); document.getElementById(jump.dataset.jump).scrollIntoView({ behavior: reduceMotion() ? 'auto' : 'smooth' }); }
+    });
+    // receiver checkbox variant: toggle selected style
+    el.addEventListener('change', e => {
+      const b = e.target.closest('[data-pick-box]');
+      if (b) b.closest('.item--check').classList.toggle('is-checked', b.checked);
+    });
+  }
+};
+
+/* =====================================================================
+   ROUTES (§4). Phase 1: component gallery only.
+   ===================================================================== */
+const DEFAULT_ROUTE = '#/components';
+Router.add('/components', Views.components, { title: 'Components' });
+
+/* =====================================================================
+   BOOT
+   ===================================================================== */
+Store.load();
+window.addEventListener('hashchange', () => Router.render());
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSheet(); });
+Router.render();
+</script>
+</body>
+</html>

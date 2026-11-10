@@ -371,6 +371,16 @@ Every component uses semantic tokens only and is built with all its states.
 }
 ```
 
+### 10b. Tokens added by the prototype build **[NEW]**
+Added while building `index.html` (phase 1). Listed in `docs/open-questions.md` (Q15).
+| Token | Value | Use |
+|---|---|---|
+| `--tint-on-dark` | `rgba(255,255,255,.12)` | Lighter panel on `surface-brand` (the G04 illustration area), pressed outline button on task screens |
+| `--scrim` | `rgba(43,36,30,.4)` | Backdrop behind bottom sheets |
+| `--focus-on-dark` | `0 0 0 3px var(--paper-0)` | The "Paper ring" focus on dark fills that §6 describes |
+
+Recipe sizes from §3, §6 and §8 (type shorthands, icon sizes, 1.5px border, 32px marker, 6px band and step bar, 8px bonus bar, 72px item row, 64px settings row, 52 × 32 toggle) are also written as custom properties in `index.html` (block 1b), so components never hold literal values.
+
 ## 11. Frames
 Put PNG exports at 2x in `frames/`, named by screen code (`frames/G04-tap-the-tag.png`). Frames in the repo: `M01-home`, `G02-map` (also used for R01), `G08-coupons`, `M02-me`, plus the **v0.5 hi-fi mocks** (G04, G05, G06, G07, G08-coupons-v2, G08d, R01b, R03, R04, R05, R06, H01–H07, M01-home-v2, M02-me-v2). The mocks set **layout and the airy feel**; colours follow this file (see `docs/open-questions.md`, "Mocks vs kit"). When a frame and this file disagree on styling, **this file wins**; v0.4 already resolves the known differences (grey text, gold icons on Forest, coupon values, unnumbered markers, terracotta chip contrast, help icon). Note the difference in `docs/open-questions.md`.
 
