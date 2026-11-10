@@ -1,7 +1,7 @@
 # SecondShelf design system: UI Kit v0.4
 
 > v0.3 approved by the team on 10 Nov 2026 (Kathy's kit + the warm Elements kit). **v0.4** (same day) adds the components and decisions from the main navigation frames (`frames/M01-home.png`, `G02-map.png`, `G08-coupons.png`, `M02-me.png`). New items are marked **v0.4**.
-> Source of truth: the "SecondShelf UI Kit v0.3 (merged)" design system artifact. This file mirrors it for Claude Code.
+> Source of truth: the **SecondShelf** design system artifact (https://claude.ai/artifact/1hn8SCWXGTcBzaimeadbe1). This file mirrors it for Claude Code.
 > **Rules for Claude Code:**
 > - Use only these tokens.
 > - Write components with **semantic** tokens (`--text-secondary`, `--surface-reward`), never with primitives or hex.
@@ -170,7 +170,7 @@ Fraunces Bold brings warmth; Rubik keeps instructions clear. Two families only.
 |---|---|---|
 | `radius-none` | 0 | Print, signage, full-bleed images |
 | `radius-xs` | 4 | Checkbox, tiny tags |
-| `radius-sm` | 8 | Items **nested inside** a 12px card (thumbnails, inner tiles, stepper buttons, QR sketch) |
+| `radius-sm` | 8 | Items **nested inside** a 16px card (thumbnails, status tiles, stepper buttons, QR sketch) |
 | `radius-md` | **12** | **Primary radius for controls**: buttons, inputs, banners, icon tiles |
 | `radius-lg` | **16** | **v0.4 Cards** (from the frames): action cards, coupon ticket, list cards, shelf cards, dialogs |
 | `radius-xl` | 24 | Top corners of bottom sheets |
@@ -238,7 +238,7 @@ Set CSS `color` on the icon with an icon token (§2.3), never a raw hex:
 ### Where each icon goes
 | Place | Icon(s) | Token |
 |---|---|---|
-| Consumer tab bar | `home` · `map` · `coupon` · `profile` | active `icon-primary`, inactive `icon-secondary` |
+| Consumer tab bar | `home` · `map` · `coupon` · `profile` | active `icon-primary` on a Leaf pill, inactive `icon-neutral` |
 | Host tab bar | `dashboard` · `shelf-check` · `redeem` · `profile` | same |
 | Top bar | `back`, `close`, `more` | `icon-primary` |
 | M01 Leave food / Find food cards | `sealed-food` / `search` | `icon-on-inverse` (gold on Ink) / `icon-on-brand-soft` (Leaf on Forest) |
