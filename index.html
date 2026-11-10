@@ -744,6 +744,9 @@ button.settings__row:active{background:var(--surface-canvas)}
 .map__pin{position:absolute;transform:translate(-50%,-50%);z-index:1}
 .map__me{position:absolute;left:50%;top:50%;width:18px;height:18px;border-radius:var(--radius-full);background:var(--icon-info);border:3px solid var(--surface-default);transform:translate(-50%,-50%);box-shadow:0 0 0 var(--space-8) var(--tint-me)}
 .maptop{position:absolute;left:0;right:0;top:0;z-index:3;padding:max(env(safe-area-inset-top),var(--space-16)) var(--space-20) var(--space-4)}
+.maptop,.maptop .chips{pointer-events:none}
+.maptop .search,.maptop .chip{pointer-events:auto}
+.screen--map.is-list .maptop{pointer-events:auto}
 .maptop .chips{margin:var(--space-8) calc(var(--space-20) * -1) 0;padding:var(--space-4) var(--space-20)}
 .screen--map.is-list .maptop{background:var(--surface-canvas)}
 .maplist{position:absolute;inset:0;overflow-y:auto;background:var(--surface-canvas);padding:0 var(--space-20) 112px;z-index:2}
@@ -893,7 +896,7 @@ const STORE_KEY = 'secondshelf-demo-v2';
 /* Sample venues (CLAUDE.md §7, frames M01/G02/G08d). Map positions are % of the map area. */
 const VENUES = [
   { id: 1, name: 'Café Daisy', dist: '200 m', metres: 200, hours: 'Open until 20:00', spots: 4, full: false, open: true, shelf: 'shelf 2', addr: 'Aia 8', x: 58, y: 44 },
-  { id: 2, name: 'Café Lumi', dist: '1.2 km', metres: 1200, hours: 'Open until 18:00', spots: 0, full: true, open: true, shelf: '', addr: '', x: 22, y: 30 },
+  { id: 2, name: 'Café Lumi', dist: '1.2 km', metres: 1200, hours: 'Open until 18:00', spots: 0, full: true, open: true, shelf: '', addr: '', x: 22, y: 36 },
   { id: 3, name: 'Pizza Nonna', dist: '2.1 km', metres: 2100, hours: '', spots: 3, full: false, open: true, shelf: '', addr: '', x: 76, y: 70 }
 ];
 const venue = id => VENUES.find(v => v.id === +id) || VENUES[0];
@@ -1685,12 +1688,8 @@ const MAP_SVG = `<svg class="map__bg" viewBox="0 0 390 760" preserveAspectRatio=
   <rect x="30" y="520" width="92" height="70" rx="6" style="fill:var(--map-park)"/>
   <rect x="300" y="430" width="70" height="60" rx="6" style="fill:var(--map-park)"/>
   <path d="M-20 630 C 70 600 150 640 230 680 S 360 720 410 700" style="fill:none;stroke:var(--map-water);stroke-width:34"/>
-  <g style="fill:none;stroke:var(--map-road);stroke-width:9;stroke-linecap:round">
-    <path d="M-10 70 H400 M-10 250 H400 M-10 330 H400 M-10 500 H400 M-10 760 H400"/>
-    <path d="M40 -10 V560 M110 -10 V600 M210 -10 V640 M330 -10 V720 M380 -10 V760"/>
-    <path d="M-10 410 L120 400 M230 440 L400 470 M110 160 L210 190"/>
-  </g>
-  <g style="fill:none;stroke:var(--map-road-main);stroke-width:6;stroke-linecap:round">
+  <g style="fill:none;stroke:var(--map-road);stroke-width:5;stroke-linecap:round"><path d="M-10 19 L400 10 M-10 74 L400 57 M-10 112 L400 99 M-10 162 L400 146 M-10 210 L400 200 M-10 253 L400 252 M-10 290 L400 281 M-10 348 L400 335 M-10 399 L400 397 M-10 466 L400 466 M-10 504 L400 505 M-10 545 L400 544 M-10 592 L400 603 M-10 630 L400 631 M-10 676 L400 663 M-10 728 L400 733 M10 -10 L33 770 M69 -10 L76 770 M104 -10 L128 770 M145 -10 L160 770 M205 -10 L202 770 M256 -10 L255 770 M294 -10 L288 770 M332 -10 L356 770 M391 -10 L396 770 M229 334 l68 -26 M60 564 l56 -20 M175 195 l61 -4 M20 119 l65 6 M160 388 l52 8 M254 633 l59 -26 M47 316 l60 14 M340 106 l33 16"/></g>
+  <g style="fill:none;stroke:var(--map-road-main);stroke-width:5;stroke-linecap:round;stroke-linejoin:round">
     <path d="M160 -10 L175 300 L150 770"/><path d="M-10 380 L400 345"/><path d="M270 -10 L300 760"/>
   </g>
 </svg>`;
@@ -1725,6 +1724,7 @@ Views.map = {
     };
     draw();
     el.addEventListener('click', e => {
+      if (!e.target.closest('#map-search') && $('.suggest', el)) { const v = $('#mapsearch', el).value; box.innerHTML = UI.search({ id: 'mapsearch', value: v }); bind(); }
       const pin = e.target.closest('[data-pin]');
       if (pin) { st.sel = +pin.dataset.pin; draw(); announce(venue(st.sel).name); return; }
       if (e.target.closest('[data-pc-close]')) { st.sel = null; draw(); return; }
