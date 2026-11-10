@@ -734,7 +734,10 @@ button.settings__row:active{background:var(--surface-canvas)}
 /* Tap the tag */
 .tap-title{text-align:center;margin-bottom:var(--space-8)}
 .tap-sub{text-align:center;font:var(--type-body-large);color:var(--text-on-primary);margin-bottom:var(--space-24)}
-.screen--brand .nfc__stage{min-height:200px}
+.screen--brand .nfc__stage{min-height:240px}
+#nfc-slot{flex:1;display:flex;flex-direction:column}
+#nfc-slot .nfc{flex:1}
+#nfc-slot .nfc__actions{margin-top:auto;padding-top:var(--space-24)}
 .nfc__status:empty{display:none}
 
 /* Map (G02 / R01) */
@@ -1051,7 +1054,7 @@ const UI = {
   topBar({ title, serif = false, back = true, action = '' }) {
     return `<header class="topbar">${back ? UI.iconButton('back', 'Back', 'data-action="back"') : ''}<h1 class="topbar__title${serif ? ' topbar__title--serif' : ''}">${esc(title)}</h1>${action}</header>`;
   },
-  nfc({ state = 'idle', id = 'nfc', idleText = 'Hold your phone to the tag on the shelf' } = {}) {
+  nfc({ state = 'idle', id = 'nfc', idleText = 'Hold your phone to the tag on the shelf', note = '' } = {}) {
     const core = { idle: 'phone-tap', scanning: 'tap-nfc', found: 'done', notfound: 'needs-attention', qr: 'qr-code' }[state];
     const status = { idle: idleText, scanning: 'Scanning…', found: 'Tag found', notfound: 'Tag not found', qr: 'Scan the QR code' }[state];
     let art = `<div class="nfc__art" aria-hidden="true"><span class="nfc__ring"></span><span class="nfc__ring"></span><span class="nfc__ring"></span><span class="nfc__core nfc__phone">${icon(core)}</span></div>`;
@@ -1067,7 +1070,7 @@ const UI = {
     if (state === 'qr') actions = UI.button({ label: 'Use sample QR code', variant: 'on-brand', icon: 'qr-code', block: true, attrs: `data-nfc-sampleqr="${id}"` })
       + UI.button({ label: 'Type shelf code', variant: 'outline-on-brand', icon: 'shelf-code', block: true, attrs: 'data-action="shelf-code"' });
     return `<section class="nfc" data-state="${state}" data-nfc="${id}">
-      <div class="nfc__stage">${art}<p class="nfc__status" aria-live="polite">${status}</p></div>
+      <div class="nfc__stage">${art}<p class="nfc__status" aria-live="polite">${status}</p></div>${note ? `<p class="nfc__note">${icon('info')}<span>${esc(note)}</span></p>` : ''}
       <div class="nfc__actions">${actions}</div></section>`;
   },
   foodItem({ id, name, bb, qty = 1, max = 9, state = '' }) {
@@ -1767,20 +1770,16 @@ Views.point = {
 };
 
 /* ---------- G04 Tap the tag ---------- */
-const TAP_OPTS = { idleText: '' };
+const TAP_OPTS = { idleText: '', note: 'Look for the arrow on the sign. The tag is right below it.' };
 Views.giveTap = {
   html({ query }) {
     return `${UI.stepHeader({ title: 'Leave food', step: 1, first: true })}
       <h2 class="t-display tap-title">Tap the tag</h2>
       <p class="tap-sub">Hold your phone to the tag on the shelf</p>
-      <div id="nfc-slot">${UI.nfc({ state: 'idle', id: 'g04', ...TAP_OPTS })}</div>
-      <p class="nfc__note" style="margin-top:var(--space-16)">${icon('info')}<span>Look for the arrow on the sign. The tag is right below it.</span></p>`;
+      <div id="nfc-slot">${UI.nfc({ state: 'idle', id: 'g04', ...TAP_OPTS })}</div>`;
   },
   mount(el, { query }) {
     if (!hasDraft() || (query.shelf && +query.shelf !== Flow.d.shelf)) { Flow.start(query.shelf || 1); }
-    // keep the fallback note between the stage and the buttons, as in the frame
-    const place = () => { const s = $('[data-nfc]', el), note = $('.nfc__note', el); $('.nfc__stage', s).after(note); };
-    place();
     const next = () => Router.go('#/give/photo');
     el.addEventListener('click', e => {
       const sec = $('[data-nfc]', el);
@@ -1788,13 +1787,12 @@ Views.giveTap = {
         const fail = Store.state.sim.tagFail || query.fail === '1';
         if (Store.state.sim.tagFail) { Store.state.sim.tagFail = false; Store.save(); }
         Store.log('nfc_tap', { result: fail ? 'not_found' : 'found' });
-        const obs = new MutationObserver(place); obs.observe(el, { childList: true, subtree: true });
-        NFC.tap(sec, { fail, onFound: next, opts: TAP_OPTS }).then(() => obs.disconnect());
+        NFC.tap(sec, { fail, onFound: next, opts: TAP_OPTS });
       }
-      if (e.target.closest('[data-nfc-qr]')) { NFC.qr(sec, TAP_OPTS); place(); }
-      if (e.target.closest('[data-nfc-sampleqr]')) { NFC.found(sec, { onFound: next, opts: TAP_OPTS }); place(); }
+      if (e.target.closest('[data-nfc-qr]')) NFC.qr(sec, TAP_OPTS);
+      if (e.target.closest('[data-nfc-sampleqr]')) NFC.found(sec, { onFound: next, opts: TAP_OPTS });
     });
-    const onCode = () => { NFC.found($('[data-nfc]', el), { onFound: next, opts: TAP_OPTS }); place(); };
+    const onCode = () => NFC.found($('[data-nfc]', el), { onFound: next, opts: TAP_OPTS });
     document.addEventListener('shelfcode', onCode);
     el._cleanup = () => document.removeEventListener('shelfcode', onCode);
   }
