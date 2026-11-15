@@ -1076,6 +1076,8 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{box-shadow:none}
 .check input:focus-visible + .check__box{box-shadow:var(--shadow-focus)}
 .check input:disabled + .check__box{background:var(--action-disabled);border-color:var(--border-subtle)}
 .check.is-disabled{color:var(--text-disabled);cursor:not-allowed}
+.check > .check__icon{color:var(--icon-primary)}
+.check.is-disabled > .check__icon{color:var(--icon-disabled)}
 .check-panel{background:var(--surface-selected);border-radius:var(--radius-lg);padding:var(--space-12) var(--space-16)}
 
 /* ---- Quantity stepper: v0.5 round ---- */
@@ -1901,13 +1903,13 @@ a.bonus{display:block;text-decoration:none;color:inherit}
 <body>
 <!-- SecondShelf icon library v2.0 (assets/icons/sprite.svg), inlined -->
 <svg xmlns="http://www.w3.org/2000/svg" id="sprite" width="0" height="0" style="position:absolute" aria-hidden="true">
-  <symbol id="ss-community-shelf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21.5V12.5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v9"/><path d="M5 15h14"/><path d="M5 19h14"/><path d="M9.6 10.5V8.3a2 2 0 0 1 2-2h.8a2 2 0 0 1 2 2v2.2"/><path d="M10.9 3.5h2.2"/></symbol>
+  <symbol id="ss-community-shelf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="2.5"/><path d="M3.5 12h17"/><path d="M7 12V8.5"/><path d="M10 12V9.5"/><rect x="13.5" y="14.5" width="4" height="3.5" rx="1"/></symbol>
   <symbol id="ss-sealed-food" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2.5" width="8" height="3.5" rx="1.75"/><rect x="5.5" y="6" width="13" height="15.5" rx="4.5"/><rect x="9" y="11" width="6" height="5" rx="2"/></symbol>
   <symbol id="ss-pickup-bag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 9.5h15l-.9 9.1a2.6 2.6 0 0 1-2.6 2.4H8a2.6 2.6 0 0 1-2.6-2.4z"/><path d="M8 9.5V6.6a2 2 0 0 1 4 0v2.9"/><path d="M12 9.5V6.6a2 2 0 0 1 4 0v2.9"/></symbol>
   <symbol id="ss-community-care" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20c-.5 0-8-4.4-8.6-9.6C3 7.4 5.2 5 8 5c1.7 0 3.1.9 4 2.3C12.9 5.9 14.3 5 16 5c2.8 0 5 2.4 4.6 5.4C20 15.6 12.5 20 12 20z"/></symbol>
   <symbol id="ss-saved-food" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 17.4C3.9 11.3 8.4 4.9 19.2 4.8c.1 10.6-6.3 15.2-12.6 12.6z"/><path d="M4.8 19.2l8.4-8.4"/></symbol>
   <symbol id="ss-filter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3.5M12.5 7H20"/><circle cx="10" cy="7" r="2.2"/><path d="M4 12h9.5M18.5 12H20"/><circle cx="16" cy="12" r="2.2"/><path d="M4 17h1.5M10.5 17H20"/><circle cx="8" cy="17" r="2.2"/></symbol>
-  <symbol id="ss-tap-nfc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 9.6c.9 1.4.9 3.4 0 4.8"/><path d="M11 7.2c2 2.8 2 6.8 0 9.6"/><path d="M14.5 4.8c3.2 4.2 3.2 10.2 0 14.4"/><path d="M18 3c4 5.2 4 12.8 0 18"/></symbol>
+  <symbol id="ss-tap-nfc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 9c1 1.7 1 4.3 0 6"/><path d="M12 7c1.9 2.8 1.9 7.2 0 10"/><path d="M15.5 5c2.9 3.9 2.9 10.1 0 14"/></symbol>
   <symbol id="ss-done" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.8l4.4 4.2L19 7.4"/></symbol>
   <symbol id="ss-paused" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5V12l3 2"/></symbol>
   <symbol id="ss-needs-attention" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 21V3.8"/><path d="M6.5 4.4l10.4 4.4a1 1 0 0 1 0 1.8L6.5 15"/></symbol>
@@ -1951,6 +1953,10 @@ a.bonus{display:block;text-decoration:none;color:inherit}
   <symbol id="ss-sealed-badge" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.2 3.4a2 2 0 0 1 1.6 0l5.5 2.3a1.5 1.5 0 0 1 .9 1.4v4.7c0 4.3-3 7.7-6.6 9.1a1.6 1.6 0 0 1-1.2 0C7.8 19.5 4.8 16.1 4.8 11.8V7.1a1.5 1.5 0 0 1 .9-1.4z"/><path d="M9 12l2 2 4-4"/></symbol>
   <symbol id="ss-travel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7.5" width="16" height="12.5" rx="3.5"/><path d="M9 7.5V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1.5"/><path d="M8.5 7.5v12.5M15.5 7.5v12.5"/></symbol>
   <symbol id="ss-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5.5" width="16" height="15" rx="3.5"/><path d="M4 10h16"/><path d="M8.5 3.5v4M15.5 3.5v4"/></symbol>
+  <symbol id="ss-nfc-plate" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M9.2 10c.7 1.2.7 2.8 0 4"/><path d="M12 8.5c1.4 2 1.4 5 0 7"/><path d="M14.8 7c2 2.8 2 7.2 0 10"/></symbol>
+  <symbol id="ss-shelf-sign" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="12.5" rx="2"/><path d="M9 6h6"/><path d="M9 9h4"/><path d="M9 12h6"/><path d="M12 17.5v4"/><path d="M10 19.5l2 2 2-2"/></symbol>
+  <symbol id="ss-window-sticker" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="3.5" width="19" height="17" rx="3"/><circle cx="12" cy="12" r="5"/><path d="M10 11.2h4"/><path d="M10.8 13.6h2.4"/></symbol>
+  <symbol id="ss-date-strip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13.5" width="18" height="6" rx="1.5"/><path d="M6.5 16.5h6"/><rect x="5" y="4.5" width="5" height="9" rx="1.2"/><rect x="13" y="7.5" width="5" height="6" rx="1.2"/></symbol>
   <symbol id="ss-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.2"/><path d="M12 7.8v.01"/></symbol>
   <symbol id="ss-help" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.6a2.5 2.5 0 1 1 3.6 2.3c-.7.3-1.2 1-1.2 1.7v.4"/><path d="M12 17v.01"/></symbol>
   <symbol id="ss-pause" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M10 9v6M14 9v6"/></symbol>
@@ -2950,10 +2956,10 @@ const UI = {
     const lead = pressed ? icon('done') : (ic ? icon(ic) : '');
     return `<button type="button" class="chip" aria-pressed="${pressed}" ${attrs}>${lead}<span>${esc(label)}</span></button>`;
   },
-  checkbox({ id, label, checked = false, disabled = false, attrs = '' }) {
+  checkbox({ id, label, checked = false, disabled = false, attrs = '', icon: ic = '' }) {
     return `<label class="check${disabled ? ' is-disabled' : ''}" for="${id}">
       <input type="checkbox" id="${id}" ${checked ? 'checked' : ''} ${disabled ? 'disabled' : ''} ${attrs}>
-      <span class="check__box">${icon('done')}</span><span>${label}</span></label>`;
+      <span class="check__box">${icon('done')}</span>${ic ? icon(ic, 'check__icon') : ''}<span>${label}</span></label>`;
   },
   stepper({ id, value = 1, min = 1, max = 9, label = 'Quantity' }) {
     return `<div class="stepper" data-stepper="${id}" data-min="${min}" data-max="${max}" role="group" aria-label="${esc(label)}">
@@ -5577,14 +5583,16 @@ Views.hostVerify = {
 };
 
 /* ---------- H05 Starter kit → activation tap → shelf is live · H05b activation error ---------- */
-const KIT = [['sign', 'Sign at eye level above the shelf'], ['nfc', 'NFC plate on the shelf edge'], ['qr', 'QR sticker right below the plate'], ['window', 'Window sticker facing the street']];
+const KIT = [['sign', 'Sign at eye level above the shelf', 'shelf-sign'], ['nfc', 'NFC plate on the shelf edge', 'nfc-plate'], ['qr', 'QR sticker right below the plate', 'qr-code'], ['window', 'Window sticker facing the street', 'window-sticker']];
+const KIT_PARTS = [['Shelf', 'community-shelf'], ['Sign', 'shelf-sign'], ['NFC plate', 'nfc-plate'], ['QR sticker', 'qr-code'], ['Window sticker', 'window-sticker']];
 Views.hostKit = {
   html() {
     const k = Store.state.host.kit, all = KIT.every(([id]) => k[id]);
     return `${hostHead('Starter kit', 5)}
       <h2 class="t-display" style="margin-bottom:var(--space-16)">A shelf that explains itself.</h2>
-      <div class="card card--selected-fill"><p class="t-overline c-secondary">All five parts</p><div class="chips" style="flex-wrap:wrap;margin-top:var(--space-8)">${['Shelf', 'Sign', 'NFC plate', 'QR sticker', 'Window sticker'].map(p => `<span class="pill" style="background:var(--surface-default)">${p}</span>`).join('')}</div></div>
-      <div class="card" id="kit" style="margin-top:var(--space-12)">${KIT.map(([id, l]) => UI.checkbox({ id: 'kit-' + id, label: l, checked: k[id], attrs: `data-kit="${id}"` })).join('')}</div>
+      <div style="margin-bottom:var(--space-16)">${UI.art('host-setup', { cls: 'art--illus' })}</div>
+      <div class="card card--selected-fill"><p class="t-overline c-secondary">All five parts</p><div class="chips" style="flex-wrap:wrap;margin-top:var(--space-8)">${KIT_PARTS.map(([p, ic]) => `<span class="pill" style="background:var(--surface-default)">${icon(ic)}${p}</span>`).join('')}</div></div>
+      <div class="card" id="kit" style="margin-top:var(--space-12)">${KIT.map(([id, l, ic]) => UI.checkbox({ id: 'kit-' + id, label: l, icon: ic, checked: k[id], attrs: `data-kit="${id}"` })).join('')}</div>
       <div class="spacer"></div>
       <div class="actions">${UI.gated({ label: 'Kit is in place', icon: 'continue', id: 'h05-next', hint: 'Tick each part to continue', enabled: all, missing: '#kit .check:has(input:not(:checked))', attrs: 'data-href="#/host/activate"' })}</div>`;
   },
