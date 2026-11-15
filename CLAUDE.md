@@ -83,7 +83,7 @@ Codes follow the testing protocol. Exact names, order and states come from the F
 | O02 | How it works (Step 1 of 3) | `#/how` | `frames/O02-how-it-works.png` · built from frame |
 | O03 | Choose how you use it (Step 2 of 3) | `#/role` | `frames/O03-choose-how-you-use-it.png` · built from frame (two role cards, Q42) |
 | O04 | Sharing rules (Step 3 of 3; read-only from Me) | `#/rules`, `#/rules?view=1` | `frames/O04-sharing-rules.png` · built from frame |
-| M01 | Home (Brenda; Jonas = empty state) | `#/home` | `M01-home-v3` (v0.7: dark action cards, Home gradient; replaces `frames/M01-home-v2.png` for layout, colour and type size, Q81) · built |
+| M01 | Home (Brenda; Jonas = empty state) | `#/home` | `M01-home-v3` (v0.7: dark action cards on flat Cream; replaces `frames/M01-home-v2.png` for layout, colour and type size, Q81) · built |
 | M02 | Me | `#/me` | `frames/M02-me-v2.png` · built from frame |
 | G01 | Travel prompt (overlay banner on Home) | overlay (`#/home?sim=travel` via moderator) | `frames/G01-travel-prompt.png` · built from frame |
 | G02 / R01 | Map, Leave / Find mode, **sheet v0.6** (peek · half · full, Steps A–C) | `#/map`, `#/map?find=1` | `frames/G02-map.png`, `G02a`–`G02d` · built; v0.7 real zoomable OpenStreetMap map, test-city switch, Locate me, offline SVG fallback (Q85–Q87) |
@@ -261,7 +261,7 @@ Recommendation: accounts for givers and hosts, optional for receivers. Decision 
 - Every colour, size, radius and shadow comes from `docs/design-system.md` tokens as CSS custom properties. No literal values in components.
 - Icons: only the SecondShelf icon library v2.0 (`assets/icons/sprite.svg`, 68 icons). Placement and colour rules: `docs/design-system.md` §7.
 - Fonts: Fraunces Bold (headings, 20px+) and Rubik 400/500 (everything else) from Google Fonts with `display=swap` and system fallbacks.
-- Colour roles (v0.5, airy; v0.7 Home): flat Cream `#F6F1E7` background (no gradients, **except Home**: `surface-home-hero`, Q82); light Paper cards; **Pantry Green** = screen titles, Fraunces headings and primary (pill) buttons; **Ink** = the Home Leave food card (v0.7), host-mode card, map markers and count pill; **Forest** = the Home Find food card (v0.7); **Ochre = rewards** (coupon band, Rescue Bonus fill, Ochre 800 reward/search icons; v0.7 light gold `ochre-300` icon on the Forest Find food card); **Terracotta 700 = the single closing action of a flow** and "Full shelf"; **Terracotta 500** = step progress; Slate = problems. No red anywhere.
+- Colour roles (v0.5, airy; v0.7 Home): flat Cream `#F6F1E7` background (no gradients; Q82); light Paper cards; **Pantry Green** = screen titles, Fraunces headings and primary (pill) buttons; **Ink** = the Home Leave food card (v0.7), host-mode card, map markers and count pill; **Forest** = the Home Find food card (v0.7); **Ochre = rewards** (coupon band, Rescue Bonus fill, Ochre 800 reward/search icons; v0.7 light gold `ochre-300` icon on the Forest Find food card); **Terracotta 700 = the single closing action of a flow** and "Full shelf"; **Terracotta 500** = step progress; Slate = problems. No red anywhere.
 - Accessibility: WCAG AA contrast, visible focus ring, labelled controls, `aria-live` for scanning / status changes.
 
 ## 11. How to work in this repo

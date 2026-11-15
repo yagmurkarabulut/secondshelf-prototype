@@ -707,7 +707,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
   --ink-900:#2B241E; --stone-700:#5C554C; --stone-600:#6E665C; --stone-500:#8C8477; --stone-300:#CFC6B6;
   --oat-200:#E9DFCC; --cream-100:#F6F1E7; --paper-0:#FFFFFF;
   --sand-200:#E8D7B9; --stone-200:#E6DED0;
-  --ochre-300:#E3B65A; --ink-950:#1F1A16; --sand-400:#D5B377; /* [NEW] M01-home-v3 */
+  --ochre-300:#E3B65A; --ink-950:#1F1A16; /* [NEW] M01-home-v3 */
   --map-land:#FFFFFF; --map-road:#D9DED8; --map-road-main:#798C75; --map-water:#85D5EB;
   --success-700:#2C6E46; --warning-600:#A86A12; --slate-600:#51666D; --info-600:#2F6E8C;
   /* text */
@@ -731,10 +731,9 @@ svg.leaflet-image-layer.leaflet-interactive path {
   --border-subtle:var(--stone-300); --border-strong:var(--stone-500); --border-brand:var(--green-900); --border-focus:var(--info-600);
   --action-primary:var(--green-900); --action-primary-hover:var(--green-700); --action-primary-pressed:var(--green-950);
   --action-accent:var(--terracotta-700); --action-accent-pressed:var(--terracotta-800); --action-disabled:var(--oat-200);
-  /* [NEW] M01-home-v3: dark Home action cards, Home-only hero gradient, waiting clock */
+  /* [NEW] M01-home-v3: dark Home action cards, waiting clock */
   --action-leave:var(--ink-900); --action-leave-pressed:var(--ink-950); --icon-on-leave:var(--ochre-500);
   --action-find:var(--green-700); --action-find-pressed:var(--green-900); --icon-on-find:var(--ochre-300);
-  --surface-home-hero:linear-gradient(180deg,var(--sand-400) 0%,var(--sand-200) 55%,var(--cream-100) 100%);
   --icon-waiting:var(--ochre-800);
   --map-park:var(--green-100); --map-marker:var(--ink-900);
   --map-tile-filter:saturate(.55) sepia(.3) brightness(1.04) contrast(.9); /* [NEW] v0.7 warms the tiles toward Cream */
@@ -1458,7 +1457,6 @@ button.settings__row:active{background:var(--surface-canvas)}
 
 /* Home (M01-home-v3) */
 .statuslist .statuslist__head h2{font:var(--type-section)}
-.screen--home{background:var(--surface-home-hero);background-attachment:local}
 .screen--home .greet .t-h1{color:var(--text-primary)}
 .screen--home .statuslist,.screen--home .shelf{box-shadow:none}
 
@@ -1700,7 +1698,7 @@ textarea.input{min-height:calc(var(--size-control) * 2);resize:vertical}
 .bar__val{font:var(--type-label)}
 .bars__labels{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-16);padding:var(--space-8) var(--space-8) 0;text-align:center;font:var(--type-caption);color:var(--text-secondary)}
 .note{display:flex;gap:var(--space-12);align-items:flex-start;background:var(--surface-subtle);border-radius:var(--radius-md);padding:var(--space-12) var(--space-16);font:var(--type-body-small);color:var(--text-primary)}
-.note .icon{color:var(--icon-info);width:var(--size-icon-20);height:var(--size-icon-20);flex:none}
+.note .icon{color:var(--icon-primary);width:var(--size-icon-20);height:var(--size-icon-20);flex:none}
 .note strong{font-weight:500;display:block;font-size:inherit}
 .center .note,.center .banner{text-align:left}
 .faq dt{font:var(--type-title);margin-top:var(--space-12)}
@@ -1711,6 +1709,7 @@ textarea.input{min-height:calc(var(--size-control) * 2);resize:vertical}
 .screen--map.has-details .mapsheet{touch-action:pan-y}
 .screen--map.has-details .mapsheet__body{overflow-y:auto;padding-bottom:var(--space-32)}
 .details{display:flex;flex-direction:column;gap:var(--space-8)}
+.details .avail--space{background:var(--surface-default)}  /* stands out from the Cream sheet in location details */
 .details__back{display:inline-flex;align-items:center;gap:var(--space-4);align-self:center;min-height:var(--size-tap-min);padding:0 var(--space-12);border-radius:var(--radius-full);font:var(--type-body);color:var(--text-primary)}
 .details__back:active{background:var(--surface-subtle)}
 .details__photo{height:var(--size-photo-sm);border-radius:var(--radius-lg);background:var(--surface-subtle)}
@@ -3108,11 +3107,11 @@ const Loc = {
   chips(v) {
     return `<div class="chiprow">${v.hours ? `<span class="pill">${esc(v.hours.replace('Open until', 'Closing at'))}</span>` : ''}${availChip(v)}<span class="pill">NFC + QR</span></div>`;
   },
-  itemRow(i, { compact = false } = {}) {
+  itemRow(i) {
     const miss = i.missing;
     return `<li class="shelfitem${miss ? ' is-missing' : ''}"><span class="item__thumb">${icon('sealed-food')}</span><div class="grow">
       <p class="t-body">${esc(i.name)}${i.qty > 1 ? ' ×' + i.qty : ''}</p>
-      <p class="t-small c-secondary">${miss ? 'Reported missing' : `<span class="nowrap">${icon('sealed-badge', 'icon--xs icon--secondary')}Sealed</span> · BB ${esc(i.bb)}${compact ? '' : ' · ' + addedText(i.days)}`}</p></div></li>`;
+      <p class="t-small c-secondary">${miss ? 'Reported missing' : `Best before: ${esc(i.bb)}`}</p></div></li>`;
   },
   items(v) { const its = (v.items || []); return its.length ? `<ul class="shelfitems">${its.map(i => Loc.itemRow(i)).join('')}</ul>` : `<p class="t-body c-secondary">Nothing on this shelf right now.</p>`; },
   rulesSheet() {

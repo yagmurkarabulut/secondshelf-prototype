@@ -1,6 +1,6 @@
 # SecondShelf design system: UI Kit v0.5
 
-> v0.3 approved by the team on 10 Nov 2026 (Kathy's kit + the warm Elements kit). **v0.4** (same day) adds the components and decisions from the main navigation frames (`frames/M01-home.png`, `G02-map.png`, `G08-coupons.png`, `M02-me.png`). New items are marked **v0.4**. **v0.4.1: the gradient background is removed; screens are flat Cream.** **v0.7 (15 Nov, `M01-home-v3`)**: dark Home action cards (Ink / Forest), a Home-only hero gradient, and a lighter, slightly smaller Rubik scale; changes are marked **v0.7** and new tokens **[NEW]**. **v0.5** (same day) merges the airy hi-fi mocks in `frames/` (G04–G08d, R01b–R06, H01–H07, M01-v2, M02-v2) and adds terracotta and gold to them; changes are marked **v0.5**.
+> v0.3 approved by the team on 10 Nov 2026 (Kathy's kit + the warm Elements kit). **v0.4** (same day) adds the components and decisions from the main navigation frames (`frames/M01-home.png`, `G02-map.png`, `G08-coupons.png`, `M02-me.png`). New items are marked **v0.4**. **v0.4.1: the gradient background is removed; screens are flat Cream.** **v0.7 (15 Nov, `M01-home-v3`)**: dark Home action cards (Ink / Forest), and a lighter, slightly smaller Rubik scale; changes are marked **v0.7** and new tokens **[NEW]**. **v0.5** (same day) merges the airy hi-fi mocks in `frames/` (G04–G08d, R01b–R06, H01–H07, M01-v2, M02-v2) and adds terracotta and gold to them; changes are marked **v0.5**.
 > Source of truth: the **SecondShelf** design system artifact (https://claude.ai/artifact/1hn8SCWXGTcBzaimeadbe1). This file mirrors it for Claude Code.
 > **Rules for Claude Code:**
 > - Use only these tokens.
@@ -29,8 +29,7 @@ Proportions: about **60% Cream and Paper · 30% Pantry Green and Ink · 10% Ochr
 | `ochre-500` | `#BF8B2E` | **Ochre / gold**: reward fills, Ink text on it |
 | `ochre-300` | `#E3B65A` | **v0.7 [NEW]** Light gold: icons on Forest (4.0:1). Ochre 500 on Forest is 2.5:1 and fails |
 | `ochre-100` | `#EFE5D1` | Ochre tint |
-| `sand-200` | `#E8D7B9` | **v0.4** Sand: icon tile on the Ink host-mode card; **v0.7** middle stop of the Home gradient |
-| `sand-400` | `#D5B377` | **v0.7 [NEW]** Top stop of the Home gradient only (Ink on it 7.7:1) |
+| `sand-200` | `#E8D7B9` | **v0.4** Sand: icon tile on the Ink host-mode card |
 | `clay-500` | `#8A6F4A` | Clay: tertiary and decorative icons only |
 | `ink-900` | `#2B241E` | Ink (warm) |
 | `ink-950` | `#1F1A16` | **v0.7 [NEW]** Pressed Ink (Leave food card), derived from Ink |
@@ -99,7 +98,6 @@ Proportions: about **60% Cream and Paper · 30% Pantry Green and Ink · 10% Ochr
 | `surface-reward` | ochre-500 | Coupon band (6px), **v0.5** Rescue Bonus progress fill; Ink text |
 | `surface-reward-subtle` | ochre-100 | Reward banners, Ink text; **v0.5** Find food and Rescue Bonus icon tiles |
 | `surface-inverse` | ink-900 | **v0.5** Host-mode card, map markers, count pill (**v0.7**: the Leave food card uses `action-leave`, also Ink) |
-| `surface-home-hero` | `linear-gradient(180deg, sand-400 0%, sand-200 55%, cream-100 100%)` | **v0.7 [NEW]** Home (M01) background only |
 | `surface-brand-soft` | green-700 | Forest: toggle on. (**v0.5**: no longer used for the coupon, Find food or impact cards) |
 | `surface-indicator` | green-100 | **v0.4** Active tab pill, positive status tiles |
 | `surface-track` | cream-100 | **v0.4** Progress track, neutral chips (count, spots available) |
@@ -194,7 +192,7 @@ Fraunces Bold brings warmth; Rubik keeps instructions clear. Two families only (
 Nested rule: inner radius = outer radius − padding. In practice, items inside a 16px card use `radius-sm` (8px) or, for 44px icon tiles, `radius-md` (12px).
 
 ## 6. Background, elevation, focus, size, motion
-- **Background (v0.4.1)**: flat `surface-canvas` (Cream) on every standard screen. **No gradients anywhere, except Home** (**v0.7**: `surface-home-hero`, Sand → Cream, from `M01-home-v3`; open question Q82). Task screens use `surface-brand`.
+- **Background (v0.4.1)**: flat `surface-canvas` (Cream) on every standard screen. **No gradients anywhere** (v0.7 tried a Home-only gradient; removed 15 Nov, Q82). Task screens use `surface-brand`.
 - `shadow-card`: `0 1px 2px rgba(43,36,30,.08), 0 8px 24px rgba(43,36,30,.08)`. **v0.5** For tappable cards (action cards, shelf cards, coupon); flat Paper on Cream for everything else. The map search is flat with a `border-strong` outline.
 - `shadow-sheet`: `0 -4px 24px rgba(43,36,30,.12)`. For bottom sheets and fixed action bars.
 - `shadow-focus`: `0 0 0 2px #FFFFFF, 0 0 0 5px #2F6E8C`. On dark fills, use a Paper ring instead.
@@ -313,7 +311,7 @@ Every component uses semantic tokens only and is built with all its states.
 | **Profile row / avatar** **v0.4** | 48px avatar (photo or initials on Oat), name `title`, email `text-secondary` | — |
 | **Impact card** **v0.5 light** | `surface-selected` (Leaf), label + captions `text-secondary`, numbers Fraunces 32/40 `text-brand`, `saved-food` in `icon-primary` | — |
 | **Host-mode card** **v0.4** | Stays `surface-inverse` (the only dark card in v0.5), Sand icon tile with gold `community-shelf`, Paper title, `text-on-inverse-secondary` subtitle, chevron | — |
-| **Greeting header** | "Hi Brenda" in Fraunces `heading-1` + 48px avatar at right. **v0.7** On Home: `text-primary` (Ink) on `surface-home-hero`, photo avatar | — |
+| **Greeting header** | "Hi Brenda" in Fraunces `heading-1` + 48px avatar at right. **v0.7** On Home: `text-primary` (Ink) on flat Cream, photo avatar | — |
 | **Step header** **v0.5 [NEW]** | 44px Back (Close on step 1), centred `overline` "Step n of 3" `text-secondary`, 6px bar `surface-progress` on `surface-progress-track`, title Fraunces `heading-1` `text-brand`; `role=progressbar` | step 1 · 2 · 3 |
 | **Counter QR sheet** **v0.5 [NEW, from G08d]** | Bottom sheet: coupon name, large QR on Paper, coupon code, "Show this to the staff", Close | active · used |
 | **Photo capture frame** **v0.5 [NEW, from G05]** | Viewfinder `radius-lg` on `surface-subtle`, Primary pill **Take photo**, Secondary **Use sample photo**, text link **Add items manually** | empty · captured · reading · unreadable |
@@ -344,7 +342,7 @@ Every component uses semantic tokens only and is built with all its states.
   --ink-950:#1F1A16; --ink-900:#2B241E; --stone-700:#5C554C; --stone-600:#6E665C; --stone-500:#8C8477; --stone-300:#CFC6B6;
   --oat-200:#E9DFCC; --cream-100:#F6F1E7; --paper-0:#FFFFFF;
   --sand-200:#E8D7B9; --stone-200:#E6DED0;
-  --ochre-300:#E3B65A; --sand-400:#D5B377; /* v0.7 [NEW] */
+  --ochre-300:#E3B65A; /* v0.7 [NEW] */
   --map-land:#FFFFFF; --map-road:#D9DED8; --map-road-main:#798C75; --map-water:#85D5EB;
   --success-700:#2C6E46; --warning-600:#A86A12; --slate-600:#51666D; --info-600:#2F6E8C;
   /* text */
@@ -374,7 +372,6 @@ Every component uses semantic tokens only and is built with all its states.
   --action-leave:var(--ink-900); --action-leave-pressed:var(--ink-950); --icon-on-leave:var(--ochre-500);
   --action-find:var(--green-700); --action-find-pressed:var(--green-900); --icon-on-find:var(--ochre-300);
   --icon-waiting:var(--ochre-800);
-  --surface-home-hero:linear-gradient(180deg,var(--sand-400) 0%,var(--sand-200) 55%,var(--cream-100) 100%);
   /* type */
   --font-serif:Fraunces,Georgia,serif; --font-sans:Rubik,system-ui,-apple-system,sans-serif;
   --font-sans-alt:"DM Sans",system-ui,-apple-system,sans-serif; /* v0.7 [NEW], moderator toggle only */
