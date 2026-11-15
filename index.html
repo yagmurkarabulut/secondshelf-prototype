@@ -1609,7 +1609,8 @@ button.settings__row:active{background:var(--surface-canvas)}
 .radiorow .radio{position:static;flex:none}
 
 /* moderator menu (test only) */
-.modfab{position:absolute;top:50%;left:calc(var(--size-tap-min) / -2);z-index:44;opacity:.55;background:var(--surface-default);border:var(--border-w) solid var(--border-strong);justify-content:flex-end;padding-right:var(--space-4)}
+.modfab{position:absolute;top:50%;left:var(--space-4);z-index:44;background:var(--surface-default);border:2px solid var(--border-brand);box-shadow:var(--shadow-card)}
+.modfab .icon{color:var(--icon-primary)}
 .mod .btn{min-height:var(--size-tap-min);padding:var(--space-8) var(--space-12);font:var(--type-label)}
 .mod__grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-8)}
 .mod__sec{display:flex;flex-direction:column;gap:var(--space-8);padding-top:var(--space-16);margin-top:var(--space-16);border-top:1px solid var(--border-subtle)}
