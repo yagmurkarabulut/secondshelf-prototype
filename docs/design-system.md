@@ -391,6 +391,8 @@ Added while building `index.html` (phase 1). Listed in `docs/open-questions.md` 
 | `--size-result-icon` | `80px` | Round result icon (H07b valid, H07c, R04c, H05b, R07b) |
 | `--size-radio` | `24px` | Radio dot (O03 role cards, radio rows, timeline dots) |
 | `--size-chart` | `160px` | G11 weekly bar chart |
+| `--size-modfab` | `40px` | Movable moderator button (team request; below the 44px tap minimum, test-only) |
+| `--opacity-idle` | `.3` | Moderator button at rest |
 
 **16 Nov components [NEW]** (built once in `index.html`, reused):
 | Component | Recipe | States |
