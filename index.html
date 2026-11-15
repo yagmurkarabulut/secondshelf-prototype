@@ -752,6 +752,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
   /* size and motion */
   --size-tap-min:44px; --size-control:48px; --frame-max:430px; --size-avatar:48px; --size-tab-indicator:64px;
   --motion-fast:150ms; --motion-base:250ms; --ease:cubic-bezier(.2,0,0,1);
+  --motion-tab:200ms; --ease-in-out:cubic-bezier(.65,0,.35,1); /* [NEW] QA round 2: sliding tab indicator */
 }
 
 /* =====================================================================
@@ -775,7 +776,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
   --type-label:500 14px/20px var(--font-sans);
   --type-caption:400 12px/16px var(--font-sans);
   --type-status-sub:400 13px/18px var(--font-sans);
-  --type-coupon-value:700 30px/38px var(--font-serif); /* [NEW] QA 15 Nov: coupon value (heading-2 + 6px) */ /* [NEW] QA 15 Nov: status under item names (body-list − 2px) */
+  --type-coupon-value:700 40px/48px var(--font-serif); /* [NEW] QA 15 Nov: coupon value in its gift-card panel (round 2: 30 → 40) */ /* [NEW] QA 15 Nov: status under item names (body-list − 2px) */
   --type-overline:500 12px/16px var(--font-sans);
   --tracking-display:-0.02em; --tracking-heading:-0.01em; --tracking-overline:0.06em;
   /* §6 sizes */
@@ -1139,8 +1140,10 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{box-shadow:none}
 .coupon > .coupon__foot{position:relative;border-radius:0 0 var(--radius-lg) var(--radius-lg);padding-top:var(--space-16);
   -webkit-mask:var(--notch-l-top),var(--notch-r-top);mask:var(--notch-l-top),var(--notch-r-top)}
 .coupon > .coupon__foot::before{content:"";position:absolute;left:var(--space-20);right:var(--space-20);top:0;border-top:var(--border-w) dashed var(--border-subtle)}
-.coupon__value{font:var(--type-coupon-value);letter-spacing:var(--tracking-heading);color:var(--text-brand);margin-top:var(--space-8)}
-.coupon.is-used .coupon__value,.coupon.is-expired .coupon__value{color:var(--text-secondary)}
+.coupon__value{display:flex;align-items:center;justify-content:center;text-align:center;margin-top:var(--space-12);padding:var(--space-20) var(--space-24);
+  border-radius:var(--radius-md);background:var(--surface-reward-subtle);font:var(--type-coupon-value);letter-spacing:var(--tracking-heading);color:var(--text-brand)}
+.coupon__value + .coupon__meta{margin-top:var(--space-12)}
+.coupon.is-used .coupon__value,.coupon.is-expired .coupon__value{background:var(--surface-subtle);color:var(--text-secondary)}
 .coupon__body{padding:var(--space-16) var(--space-16) var(--space-12)}
 .coupon__head{display:flex;align-items:center;gap:var(--space-8);justify-content:space-between}
 .coupon__kind{display:flex;align-items:center;gap:var(--space-8);color:var(--text-secondary)}
@@ -1150,7 +1153,7 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{box-shadow:none}
 .kv dt{color:var(--text-primary)}
 .kv dd{margin:0;font-weight:500;text-align:right}
 .coupon__terms{margin:var(--space-12) 0 0}
-.coupon__foot{display:flex;align-items:center;justify-content:flex-end;gap:var(--space-12);padding:0 var(--space-16) var(--space-16)}
+.coupon__foot{display:flex;align-items:center;justify-content:center;gap:var(--space-12);padding:0 var(--space-16) var(--space-16)}
 .coupon__foot .btn{flex:none}
 .pill{display:inline-flex;align-items:center;gap:var(--space-4);min-height:var(--size-icon-24);padding:var(--space-4) var(--space-12);border-radius:var(--radius-full);font:var(--type-label);white-space:nowrap;background:var(--surface-track);color:var(--text-primary)}
 .pill .icon{width:var(--size-icon-16);height:var(--size-icon-16);stroke-width:1.5}
@@ -1282,8 +1285,8 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{box-shadow:none}
 .statuslist__head{display:flex;align-items:center;gap:var(--space-8);min-height:var(--size-tap-min)}
 .statuslist__head h2{flex:1}
 .statuslist__row{display:flex;align-items:center;gap:var(--space-12);min-height:var(--size-status-row)}
-.statuslist__name{flex:1;min-width:0;font:var(--type-body-list)}
-.statuslist__name small{display:block;font:var(--type-status-sub);color:var(--text-secondary);white-space:nowrap}
+.statuslist__name{flex:1;min-width:0;font:var(--type-body-list);font-weight:500}  /* QA round 2: names in the title weight */
+.statuslist__name small{display:block;font:var(--type-status-sub);color:var(--text-tertiary);white-space:nowrap}  /* lighter than the name; 5.6:1 on Paper */
 .statuslist__venue{font:var(--type-body-small);color:var(--text-secondary);white-space:nowrap;text-align:right}
 .tile--oat{background:var(--surface-subtle)}
 .icon--waiting{color:var(--icon-waiting)}
@@ -1429,7 +1432,7 @@ button.settings__row:active{background:var(--surface-canvas)}
 
 /* ---- Tab bar ---- */
 .tabbar{
-  flex:none;display:grid;grid-template-columns:repeat(4,1fr);background:var(--surface-default);
+  position:relative;flex:none;display:grid;grid-template-columns:repeat(4,1fr);background:var(--surface-default);
   border-top:1px solid var(--border-subtle);padding:var(--space-8) var(--space-8) calc(var(--space-8) + env(safe-area-inset-bottom));
 }
 .tabbar[hidden]{display:none}
@@ -1437,9 +1440,15 @@ button.settings__row:active{background:var(--surface-canvas)}
 .tab__pill{width:var(--size-tab-indicator);height:var(--size-tab-indicator-h);border-radius:var(--radius-full);display:flex;align-items:center;justify-content:center;transition:background-color var(--motion-fast) var(--ease)}
 .tab .icon{color:var(--icon-neutral)}
 .tab[aria-current="page"]{font-weight:500}
-.tab[aria-current="page"] .tab__pill{background:var(--surface-indicator)}
+/* QA round 2: one Leaf pill slides between tabs (200 ms ease-in-out); instant under reduced motion */
+.tab{position:relative;z-index:1}
+.tabbar__ind{position:absolute;z-index:0;pointer-events:none;left:var(--space-8);top:calc(var(--space-8) + var(--space-4));width:calc((100% - var(--space-8) * 2) / 4);height:var(--size-tab-indicator-h);
+  display:flex;justify-content:center;transform:translateX(calc(var(--tab-i, 0) * 100%));transition:transform var(--motion-tab) var(--ease-in-out)}
+.tabbar__ind::before{content:"";width:var(--size-tab-indicator);height:100%;border-radius:var(--radius-full);background:var(--surface-indicator)}
+.tabbar__ind[data-i="-1"]{display:none}
+@media (prefers-reduced-motion:reduce){.tabbar__ind{transition:none}}
 .tab[aria-current="page"] .icon{color:var(--icon-primary)}
-.tab:active .tab__pill{background:var(--surface-subtle)}
+.tab:not([aria-current="page"]):active .tab__pill{background:var(--surface-subtle)}
 .tabbar--static{border-radius:0 0 var(--radius-lg) var(--radius-lg)}
 
 /* ---- Empty state ---- */
@@ -2423,7 +2432,8 @@ const UI = {
     const tabs = mode === 'host'
       ? [['dashboard', 'Dashboard', '#/host/dashboard'], ['shelf-check', 'Check', '#/host/check'], ['redeem', 'Redeem', '#/host/redeem'], ['profile', 'Me', '#/me']]
       : [['home', 'Home', '#/home'], ['map', 'Map', '#/map'], ['coupon', 'Coupons', '#/coupons'], ['profile', 'Me', '#/me']];
-    return tabs.map(([ic, label, href]) => `<a class="tab" href="${href}" ${current === href ? 'aria-current="page"' : ''}><span class="tab__pill">${icon(ic)}</span><span>${label}</span></a>`).join('');
+    const i = tabs.findIndex(t => t[2] === current);
+    return `<span class="tabbar__ind" aria-hidden="true" data-i="${i}" style="--tab-i:${i}"></span>` + tabs.map(([ic, label, href]) => `<a class="tab" href="${href}" ${current === href ? 'aria-current="page"' : ''}><span class="tab__pill">${icon(ic)}</span><span>${label}</span></a>`).join('');
   },
   qr(seed = 'SS-4821') {
     // Schematic 21×21 QR-like pattern (not scannable), deterministic from the seed
@@ -2699,7 +2709,17 @@ const Router = {
     stage.appendChild(el);
     // tab bar (host routes always show the host tabs)
     const tb = $('#tabbar');
-    if (r.opts.tabs) { tb.hidden = false; tb.innerHTML = UI.tabBar(r.opts.tabMode || Store.state.mode, r.opts.tabs); $('#app').classList.add('has-tabs'); }
+    const prevInd = !tb.hidden && $('.tabbar__ind', tb), prevI = prevInd ? +prevInd.dataset.i : -1, prevMode = tb.dataset.mode;
+    if (r.opts.tabs) {
+      const mode = r.opts.tabMode || Store.state.mode;
+      tb.hidden = false; tb.innerHTML = UI.tabBar(mode, r.opts.tabs); tb.dataset.mode = mode; $('#app').classList.add('has-tabs');
+      // slide the Leaf pill from the old tab to the new one (same tab set only)
+      const ind = $('.tabbar__ind', tb), i = +ind.dataset.i;
+      if (prevI >= 0 && i >= 0 && prevI !== i && prevMode === mode && !reduceMotion()) {
+        ind.style.transition = 'none'; ind.style.setProperty('--tab-i', prevI); void ind.offsetWidth;
+        ind.style.transition = ''; ind.style.setProperty('--tab-i', i);
+      }
+    }
     else { tb.hidden = true; $('#app').classList.remove('has-tabs'); }
     $('#app').classList.toggle('has-actionbar', !!r.opts.actionbar);
     // transition: push / back slide 250 ms, tab crossfade 150 ms, reduced motion = instant swap
