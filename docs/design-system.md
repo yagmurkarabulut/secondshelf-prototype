@@ -1,6 +1,6 @@
 # SecondShelf design system: UI Kit v0.5
 
-> v0.3 approved by the team on 10 Nov 2026 (Kathy's kit + the warm Elements kit). **v0.4** (same day) adds the components and decisions from the main navigation frames (`frames/M01-home.png`, `G02-map.png`, `G08-coupons.png`, `M02-me.png`). New items are marked **v0.4**. **v0.4.1: the gradient background is removed; screens are flat Cream.** **v0.5** (same day) merges the airy hi-fi mocks in `frames/` (G04–G08d, R01b–R06, H01–H07, M01-v2, M02-v2) and adds terracotta and gold to them; changes are marked **v0.5**.
+> v0.3 approved by the team on 10 Nov 2026 (Kathy's kit + the warm Elements kit). **v0.4** (same day) adds the components and decisions from the main navigation frames (`frames/M01-home.png`, `G02-map.png`, `G08-coupons.png`, `M02-me.png`). New items are marked **v0.4**. **v0.4.1: the gradient background is removed; screens are flat Cream.** **v0.7 (15 Nov, `M01-home-v3`)**: dark Home action cards (Ink / Forest), a Home-only hero gradient, and a lighter, slightly smaller Rubik scale; changes are marked **v0.7** and new tokens **[NEW]**. **v0.5** (same day) merges the airy hi-fi mocks in `frames/` (G04–G08d, R01b–R06, H01–H07, M01-v2, M02-v2) and adds terracotta and gold to them; changes are marked **v0.5**.
 > Source of truth: the **SecondShelf** design system artifact (https://claude.ai/artifact/1hn8SCWXGTcBzaimeadbe1). This file mirrors it for Claude Code.
 > **Rules for Claude Code:**
 > - Use only these tokens.
@@ -27,10 +27,13 @@ Proportions: about **60% Cream and Paper · 30% Pantry Green and Ink · 10% Ochr
 | `terracotta-100` | `#F0DFD2` | Terracotta tint |
 | `ochre-800` | `#876326` | Ochre for text and icons on Cream and Paper |
 | `ochre-500` | `#BF8B2E` | **Ochre / gold**: reward fills, Ink text on it |
+| `ochre-300` | `#E3B65A` | **v0.7 [NEW]** Light gold: icons on Forest (4.0:1). Ochre 500 on Forest is 2.5:1 and fails |
 | `ochre-100` | `#EFE5D1` | Ochre tint |
-| `sand-200` | `#E8D7B9` | **v0.4** Sand: icon tile on the Ink host-mode card |
+| `sand-200` | `#E8D7B9` | **v0.4** Sand: icon tile on the Ink host-mode card; **v0.7** middle stop of the Home gradient |
+| `sand-400` | `#D5B377` | **v0.7 [NEW]** Top stop of the Home gradient only (Ink on it 7.7:1) |
 | `clay-500` | `#8A6F4A` | Clay: tertiary and decorative icons only |
 | `ink-900` | `#2B241E` | Ink (warm) |
+| `ink-950` | `#1F1A16` | **v0.7 [NEW]** Pressed Ink (Leave food card), derived from Ink |
 | `stone-700` | `#5C554C` | Warm stone, secondary text |
 | `stone-200` | `#E6DED0` | **v0.4** Secondary text on dark surfaces (11.5:1 on Ink, 5.7:1 on Forest) |
 | `stone-600` | `#6E665C` | Warm stone, tertiary text |
@@ -43,7 +46,7 @@ Proportions: about **60% Cream and Paper · 30% Pantry Green and Ink · 10% Ochr
 | `warning-600` | `#A86A12` | Warning (icons only) |
 | `slate-600` | `#51666D` | Slate: problems. **No red anywhere.** |
 | `info-600` | `#2F6E8C` | Info, focus ring |
-| `map-land` · `map-road` · `map-road-main` · `map-water` | `#FFFFFF` · `#D9DED8` · `#798C75` · `#85D5EB` | **v0.4** Map illustration only, never UI |
+| `map-land` · `map-road` · `map-road-main` · `map-water` | `#FFFFFF` · `#D9DED8` · `#798C75` · `#85D5EB` | **v0.4** Map illustration only, never UI (**v0.7**: only the offline SVG map uses them) |
 
 ### 2.2 Text
 | Token | → | Contrast on Cream | Use |
@@ -72,11 +75,14 @@ Proportions: about **60% Cream and Paper · 30% Pantry Green and Ink · 10% Ochr
 | `icon-secondary` | stone-700 | Meta icons, inactive tabs |
 | `icon-tertiary` | clay-500 | Decorative and illustrative only |
 | `icon-disabled` | stone-500 | Disabled |
-| `icon-accent` | terracotta-500 | Feature icons (new shelf, **v0.5** Leave food card) |
-| `icon-reward` | ochre-800 | Coupon, Rescue Bonus, search, **v0.5** Find food card |
+| `icon-accent` | terracotta-500 | Feature icons (new shelf; **v0.7** no longer the Leave food card) |
+| `icon-reward` | ochre-800 | Coupon, Rescue Bonus, search (**v0.7** not the Find food card) |
 | `icon-on-primary` | paper-0 | On green or terracotta-700 fills |
 | `icon-neutral` | ink-900 | **v0.4** Inactive tab icons, neutral list icons |
 | `icon-on-inverse` | ochre-500 | **v0.4** Gold icons on **Ink only** (5.1:1). Never on Forest (2.5:1) |
+| `icon-on-leave` | ochre-500 | **v0.7 [NEW]** `sealed-food` on the Ink Leave food card (5.1:1; 5.7:1 pressed) |
+| `icon-on-find` | ochre-300 | **v0.7 [NEW]** `search` on the Forest Find food card (4.0:1; 6.3:1 pressed) |
+| `icon-waiting` | ochre-800 | **v0.7 [NEW]** `paused` clock on the Oat status tile in "Your food on shelves" (4.1:1 on Oat) |
 | `icon-on-brand-soft` | green-100 | **v0.4** Icons on Forest cards (Leaf, 5.6:1) |
 | `icon-success` · `icon-warning` · `icon-problem` · `icon-info` | success-700 · warning-600 · slate-600 · info-600 | Status, **always with an Ink label** |
 
@@ -92,7 +98,8 @@ Proportions: about **60% Cream and Paper · 30% Pantry Green and Ink · 10% Ochr
 | `surface-accent-subtle` | terracotta-100 | Quiet feature cards, Ink text; **v0.5** Leave food icon tile |
 | `surface-reward` | ochre-500 | Coupon band (6px), **v0.5** Rescue Bonus progress fill; Ink text |
 | `surface-reward-subtle` | ochre-100 | Reward banners, Ink text; **v0.5** Find food and Rescue Bonus icon tiles |
-| `surface-inverse` | ink-900 | **v0.5** Host-mode card, map markers, count pill only |
+| `surface-inverse` | ink-900 | **v0.5** Host-mode card, map markers, count pill (**v0.7**: the Leave food card uses `action-leave`, also Ink) |
+| `surface-home-hero` | `linear-gradient(180deg, sand-400 0%, sand-200 55%, cream-100 100%)` | **v0.7 [NEW]** Home (M01) background only |
 | `surface-brand-soft` | green-700 | Forest: toggle on. (**v0.5**: no longer used for the coupon, Find food or impact cards) |
 | `surface-indicator` | green-100 | **v0.4** Active tab pill, positive status tiles |
 | `surface-track` | cream-100 | **v0.4** Progress track, neutral chips (count, spots available) |
@@ -107,14 +114,18 @@ Proportions: about **60% Cream and Paper · 30% Pantry Green and Ink · 10% Ochr
 | `action-primary` / `-hover` / `-pressed` | green-900 / green-700 / green-950 | Primary buttons |
 | `action-accent` / `-pressed` | terracotta-700 / terracotta-800 | **One closing action per flow**: Confirm drop-off, Confirm pickup, Go live. Never Clay. |
 | `action-disabled` | oat-200 | Disabled button fill (with `text-disabled`) |
+| `action-leave` / `-pressed` | ink-900 / ink-950 | **v0.7 [NEW]** Leave food card fill (Home) |
+| `action-find` / `-pressed` | green-700 / green-900 | **v0.7 [NEW]** Find food card fill (Home) |
 | `map-park` · `map-marker` | green-100 · ink-900 | **v0.4** Map parks; marker fill (Paper number) |
+| `map-tile-filter` | `saturate(.55) sepia(.3) brightness(1.04) contrast(.9)` | **v0.7 [NEW]** CSS filter on the map **tile pane only**: calms the OpenStreetMap tiles and warms them toward Cream. Markers, clusters, chips, sheets and the attribution are not filtered |
 
 ### 2.5 Colour rules
 - **Ochre means "you earned something".** Use it only for coupons, the Rescue Bonus and thank-you moments.
 - **Terracotta is never an error or a warning.** Problems are Slate, calm and with a clear way forward.
 - **Terracotta marks availability limits** (**v0.5** label "Full shelf") as a `surface-unavailable` chip: Terracotta **700** + Paper text (5.84:1) + the `shelf-full` icon. White on Terracotta 500 is 4.39:1 and fails AA, so 500 is never used behind normal-size text.
-- **Gold icons** appear on Ink (`icon-on-inverse`) and, on light surfaces, as `icon-reward` (Ochre 800) for search, rewards and the Find food card. On Forest, icons are Leaf.
-- **v0.5 Where the warmth goes (airy style):** Terracotta 700 = the closing action and "Full shelf"; Terracotta 500 = step progress and the Leave food icon; Ochre 500 = coupon band and Rescue Bonus fill; Ochre 800 = reward and search icons. Everything else is Cream, Paper and Pantry Green.
+- **Gold icons** appear on Ink (`icon-on-inverse`, `icon-on-leave`) and, on light surfaces, as `icon-reward` (Ochre 800) for search and rewards. **v0.7** On Forest, gold icons use light gold **`ochre-300`** (`icon-on-find`, 4.0:1), never Ochre 500 (2.5:1); other icons on Forest stay Leaf.
+- **v0.7 Ink** is no longer host-mode only: it fills the Home **Leave food** card (`action-leave`), the host-mode card, map markers and the count pill. Forest fills the **Find food** card (`action-find`).
+- **v0.5 Where the warmth goes (airy style):** Terracotta 700 = the closing action and "Full shelf"; Terracotta 500 = step progress (**v0.7**: no longer the Leave food icon); Ochre 500 = coupon band and Rescue Bonus fill; Ochre 800 = reward and search icons. Everything else is Cream, Paper and Pantry Green.
 - **v0.5 Rescue Bonus bar**: Ochre 500 on the Cream track is 2.7:1, so the bar is always paired with the text "n of N picked up · pending", which carries the meaning.
 - **v0.4 Grey text**: never the frames' `#95918E` (3.1:1); use `text-secondary` or `text-tertiary`.
 - Never put Ochre 500 as text or icons on Cream (2.7:1); use `ochre-800`. Never put Ochre 800 text on the ochre tint (4.4:1); use Ink.
@@ -132,19 +143,22 @@ Fraunces Bold brings warmth; Rubik keeps instructions clear. Two families only (
 | `heading-1` | Fraunces | 28 / 36 | 700 | -0.01em | Screen titles |
 | `heading-2` | Fraunces | 24 / 32 | 700 | -0.01em | Section titles |
 | `heading-3` | Fraunces | 20 / 28 | 700 | 0 | Card group titles (smallest Fraunces) |
-| `section` | Rubik | 20 / 28 | 500 | 0 | **v0.4** Section titles, action-card titles |
-| `title` | Rubik | 18 / 24 | 500 | 0 | Card and list item titles |
+| `section` | Rubik | **18 / 24** | 500 | 0 | **v0.7** (was 20/28) Section titles |
+| `title` | Rubik | **17 / 22** | 500 | 0 | **v0.7** (was 18/24) Card and list item titles |
+| `action-title` | Rubik | 18 / 24 | **400** | 0 | **v0.7 [NEW]** Home action-card titles (Leave food, Find food) |
 | `body-large` | Rubik | 18 / 28 | 400 | 0 | Intro paragraphs |
-| `body` | Rubik | 16 / 24 | 400 | 0 | Default text, input values |
+| `body` | Rubik | 16 / 24 | 400 | 0 | Default text, paragraphs, input values (16px stops iOS zoom) |
+| `body-list` | Rubik | 15 / 22 | 400 | 0 | **v0.7 [NEW]** List rows, item names, settings rows, suggestions, radio rows |
 | `button` | Rubik | 16 / 24 | 500 | 0 | Button labels |
 | `body-small` | Rubik | 14 / 20 | 400 | 0 | Meta, secondary text |
 | `label` | Rubik | 14 / 20 | 500 | 0 | Field labels, chips, tab labels |
 | `caption` | Rubik | 12 / 16 | 400 | 0 | Non-essential metadata (smallest size) |
 | `overline` | Rubik | 12 / 16 | 500 | 0.06em, UPPERCASE | Section labels, "STEP 2 OF 3" |
 
-- Load: `https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&family=Rubik:wght@400;500&display=swap`
-- Stacks: `--font-serif: Fraunces, Georgia, serif` · `--font-sans: Rubik, system-ui, -apple-system, sans-serif`
-- **v0.5** Screen titles (Fraunces `display`/`heading-1`) are **Pantry Green** (`text-brand`, 10.6:1 on Cream), as in the airy mocks. Fraunces headings on Paper cards are `text-brand` too. Section titles ("Your food on shelves", "Points near you") use **`section`**: Rubik 500 20/28, Ink. Sentence case everywhere (item names too: "Canned soup").
+- Load: `https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&family=Rubik:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500&display=swap`
+- Stacks: `--font-serif: Fraunces, Georgia, serif` · `--font-sans: Rubik, system-ui, -apple-system, sans-serif` · **v0.7 [NEW]** `--font-sans-alt: "DM Sans", system-ui, sans-serif` (only behind the moderator toggle "Font: Rubik / DM Sans"; default stays Rubik, see open question Q83)
+- **v0.7 weights:** 500 only for section titles, card titles and buttons (plus the existing `label` / `overline` tokens, unchanged). Everything else is 400.
+- **v0.5** Screen titles (Fraunces `display`/`heading-1`) are **Pantry Green** (`text-brand`, 10.6:1 on Cream), as in the airy mocks. Fraunces headings on Paper cards are `text-brand` too. Section titles ("Your food on shelves", "Points near you") use **`section`**: Rubik 500 18/24 (**v0.7**), Ink. **v0.7** The Home greeting is Ink, not Pantry Green (`M01-home-v3`). Sentence case everywhere (item names too: "Canned soup").
 - Fraunces is never used under 20px, on buttons or in labels.
 - Inputs are 16px (no iOS zoom). 12px is the floor, and never for instructions. Text reflows at 200%; labels are never truncated.
 
@@ -180,7 +194,7 @@ Fraunces Bold brings warmth; Rubik keeps instructions clear. Two families only (
 Nested rule: inner radius = outer radius − padding. In practice, items inside a 16px card use `radius-sm` (8px) or, for 44px icon tiles, `radius-md` (12px).
 
 ## 6. Background, elevation, focus, size, motion
-- **Background (v0.4.1)**: flat `surface-canvas` (Cream) on every standard screen. **No gradients anywhere.** Task screens use `surface-brand`.
+- **Background (v0.4.1)**: flat `surface-canvas` (Cream) on every standard screen. **No gradients anywhere, except Home** (**v0.7**: `surface-home-hero`, Sand → Cream, from `M01-home-v3`; open question Q82). Task screens use `surface-brand`.
 - `shadow-card`: `0 1px 2px rgba(43,36,30,.08), 0 8px 24px rgba(43,36,30,.08)`. **v0.5** For tappable cards (action cards, shelf cards, coupon); flat Paper on Cream for everything else. The map search is flat with a `border-strong` outline.
 - `shadow-sheet`: `0 -4px 24px rgba(43,36,30,.12)`. For bottom sheets and fixed action bars.
 - `shadow-focus`: `0 0 0 2px #FFFFFF, 0 0 0 5px #2F6E8C`. On dark fills, use a Paper ring instead.
@@ -242,8 +256,8 @@ Set CSS `color` on the icon with an icon token (§2.3), never a raw hex:
 | Consumer tab bar | `home` · `map` · `coupon` · `profile` | active `icon-primary` on a Leaf pill, inactive `icon-neutral` |
 | Host tab bar | `dashboard` · `shelf-check` · `redeem` · `profile` | same |
 | Top bar | `back`, `close`, `more` | `icon-primary` |
-| M01 Leave food / Find food cards | `sealed-food` / `search` | **v0.5** `icon-accent` on terracotta tint / `icon-reward` on ochre tint |
-| M01 Your food on shelves | `done` (picked up) / `paused` (waiting) | `icon-success` on Leaf tile / `icon-warning` on cream tile |
+| M01 Leave food / Find food cards | `sealed-food` / `search` | **v0.7** bare 28px icons: `icon-on-leave` on Ink / `icon-on-find` on Forest |
+| M01 Your food on shelves | `done` (picked up) / `paused` (waiting) | `icon-success` on Leaf tile / **v0.7** `icon-waiting` on Oat tile |
 | G02 map search | `search` · `filter` · `map` / `list` | `icon-reward` (search) · `icon-primary` |
 | G01 travel prompt | `travel` | `icon-primary` |
 | G02 / R01 map and list | `location`, `list`, `map`, `search`, `filter`, `sort` | `icon-primary` |
@@ -280,7 +294,7 @@ Every component uses semantic tokens only and is built with all its states.
 | **Checkbox row** | 24px box `radius-xs` in a 44px target, label `body` | unchecked · checked (`action-primary`) · disabled |
 | **Quantity stepper** | **v0.5 round**: 44px buttons `radius-full`, Paper + 1.5px `border-strong`, `minus`/`plus` in `icon-primary`; value `title` | default · min (minus disabled) · max |
 | **Card** | Paper, **`radius-lg` (16)**, padding 16, optional `shadow-card` | default · pressed · selected (`surface-selected` or `border-brand`) |
-| **Action card** (Home) **v0.5 airy** | Paper, `radius-lg`, `shadow-card`, padding 16; 44px icon tile (`radius-md`) with a 28px icon; title `section` Ink; description `body-small` `text-secondary`. **Leave food**: `surface-accent-subtle` tile + `sealed-food` in `icon-accent`. **Find food**: `surface-reward-subtle` tile + `search` in `icon-reward`. Same size = equal weight | default · pressed |
+| **Action card** (Home) **v0.7 dark** (`M01-home-v3`) | Same size for both (equal weight), `radius-lg`, padding 24 / 20, **no shadow, no icon tile**: a bare 28px icon top left, then the title in `action-title` (Rubik 400 18/24) `text-on-inverse`, then the description in `body-small` `text-on-inverse-secondary`. **Leave food**: `action-leave` (Ink) + `sealed-food` in `icon-on-leave` (gold, 5.1:1), "Pass on sealed food you won’t eat". **Find food**: `action-find` (Forest) + `search` in `icon-on-find` (light gold `ochre-300`, 4.0:1), "Free food at shelves near you". Pressed: scale 0.98 + `action-leave-pressed` / `action-find-pressed`; focus `shadow-focus`; whole card ≥ 44px | default · pressed |
 | **Feature card** | `surface-accent-subtle`, `overline` in `text-accent`, `icon-accent` | default |
 | **Status label** | Status icon + `text-primary` label (problems may use `text-problem`) | done · waiting/paused · problem · info |
 | **Banner / toast** | `radius-md`, padding 12/16, icon + text + optional action | success (`surface-selected`) · info (`surface-subtle`) · problem (Paper + Slate text) · reward (`surface-reward-subtle`) |
@@ -290,8 +304,8 @@ Every component uses semantic tokens only and is built with all its states.
 | **NFC tap card** | (layout from G04 / R04 / H06 mocks) On `surface-brand`: illustration, instruction in `text-on-primary`, status, fallback links | idle · scanning · found · not found · QR fallback |
 | **Food item row** | Thumb `radius-sm`, `title`, best-before `body-small`, sealed badge, **round** stepper, 44px remove; min 72px rows (v0.5 ItemRows) | default · edited · removed (Undo toast) · checkbox variant (receiver) |
 | **Map marker** **v0.4** | 32px numbered circle: `map-marker` (Ink) fill, Paper number | default · selected (`action-primary` + Leaf halo) · full · paused · closed; legend "Numbers identify shelves, not item counts" |
-| **Map controls** **v0.4** | Flat pill search + filter button (v0.5: `border-strong` outline, no shadow); scrolling filter chips (Open now · Has space · Nearby); count pill on `surface-inverse` ("32 locations in this area"); **Map / List toggle** at the bottom | — |
-| **Item status list** **v0.4** | Paper `radius-lg`; header `section` + count chip (`surface-track`) + chevron; 48px rows: 32px status tile (`radius-sm`) + name + venue `text-secondary`; hidden status label | picked up (Leaf + `done`) · waiting (cream + `paused`) |
+| **Map controls** **v0.4** | Flat pill search + filter button (v0.5: `border-strong` outline, no shadow); scrolling filter chips (Open now · Has space · Nearby); count pill on `surface-inverse` ("32 locations in this area"); **Map / List toggle** at the bottom; **v0.7** zoom + / − (48px), a 48px round **Locate me** button (`location`, Paper + `border-strong` + `shadow-card`) that appears only after the map moved or zoomed away from you and flies back (instant under reduced motion); the attribution "© OpenStreetMap contributors" in `caption` `text-secondary` on Paper, top left under the chips, where the sheet never covers it | — |
+| **Item status list** **v0.4** | Paper `radius-lg`; header `section` + count chip (`surface-track`) + chevron; 48px rows: 32px status tile (`radius-sm`) + name + venue `text-secondary`; hidden status label | picked up (Leaf + `done` in `icon-success`) · waiting (**v0.7** Oat tile + `paused` in `icon-waiting`); **v0.7** no shadow, names `body-list` in sentence case, venue right-aligned |
 | **Shelf card** **v0.4** | Paper `radius-lg`, `shadow-card`, photo top, distance `text-brand` 14/500, venue `title`, closing time `text-secondary`, availability chip; horizontal carousel with 12px gaps | has space (`surface-track` chip) · **full** (`surface-unavailable` chip + `shelf-full` icon, **v0.5** label "Full shelf") · closed |
 | **Availability chip** **v0.4** | `radius-full`, 32px, `label` type, nowrap | spots available · Full shelf (Terracotta 700) |
 | **Settings list** **v0.4** | Paper `radius-lg`; ≥ 64px rows: 44px icon tile `radius-md` + title + subtitle `text-secondary` + chevron or toggle; `border-subtle` dividers | — |
@@ -299,7 +313,7 @@ Every component uses semantic tokens only and is built with all its states.
 | **Profile row / avatar** **v0.4** | 48px avatar (photo or initials on Oat), name `title`, email `text-secondary` | — |
 | **Impact card** **v0.5 light** | `surface-selected` (Leaf), label + captions `text-secondary`, numbers Fraunces 32/40 `text-brand`, `saved-food` in `icon-primary` | — |
 | **Host-mode card** **v0.4** | Stays `surface-inverse` (the only dark card in v0.5), Sand icon tile with gold `community-shelf`, Paper title, `text-on-inverse-secondary` subtitle, chevron | — |
-| **Greeting header** | "Hi Brenda" in Fraunces `heading-1` **`text-brand`** (v0.5) + avatar at right, on Cream | — |
+| **Greeting header** | "Hi Brenda" in Fraunces `heading-1` + 48px avatar at right. **v0.7** On Home: `text-primary` (Ink) on `surface-home-hero`, photo avatar | — |
 | **Step header** **v0.5 [NEW]** | 44px Back (Close on step 1), centred `overline` "Step n of 3" `text-secondary`, 6px bar `surface-progress` on `surface-progress-track`, title Fraunces `heading-1` `text-brand`; `role=progressbar` | step 1 · 2 · 3 |
 | **Counter QR sheet** **v0.5 [NEW, from G08d]** | Bottom sheet: coupon name, large QR on Paper, coupon code, "Show this to the staff", Close | active · used |
 | **Photo capture frame** **v0.5 [NEW, from G05]** | Viewfinder `radius-lg` on `surface-subtle`, Primary pill **Take photo**, Secondary **Use sample photo**, text link **Add items manually** | empty · captured · reading · unreadable |
@@ -327,9 +341,10 @@ Every component uses semantic tokens only and is built with all its states.
   --green-950:#172E20; --green-900:#1F3D2B; --green-700:#3F5B3A; --green-100:#CFE3C8;
   --terracotta-800:#89432D; --terracotta-700:#A14C33; --terracotta-500:#C2593A; --terracotta-100:#F0DFD2;
   --ochre-800:#876326; --ochre-500:#BF8B2E; --ochre-100:#EFE5D1; --clay-500:#8A6F4A;
-  --ink-900:#2B241E; --stone-700:#5C554C; --stone-600:#6E665C; --stone-500:#8C8477; --stone-300:#CFC6B6;
+  --ink-950:#1F1A16; --ink-900:#2B241E; --stone-700:#5C554C; --stone-600:#6E665C; --stone-500:#8C8477; --stone-300:#CFC6B6;
   --oat-200:#E9DFCC; --cream-100:#F6F1E7; --paper-0:#FFFFFF;
   --sand-200:#E8D7B9; --stone-200:#E6DED0;
+  --ochre-300:#E3B65A; --sand-400:#D5B377; /* v0.7 [NEW] */
   --map-land:#FFFFFF; --map-road:#D9DED8; --map-road-main:#798C75; --map-water:#85D5EB;
   --success-700:#2C6E46; --warning-600:#A86A12; --slate-600:#51666D; --info-600:#2F6E8C;
   /* text */
@@ -354,8 +369,16 @@ Every component uses semantic tokens only and is built with all its states.
   --action-primary:var(--green-900); --action-primary-hover:var(--green-700); --action-primary-pressed:var(--green-950);
   --action-accent:var(--terracotta-700); --action-accent-pressed:var(--terracotta-800); --action-disabled:var(--oat-200);
   --map-park:var(--green-100); --map-marker:var(--ink-900);
+  --map-tile-filter:saturate(.55) sepia(.3) brightness(1.04) contrast(.9); /* v0.7 [NEW] tile pane only */
+  /* v0.7 [NEW] Home (M01-home-v3) */
+  --action-leave:var(--ink-900); --action-leave-pressed:var(--ink-950); --icon-on-leave:var(--ochre-500);
+  --action-find:var(--green-700); --action-find-pressed:var(--green-900); --icon-on-find:var(--ochre-300);
+  --icon-waiting:var(--ochre-800);
+  --surface-home-hero:linear-gradient(180deg,var(--sand-400) 0%,var(--sand-200) 55%,var(--cream-100) 100%);
   /* type */
   --font-serif:Fraunces,Georgia,serif; --font-sans:Rubik,system-ui,-apple-system,sans-serif;
+  --font-sans-alt:"DM Sans",system-ui,-apple-system,sans-serif; /* v0.7 [NEW], moderator toggle only */
+  /* v0.7 type shorthands (index.html block 1b): section 500 18/24 · title 500 17/22 · action-title 400 18/24 [NEW] · body-list 400 15/22 [NEW] */
   /* spacing (multiples of 4) */
   --space-4:4px; --space-8:8px; --space-12:12px; --space-16:16px; --space-20:20px; --space-24:24px;
   --space-28:28px; --space-32:32px; --space-40:40px; --space-48:48px; --space-56:56px; --space-64:64px;
@@ -409,6 +432,14 @@ Added while building `index.html` (phase 1). Listed in `docs/open-questions.md` 
 | Stat tile | Paper, `radius-lg`, number in `heading-2` `text-brand`, caption | — |
 | Result icon | 80px round tile: Leaf + success tick (valid, sent), Oat + Slate flag (problem), Forest on dark screens | done · problem · brand |
 
+**v0.7 photo tokens [NEW]** (Q88):
+| Token | Value | Use |
+|---|---|---|
+| `--shimmer` | `linear-gradient(90deg, transparent 25%, rgba(255,255,255,.45) 50%, transparent 75%)` | Loading shimmer over `surface-subtle` (off under reduced motion) |
+| `--motion-shimmer` | `1200ms` | One shimmer sweep |
+| `--scrim-photo-top` | `linear-gradient(180deg, rgba(43,36,30,.55), rgba(43,36,30,0))` | R03 photo header: keeps Back and the status bar readable |
+| `--size-scrim` | `96px` | Height of that scrim |
+
 **Map cluster [NEW]** (from the interactive map): Paper pill, 2px `border-brand`, `community-shelf` 16px icon + count in `label` type, `text-brand`, `shadow-card`; only on the map. Kept visually different from the numbered Ink markers because numbers identify shelves (Q38).
 
 Recipe sizes from §3, §6 and §8 (type shorthands, icon sizes, 1.5px border, 32px marker, 6px band and step bar, 8px bonus bar, 72px item row, 64px settings row, 52 × 32 toggle) are also written as custom properties in `index.html` (block 1b), so components never hold literal values.
@@ -417,4 +448,4 @@ Recipe sizes from §3, §6 and §8 (type shorthands, icon sizes, 1.5px border, 3
 Put PNG exports at 2x in `frames/`, named by screen code (`frames/G04-tap-the-tag.png`). Frames in the repo: `M01-home`, `G02-map` (also used for R01), `G08-coupons`, `M02-me`, plus the **v0.5 hi-fi mocks** (G04, G05, G06, G07, G08-coupons-v2, G08d, R01b, R03, R04, R05, R06, H01–H07, M01-home-v2, M02-me-v2). The mocks set **layout and the airy feel**; colours follow this file (see `docs/open-questions.md`, "Mocks vs kit"). When a frame and this file disagree on styling, **this file wins**; v0.4 already resolves the known differences (grey text, gold icons on Forest, coupon values, unnumbered markers, terracotta chip contrast, help icon). Note the difference in `docs/open-questions.md`.
 
 ## 12. Still open
-Coupon value and funding · logo and master identity (use the Fraunces Bold text wordmark for now) · dark mode (not planned) · photo style (use labelled warm placeholders on `surface-subtle`).
+Coupon value and funding · logo and master identity (use the Fraunces Bold text wordmark for now) · dark mode (not planned) · ~~photo style (use labelled warm placeholders on `surface-subtle`)~~ **v0.7:** Unsplash venue photos, see `assets/photos/CREDITS.md` (one fixed photo per venue by type and id; `object-fit: cover`, the container's radius, lazy, `surface-subtle` shimmer while loading, none under reduced motion; dark top scrim on R03). Until the URLs are pasted in, the slots show the labelled placeholders (Q88). Illustration, animation, camera and QR placeholders stay.

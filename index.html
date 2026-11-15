@@ -14,7 +14,7 @@
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&family=Rubik:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&family=Rubik:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500&display=swap">
 <style id="vendor-css">
 /* Leaflet 1.9.4 (BSD-2-Clause, https://leafletjs.com) and Leaflet.markercluster 1.5.3 (MIT,
    https://github.com/Leaflet/Leaflet.markercluster), inlined from npm. Library CSS: not token-styled;
@@ -707,6 +707,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
   --ink-900:#2B241E; --stone-700:#5C554C; --stone-600:#6E665C; --stone-500:#8C8477; --stone-300:#CFC6B6;
   --oat-200:#E9DFCC; --cream-100:#F6F1E7; --paper-0:#FFFFFF;
   --sand-200:#E8D7B9; --stone-200:#E6DED0;
+  --ochre-300:#E3B65A; --ink-950:#1F1A16; --sand-400:#D5B377; /* [NEW] M01-home-v3 */
   --map-land:#FFFFFF; --map-road:#D9DED8; --map-road-main:#798C75; --map-water:#85D5EB;
   --success-700:#2C6E46; --warning-600:#A86A12; --slate-600:#51666D; --info-600:#2F6E8C;
   /* text */
@@ -730,9 +731,16 @@ svg.leaflet-image-layer.leaflet-interactive path {
   --border-subtle:var(--stone-300); --border-strong:var(--stone-500); --border-brand:var(--green-900); --border-focus:var(--info-600);
   --action-primary:var(--green-900); --action-primary-hover:var(--green-700); --action-primary-pressed:var(--green-950);
   --action-accent:var(--terracotta-700); --action-accent-pressed:var(--terracotta-800); --action-disabled:var(--oat-200);
+  /* [NEW] M01-home-v3: dark Home action cards, Home-only hero gradient, waiting clock */
+  --action-leave:var(--ink-900); --action-leave-pressed:var(--ink-950); --icon-on-leave:var(--ochre-500);
+  --action-find:var(--green-700); --action-find-pressed:var(--green-900); --icon-on-find:var(--ochre-300);
+  --surface-home-hero:linear-gradient(180deg,var(--sand-400) 0%,var(--sand-200) 55%,var(--cream-100) 100%);
+  --icon-waiting:var(--ochre-800);
   --map-park:var(--green-100); --map-marker:var(--ink-900);
+  --map-tile-filter:saturate(.55) sepia(.3) brightness(1.04) contrast(.9); /* [NEW] v0.7 warms the tiles toward Cream */
   /* type */
   --font-serif:Fraunces,Georgia,serif; --font-sans:Rubik,system-ui,-apple-system,sans-serif;
+  --font-sans-alt:"DM Sans",system-ui,-apple-system,sans-serif; /* [NEW] moderator font comparison */
   /* spacing (multiples of 4) */
   --space-4:4px; --space-8:8px; --space-12:12px; --space-16:16px; --space-20:20px; --space-24:24px;
   --space-28:28px; --space-32:32px; --space-40:40px; --space-48:48px; --space-56:56px; --space-64:64px;
@@ -757,8 +765,10 @@ svg.leaflet-image-layer.leaflet-interactive path {
   --type-heading-1:700 28px/36px var(--font-serif);
   --type-heading-2:700 24px/32px var(--font-serif);
   --type-heading-3:700 20px/28px var(--font-serif);
-  --type-section:500 20px/28px var(--font-sans);
-  --type-title:500 18px/24px var(--font-sans);
+  --type-section:500 18px/24px var(--font-sans);   /* v0.7: was 20/28 */
+  --type-title:500 17px/22px var(--font-sans);     /* v0.7: was 18/24 */
+  --type-action-title:400 18px/24px var(--font-sans); /* [NEW] Home action cards */
+  --type-body-list:400 15px/22px var(--font-sans);  /* [NEW] list rows, item names, settings rows */
   --type-body-large:400 18px/28px var(--font-sans);
   --type-body:400 16px/24px var(--font-sans);
   --type-button:500 16px/24px var(--font-sans);
@@ -792,7 +802,15 @@ svg.leaflet-image-layer.leaflet-interactive path {
   --tint-on-dark:rgba(255,255,255,.12);  /* subtle fill on surface-brand (G04 illustration panel) */
   --scrim:rgba(43,36,30,.4);             /* behind bottom sheets */
   --tint-me:rgba(47,110,140,.2);          /* halo around the "you are here" dot (info-600 at 20%) */
+  /* [NEW] Part 2 photos (Q88) */
+  --shimmer:linear-gradient(90deg,transparent 25%,rgba(255,255,255,.45) 50%,transparent 75%);
+  --motion-shimmer:1200ms;
+  --scrim-photo-top:linear-gradient(180deg,rgba(43,36,30,.55) 0%,rgba(43,36,30,0) 100%); /* R03: keeps Back and the status bar readable */
+  --size-scrim:96px;
 }
+
+/* moderator font comparison (Q83): swaps the sans family everywhere */
+:root[data-font="dm"]{--font-sans:var(--font-sans-alt)}
 
 /* =====================================================================
    2. BASE
@@ -1058,13 +1076,21 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{box-shadow:none}
 /* ---- Action card (Home) ---- */
 .action-cards{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-16)}
 .action-card{
-  display:flex;flex-direction:column;gap:var(--space-12);text-align:left;
-  background:var(--surface-default);border-radius:var(--radius-lg);box-shadow:var(--shadow-card);padding:var(--space-16);
-  transition:transform var(--motion-fast) var(--ease);
+  display:flex;flex-direction:column;gap:var(--space-8);text-align:left;min-height:var(--size-tap-min);
+  border-radius:var(--radius-lg);padding:var(--space-24) var(--space-20);
+  transition:transform var(--motion-fast) var(--ease),background-color var(--motion-fast) var(--ease);
 }
-.action-card:active,.action-card.is-pressed{transform:scale(.98);background:var(--surface-canvas)}
-.action-card__title{font:var(--type-section);color:var(--text-primary)}
-.action-card__desc{font:var(--type-body-small);color:var(--text-secondary)}
+.action-card--leave{background:var(--action-leave)}
+.action-card--find{background:var(--action-find)}
+.action-card--leave:active,.action-card--leave.is-pressed{background:var(--action-leave-pressed)}
+.action-card--find:active,.action-card--find.is-pressed{background:var(--action-find-pressed)}
+.action-card:active,.action-card.is-pressed{transform:scale(.98)}
+.action-card > .icon{width:var(--size-icon-tile);height:var(--size-icon-tile);margin-bottom:var(--space-8)}
+.action-card--leave > .icon{color:var(--icon-on-leave)}
+.action-card--find > .icon{color:var(--icon-on-find)}
+.action-card__title{font:var(--type-action-title);color:var(--text-on-inverse)}
+.action-card__desc{font:var(--type-body-small);color:var(--text-on-inverse-secondary)}
+.action-card:focus-visible{box-shadow:var(--shadow-focus)}
 
 /* ---- Feature card ---- */
 .feature{background:var(--surface-accent-subtle);border-radius:var(--radius-lg);padding:var(--space-16);display:flex;gap:var(--space-12);align-items:flex-start}
@@ -1201,7 +1227,7 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{box-shadow:none}
 .item{display:flex;gap:var(--space-12);align-items:flex-start;background:var(--surface-default);border-radius:var(--radius-lg);padding:var(--space-16);min-height:var(--size-row-min);border:var(--border-w) solid transparent;transition:background-color var(--motion-base) var(--ease)}
 .item__thumb{width:var(--size-control);height:var(--size-control);border-radius:var(--radius-sm);background:var(--surface-selected);display:flex;align-items:center;justify-content:center;flex:none}
 .item__main{flex:1;min-width:0;display:flex;flex-direction:column;gap:var(--space-4)}
-.item__name{font:var(--type-title)}
+.item__name{font:var(--type-body-list)}
 .item__meta{display:flex;flex-wrap:wrap;gap:var(--space-4) var(--space-8);font:var(--type-body-small);color:var(--text-secondary)}
 .item__meta span{display:inline-flex;align-items:center;gap:var(--space-4)}
 .item__meta .icon{width:var(--size-icon-16);height:var(--size-icon-16);stroke-width:1.5;color:var(--icon-secondary)}
@@ -1246,9 +1272,11 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{box-shadow:none}
 .statuslist__head{display:flex;align-items:center;gap:var(--space-8);min-height:var(--size-tap-min)}
 .statuslist__head h2{flex:1}
 .statuslist__row{display:flex;align-items:center;gap:var(--space-12);min-height:var(--size-status-row)}
-.statuslist__name{flex:1;min-width:0;font:var(--type-body)}
-.statuslist__name small{font:var(--type-body-small);color:var(--text-secondary)}
-.statuslist__venue{font:var(--type-body-small);color:var(--text-secondary);white-space:nowrap}
+.statuslist__name{flex:1;min-width:0;font:var(--type-body-list)}
+.statuslist__name small{font:var(--type-body-small);color:var(--text-secondary);white-space:nowrap}
+.statuslist__venue{font:var(--type-body-small);color:var(--text-secondary);white-space:nowrap;text-align:right}
+.tile--oat{background:var(--surface-subtle)}
+.icon--waiting{color:var(--icon-waiting)}
 
 /* ---- Availability chip ---- */
 .avail{display:inline-flex;align-items:center;gap:var(--space-4);min-height:var(--size-chip);padding:0 var(--space-12);border-radius:var(--radius-full);font:var(--type-label);white-space:nowrap;background:var(--surface-track);color:var(--text-primary)}
@@ -1271,6 +1299,17 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{box-shadow:none}
 .shelf.is-closed .shelf__photo{opacity:.6}
 .placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--space-4);color:var(--text-secondary);font:var(--type-caption)}
 .placeholder .icon{color:var(--icon-tertiary)}
+/* Part 2 venue photos (Q88): cover the placeholder once loaded; soft shimmer on surface-subtle while loading */
+.has-photo{position:relative;background:var(--surface-subtle)}
+.has-photo::before{content:"";position:absolute;inset:0;border-radius:inherit;z-index:1;pointer-events:none;background:var(--shimmer);background-size:200% 100%;animation:shimmer var(--motion-shimmer) linear infinite}
+.has-photo.is-loaded::before{display:none}
+.photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:inherit;z-index:1;opacity:0;transition:opacity var(--motion-base) var(--ease)}
+.is-loaded > .photo{opacity:1}
+.shelf__photo .marker,.r03__back{z-index:3}
+.r03__photo.is-loaded::after{content:"";position:absolute;inset:0 0 auto;height:var(--size-scrim);z-index:2;pointer-events:none;background:var(--scrim-photo-top)}
+.avatar.has-photo{overflow:hidden}
+@keyframes shimmer{from{background-position:100% 0}to{background-position:-100% 0}}
+@media (prefers-reduced-motion:reduce){.has-photo::before{animation:none;background:none}}
 
 /* ---- Settings list ---- */
 .settings{background:var(--surface-default);border-radius:var(--radius-lg);padding:0 var(--space-16)}
@@ -1278,7 +1317,7 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{box-shadow:none}
 .settings__row + .settings__row{border-top:1px solid var(--border-subtle)}
 button.settings__row:active{background:var(--surface-canvas)}
 .settings__text{flex:1;min-width:0}
-.settings__title{font:var(--type-title)}
+.settings__title{font:var(--type-body-list)}
 .settings__sub{font:var(--type-body-small);color:var(--text-secondary)}
 
 /* ---- Toggle ---- */
@@ -1417,8 +1456,11 @@ button.settings__row:active{background:var(--surface-canvas)}
 .illus .placeholder{position:absolute;inset:0;font:var(--type-body-small)}
 .closebar{display:flex;justify-content:flex-end;margin:calc(var(--space-12) * -1) calc(var(--space-12) * -1) var(--space-8)}
 
-/* Home */
+/* Home (M01-home-v3) */
 .statuslist .statuslist__head h2{font:var(--type-section)}
+.screen--home{background:var(--surface-home-hero);background-attachment:local}
+.screen--home .greet .t-h1{color:var(--text-primary)}
+.screen--home .statuslist,.screen--home .shelf{box-shadow:none}
 
 /* Tap the tag */
 .tap-title{text-align:center;margin-bottom:var(--space-8)}
@@ -1456,6 +1498,16 @@ button.settings__row:active{background:var(--surface-canvas)}
 .mapctl__btn:active{background:var(--surface-selected)}
 .mapctl__btn:disabled{cursor:not-allowed}
 .mapctl__btn:disabled .icon{color:var(--icon-disabled)}
+/* v0.7 real map: warm tiles, attribution, Locate me */
+.lmap .leaflet-tile-pane{filter:var(--map-tile-filter)}
+.leaflet-container{background:var(--surface-subtle)}
+.screen--map.is-offline .leaflet-container{background:var(--map-land)}
+.mapattr{position:absolute;left:var(--space-8);z-index:2;margin:0;padding:0 var(--space-8);border-radius:var(--radius-xs);background:var(--surface-default);font:var(--type-caption);color:var(--text-secondary);opacity:.9;pointer-events:auto}
+.mapattr a{color:var(--text-secondary)}
+.screen--map.is-offline .mapattr{display:none}
+.maplocate{width:var(--size-control);height:var(--size-control);border-radius:var(--radius-full);display:inline-flex;align-items:center;justify-content:center;background:var(--surface-default);border:var(--border-w) solid var(--border-strong);box-shadow:var(--shadow-card);color:var(--icon-primary);align-self:flex-end}
+.maplocate[hidden]{display:none}
+.maplocate:active{background:var(--surface-selected)}
 .mapbottom{position:absolute;left:var(--space-16);right:var(--space-16);bottom:var(--space-16);z-index:6;display:flex;flex-direction:column;align-items:center;gap:var(--space-12);pointer-events:none}
 .mapbottom > *{pointer-events:auto}
 /* v0.6 Map sheet (G02a–d): one sheet, three heights (peek · half · full). JS sets --sheet-top (the full-height
@@ -1717,6 +1769,9 @@ a.bonus{display:block;text-decoration:none;color:inherit}
 .pick.is-missing{background:var(--surface-subtle);opacity:.7}
 .pick.is-missing .pick__main{cursor:default}
 .pick .item__taking{padding:0 0 var(--space-8) calc(var(--size-checkbox) + var(--space-12))}
+/* v0.7 type: item names and list rows use body-list (15/22, 400) */
+.pick .t-title,.shelfitem .t-body,.suggest__item,.radiorow{font:var(--type-body-list)}
+.item:not(.item--check) .item__qty{flex-wrap:wrap;margin-right:var(--space-16)}
 .chip[role="radio"][aria-checked="true"]{background:var(--action-primary);color:var(--text-on-primary);border-color:var(--action-primary)}
 .countdown{display:inline-block;min-width:1ch}
 
@@ -1896,7 +1951,7 @@ const STORE_KEY = 'secondshelf-demo-v3';
    ===================================================================== */
 const MAP_SIZE = 3200, ME = { x: 1600, y: 1600 }, M_PER_UNIT = 2;
 function rng(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
-const fmtDist = m => m < 1000 ? `${Math.max(50, Math.round(m / 50) * 50)} m` : `${(m / 1000).toFixed(1)} km`;
+const fmtDist = m => m < 1000 ? `${Math.max(50, Math.round(m / 50) * 50)} m` : m < 100000 ? `${(m / 1000).toFixed(1)} km` : `${Math.round(m / 1000).toLocaleString('en-GB')} km`;
 
 /* Shelf-stable food only (CLAUDE.md §1): category → example packs */
 const FOOD = {
@@ -1964,14 +2019,77 @@ const VENUES = (() => {
       baseStatus: st === 'closed' ? 'closed' : 'open', shelf: 'shelf 1', code: 'SHELF-' + id, addr: '',
       seed: { capacity: items.length + spots, items, paused: st === 'paused' ? { reason: 'Café closed', until: 'Tomorrow at opening' } : null } });
   });
+  out.forEach(v => { v.home = 'main'; });
+  /* v0.7 real map: about 15 extra shelves in each of the two other test cities (same generator, no new names),
+     so zooming out to country level still shows a cluster in each city. Group A = the first other city, B = the second. */
+  ['A', 'B'].forEach((home, gi) => {
+    const r2 = rng(20261115 + gi), grp = [];
+    for (let k = 0; k < 15; k++) {
+      const [name, type] = GEN_PLACES[(k * 2 + gi * 7) % GEN_PLACES.length];
+      let p, tries = 0;
+      do { p = at(r2() * 360, 250 + Math.sqrt(r2()) * 2200); tries++; }
+      while (tries < 200 && grp.some(o => Math.hypot(o.x - p.x, o.y - p.y) < 90));
+      grp.push(p);
+      const packs = [...new Set(Array.from({ length: 1 + Math.floor(r2() * 4) }, () => ALL_PACKS[Math.floor(r2() * ALL_PACKS.length)]))];
+      const items = packs.map((pk, j) => it(`x${home}${k}-${j}`, pk, FOOD_OF[pk], `${String(1 + Math.floor(r2() * 12)).padStart(2, '0')}/2027`, 1, Math.floor(r2() * 6)));
+      const spots = 1 + Math.floor(r2() * 5), id = out.length + 1;
+      out.push({ id, name, type, ...p, home, metres: 0, dist: '', hours: HOURS[Math.floor(r2() * HOURS.length)],
+        baseStatus: 'open', shelf: 'shelf 1', code: 'SHELF-' + id, addr: '', seed: { capacity: items.length + spots, items, paused: null } });
+    }
+  });
   return out;
 })();
+/* v0.7 real map (Q85): the user stands near Aia 8, Tallinn Old Town. Every venue keeps its x/y offset from ME
+   (1 unit = 2 m) and is placed in lat/lng around the active test city, so distances, numbers and list order stay the same.
+   The moderator menu switches the test city; ME and the main venues move together. */
+const CITIES = {
+  tallinn: { name: 'Tallinn', lat: 59.4365, lng: 24.7500 },
+  prague: { name: 'Prague', lat: 50.0870, lng: 14.4210 },
+  tbilisi: { name: 'Tbilisi', lat: 41.6940, lng: 44.8010 }
+};
+const CITY_ORDER = ['tallinn', 'prague', 'tbilisi'];
+const NEAR_M = 50000;            // shelves farther than this belong to another test city
+const isNear = v => v.metres < NEAR_M;
+const curCity = () => (Store.state && CITIES[Store.state.city]) ? Store.state.city : 'tallinn';
+const cityOf = v => { const cur = curCity(); if (!v.home || v.home === 'main') return cur; const others = CITY_ORDER.filter(c => c !== cur); return others[v.home === 'A' ? 0 : 1]; };
+const M_PER_DEG = 111320;
+const offsetLL = (key, x, y) => { const c = CITIES[key], north = -(y - ME.y) * M_PER_UNIT, east = (x - ME.x) * M_PER_UNIT;
+  return [c.lat + north / M_PER_DEG, c.lng + east / (M_PER_DEG * Math.cos(c.lat * Math.PI / 180))]; };
+const meLatLng = () => { const c = CITIES[curCity()]; return [c.lat, c.lng]; };
+const haversine = ([a1, o1], [a2, o2]) => { const R = 6371000, r = Math.PI / 180, da = (a2 - a1) * r, dO = (o2 - o1) * r;
+  const h = Math.sin(da / 2) ** 2 + Math.cos(a1 * r) * Math.cos(a2 * r) * Math.sin(dO / 2) ** 2; return 2 * R * Math.asin(Math.sqrt(h)); };
+let PLACED_CITY = '';
+function placeVenues() {
+  const key = curCity(); if (PLACED_CITY === key) return; PLACED_CITY = key;
+  const me = meLatLng();
+  VENUES.forEach(v => {
+    v.city = cityOf(v); [v.lat, v.lng] = offsetLL(v.city, v.x, v.y);
+    if (v.home !== 'main') { v.metres = Math.round(haversine(me, [v.lat, v.lng])); v.dist = fmtDist(v.metres); }
+  });
+}
+/* Part 2 (Q88): real venue and community photos. Paste one images.unsplash.com URL per slot, in the form
+   https://images.unsplash.com/photo-<id>?w=800&q=70&auto=format&fit=crop  (or a file in assets/photos/),
+   and credit it in assets/photos/CREDITS.md. An empty slot keeps the labelled placeholder.
+   Each venue always gets the same slot (by type, cafés spread over three slots by id), so it looks the same everywhere. */
+const PHOTOS = {
+  cafe: '', cafe2: '', cafe3: '',         // café interiors / counters (Café Daisy = cafe, Café Lumi = cafe2)
+  bistro: '', restaurant: '', pizzeria: '', // Pizza Nonna = pizzeria
+  bakery: '', grocery: '', deli: '', tearoom: '', canteen: '',
+  community: '',                          // O01 welcome "Community photo"
+  hostShelf: '',                          // H01 "Café with a community shelf"
+  avatar: ''                              // Brenda (Home greeting, Me profile row)
+};
+const PHOTO_SLOT = { 'Café': id => ['cafe', 'cafe2', 'cafe3'][(id - 1) % 3], 'Bistro': () => 'bistro', 'Restaurant': () => 'restaurant',
+  'Pizzeria': () => 'pizzeria', 'Bakery': () => 'bakery', 'Grocery': () => 'grocery', 'Deli': () => 'deli', 'Tea room': () => 'tearoom', 'Canteen': () => 'canteen' };
+const venuePhoto = v => { const f = PHOTO_SLOT[v.type]; const slot = f ? f(v.id) : 'cafe'; return PHOTOS[slot] || PHOTOS.cafe || ''; };
 const shelfOf = id => Store.state.shelves[id];
 const liveItems = sh => sh.items.filter(i => i.qty > 0);
 const shelfCount = sh => liveItems(sh).filter(i => !i.missing).reduce((n, i) => n + i.qty, 0);
 /* copy the live shelf state onto VENUES (call after every change) */
 function syncVenues() {
+  placeVenues();
   VENUES.forEach(v => {
+    if (!shelfOf(v.id) && Store.state && Store.state.shelves) Store.state.shelves[v.id] = JSON.parse(JSON.stringify({ capacity: v.seed.capacity, items: v.seed.items, paused: v.seed.paused || null }));
     const sh = shelfOf(v.id); if (!sh) return;
     v.count = shelfCount(sh); v.capacity = sh.capacity;
     v.spots = Math.max(0, sh.capacity - v.count); v.full = v.spots === 0;
@@ -1982,7 +2100,7 @@ function syncVenues() {
     v.status = v.baseStatus === 'closed' ? 'closed' : sh.paused ? 'paused' : 'open';
   });
 }
-const shelvesWith = cat => VENUES.filter(v => v.cats && v.cats.has(cat));
+const shelvesWith = cat => VENUES.filter(v => isNear(v) && v.cats && v.cats.has(cat));
 const matchItem = (v, cat) => (v.items || []).find(i => i.cat === cat && !i.missing);
 /* availability state used by markers, chips and buttons */
 const availKind = v => v.status === 'closed' ? 'closed' : v.status === 'paused' ? 'paused' : v.full ? 'full' : 'space';
@@ -2029,6 +2147,7 @@ const START = (persona = 'brenda') => {
     couponsThisMonth: brenda ? 1 : 0,
     bonuses: [],
     impact: { passed: 11, saved: 8, weeks: [2, 4, 1, 4] },
+    city: 'tallinn',             // v0.7 test city for the real map (moderator menu); Reset demo goes back to Tallinn
     alert: null,                 // food alert, e.g. { food: 'Pasta', km: 1 }
     draft: null,                 // drop-off in progress
     pickup: null,                // pickup in progress
@@ -2136,10 +2255,10 @@ const UI = {
   },
   actionCard(kind, state = '') {
     const k = kind === 'leave'
-      ? { tile: 'tile--accent', ic: 'sealed-food', icls: 'icon--accent', title: 'Leave food', desc: 'Pass on sealed food you won’t eat', route: '#/map' }
-      : { tile: 'tile--reward', ic: 'search', icls: 'icon--reward', title: 'Find food', desc: 'Find free food at shelves near you', route: '#/map?find=1' };
-    return `<a class="action-card ${state}" href="${k.route}">
-      <span class="tile ${k.tile}">${icon(k.ic, 'icon--tile ' + k.icls)}</span>
+      ? { ic: 'sealed-food', title: 'Leave food', desc: 'Pass on sealed food you won’t eat', route: '#/map' }
+      : { ic: 'search', title: 'Find food', desc: 'Free food at shelves near you', route: '#/map?find=1' };
+    return `<a class="action-card action-card--${kind} ${state}" href="${k.route}">
+      ${icon(k.ic)}
       <span class="action-card__title">${k.title}</span>
       <span class="action-card__desc">${k.desc}</span></a>`;
   },
@@ -2251,9 +2370,14 @@ const UI = {
     if (kind === 'closed') return `<span class="avail avail--closed">${icon('paused')}<span>${esc(label || 'Closed')}</span></span>`;
     return `<span class="avail avail--space">${esc(label)}</span>`;
   },
+  /* photo layer over a placeholder: lazy, async, shimmer while loading, placeholder stays if it fails */
+  photo(url, alt) {
+    return url ? `<img class="photo" src="${esc(url)}" alt="${esc(alt)}" loading="lazy" decoding="async" onload="this.parentNode.classList.add('is-loaded')" onerror="this.parentNode.classList.remove('has-photo');this.remove()">` : '';
+  },
   shelfCard({ n, dist, venue, hours, kind, spots }) {
+    const v = VENUES.find(x => x.id === +n), url = v ? venuePhoto(v) : '';
     return `<a class="shelf${kind === 'closed' ? ' is-closed' : ''}" href="#/point/${n}">
-      <div class="shelf__photo"><span class="placeholder">${icon('photo')}<span>Photo placeholder</span></span>${UI.marker(n)}</div>
+      <div class="shelf__photo${url ? ' has-photo' : ''}">${UI.photo(url, `${venue} interior`)}<span class="placeholder">${icon('photo')}<span>Photo placeholder</span></span>${UI.marker(n)}</div>
       <div class="shelf__body"><span class="shelf__dist">${esc(dist)}</span><span class="shelf__venue">${esc(venue)}</span>${hours ? `<span class="shelf__hours">${esc(hours)}</span>` : ''}${UI.avail(kind, spots)}</div></a>`;
   },
   resultRow({ n, venue, meta, kind, spots, selected = false, chip = '' }) {
@@ -2270,7 +2394,7 @@ const UI = {
     return `<span class="toggle-wrap"><button type="button" class="toggle" role="switch" aria-checked="${on}" aria-label="${esc(label)}" ${disabled ? 'disabled' : ''}></button></span>`;
   },
   profileRow(u) {
-    return `<button type="button" class="card profile"><span class="avatar" aria-hidden="true">${esc(u.initials)}</span>
+    return `<button type="button" class="card profile"><span class="avatar${PHOTOS.avatar ? ' has-photo' : ''}" aria-hidden="true">${esc(u.initials)}${UI.photo(PHOTOS.avatar, '')}</span>
       <span class="grow"><span class="t-title" style="display:block">${esc(u.name)}</span><span class="t-small c-secondary">${esc(u.email)}</span></span>${icon('chevron-right')}</button>`;
   },
   impact({ month = 'November', passed = 11, saved = 8 } = {}) {
@@ -2283,7 +2407,7 @@ const UI = {
       <span class="grow"><span class="t-title" style="display:block">Switch to host mode</span><span class="settings__sub">Run a community shelf at your café</span></span>${icon('chevron-right', 'chev')}</button>`;
   },
   greeting(u) {
-    return `<header class="greet"><h1 class="t-h1">Hi ${esc(u.first)}</h1><a href="#/me" class="avatar" aria-label="Me">${esc(u.initials)}</a></header>`;
+    return `<header class="greet"><h1 class="t-h1">Hi ${esc(u.first)}</h1><a href="#/me" class="avatar${PHOTOS.avatar ? ' has-photo' : ''}" aria-label="Me">${esc(u.initials)}${UI.photo(PHOTOS.avatar, '')}</a></header>`;
   },
   tabBar(mode, current) {
     const tabs = mode === 'host'
@@ -2346,7 +2470,7 @@ const UI = {
   statusList(items) {
     const total = items.reduce((n, r) => n + (r.qty || 1), 0), rows = items.slice(0, 4);
     return `<section class="statuslist" aria-labelledby="yf-title"><div class="statuslist__head"><h2 class="t-section" id="yf-title">Your food on shelves</h2><span class="pill">${total} item${total === 1 ? '' : 's'}</span></div>
-      ${rows.map(r => { const done = r.status === 'done'; return `<div class="statuslist__row"><span class="tile tile--sm ${done ? '' : 'tile--canvas'}">${icon(done ? 'done' : 'paused', 'icon--sm ' + (done ? 'icon--success' : 'icon--warning'))}</span>
+      ${rows.map(r => { const done = r.status === 'done'; return `<div class="statuslist__row"><span class="tile tile--sm ${done ? '' : 'tile--oat'}">${icon(done ? 'done' : 'paused', 'icon--sm ' + (done ? 'icon--success' : 'icon--waiting'))}</span>
         <span class="statuslist__name">${esc(r.name)}${r.qty > 1 ? ' ×' + r.qty : ''} <small>· ${done ? 'Picked up' : 'On the shelf'}</small></span><span class="statuslist__venue">${esc(venue(r.venue).name)}</span></div>`; }).join('')}</section>`;
   },
   pointFacts(v) {
@@ -2967,7 +3091,12 @@ function mapSvg() {
   return MAP_SVG_CACHE;
 }
 /* map view state survives tab switches (like a real map app) */
-const MapUI = { center: null, zoom: null, filters: new Set(), sheet: 'half', food: '', mode: 'leave', sort: 'distance', expand: false };
+const MapUI = { center: null, zoom: null, filters: new Set(), sheet: 'half', food: '', mode: 'leave', sort: 'distance', expand: false, offline: false, viewKey: '' };
+/* v0.7 keyless raster tiles. CARTO Voyager / Positron now answer every request with an "API key required" image (15 Nov),
+   so the map uses the standard OpenStreetMap tiles (keyless, light use only, attribution required; Q85).
+   If they fail, the map falls back to the SVG drawing (offline mode). */
+const TILE = { url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png', subdomains: '' };
+const TILE_FAIL = { errors: 6, ms: 5000 };
 /* v0.6 map sheet heights, lowest first. Half = share of the screen above the tab bar (G02b); location details use a taller half (G03 frame). */
 const SHEET = { order: ['peek', 'half', 'full'], half: 0.55, detail: 0.8, flick: 0.5 /* px per ms */, slop: 6 /* px before a drag starts */ };
 const FILTERS = ['Open now', 'Has space', 'Nearby'];
@@ -2990,7 +3119,12 @@ const Loc = {
     openSheet('Drop-off conditions and rules', `${Views.rules.html({ query: { view: 1 } }).replace(/^[\s\S]*?<\/header>/, '').replace(/<div class="spacer">[\s\S]*$/, '')}
       <div class="actions">${UI.button({ label: 'Done', block: true, attrs: 'data-sheet-close' })}</div>`);
   },
-  directions(v) { toast('info', `Directions to ${esc(v.name)} would open in your maps app.`, { ms: 3000, ic: 'location' }); Store.log('directions', { venue: v.id }); },
+  /* v0.7 (Q86): opens the real maps app with walking directions; replaces the placeholder toast */
+  directions(v) {
+    const url = `https://www.google.com/maps/dir/?api=1&destination=${v.lat.toFixed(6)},${v.lng.toFixed(6)}&travelmode=walking`;
+    Store.log('directions', { venue: v.id, city: v.city });
+    window.open(url, '_blank', 'noopener');
+  },
   nearestOpen(v) { return VENUES.filter(x => x.id !== v.id && canLeave(x)).sort((a, b) => a.metres - b.metres)[0]; }
 };
 Views.map = {
@@ -3001,8 +3135,9 @@ Views.map = {
       <div class="mapctl" id="mapctl">
         ${UI.iconButton('plus', 'Zoom in', 'data-zoom="in"', 'mapctl__btn')}
         ${UI.iconButton('minus', 'Zoom out', 'data-zoom="out"', 'mapctl__btn')}
-        ${UI.iconButton('location', 'Show my location', 'data-locate', 'mapctl__btn')}
+        <button type="button" class="maplocate" data-locate aria-label="Locate me" hidden>${icon('location')}</button>
       </div>
+      <p class="mapattr" id="mapattr">© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors</p>
       <section class="mapsheet" id="mapsheet" aria-label="Locations">
         <div class="mapsheet__head" id="mapsheet-head">
           <button type="button" class="mapsheet__grab" id="mapgrab" aria-controls="mapsheet-body" aria-expanded="false"><span class="sheet__grabber" aria-hidden="true"></span></button>
@@ -3024,30 +3159,53 @@ Views.map = {
     if (query.food !== undefined) $('#map-search', el).innerHTML = UI.search({ id: 'mapsearch', value: MapUI.food });
     const find = () => MapUI.mode === 'find';
     let sel = query.shelf ? +query.shelf : null;
-    const rm = reduceMotion(), H = MAP_SIZE;
+    const rm = reduceMotion(), H = MAP_SIZE, offline = MapUI.offline;
+    /* zoom levels per map: tiles use Web Mercator zooms; the offline SVG map keeps the old CRS.Simple levels (1 unit = 2 m) */
+    const Z = offline ? { def: -1.25, sel: 1, fit: 0.5, far: -1.5, flat: 1 } : { def: 14, sel: 16, fit: 16, far: 13.5, flat: 16 };
     const ll = (x, y) => L.latLng(H - y, x);
+    const vLL = v => offline ? ll(v.x, v.y) : L.latLng(v.lat, v.lng);
+    const meLL = () => offline ? ll(ME.x, ME.y) : L.latLng(...meLatLng());
     const bounds = L.latLngBounds(ll(0, H), ll(H, 0));
-    const map = L.map($('#lmap', el), {
-      crs: L.CRS.Simple, minZoom: -2.5, maxZoom: 2, zoomSnap: 0.25, zoomDelta: 0.5, wheelPxPerZoomLevel: 100,
-      zoomControl: false, attributionControl: false, boxZoom: false, maxBounds: bounds, maxBoundsViscosity: 1,
-      zoomAnimation: !rm, fadeAnimation: !rm, markerZoomAnimation: !rm, inertia: !rm, keyboardPanDelta: 120, tapTolerance: 15
-    });
-    map.setView(MapUI.center || ll(ME.x, ME.y), MapUI.zoom ?? -1.25, { animate: false });
-    const tmp = document.createElement('div'); tmp.innerHTML = mapSvg();
-    L.svgOverlay(tmp.firstElementChild, bounds, { interactive: false }).addTo(map);
-    L.marker(ll(ME.x, ME.y), { icon: L.divIcon({ className: 'me-icon', html: '<span class="map__me" role="img" aria-label="You are here"></span>', iconSize: [24, 24] }), interactive: false, keyboard: false, zIndexOffset: -100 }).addTo(map);
+    const common = { wheelPxPerZoomLevel: 100, zoomControl: false, attributionControl: false, boxZoom: false,
+      zoomAnimation: !rm, fadeAnimation: !rm, markerZoomAnimation: !rm, inertia: !rm, keyboardPanDelta: 120, tapTolerance: 15 };
+    const map = L.map($('#lmap', el), offline
+      ? { ...common, crs: L.CRS.Simple, minZoom: -2.5, maxZoom: 2, zoomSnap: 0.25, zoomDelta: 0.5, maxBounds: bounds, maxBoundsViscosity: 1 }
+      : { ...common, minZoom: 3, maxZoom: 19, zoomSnap: 0.5, zoomDelta: 1 });
+    const viewKey = (offline ? 'svg' : 'tiles') + ':' + curCity();
+    if (MapUI.viewKey !== viewKey) { MapUI.center = null; MapUI.zoom = null; MapUI.viewKey = viewKey; }
+    const freshView = !MapUI.center;
+    map.setView(MapUI.center || meLL(), MapUI.zoom ?? Z.def, { animate: false });
+    el.classList.toggle('is-offline', offline);
+    if (offline) {
+      const tmp = document.createElement('div'); tmp.innerHTML = mapSvg();
+      L.svgOverlay(tmp.firstElementChild, bounds, { interactive: false }).addTo(map);
+    } else {
+      const tiles = L.tileLayer(TILE.url, { subdomains: TILE.subdomains, minZoom: 3, maxZoom: 19, keepBuffer: 3 });
+      const t0 = performance.now(); let errs = 0;
+      const goOffline = why => {
+        if (MapUI.offline || !el.isConnected) return;
+        MapUI.offline = true; Store.log('map_offline', { why });
+        toast('info', 'Map is in offline mode', { ms: 3000, ic: 'map' });
+        setTimeout(() => { if (el.isConnected) Router.render('none'); }, 0);
+      };
+      tiles.on('tileerror', () => { errs++; if (errs > TILE_FAIL.errors && performance.now() - t0 < TILE_FAIL.ms) goOffline('tileerror'); });
+      tiles.addTo(map);
+      if (navigator.onLine === false) setTimeout(() => goOffline('navigator-offline'), 0);
+    }
+    L.marker(meLL(), { icon: L.divIcon({ className: 'me-icon', html: '<span class="map__me" role="img" aria-label="You are here"></span>', iconSize: [24, 24] }), interactive: false, keyboard: false, zIndexOffset: -100 }).addTo(map);
 
     // markers + clusters
     const markerState = v => sel === v.id ? 'selected' : (availKind(v) === 'space' ? 'default' : availKind(v));
     const pinIcon = v => L.divIcon({ className: 'pin-icon', html: `<span class="pin">${UI.marker(v.id, markerState(v)).replace('role="img"', 'aria-hidden="true"')}</span>`, iconSize: [44, 44] });
     const label = v => `Shelf ${v.id}, ${v.name}, ${v.dist}${availKind(v) === 'full' ? ', full shelf' : availKind(v) === 'paused' ? ', paused' : availKind(v) === 'closed' ? ', closed' : ''}`;
     const cluster = L.markerClusterGroup({
-      showCoverageOnHover: false, maxClusterRadius: z => z < -1.5 ? 72 : 52, spiderfyOnMaxZoom: true, disableClusteringAtZoom: 1, animate: !rm,
+      showCoverageOnHover: false, maxClusterRadius: z => z < Z.far ? 72 : 52, spiderfyOnMaxZoom: true, disableClusteringAtZoom: Z.flat, animate: !rm,
       iconCreateFunction: c => { const n = c.getChildCount(); return L.divIcon({ className: 'pin-icon', html: `<span class="cluster" role="img" aria-label="${n} shelves here, zoom in">${icon('community-shelf', 'icon--xs')}${n}</span>`, iconSize: [56, 44] }); }
     }).addTo(map);
     const markers = new Map();
     VENUES.forEach(v => {
-      const m = L.marker(ll(v.x, v.y), { icon: pinIcon(v), keyboard: true, title: label(v), riseOnHover: true });
+      if (offline && v.home !== 'main') return;   // the SVG drawing only covers the home neighbourhood
+      const m = L.marker(vLL(v), { icon: pinIcon(v), keyboard: true, title: label(v), riseOnHover: true });
       m.on('click', () => select(v.id, { from: 'marker' }));
       m.on('add', () => { const e = m.getElement(); if (e) { e.setAttribute('aria-label', label(v)); e.dataset.pin = v.id; } });
       markers.set(v.id, m);
@@ -3055,14 +3213,15 @@ Views.map = {
     const passes = v => (!MapUI.filters.has('Open now') || v.status !== 'closed')
       && (find() || !MapUI.filters.has('Has space') || availKind(v) === 'space')
       && (!MapUI.filters.has('Nearby') || v.metres <= 1000)
-      && (!MapUI.food || v.cats.has(MapUI.food));
+      && (!MapUI.food || v.cats.has(MapUI.food))
+      && (!offline || v.home === 'main');
     const visible = () => VENUES.filter(passes);
     const sorter = (a, b) => {
       if (MapUI.sort === 'open') { const o = x => x.status === 'open' ? 0 : 1; if (o(a) !== o(b)) return o(a) - o(b); }
       if (MapUI.sort === 'date') { const d = x => { const it2 = MapUI.food ? matchItem(x, MapUI.food) : (x.items || [])[0]; if (!it2) return 99999; const [m, y] = it2.bb.split('/').map(Number); return y * 12 + m; }; if (d(a) !== d(b)) return d(a) - d(b); }
       return a.metres - b.metres;
     };
-    const inView = () => { const b = map.getBounds(); return visible().filter(v => b.contains(ll(v.x, v.y))).sort(sorter); };
+    const inView = () => { const b = map.getBounds(); return visible().filter(v => b.contains(vLL(v))).sort(sorter); };
     const countText = n => MapUI.food ? `${n} shel${n === 1 ? 'f has' : 'ves have'} ${MapUI.food.toLowerCase()}` : `${n} location${n === 1 ? '' : 's'} in this area`;
 
     const drawChips = () => {
@@ -3090,7 +3249,7 @@ Views.map = {
       const why = k === 'full' ? 'Leave food is off while the shelf is full' : k === 'paused' ? 'Leave food is off while the shelf is paused' : 'Closed now. Try again in opening hours';
       return `<div class="details" data-details="${v.id}">
         <button type="button" class="details__back" data-details-back>${icon('chevron-left', 'icon--sm')}<span>${MapUI.food || find() ? 'Back to results' : 'Back to locations'}</span></button>
-        <div class="details__photo placeholder">${icon('photo')}<strong>Venue photo</strong><span>${esc(v.name)}</span></div>
+        <div class="details__photo placeholder${venuePhoto(v) ? ' has-photo' : ''}">${UI.photo(venuePhoto(v), `${v.name} interior`)}${icon('photo')}<strong>Venue photo</strong><span>${esc(v.name)}</span></div>
         <div class="details__title"><h2 class="t-h2" id="det-title">${esc(v.name)}</h2><span class="t-label c-brand">${esc(v.dist)}</span></div>
         <p class="t-small c-secondary">${esc(v.addr || v.type)}${v.addr ? ' · ' + esc(v.type) : ''}</p>
         ${Loc.chips(v)}
@@ -3136,13 +3295,17 @@ Views.map = {
       if (!all.length) Store.log('no_results', { food: MapUI.food });
     };
     const syncZoomBtns = () => { $('[data-zoom="in"]', el).disabled = map.getZoom() >= map.getMaxZoom(); $('[data-zoom="out"]', el).disabled = map.getZoom() <= map.getMinZoom(); };
-    const placeCtl = () => { $('#mapctl', el).style.top = ($('#maptop', el).offsetHeight + 8) + 'px'; };
+    const placeCtl = () => { const top = ($('#maptop', el).offsetHeight + 8) + 'px'; $('#mapctl', el).style.top = top; $('#mapattr', el).style.top = top; };
     /* centre a marker in the part of the map the sheet leaves visible */
+    /* vertical offset from the map centre to the middle of the part the search bar and sheet leave visible */
+    const sheetShift = () => {
+      const g = Sheet.geo(), top = $('#maptop', el).offsetHeight, bottom = g.H - Sheet.visible(MapUI.sheet, g);
+      return g.H / 2 - (top + Math.max(top + 40, bottom)) / 2;
+    };
+    const shifted = (latlng, z) => map.unproject(map.project(latlng, z).add([0, sheetShift()]), z);
     const centreOn = id => {
-      const m = markers.get(id), z = Math.max(map.getZoom(), 1), g = Sheet.geo();
-      const top = $('#maptop', el).offsetHeight, bottom = g.H - Sheet.visible(MapUI.sheet, g);
-      const d = g.H / 2 - (top + Math.max(top + 40, bottom)) / 2;
-      const target = map.unproject(map.project(m.getLatLng(), z).add([0, d]), z);
+      const m = markers.get(id), z = Math.max(map.getZoom(), Z.sel);
+      const target = shifted(m.getLatLng(), z);
       rm ? map.setView(target, z, { animate: false }) : map.flyTo(target, z, { duration: .4 });
     };
     function select(id, { from = 'list' } = {}) {
@@ -3172,7 +3335,7 @@ Views.map = {
       drawList(); sbody.scrollTop = 0;
       Store.log('on_this_shelf', { open: MapUI.expand });
     };
-    const fitTo = vs => { if (!vs.length) return; const b = L.latLngBounds(vs.map(v => ll(v.x, v.y))); map.fitBounds(b, { paddingTopLeft: [24, $('#maptop', el).offsetHeight + 16], paddingBottomRight: [64, (MapUI.sheet === 'full' ? 0 : Sheet.visible(MapUI.sheet)) + 72], maxZoom: 0.5, animate: !rm }); };
+    const fitTo = all => { const near = all.filter(isNear), vs = near.length ? near : all; if (!vs.length) return; const b = L.latLngBounds(vs.map(vLL)); map.fitBounds(b, { paddingTopLeft: [24, $('#maptop', el).offsetHeight + 16], paddingBottomRight: [64, (MapUI.sheet === 'full' ? 0 : Sheet.visible(MapUI.sheet)) + 72], maxZoom: Z.fit, animate: !rm }); };
 
     /* ---------- v0.6 bottom sheet: peek · half · full ---------- */
     const sheetEl = $('#mapsheet', el), sbody = $('#mapsheet-body', el), grab = $('#mapgrab', el), head = $('#mapsheet-head', el), maptop = $('#maptop', el);
@@ -3317,7 +3480,7 @@ Views.map = {
       q = q.trim().toLowerCase(); if (q.length < 2) return null;
       const foods = Object.keys(FOOD).filter(c => c.toLowerCase().startsWith(q) || c.toLowerCase().includes(' ' + q))
         .map(c => ({ label: c, value: 'food:' + c, icon: 'sealed-food', meta: `${shelvesWith(c).length} shelves` }));
-      const places = VENUES.filter(v => v.name.toLowerCase().includes(q)).sort((a, b) => a.metres - b.metres).slice(0, 4)
+      const places = VENUES.filter(v => isNear(v) && v.name.toLowerCase().includes(q)).sort((a, b) => a.metres - b.metres).slice(0, 4)
         .map(v => ({ label: v.name, value: 'place:' + v.id, icon: 'venue', meta: v.dist }));
       return [...foods, ...places].slice(0, 6);
     };
@@ -3354,14 +3517,20 @@ Views.map = {
 
     // events
     map.on('click', () => { if ($('.suggest', box)) renderSearch($('#mapsearch', box).value, null); if (sel) deselect(); });
-    map.on('moveend', () => { MapUI.center = map.getCenter(); MapUI.zoom = map.getZoom(); if (!sel) { drawBottom(); drawList(); } });
+    /* Locate me shows once the map has moved or zoomed away from ME */
+    const syncLocate = () => {
+      const b = $('[data-locate]', el), c = map.getSize().divideBy(2).subtract([0, sheetShift()]), me = map.latLngToContainerPoint(meLL());
+      const away = Math.abs(map.getZoom() - Z.def) >= 1 || me.distanceTo(c) > 48;
+      if (b.hidden === away) b.hidden = !away;
+    };
+    map.on('moveend', () => { MapUI.center = map.getCenter(); MapUI.zoom = map.getZoom(); syncLocate(); if (!sel) { drawBottom(); drawList(); } });
     map.on('zoomend', syncZoomBtns);
     el.addEventListener('click', e => {
       const t = e.target;
       const s = t.closest('[data-suggest]'); if (s) { pick(s.dataset.suggest); return; }
       const z = t.closest('[data-zoom]'); if (z && !z.disabled) { z.dataset.zoom === 'in' ? map.zoomIn() : map.zoomOut(); return; }
       if (t.closest('.search__filter') || t.closest('[data-sortchip]')) { openFilters(); return; }
-      if (t.closest('[data-locate]')) { if (sel) deselect(); rm ? map.setView(ll(ME.x, ME.y), -1.25, { animate: false }) : map.flyTo(ll(ME.x, ME.y), -1.25, { duration: .5 }); return; }
+      if (t.closest('[data-locate]')) { if (sel) deselect(); Store.log('locate_me', {}); const target = shifted(meLL(), Z.def); rm ? map.setView(target, Z.def, { animate: false }) : map.flyTo(target, Z.def, { duration: .8 }); return; }
       const row = t.closest('[data-select]'); if (row) { select(+row.dataset.select, { from: 'list' }); return; }
       if (t.closest('[data-details-back]')) { deselect(); return; }
       if (t.closest('[data-expand]')) { toggleExpand(); return; }
@@ -3393,16 +3562,22 @@ Views.map = {
       sh.addEventListener('radio', e => { if (e.detail.name === 'sort') { MapUI.sort = e.detail.value; Store.log('sort', { by: MapUI.sort }); drawChips(); drawList(); } });
     }
 
-    drawChips(); applyFilters(); syncZoomBtns(); placeCtl();
+    drawChips(); applyFilters(); syncZoomBtns(); placeCtl(); syncLocate();
     sheetEl.classList.add('is-dragging');
     if (sel && MapUI.expand) { Sheet.chips(false, false); Sheet.set('full', { from: 'open' }); } else Sheet.set(sel ? 'half' : MapUI.sheet, { from: 'open' });
     requestAnimationFrame(() => sheetEl.classList.remove('is-dragging'));
-    if (sel) setTimeout(() => { markers.get(sel).setIcon(pinIcon(venue(sel))); drawList(); centreOn(sel); }, 50);
+    if (sel) setTimeout(() => { if (removed) return; markers.get(sel).setIcon(pinIcon(venue(sel))); drawList(); centreOn(sel); }, 50);
     else if (MapUI.food && query.food !== undefined && visible().length) setTimeout(() => fitTo(visible()), 60);
-    setTimeout(() => { map.invalidateSize(); placeCtl(); Sheet.apply(); drawList(); }, rm ? 0 : 280);
+    let removed = false;
+    setTimeout(() => {
+      if (removed) return;   // the map was rebuilt (offline mode) or the screen left before this ran
+      map.invalidateSize(); placeCtl(); Sheet.apply();
+      if (freshView && !sel && !(MapUI.food && query.food !== undefined)) map.setView(shifted(meLL(), Z.def), Z.def, { animate: false });
+      drawList(); syncLocate();
+    }, rm ? 0 : 280);
     if (query.find && !query.shelf && !query.food) setTimeout(() => $('#mapsearch', el).focus(), rm ? 0 : 300);
     window.__map = map;
-    el._cleanup = () => { map.remove(); window.__map = null; window.removeEventListener('resize', onResize); };
+    el._cleanup = () => { removed = true; map.remove(); window.__map = null; window.removeEventListener('resize', onResize); };
   }
 };
 
@@ -3415,7 +3590,7 @@ Views.point = {
       closed: ['Closed now', 'Try again during opening hours.'] }[k];
     const hint = { full: 'Leave food is off while the shelf is full', paused: 'Leave food is off while the shelf is paused', closed: 'Leave food is off while the café is closed' }[k];
     return `<header class="topbar topbar--center">${UI.iconButton('back', 'Back', 'data-action="back"')}<p class="topbar__title">${esc(v.name)}</p><span class="icon-btn" aria-hidden="true"></span></header>
-      <div class="hero" style="height:var(--size-illus);margin-bottom:var(--space-16)"><span class="placeholder">${icon('photo')}<strong>Shelf photo</strong><span>${esc(v.name)}</span></span></div>
+      <div class="hero${venuePhoto(v) ? ' has-photo' : ''}" style="height:var(--size-illus);margin-bottom:var(--space-16)">${UI.photo(venuePhoto(v), `${v.name} interior`)}<span class="placeholder">${icon('photo')}<strong>Shelf photo</strong><span>${esc(v.name)}</span></span></div>
       <h1 class="t-h1">${esc(v.name)}</h1>
       <div class="stack" style="margin-top:var(--space-8)">
         <div>${availChip(v)}</div>
@@ -3691,7 +3866,7 @@ Views.bonus = {
   html() {
     const s = Store.state, b = s.bonuses[0];
     const rows = b ? s.shelfItems.filter(r => (b.rows || []).includes(r.id)) : s.shelfItems;
-    const itemRow = r => { const st = UI.rowStatus(r); return `<li class="statuslist__row"><span class="tile tile--sm ${st.done ? '' : 'tile--canvas'}">${icon(st.done ? 'done' : 'paused', 'icon--sm ' + (st.done ? 'icon--success' : 'icon--warning'))}</span>
+    const itemRow = r => { const st = UI.rowStatus(r); return `<li class="statuslist__row"><span class="tile tile--sm ${st.done ? '' : 'tile--oat'}">${icon(st.done ? 'done' : 'paused', 'icon--sm ' + (st.done ? 'icon--success' : 'icon--waiting'))}</span>
       <span class="statuslist__name">${esc(r.name)}${r.qty > 1 ? ' ×' + r.qty : ''}<br><small>${st.done ? 'Picked up' : r.picked ? esc(st.text) : r.days ? `On the shelf ${pl(r.days, 'day')}` : 'Still on the shelf'} · ${esc(venue(r.venue).name)}</small></span></li>`; };
     return `${UI.topBar({ title: b ? 'Rescue Bonus' : 'My items' })}
       <div class="stack">
@@ -3749,14 +3924,14 @@ Object.assign(UI, {
     return `<button type="button" role="radio" class="radiorow${checked ? ' is-on' : ''}" aria-checked="${checked}" data-radio="${esc(name)}" data-value="${esc(value)}"><span class="radio" aria-hidden="true"></span><span class="grow">${esc(label)}${sub ? `<span class="t-small c-secondary" style="display:block">${esc(sub)}</span>` : ''}</span></button>`;
   },
   greeting(u) {
-    return `<header class="greet"><h1 class="t-h1" data-logo>Hi ${esc(u.first)}</h1><a href="#/me" class="avatar" aria-label="Me">${esc(u.initials)}</a></header>`;
+    return `<header class="greet"><h1 class="t-h1" data-logo>Hi ${esc(u.first)}</h1><a href="#/me" class="avatar${PHOTOS.avatar ? ' has-photo' : ''}" aria-label="Me">${esc(u.initials)}${UI.photo(PHOTOS.avatar, '')}</a></header>`;
   },
   actionCard(kind, state = '') {
     const k = kind === 'leave'
-      ? { tile: 'tile--accent', ic: 'sealed-food', icls: 'icon--accent', title: 'Leave food', desc: 'Pass on sealed food you won’t eat', route: '#/map' }
-      : { tile: 'tile--reward', ic: 'search', icls: 'icon--reward', title: 'Find food', desc: 'Find free food at shelves near you', route: '#/map?find=1' };
-    return `<a class="action-card ${state}" href="${k.route}" data-action="${kind}">
-      <span class="tile ${k.tile}">${icon(k.ic, 'icon--tile ' + k.icls)}</span>
+      ? { ic: 'sealed-food', title: 'Leave food', desc: 'Pass on sealed food you won’t eat', route: '#/map' }
+      : { ic: 'search', title: 'Find food', desc: 'Free food at shelves near you', route: '#/map?find=1' };
+    return `<a class="action-card action-card--${kind} ${state}" href="${k.route}" data-action="${kind}">
+      ${icon(k.ic)}
       <span class="action-card__title">${k.title}</span>
       <span class="action-card__desc">${k.desc}</span></a>`;
   },
@@ -3769,7 +3944,7 @@ Object.assign(UI, {
   statusList(items) {
     const total = items.reduce((n, r) => n + (r.qty || 1), 0), rows = items.slice(0, 4);
     return `<section class="statuslist" aria-labelledby="yf-title"><div class="statuslist__head"><h2 class="t-section" id="yf-title">Your food on shelves</h2><span class="pill" aria-live="polite">${total} item${total === 1 ? '' : 's'}</span></div>
-      ${rows.map(r => { const st = UI.rowStatus(r); return `<div class="statuslist__row"><span class="tile tile--sm ${st.done ? '' : 'tile--canvas'}">${icon(st.done ? 'done' : 'paused', 'icon--sm ' + (st.done ? 'icon--success' : 'icon--warning'))}</span>
+      ${rows.map(r => { const st = UI.rowStatus(r); return `<div class="statuslist__row"><span class="tile tile--sm ${st.done ? '' : 'tile--oat'}">${icon(st.done ? 'done' : 'paused', 'icon--sm ' + (st.done ? 'icon--success' : 'icon--waiting'))}</span>
         <span class="statuslist__name">${esc(r.name)}${r.qty > 1 ? ' ×' + r.qty : ''} <small>· ${esc(st.text)}</small></span><span class="statuslist__venue">${esc(venue(r.venue).name)}</span></div>`; }).join('')}
       ${items.length > 4 ? `<div class="center">${UI.button({ label: `See all ${items.length}`, variant: 'link', attrs: 'data-href="#/bonus"' })}</div>` : ''}</section>`;
   },
@@ -3978,7 +4153,22 @@ const Jump = {
    MODERATOR MENU (test only): the movable ··· button, or a long press (800 ms) on the wordmark / greeting
    Labels here may say "Simulate"; participants never see them (Q4).
    ===================================================================== */
+/* moderator display preferences: per phone, not part of the demo state (Reset demo keeps them) */
+const Prefs = {
+  get(k, d) { try { return localStorage.getItem('secondshelf-pref-' + k) || d; } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem('secondshelf-pref-' + k, v); } catch (e) { /* private mode */ } },
+  applyFont() { const dm = Prefs.get('font', 'rubik') === 'dm'; if (dm) document.documentElement.dataset.font = 'dm'; else delete document.documentElement.dataset.font; }
+};
+Prefs.applyFont();
 const Mod = {
+  /* v0.7: move ME and all shelves to another test city (offsets kept) */
+  city(key) {
+    if (!CITIES[key] || key === curCity()) return;
+    Store.state.city = key; Store.save(); Store.log('test_city', { city: key });
+    MapUI.center = null; MapUI.zoom = null;
+    closeSheet(); Router.render('none');
+    toast('success', `Test city: ${CITIES[key].name}`, { ms: 2000, ic: 'location' });
+  },
   scenario(which, go = true) {
     const persona = which === 'B' ? 'jonas' : 'brenda';
     Store.reset(persona);
@@ -4004,11 +4194,15 @@ const Mod = {
       <div class="mod__sec"><p class="field__label">Task timing (last run)</p>
         <p class="mod__times">A drop-off (target &lt; 90 s): ${last('dropoff')}<br>B pickup: ${last('pickup')}<br>C daily check (target &lt; 2 min): ${last('check')}</p>
         <div class="mod__grid">${UI.button({ label: 'Export log (JSON)', variant: 'secondary', icon: 'share', attrs: 'data-mod-export' })}${UI.button({ label: 'Screen index', variant: 'secondary', icon: 'list', attrs: 'data-mod-screens' })}</div></div>
+      <div class="mod__sec"><p class="field__label">Test city (map)</p>${UI.segmented(CITY_ORDER.map(c => CITIES[c].name), CITY_ORDER.indexOf(curCity()), { id: 'mod-city', block: true })}<p class="t-small c-secondary">Moves you and every shelf to the city; Reset demo goes back to Tallinn.</p></div>
+      <div class="mod__sec"><p class="field__label">Font (team comparison, Q83)</p>${UI.segmented(['Rubik', 'DM Sans'], Prefs.get('font', 'rubik') === 'dm' ? 1 : 0, { id: 'mod-font', block: true })}</div>
       <div class="mod__sec">${UI.button({ label: 'Reset demo', icon: 'retry', attrs: 'data-mod-reset' })}<p class="t-small c-secondary">Restores the start state and shows Welcome again.</p></div>
     </div>`);
     const sheet = $('#sheet');
     sheet.onclick = e => {
       const t = e.target;
+      const city = t.closest('[data-seg="mod-city"] [data-seg-i]'); if (city) { this.city(CITY_ORDER[+city.dataset.segI]); return; }
+      const font = t.closest('[data-seg="mod-font"] [data-seg-i]'); if (font) { Prefs.set('font', font.dataset.segI === '1' ? 'dm' : 'rubik'); Prefs.applyFont(); Store.log('font', { font: Prefs.get('font') }); return; }
       const scn = t.closest('[data-mod-scn]'); if (scn) { this.scenario(scn.dataset.modScn); return; }
       if (t.closest('[data-mod-go]')) { const r = $('#mod-jump').value; closeSheet(); Jump.go(r); return; }
       const sim = t.closest('[data-mod-sim]'); if (sim) { closeSheet(); this.sim(sim.dataset.modSim); return; }
@@ -4080,7 +4274,7 @@ const Banners = {
 Views.welcome = {
   html() {
     return `<span class="wordmark" data-logo>SecondShelf</span>
-      <div class="hero"><span class="placeholder">${icon('photo', 'icon--lg')}<strong>Community photo</strong><span>From the guideline stock set</span></span></div>
+      <div class="hero${PHOTOS.community ? ' has-photo' : ''}">${UI.photo(PHOTOS.community, 'Neighbours at a café with a community shelf')}<span class="placeholder">${icon('photo', 'icon--lg')}<strong>Community photo</strong><span>From the guideline stock set</span></span></div>
       <h1 class="t-display">Food that’s still good, passed on.</h1>
       <p class="t-body-large c-secondary" style="margin-top:var(--space-12)">Leave sealed food you won’t eat on a café shelf near you, or find something you can use.</p>
       <div class="spacer"></div>
@@ -4257,7 +4451,7 @@ function openReport(venueId, { itemId = '', onSent } = {}) {
 Views.takePoint = {
   html({ params }) {
     const v = venue(params.id), k = availKind(v);
-    return `<div class="r03__photo">${UI.iconButton('back', 'Back', 'data-action="back"', 'r03__back')}<span class="placeholder">${icon('photo')}<span>Café interior</span></span></div>
+    return `<div class="r03__photo${venuePhoto(v) ? ' has-photo' : ''}">${UI.photo(venuePhoto(v), `${v.name} interior`)}${UI.iconButton('back', 'Back', 'data-action="back"', 'r03__back')}<span class="placeholder">${icon('photo')}<span>Café interior</span></span></div>
       <div class="r03__sheet">
         <p class="t-overline c-secondary">${esc((v.shelf || 'shelf 1').toUpperCase())} · ${esc(v.dist.toUpperCase())}</p>
         <h1 class="t-h1">${esc(v.name)}</h1>
@@ -4469,7 +4663,7 @@ Views.host = {
   html() {
     const rows = [['community-care', 'A neighbourly welcome', 'Givers and receivers visit your café'], ['paused', 'About 2 minutes a day', 'No fridge, no power. A short shelf check, with a reminder'], ['starter-kit', 'A free starter kit', 'Shelf, sign, NFC plate, QR and window sticker']];
     return `${hostHead('Host a shelf', 1, true)}
-      <div class="hero" style="height:var(--size-illus)"><span class="placeholder">${icon('photo')}<span>Café with a community shelf</span></span></div>
+      <div class="hero${PHOTOS.hostShelf ? ' has-photo' : ''}" style="height:var(--size-illus)">${UI.photo(PHOTOS.hostShelf, 'Café with a community shelf')}<span class="placeholder">${icon('photo')}<span>Café with a community shelf</span></span></div>
       <h2 class="t-display" style="margin-bottom:var(--space-16)">A shelf for everyone, at your café.</h2>
       <ul class="benefits">${rows.map(r => `<li class="benefit"><span class="tile">${icon(r[0])}</span><div><p class="t-title">${r[1]}</p><p class="t-small c-secondary">${r[2]}</p></div></li>`).join('')}</ul>
       <section class="card" style="margin-top:var(--space-16)" aria-labelledby="h01-fund"><p class="t-label" id="h01-fund">Who pays for the thank-you coupons?</p>
@@ -4995,7 +5189,7 @@ Router.add('/welcome', Views.welcome, { title: 'Welcome', code: 'O01', cls: 'wit
 Router.add('/how', Views.how, { title: 'How it works', code: 'O02', cls: 'with-actions', flow: 'onboarding' });
 Router.add('/role', Views.role, { title: 'Choose how you use it', code: 'O03', cls: 'with-actions', flow: 'onboarding' });
 Router.add('/rules', Views.rules, { title: 'Sharing rules', code: 'O04', cls: 'with-actions', flow: 'onboarding' });
-Router.add('/home', Views.home, { title: 'Home', code: 'M01', tabs: '#/home' });
+Router.add('/home', Views.home, { title: 'Home', code: 'M01', tabs: '#/home', cls: 'screen--home' });
 Router.add('/me', Views.me, { title: 'Me', code: 'M02', tabs: '#/me' });
 Router.add('/map', Views.map, { title: 'Map', code: 'G02', tabs: '#/map', cls: 'screen--map' });
 Router.add('/point/:id', Views.point, { title: 'Point', code: 'G03', tabs: '#/map' });
