@@ -14,7 +14,7 @@
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&family=Rubik:wght@400;500;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&family=Rubik:wght@400;500;700&display=swap">
 <style id="vendor-css">
 /* Leaflet 1.9.4 (BSD-2-Clause, https://leafletjs.com) and Leaflet.markercluster 1.5.3 (MIT,
    https://github.com/Leaflet/Leaflet.markercluster), inlined from npm. Library CSS: not token-styled;
@@ -739,7 +739,6 @@ svg.leaflet-image-layer.leaflet-interactive path {
   --map-tile-filter:saturate(.55) sepia(.3) brightness(1.04) contrast(.9); /* [NEW] v0.7 warms the tiles toward Cream */
   /* type */
   --font-serif:Fraunces,Georgia,serif; --font-sans:Rubik,system-ui,-apple-system,sans-serif;
-  --font-sans-alt:"DM Sans",system-ui,-apple-system,sans-serif; /* [NEW] moderator font comparison */
   /* spacing (multiples of 4) */
   --space-4:4px; --space-8:8px; --space-12:12px; --space-16:16px; --space-20:20px; --space-24:24px;
   --space-28:28px; --space-32:32px; --space-40:40px; --space-48:48px; --space-56:56px; --space-64:64px;
@@ -830,8 +829,6 @@ svg.leaflet-image-layer.leaflet-interactive path {
   --size-scrim:96px;
 }
 
-/* moderator font comparison (Q83): swaps the sans family everywhere */
-:root[data-font="dm"]{--font-sans:var(--font-sans-alt)}
 
 /* =====================================================================
    2. BASE
@@ -929,6 +926,16 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{box-shadow:none}
 @keyframes out-back{from{transform:none}to{transform:translateX(100%)}}
 @keyframes fade-in{from{opacity:0}to{opacity:1}}
 .screen.leave-back{z-index:2}
+/* QA round 6: moving between screens that keep the tab bar slides the content the way the Leaf pill moves
+   (right-hand tab: content comes in from the right; left-hand tab: from the left). Same time and curve as the pill. */
+.screen.tab-in-r{animation:tab-in-r var(--motion-tab) var(--ease-in-out) both}
+.screen.tab-out-l{animation:tab-out-l var(--motion-tab) var(--ease-in-out) both}
+.screen.tab-in-l{animation:tab-in-l var(--motion-tab) var(--ease-in-out) both}
+.screen.tab-out-r{animation:tab-out-r var(--motion-tab) var(--ease-in-out) both}
+@keyframes tab-in-r{from{transform:translateX(100%)}to{transform:none}}
+@keyframes tab-out-l{from{transform:none}to{transform:translateX(-100%)}}
+@keyframes tab-in-l{from{transform:translateX(-100%)}to{transform:none}}
+@keyframes tab-out-r{from{transform:none}to{transform:translateX(100%)}}
 
 /* =====================================================================
    4. COMPONENTS (§8)
@@ -1461,6 +1468,15 @@ button.settings__row:active{background:var(--surface-canvas)}
 .log{background:var(--surface-default);border-radius:var(--radius-lg);padding:0 var(--space-16)}
 .log__row{display:flex;gap:var(--space-12);align-items:center;min-height:var(--size-settings-row);padding:var(--space-12) 0}
 .log__row + .log__row{border-top:1px solid var(--border-subtle)}
+.log li + li .log__row{border-top:1px solid var(--border-subtle)}
+.log__row--tap{width:100%;text-align:left;color:inherit}
+.log__row--tap:active{background:var(--surface-subtle)}
+.log__row--tap > .icon{color:var(--icon-secondary)}
+.log__main{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-4) var(--space-8)}
+.log__title{font:var(--type-body-list);font-weight:500}
+.log__sub{flex-basis:100%;font:var(--type-body-small);color:var(--text-secondary)}
+.shelfstate .btn{flex:none;min-height:var(--size-tap-min);padding:var(--space-8) var(--space-16)}
+.shelfstate__note{margin-top:var(--space-12)}
 .log__time{font:var(--type-body-small);color:var(--text-tertiary);white-space:nowrap}
 
 /* ---- Tab bar ---- */
@@ -2219,7 +2235,7 @@ const START = (persona = 'brenda') => {
     },
     log: [
       { kind: 'pickup', text: 'Pickup · 2 items', time: '08:42' },
-      { kind: 'dropoff', text: 'Drop-off · 3 items · Donor A7', time: '08:10' },
+      { kind: 'dropoff', text: 'Drop-off · 3 items', time: '08:10' },
       { kind: 'redeem', text: 'Coupon redeemed · SS-4790', time: 'Yesterday 17:30' },
       { kind: 'check', text: 'Shelf check done · Anna', time: 'Yesterday 09:04' }
     ],
@@ -2667,6 +2683,7 @@ document.addEventListener('click', e => {
   const b = e.target.closest('[aria-disabled="true"]');
   if (!b) return;
   e.preventDefault(); e.stopImmediatePropagation();
+  if (b.dataset.blocked) { toast('error', esc(b.dataset.blocked)); buzz(); return; }   // QA round 6: blocked action explains itself
   const sel = b.dataset.missing;
   if (sel) { const scope = b.closest('.screen, .sheet') || document; flash($$(sel, scope)); }
   const hint = b.parentElement && $('.gate__hint', b.parentElement);
@@ -2737,7 +2754,8 @@ const Router = {
     const { r, params } = found;
     if (r.opts.guard && !r.opts.guard({ params, query })) { this._fade = true; this.replace(r.opts.guardTo || homeRoute()); return; }
     const stage = $('#stage');
-    const old = stage.firstElementChild && !stage.firstElementChild.classList.contains('leave-fwd') && !stage.firstElementChild.classList.contains('leave-back') ? stage.firstElementChild : null;
+    const leaving = c => ['leave-fwd', 'leave-back', 'tab-out-l', 'tab-out-r'].some(k => c.classList.contains(k));
+    const old = stage.firstElementChild && !leaving(stage.firstElementChild) ? stage.firstElementChild : null;
     let dir = dirOverride || this.direction(raw);
     const isRoot = TAB_ROOTS.includes(path) && !raw.includes('?');
     if (old && old._root && isRoot && old._path !== path && dir !== 'none') dir = 'tab';
@@ -2754,11 +2772,13 @@ const Router = {
     // tab bar (host routes always show the host tabs)
     const tb = $('#tabbar');
     const prevInd = !tb.hidden && $('.tabbar__ind', tb), prevI = prevInd ? +prevInd.dataset.i : -1, prevMode = tb.dataset.mode;
+    let tabMove = '';
     if (r.opts.tabs) {
       const mode = r.opts.tabMode || Store.state.mode;
       tb.hidden = false; tb.innerHTML = UI.tabBar(mode, r.opts.tabs); tb.dataset.mode = mode; $('#app').classList.add('has-tabs');
       // slide the Leaf pill from the old tab to the new one (same tab set only)
       const ind = $('.tabbar__ind', tb), i = +ind.dataset.i;
+      if (prevI >= 0 && i >= 0 && prevI !== i && prevMode === mode) tabMove = i > prevI ? 'r' : 'l';
       if (prevI >= 0 && i >= 0 && prevI !== i && prevMode === mode && !reduceMotion()) {
         ind.style.transition = 'none'; ind.style.setProperty('--tab-i', prevI); void ind.offsetWidth;
         ind.style.transition = ''; ind.style.setProperty('--tab-i', i);
@@ -2768,7 +2788,12 @@ const Router = {
     $('#app').classList.toggle('has-actionbar', !!r.opts.actionbar);
     // transition: push / back slide 250 ms, tab crossfade 150 ms, reduced motion = instant swap
     const anim = !reduceMotion() && old && dir !== 'none';
-    if (anim && (dir === 'tab' || dir === 'fade')) { el.classList.add('enter-fade'); old.remove(); setTimeout(() => el.classList.remove('enter-fade'), 160); }
+    if (anim && tabMove && dir !== 'fade') {
+      const inC = tabMove === 'r' ? 'tab-in-r' : 'tab-in-l', outC = tabMove === 'r' ? 'tab-out-l' : 'tab-out-r';
+      el.classList.add(inC); old.classList.add(outC);
+      setTimeout(() => { old.remove(); el.classList.remove(inC); }, 210);
+    }
+    else if (anim && (dir === 'tab' || dir === 'fade')) { el.classList.add('enter-fade'); old.remove(); setTimeout(() => el.classList.remove('enter-fade'), 160); }
     else if (anim) {
       el.classList.add(dir === 'back' ? 'enter-back' : 'enter-fwd');
       old.classList.add(dir === 'back' ? 'leave-back' : 'leave-fwd');
@@ -3048,7 +3073,7 @@ Views.components = {
         st('Removed') + UI.checkRow({ id: 'k3', name: 'Crackers, 200 g', reason: 'Best before 01/2027', state: 'removed' }) + st('Flagged (unresolved on submit)') + UI.checkRow({ id: 'k4', name: 'Crackers, 200 g', reason: 'Best before 01/2027', state: 'flagged' }))}
 
       ${sec('log', 'Activity log row', 'Icon, event, time, anonymised donor reference.',
-        `<ul class="log">${UI.logRow({ kind: 'dropoff', time: '09:12', ref: 'Donor A7' })}${UI.logRow({ kind: 'pickup', time: '11:40' })}${UI.logRow({ kind: 'redeem', time: '12:05', ref: 'Donor A7' })}${UI.logRow({ kind: 'check', time: '17:30' })}</ul>`)}
+        `<ul class="log">${UI.logRow({ kind: 'dropoff', time: '09:12' })}${UI.logRow({ kind: 'pickup', time: '11:40' })}${UI.logRow({ kind: 'redeem', time: '12:05' })}${UI.logRow({ kind: 'check', time: '17:30' })}</ul>`)}
 
       ${sec('topbar', 'Top bar', 'Back, title (title type), optional action.',
         st('Default') + UI.topBar({ title: 'Café Daisy', action: UI.iconButton('more', 'More') }) + st('Serif (G08d)') + UI.topBar({ title: 'Your coupon', serif: true }) +
@@ -4080,7 +4105,7 @@ const Ops = {
     s.sim.cap = false;
     s.impact.passed += n;
     s.lastDrop = { venue: venueId, count: n, coupon: cid, bonus: bid, capped };
-    hostLog('dropoff', `Drop-off · ${pl(n, 'item')} · Donor A7`);
+    hostLog('dropoff', `Drop-off · ${pl(n, 'item')}`);
     Store.save();
     return s.lastDrop;
   },
@@ -4245,7 +4270,7 @@ const Jump = {
 const Prefs = {
   get(k, d) { try { return localStorage.getItem('secondshelf-pref-' + k) || d; } catch (e) { return d; } },
   set(k, v) { try { localStorage.setItem('secondshelf-pref-' + k, v); } catch (e) { /* private mode */ } },
-  applyFont() { const dm = Prefs.get('font', 'rubik') === 'dm'; if (dm) document.documentElement.dataset.font = 'dm'; else delete document.documentElement.dataset.font; }
+  applyFont() { delete document.documentElement.dataset.font; } // Q83 decided: Rubik only, the font comparison toggle is gone
 };
 Prefs.applyFont();
 const Mod = {
@@ -4283,14 +4308,12 @@ const Mod = {
         <p class="mod__times">A drop-off (target &lt; 90 s): ${last('dropoff')}<br>B pickup: ${last('pickup')}<br>C daily check (target &lt; 2 min): ${last('check')}</p>
         <div class="mod__grid">${UI.button({ label: 'Export log (JSON)', variant: 'secondary', icon: 'share', attrs: 'data-mod-export' })}${UI.button({ label: 'Screen index', variant: 'secondary', icon: 'list', attrs: 'data-mod-screens' })}</div></div>
       <div class="mod__sec"><p class="field__label">Test city (map)</p>${UI.segmented(CITY_ORDER.map(c => CITIES[c].name), CITY_ORDER.indexOf(curCity()), { id: 'mod-city', block: true })}<p class="t-small c-secondary">Moves you and every shelf to the city; Reset demo goes back to Tallinn.</p></div>
-      <div class="mod__sec"><p class="field__label">Font (team comparison, Q83)</p>${UI.segmented(['Rubik', 'DM Sans'], Prefs.get('font', 'rubik') === 'dm' ? 1 : 0, { id: 'mod-font', block: true })}</div>
       <div class="mod__sec">${UI.button({ label: 'Reset demo', icon: 'retry', attrs: 'data-mod-reset' })}<p class="t-small c-secondary">Restores the start state and shows Welcome again.</p></div>
     </div>`);
     const sheet = $('#sheet');
     sheet.onclick = e => {
       const t = e.target;
       const city = t.closest('[data-seg="mod-city"] [data-seg-i]'); if (city) { this.city(CITY_ORDER[+city.dataset.segI]); return; }
-      const font = t.closest('[data-seg="mod-font"] [data-seg-i]'); if (font) { Prefs.set('font', font.dataset.segI === '1' ? 'dm' : 'rubik'); Prefs.applyFont(); Store.log('font', { font: Prefs.get('font') }); return; }
       const scn = t.closest('[data-mod-scn]'); if (scn) { this.scenario(scn.dataset.modScn); return; }
       if (t.closest('[data-mod-go]')) { const r = $('#mod-jump').value; closeSheet(); Jump.go(r); return; }
       const sim = t.closest('[data-mod-sim]'); if (sim) { closeSheet(); this.sim(sim.dataset.modSim); return; }
@@ -4942,27 +4965,52 @@ Views.hostLive = {
 
 /* ---------- H06 Host dashboard (title Home, never "Today") · H08c missed-check banner ---------- */
 const LOG_ICON = { dropoff: 'sealed-food', pickup: 'pickup-bag', redeem: 'coupon', check: 'shelf-check', report: 'needs-attention', pause: 'pause' };
+/* QA round 6: activity rows = title + item-count chip + optional detail; no donor references. Works for old saved entries too. */
+const logParts = r => {
+  const parts = String(r.text || '').split(' · '), title = parts[0] || 'Activity';
+  let n = 0; const rest = [];
+  parts.slice(1).forEach(p => { const m = p.match(/^(\d+) items?$/); if (m) n = +m[1]; else if (!/^Donor /.test(p)) rest.push(p); });
+  return { title, n, sub: rest.join(' · ') };
+};
+/* Activity details sheet: what we know now, plus [To be agreed] slots for what an audit may need (Q95) */
+const logSheet = r => {
+  if (!r) return;
+  const e = logParts(r), h = Store.state.host, v = venue(h.venue);
+  const how = { dropoff: 'NFC tag tap + photo', pickup: e.sub === 'no app' ? 'App-free web page (QR)' : 'NFC tag tap', redeem: 'Counter scan', check: 'Daily check form', report: 'In-app report', pause: 'Host dashboard' }[r.kind] || '[To be agreed]';
+  const rows = [['What', e.title + (e.n ? ` · ${pl(e.n, 'item')}` : '')], ['When', r.time], ['Shelf', `${v.name}, shelf 1`], ['Logged by', how]];
+  if (e.sub && e.sub !== 'no app') rows.push(['Details', e.sub]);
+  const tbd = { dropoff: ['Items', 'Photo', 'Coupon issued'], pickup: ['Items taken'], redeem: ['Coupon value', 'Staff member'], check: ['Kept / removed items', 'Duration'], report: ['Steward follow-up'], pause: ['Reason and duration'] }[r.kind] || [];
+  tbd.forEach(t => rows.push([t, '[To be agreed]']));
+  rows.push(['Reference', `EV-${String(r.time).replace(/\D/g, '').padStart(4, '0')}-${(r.kind || 'log').slice(0, 4).toUpperCase()}`]);
+  openSheet(e.title, `<dl class="kv-lines">${rows.map(([k, val]) => `<div class="kv"><dt>${esc(k)}</dt><dd>${esc(val)}</dd></div>`).join('')}</dl>
+    <p class="t-small c-secondary" style="margin-top:var(--space-12)">Kept for the food-safety record. Which details hosts can see is still to be agreed.</p>
+    <div class="actions">${UI.button({ label: 'Close', variant: 'secondary', block: true, attrs: 'data-sheet-close' })}</div>`);
+};
 Views.hostDash = {
   html() {
     const s = Store.state, h = s.host, v = venue(h.venue), paused = v.status === 'paused';
     return `<p class="t-overline c-secondary">Home</p>
-      <header class="greet" style="margin-bottom:var(--space-4)"><h1 class="t-h1" data-logo>${esc(v.name)}</h1>${paused ? `<span class="pill pill--oat">${icon('pause')}Paused</span>` : `<span class="pill pill--leaf">${icon('done')}Shelf open</span>`}</header>
+      <header class="greet" style="margin-bottom:var(--space-4)"><h1 class="t-h1" data-logo>${esc(v.name)}</h1></header>
       <p class="t-small c-secondary" style="margin-bottom:var(--space-16)">Host · ${esc(h.owner)} (owner)</p>
       <div class="stack">
         ${h.missed ? `<section class="banner banner--problem" role="alert">${icon('needs-attention')}<div class="banner__text"><strong>Yesterday’s shelf check was missed</strong><br><span class="t-small">Do it now; it takes about 2 minutes. Old items may still be on the shelf.</span></div><a class="btn btn--link banner__action" href="#/host/check" data-startcheck>Start</a></section>` : ''}
-        ${h.checkDue ? `<section class="card card--shadow duecard"><div class="row"><span class="tile tile--accent">${icon('shelf-check', 'icon--accent')}</span><div class="grow"><h2 class="t-title">Shelf check due at ${esc(h.reminder)}</h2><p class="t-small c-secondary">About 2 minutes</p></div></div>
-            <div class="row" style="justify-content:flex-end;margin-top:var(--space-8)">${UI.button({ label: 'Start', attrs: 'data-startcheck' })}</div></section>`
-          : `<section class="banner banner--success" role="status">${icon('done')}<div class="banner__text"><strong>Shelf checked</strong> · Next check tomorrow ${esc(h.reminder)}</div></section>`}
         <div class="stats">
           <div class="stat"><p class="stat__num" aria-live="polite">${v.count}</p><p class="stat__cap">items on shelf · ${pl(v.spots, 'spot')} left</p></div>
           <div class="stat"><p class="stat__num">${h.stats.pickups}</p><p class="stat__cap">pickups this week</p></div>
           <div class="stat"><p class="stat__num">${h.stats.redeemed}</p><p class="stat__cap">coupons redeemed</p></div>
         </div>
         <p class="t-small c-secondary">Coupon cap this month: To be agreed</p>
-        ${paused ? UI.note(`<strong>Paused · ${esc(v.paused.reason)}</strong>Until: ${esc(v.paused.until)}. People see “Paused” on the map. Pickups are still allowed.`, 'pause') + UI.button({ label: 'Resume the shelf', icon: 'retry', block: true, attrs: 'data-resume' })
-          : UI.button({ label: 'Pause the shelf', variant: 'secondary', icon: 'pause', block: true, attrs: 'data-href="#/host/pause"' })}
+        <section class="card shelfstate${paused ? ' is-paused' : ''}" aria-labelledby="h06-state">
+          <div class="row"><span class="tile tile--sm ${paused ? 'tile--oat' : ''}">${icon(paused ? 'pause' : 'done', 'icon--sm ' + (paused ? 'icon--waiting' : 'icon--success'))}</span>
+            <div class="grow"><h2 class="t-title" id="h06-state">${paused ? 'Shelf paused' : 'Shelf open'}</h2><p class="t-small c-secondary">${paused ? `${esc(v.paused.reason)} · until ${esc(v.paused.until)}` : 'People can leave and find food'}</p></div>
+            ${paused ? UI.button({ label: 'Resume', icon: 'retry', attrs: 'data-resume' }) : UI.button({ label: 'Pause', variant: 'secondary', icon: 'pause', attrs: 'data-href="#/host/pause"' })}</div>
+          ${paused ? '<p class="t-small c-secondary shelfstate__note">People see “Paused” on the map. Pickups are still allowed.</p>' : ''}</section>
+        ${h.checkDue ? `<section class="card card--shadow duecard"><div class="row"><span class="tile tile--accent">${icon('shelf-check', 'icon--accent')}</span><div class="grow"><h2 class="t-title">Shelf check due at ${esc(h.reminder)}</h2><p class="t-small c-secondary">About 2 minutes</p></div></div>
+            <div class="row" style="justify-content:flex-end;margin-top:var(--space-8)">${UI.button({ label: 'Start', attrs: 'data-startcheck' })}</div></section>`
+          : `<section class="banner banner--success" role="status">${icon('done')}<div class="banner__text"><strong>Shelf checked</strong> · Next check tomorrow ${esc(h.reminder)}</div></section>`}
         <section aria-labelledby="h06-act"><h2 class="t-section" id="h06-act" style="margin-bottom:var(--space-8)">Activity</h2>
-          <ul class="log">${s.log.slice(0, 8).map(r => `<li class="log__row"><span class="tile tile--sm tile--canvas">${icon(LOG_ICON[r.kind] || 'activity', 'icon--sm')}</span><p class="t-body grow">${esc(r.text)}</p><span class="log__time">${esc(r.time)}</span></li>`).join('')}</ul></section>
+          <ul class="log">${s.log.slice(0, 8).map((r, k) => { const e = logParts(r); return `<li><button type="button" class="log__row log__row--tap" data-log="${k}" aria-label="${esc(e.title)}${e.n ? ', ' + pl(e.n, 'item') : ''}, ${esc(r.time)}, details"><span class="tile tile--sm tile--canvas">${icon(LOG_ICON[r.kind] || 'activity', 'icon--sm')}</span>
+            <span class="grow log__main"><span class="log__title">${esc(e.title)}</span>${e.n ? `<span class="pill">${pl(e.n, 'item')}</span>` : ''}<span class="log__sub">${esc(r.time)}${e.sub ? ' · ' + esc(e.sub) : ''}</span></span>${icon('chevron-right', 'icon--sm')}</button></li>`; }).join('')}</ul></section>
       </div>`;
   },
   mount(el, { query }) {
@@ -4970,6 +5018,7 @@ Views.hostDash = {
     el.addEventListener('click', e => {
       if (e.target.closest('[data-startcheck]')) { e.preventDefault(); Task.start('check'); Router.go('#/host/check'); }
       if (e.target.closest('[data-resume]')) { Ops.resume(Store.state.host.venue); toast('success', 'Shelf open again', { ms: 2500 }); Router.render('none'); }
+      const lg = e.target.closest('[data-log]'); if (lg) logSheet(Store.state.log[+lg.dataset.log]);
     });
   }
 };
@@ -5076,7 +5125,7 @@ const Check = {
     hostLog('check', `Shelf check done · ${h.lastCheck.by} · ${h.lastCheck.dur}`);
     Store.save();
   },
-  fake() { this.fresh(); const c = Store.state.host.check; c.items.forEach((id, k) => c.decide[id] = k ? 'remove' : 'keep'); this.submit(); }
+  fake() { this.fresh(); const c = Store.state.host.check, sh = shelfOf(Store.state.host.venue); c.items.forEach((id, k) => { const i = sh.items.find(x => x.id === id); c.decide[id] = k && !(i && bbPast(i.bb)) ? 'remove' : (i && bbPast(i.bb) ? 'remove' : 'keep'); }); this.submit(); }
 };
 Views.hostCheck = {
   html() {
@@ -5103,7 +5152,7 @@ Views.hostCheck = {
       return `<article class="checkrow${dec === 'keep' ? ' is-kept' : dec === 'remove' ? ' is-removed' : ''}" data-check="${id}">
         <div class="row"><span class="item__thumb">${icon('sealed-food')}</span><div class="grow"><p class="t-title">${esc(i.name)}</p><p class="t-small c-secondary">${esc(flagReason(i))}</p></div></div>
         ${dec ? `<div class="checkrow__done"><span class="status">${icon(dec === 'keep' ? 'done' : 'remove', dec === 'keep' ? 'icon--success' : 'icon--secondary')}<span>${dec === 'keep' ? 'Kept' : 'Removed'}</span></span>${UI.button({ label: 'Undo', variant: 'link', icon: 'undo', attrs: `data-undo="${id}"` })}</div>`
-          : `<div class="checkrow__btns">${UI.button({ label: 'Keep', variant: 'secondary', icon: 'done', attrs: `data-decide="keep"` })}${UI.button({ label: 'Remove', variant: 'secondary', icon: 'remove', attrs: `data-decide="remove"` })}</div>`}
+          : `<div class="checkrow__btns">${UI.button({ label: 'Keep', variant: 'secondary', icon: 'done', attrs: bbPast(i.bb) ? `data-decide="keep" aria-disabled="true" data-blocked="You can’t keep this food because it’s past its date."` : `data-decide="keep"` })}${UI.button({ label: 'Remove', variant: 'secondary', icon: 'remove', attrs: `data-decide="remove"` })}</div>`}
       </article>`;
     };
     const sync = () => {
