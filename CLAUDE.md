@@ -198,7 +198,7 @@ Codes follow the testing protocol. Exact names, order and states come from the F
 - Data: mock JSON; state in memory plus localStorage (wrapped in try/catch); **Reset demo** restores the start state.
 
 ### Moderator menu (hidden)
-Open with `?mod=1` or a long press (800 ms) on the logo. It offers:
+Open by tapping the profile icon at the top right of Home (team decision, 16 Nov), or a long press (800 ms) on the logo / greeting. Me is reached from the **Me** tab. It offers:
 - Reset demo
 - Choose scenario (A giver, B receiver, C host)
 - Jump to screen
