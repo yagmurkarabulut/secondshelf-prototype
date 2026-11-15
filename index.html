@@ -1501,6 +1501,7 @@ button.settings__row:active{background:var(--surface-canvas)}
   --size-result-icon:80px;                /* round result icon (H07b, H05b, R04c) */
   --size-radio:24px;
   --size-chart:160px;                     /* G11 bar chart height */
+  --size-photo-sm:80px;                   /* venue photo in the map sheet details */
 }
 /* pressed states (§3.2): buttons scale .98 (in .btn), cards .99 with a stronger shadow */
 .card--tap:active,.shelf:active,.result:active,.rolecard:active,.action-card:active{transform:scale(.99);box-shadow:var(--shadow-card-pressed)}
@@ -1519,7 +1520,10 @@ button.settings__row:active{background:var(--surface-canvas)}
 /* toast: fades up */
 .toast{animation:fade-up var(--motion-fast) var(--ease) both}
 @keyframes fade-up{from{opacity:0;transform:translateY(var(--space-8))}to{opacity:1;transform:none}}
-.app.has-actionbar .toast-host{bottom:calc(var(--space-64) + var(--space-32) + env(safe-area-inset-bottom))}
+.app.has-actionbar .toast-host{bottom:calc(var(--space-64) * 2 + env(safe-area-inset-bottom))}
+/* sticky action bar for long task screens (G06, R05, H08): the closing action stays in reach */
+.actions--sticky{position:sticky;bottom:calc(var(--space-32) * -1);margin:var(--space-16) calc(var(--space-20) * -1) calc(var(--space-32) * -1);padding:var(--space-12) var(--space-20) calc(var(--space-16) + env(safe-area-inset-bottom));background:var(--surface-canvas);box-shadow:var(--shadow-sheet);z-index:3}
+.stagger{display:flex;flex-direction:column;gap:var(--space-16)}
 
 /* overlay banner: slides down from the top */
 .ov-host{position:absolute;left:0;right:0;top:0;z-index:45;pointer-events:none;padding:max(env(safe-area-inset-top),var(--space-12)) var(--space-12) 0}
@@ -1605,7 +1609,7 @@ button.settings__row:active{background:var(--surface-canvas)}
 .radiorow .radio{position:static;flex:none}
 
 /* moderator menu (test only) */
-.modfab{position:absolute;top:max(env(safe-area-inset-top),var(--space-8));right:var(--space-8);z-index:44;opacity:.55;background:var(--surface-default);border:var(--border-w) solid var(--border-strong)}
+.modfab{position:absolute;top:50%;left:calc(var(--size-tap-min) / -2);z-index:44;opacity:.55;background:var(--surface-default);border:var(--border-w) solid var(--border-strong);justify-content:flex-end;padding-right:var(--space-4)}
 .mod .btn{min-height:var(--size-tap-min);padding:var(--space-8) var(--space-12);font:var(--type-label)}
 .mod__grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-8)}
 .mod__sec{display:flex;flex-direction:column;gap:var(--space-8);padding-top:var(--space-16);margin-top:var(--space-16);border-top:1px solid var(--border-subtle)}
@@ -1640,6 +1644,45 @@ textarea.input{min-height:calc(var(--size-control) * 2);resize:vertical}
 .note strong{font-weight:500;display:block;font-size:inherit}
 .faq dt{font:var(--type-title);margin-top:var(--space-12)}
 .faq dd{margin:var(--space-4) 0 0;font:var(--type-body-small);color:var(--text-secondary)}
+
+/* map v0.6 Steps B and C: location details inside the sheet (G03, R03 expanded) */
+.screen--map.has-details .mapsheet__count,.screen--map.has-details .mapsheet__switch,.screen--map.no-results .mapsheet__count,.screen--map.no-results .mapsheet__switch{display:none}
+.screen--map.has-details .mapsheet{touch-action:pan-y}
+.screen--map.has-details .mapsheet__body{overflow-y:auto;padding-bottom:var(--space-32)}
+.details{display:flex;flex-direction:column;gap:var(--space-8)}
+.details__back{display:inline-flex;align-items:center;gap:var(--space-4);align-self:center;min-height:var(--size-tap-min);padding:0 var(--space-12);border-radius:var(--radius-full);font:var(--type-body);color:var(--text-primary)}
+.details__back:active{background:var(--surface-subtle)}
+.details__photo{height:var(--size-photo-sm);border-radius:var(--radius-lg);background:var(--surface-subtle)}
+.details__title{display:flex;align-items:baseline;justify-content:space-between;gap:var(--space-12)}
+.details__row{display:flex;align-items:center;gap:var(--space-12);width:100%;min-height:var(--size-control);padding:var(--space-8) var(--space-12);border-radius:var(--radius-md);background:var(--surface-default);border:1px solid var(--border-subtle);text-align:left;font:var(--type-body)}
+.details__row:active{background:var(--surface-subtle)}
+.details__row .icon:first-child{color:var(--icon-primary)}
+.details__actions{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-12)}
+.details__actions .btn{width:100%}
+.chiprow{display:flex;flex-wrap:wrap;gap:var(--space-8)}
+.chiprow .pill,.chiprow .avail{min-height:var(--size-chip)}
+.chiprow .pill{background:var(--surface-default);border:1px solid var(--border-subtle)}
+.shelfitems{background:var(--surface-default);border-radius:var(--radius-lg);padding:0 var(--space-12)}
+.shelfitem{display:flex;gap:var(--space-12);align-items:center;min-height:var(--size-row-min);padding:var(--space-8) 0}
+.shelfitem + .shelfitem{border-top:1px solid var(--border-subtle)}
+.shelfitem .item__thumb{width:var(--size-tile);height:var(--size-tile)}
+.shelfitem.is-missing{opacity:.6}
+.shelfitem.is-missing .item__thumb{background:var(--surface-subtle)}
+.nowrap{white-space:nowrap;display:inline-flex;align-items:center;gap:var(--space-4);vertical-align:bottom}
+.result__meta .icon{color:var(--icon-secondary)}
+.marker--selected{animation:pop var(--motion-base) var(--ease) both}
+@keyframes pop{from{transform:scale(.8)}60%{transform:scale(1.15)}to{transform:none}}
+.topbar--center{justify-content:space-between}
+.topbar--center .topbar__title{text-align:center}
+/* G06a reading rows */
+.reading{display:flex;flex-direction:column;gap:var(--space-8)}
+.reading__row{display:flex;align-items:center;gap:var(--space-12);background:var(--surface-default);border-radius:var(--radius-md);padding:var(--space-12) var(--space-16);font:var(--type-body);animation:rise var(--motion-base) var(--ease) both}
+/* Rescue Bonus fill animation (G07, G08, G10) */
+.bonus__seg.is-new{animation:seg-fill var(--motion-slow) var(--ease) both;animation-delay:var(--d,0ms);transform-origin:left}
+@keyframes seg-fill{from{background:var(--surface-track);transform:scaleX(.2)}to{background:var(--surface-reward);transform:none}}
+a.bonus{display:block;text-decoration:none;color:inherit}
+.bonus--hero{padding:0;overflow:hidden;box-shadow:var(--shadow-card)}
+.bonus__inner{padding:var(--space-16)}
 
 /* =====================================================================
    5. COMPONENT GALLERY (#/components only)
@@ -2046,17 +2089,18 @@ const UI = {
     return `<div class="banner banner--${kind}" role="${kind === 'problem' ? 'alert' : 'status'}">${icon(ic || def)}<div class="banner__text">${html}</div>${action}</div>`;
   },
   coupon({ id = 'c1', state = 'active', venue = 'Café Daisy' } = {}) {
-    const chip = { active: '<span class="pill pill--leaf">Ready to use</span>', used: '<span class="pill pill--oat">Used</span>', expired: '<span class="pill pill--oat">Expired</span>', pending: '<span class="pill pill--reward">Pending</span>' }[state];
+    const chip = { active: '<span class="pill pill--leaf">Ready to use</span>', used: '<span class="pill pill--oat">Used</span>', expired: '<span class="pill pill--oat">Expired</span>', pending: '<span class="pill pill--reward">Pending</span>', withdrawn: '<span class="pill pill--oat">Withdrawn</span>' }[state];
     const btn = state === 'active'
       ? UI.button({ label: 'Show code', icon: 'qr-code', attrs: `data-href="#/coupons/code/${id}"` })
       : UI.button({ label: 'Show code', icon: 'qr-code', disabled: true });
-    return `<article class="coupon is-${state}" aria-label="Thank-you coupon, ${state}">
+    return `<article class="coupon is-${state === 'withdrawn' ? 'used' : state}" aria-label="Thank-you coupon, ${state}">
       <div class="coupon__band"></div>
       <div class="coupon__body">
         <div class="coupon__head"><span class="coupon__kind">${icon('coupon', 'icon--reward')}<span class="t-overline">Thank-you coupon</span></span>${chip}</div>
         <h3 class="t-h2 coupon__title">Thanks for sharing.</h3>
         <p class="coupon__meta">${esc(venue)} · after your drop-off</p>
         <dl class="coupon__terms"><div class="kv"><dt>Offer value</dt><dd>To be agreed</dd></div><div class="kv"><dt>Expiry</dt><dd>To be agreed</dd></div></dl>
+        ${state === 'withdrawn' ? `<div style="margin-top:var(--space-12)">${UI.statusLabel('problem', 'The steward removed items that didn’t meet the rules')}</div>` : ''}
       </div>
       <div class="coupon__tear" aria-hidden="true"><span class="coupon__notch coupon__notch--l"></span><span class="coupon__notch coupon__notch--r"></span></div>
       <div class="coupon__foot"><p>Show the counter code. It is not the shelf QR.</p>${btn}</div>
@@ -2068,15 +2112,21 @@ const UI = {
       return `<button type="button" role="tab" class="segmented__seg" aria-selected="${i === selected}" data-seg-i="${i}">${o.icon ? icon(o.icon) : ''}<span>${esc(o.label)}</span></button>`;
     }).join('')}</div>`;
   },
-  rescueBonus({ picked = 0, total = 4, venue = 'Café Daisy', state, note = '' } = {}) {
+  /* Rescue Bonus card: gold bar animates from its old to its new value (from → picked) */
+  bonusBar(picked, total, from = picked, state = '') {
+    const text = state === 'expired' ? `${picked} of ${total} picked up · expired` : picked >= total ? `${total} of ${total} picked up` : `${picked} of ${total} picked up · pending`;
+    return `<div class="bonus__bar" role="img" aria-label="${text}">${Array.from({ length: total }, (_, i) => `<span class="bonus__seg${i < picked ? ' is-on' : ''}${i >= from && i < picked ? ' is-new' : ''}" style="--d:${(i - from) * 150}ms"></span>`).join('')}</div>`;
+  },
+  rescueBonus({ picked = 0, total = 4, venue = 'Café Daisy', state, note = '', sub = '', from, link = false } = {}) {
     state = state || (picked >= total ? 'complete' : 'pending');
     const text = state === 'expired' ? `${picked} of ${total} picked up · expired` : state === 'complete' ? `${total} of ${total} picked up` : `${picked} of ${total} picked up · pending`;
-    return `<article class="bonus${state === 'expired' ? ' is-expired' : ''}">
+    const tag = link ? 'a' : 'article';
+    return `<${tag} class="bonus${state === 'expired' ? ' is-expired' : ''}${link ? ' card--tap' : ''}" ${link ? 'href="#/bonus"' : ''} aria-label="Rescue Bonus, ${esc(venue)}, ${text}">
       <div class="bonus__head"><span class="tile tile--reward">${icon('rescue-bonus', 'icon--reward')}</span>
-        <div class="grow"><h3 class="t-title">Rescue Bonus</h3><p class="t-small c-secondary">${esc(venue)}</p></div></div>
-      <div class="bonus__bar" role="img" aria-label="${text}">${Array.from({ length: total }, (_, i) => `<span class="bonus__seg${i < picked ? ' is-on' : ''}"></span>`).join('')}</div>
+        <div class="grow"><h3 class="t-title">Rescue Bonus</h3><p class="t-small c-secondary">${esc(sub || venue)}</p></div>${link ? icon('chevron-right') : ''}</div>
+      ${UI.bonusBar(picked, total, from ?? picked, state)}
       <p class="bonus__status">${text}</p>${note ? `<p class="t-small c-secondary" style="margin-top:var(--space-4)">${esc(note)}</p>` : ''}
-    </article>`;
+    </${tag}>`;
   },
   stepHeader({ title, step, of = 3, first = false, back = 'back' }) {
     const nav = first ? UI.iconButton('close', 'Close', `data-action="${back}"`) : UI.iconButton('back', 'Back', `data-action="${back}"`);
@@ -2093,11 +2143,11 @@ const UI = {
     const core = { idle: 'phone-tap', scanning: 'tap-nfc', found: 'done', notfound: 'needs-attention', qr: 'qr-code' }[state];
     const status = { idle: idleText, scanning: 'Scanning…', found: 'Tag found', notfound: 'Tag not found', qr: 'Scan the QR code' }[state];
     let art = `<div class="nfc__art" aria-hidden="true"><span class="nfc__ring"></span><span class="nfc__ring"></span><span class="nfc__ring"></span><span class="nfc__core nfc__phone">${icon(core)}</span></div>`;
-    if (state === 'qr') art = `<div class="nfc__qr" aria-hidden="true">${icon('qr-code', 'icon--lg icon--on-primary')}</div>`;
+    if (state === 'qr') art = `<div class="nfc__qr" aria-hidden="true">${icon('qr-code', 'icon--lg icon--on-primary')}</div><p class="nfc__hint">The sticker is next to the tag.</p>`;
     let actions = '';
     if (state === 'idle') actions = UI.button({ label: 'Tap shelf tag', variant: 'on-brand', icon: 'tap-nfc', block: true, attrs: `data-nfc-tap="${id}"` })
       + UI.button({ label: 'Scan the QR code instead', variant: 'outline-on-brand', icon: 'qr-code', block: true, attrs: `data-nfc-qr="${id}"` })
-      + `<div class="nfc__more">${UI.button({ label: 'Type shelf code', variant: 'link', icon: 'shelf-code', attrs: 'data-action="shelf-code"' })}</div>`;
+      + UI.button({ label: 'Type shelf code', variant: 'outline-on-brand', icon: 'shelf-code', block: true, attrs: 'data-action="shelf-code"' });
     if (state === 'scanning') actions = UI.button({ label: 'Tap shelf tag', variant: 'on-brand', loading: true, block: true });
     if (state === 'notfound') actions = UI.button({ label: 'Try again', variant: 'on-brand', icon: 'retry', block: true, attrs: `data-nfc-tap="${id}"` })
       + UI.button({ label: 'Scan the QR code', variant: 'outline-on-brand', icon: 'qr-code', block: true, attrs: `data-nfc-qr="${id}"` })
@@ -2499,7 +2549,7 @@ document.addEventListener('click', e => {
     const min = +wrap.dataset.min, max = +wrap.dataset.max;
     const v = $('.stepper__value', wrap);
     const n = Math.min(max, Math.max(min, +v.textContent + +sb.dataset.step));
-    v.textContent = n;
+    v.textContent = n; v.classList.remove('num-fade'); void v.offsetWidth; v.classList.add('num-fade');
     $('[data-step="-1"]', wrap).disabled = n <= min;
     $('[data-step="1"]', wrap).disabled = n >= max;
     wrap.dispatchEvent(new CustomEvent('stepper', { bubbles: true, detail: { id: wrap.dataset.stepper, value: n } }));
@@ -2812,7 +2862,7 @@ let photoURL = '';   // object URL of the tester's photo (memory only)
 const Flow = {
   start(shelf) {
     Store.state.draft = { shelf: +shelf || 1, items: null, sealed: false, started: Date.now() };
-    Store.log('task_start', { task: 'dropoff', shelf: +shelf || 1 });
+    Store.log('dropoff_start', { shelf: +shelf || 1 });
   },
   get d() { return Store.state.draft; },
   count(items) { return items.reduce((n, i) => n + i.qty, 0); }
@@ -2854,10 +2904,32 @@ function mapSvg() {
   return MAP_SVG_CACHE;
 }
 /* map view state survives tab switches (like a real map app) */
-const MapUI = { center: null, zoom: null, filters: new Set(), sheet: 'half', food: '' };
-/* v0.6 map sheet heights, lowest first. Half = share of the screen above the tab bar (G02b). */
-const SHEET = { order: ['peek', 'half', 'full'], half: 0.55, flick: 0.5 /* px per ms */, slop: 6 /* px before a drag starts */ };
+const MapUI = { center: null, zoom: null, filters: new Set(), sheet: 'half', food: '', mode: 'leave', sort: 'distance', expand: false };
+/* v0.6 map sheet heights, lowest first. Half = share of the screen above the tab bar (G02b); location details use a taller half (G03 frame). */
+const SHEET = { order: ['peek', 'half', 'full'], half: 0.55, detail: 0.8, flick: 0.5 /* px per ms */, slop: 6 /* px before a drag starts */ };
 const FILTERS = ['Open now', 'Has space', 'Nearby'];
+const FIND_FILTERS = ['Open now', 'Nearby'];
+const SORTS = [['distance', 'Distance'], ['open', 'Open now first'], ['date', 'Best-before date']];
+const sortLabel = () => ({ distance: 'nearest', open: 'open now', date: 'best-before' })[MapUI.sort];
+/* shared location-details pieces (G03 in the sheet, R03 page, G03b page) */
+const Loc = {
+  chips(v) {
+    return `<div class="chiprow">${v.hours ? `<span class="pill">${esc(v.hours.replace('Open until', 'Closing at'))}</span>` : ''}${availChip(v)}<span class="pill">NFC + QR</span></div>`;
+  },
+  itemRow(i, { compact = false } = {}) {
+    const miss = i.missing;
+    return `<li class="shelfitem${miss ? ' is-missing' : ''}"><span class="item__thumb">${icon('sealed-food')}</span><div class="grow">
+      <p class="t-body">${esc(i.name)}${i.qty > 1 ? ' ×' + i.qty : ''}</p>
+      <p class="t-small c-secondary">${miss ? 'Reported missing' : `<span class="nowrap">${icon('sealed-badge', 'icon--xs icon--secondary')}Sealed</span> · BB ${esc(i.bb)}${compact ? '' : ' · ' + addedText(i.days)}`}</p></div></li>`;
+  },
+  items(v) { const its = (v.items || []); return its.length ? `<ul class="shelfitems">${its.map(i => Loc.itemRow(i)).join('')}</ul>` : `<p class="t-body c-secondary">Nothing on this shelf right now.</p>`; },
+  rulesSheet() {
+    openSheet('Drop-off conditions and rules', `${Views.rules.html({ query: { view: 1 } }).replace(/^[\s\S]*?<\/header>/, '').replace(/<div class="spacer">[\s\S]*$/, '')}
+      <div class="actions">${UI.button({ label: 'Done', block: true, attrs: 'data-sheet-close' })}</div>`);
+  },
+  directions(v) { toast('info', `Directions to ${esc(v.name)} would open in your maps app.`, { ms: 3000, ic: 'location' }); Store.log('directions', { venue: v.id }); },
+  nearestOpen(v) { return VENUES.filter(x => x.id !== v.id && canLeave(x)).sort((a, b) => a.metres - b.metres)[0]; }
+};
 Views.map = {
   html() {
     return `<div class="lmap" id="lmap" role="region" aria-label="Map of shelves. Use arrow keys to move and plus or minus to zoom."></div>
@@ -2880,8 +2952,14 @@ Views.map = {
   },
   mount(el, { query }) {
     el.classList.add('screen--map');
+    MapUI.mode = query.find ? 'find' : 'leave';
+    if (query.food !== undefined) MapUI.food = query.food;
     if (query.view === 'list') MapUI.sheet = 'full';
-    if (query.find) MapUI.sheet = 'peek';
+    else if (query.sheet) MapUI.sheet = query.sheet;
+    else if (query.find && !query.shelf) MapUI.sheet = query.food ? 'half' : 'peek';
+    MapUI.expand = !!query.expand;
+    if (query.food !== undefined) $('#map-search', el).innerHTML = UI.search({ id: 'mapsearch', value: MapUI.food });
+    const find = () => MapUI.mode === 'find';
     let sel = query.shelf ? +query.shelf : null;
     const rm = reduceMotion(), H = MAP_SIZE;
     const ll = (x, y) => L.latLng(H - y, x);
@@ -2907,20 +2985,27 @@ Views.map = {
     const markers = new Map();
     VENUES.forEach(v => {
       const m = L.marker(ll(v.x, v.y), { icon: pinIcon(v), keyboard: true, title: label(v), riseOnHover: true });
-      m.on('click', () => select(v.id));
+      m.on('click', () => select(v.id, { from: 'marker' }));
       m.on('add', () => { const e = m.getElement(); if (e) { e.setAttribute('aria-label', label(v)); e.dataset.pin = v.id; } });
       markers.set(v.id, m);
     });
     const passes = v => (!MapUI.filters.has('Open now') || v.status !== 'closed')
-      && (!MapUI.filters.has('Has space') || availKind(v) === 'space')
+      && (find() || !MapUI.filters.has('Has space') || availKind(v) === 'space')
       && (!MapUI.filters.has('Nearby') || v.metres <= 1000)
       && (!MapUI.food || v.cats.has(MapUI.food));
     const visible = () => VENUES.filter(passes);
-    const inView = () => { const b = map.getBounds(); return visible().filter(v => b.contains(ll(v.x, v.y))).sort((a, b2) => a.metres - b2.metres); };
+    const sorter = (a, b) => {
+      if (MapUI.sort === 'open') { const o = x => x.status === 'open' ? 0 : 1; if (o(a) !== o(b)) return o(a) - o(b); }
+      if (MapUI.sort === 'date') { const d = x => { const it2 = MapUI.food ? matchItem(x, MapUI.food) : (x.items || [])[0]; if (!it2) return 99999; const [m, y] = it2.bb.split('/').map(Number); return y * 12 + m; }; if (d(a) !== d(b)) return d(a) - d(b); }
+      return a.metres - b.metres;
+    };
+    const inView = () => { const b = map.getBounds(); return visible().filter(v => b.contains(ll(v.x, v.y))).sort(sorter); };
     const countText = n => MapUI.food ? `${n} shel${n === 1 ? 'f has' : 'ves have'} ${MapUI.food.toLowerCase()}` : `${n} location${n === 1 ? '' : 's'} in this area`;
 
     const drawChips = () => {
-      $('#mapchips', el).innerHTML = (MapUI.food ? UI.chip(MapUI.food, { pressed: true, attrs: 'data-foodchip' }) : '') + FILTERS.map(f => UI.chip(f, { pressed: MapUI.filters.has(f) })).join('');
+      const fs = find() ? FIND_FILTERS : FILTERS;
+      $('#mapchips', el).innerHTML = (MapUI.food ? UI.chip(MapUI.food, { pressed: true, attrs: 'data-foodchip' }) : '') + fs.map(f => UI.chip(f, { pressed: MapUI.filters.has(f) })).join('')
+        + (find() ? `<button type="button" class="chip" data-sortchip>${icon('sort')}<span>Sort: ${sortLabel()}</span></button>` : '');
     };
     const applyFilters = () => {
       cluster.clearLayers();
@@ -2930,40 +3015,100 @@ Views.map = {
       drawBottom(); drawList();
     };
     const drawBottom = () => {
-      // Step A: the point card still floats over the map; the sheet steps aside while it is open
-      $('#mapbottom', el).innerHTML = sel ? UI.pointCard(venue(sel)) : '';
-      el.classList.toggle('has-card', !!sel);
+      $('#mapbottom', el).innerHTML = '';
+      el.classList.toggle('has-details', !!sel);
       $('#mapctl', el).hidden = !!(sel || MapUI.sheet === 'full');
       const c = countText(inView().length), cEl = $('#mapcount', el);
       if (cEl.textContent !== c) cEl.textContent = c;
     };
+    /* G03 / R03 expanded: location details inside the sheet */
+    const detailsHTML = v => {
+      const k = availKind(v), leaveBlocked = !find() && !canLeave(v), near = leaveBlocked ? Loc.nearestOpen(v) : null;
+      const why = k === 'full' ? 'Leave food is off while the shelf is full' : k === 'paused' ? 'Leave food is off while the shelf is paused' : 'Closed now. Try again in opening hours';
+      return `<div class="details" data-details="${v.id}">
+        <button type="button" class="details__back" data-details-back>${icon('chevron-left', 'icon--sm')}<span>${MapUI.food || find() ? 'Back to results' : 'Back to locations'}</span></button>
+        <div class="details__photo placeholder">${icon('photo')}<strong>Venue photo</strong><span>${esc(v.name)}</span></div>
+        <div class="details__title"><h2 class="t-h2" id="det-title">${esc(v.name)}</h2><span class="t-label c-brand">${esc(v.dist)}</span></div>
+        <p class="t-small c-secondary">${esc(v.addr || v.type)}${v.addr ? ' · ' + esc(v.type) : ''}</p>
+        ${Loc.chips(v)}
+        ${k === 'paused' ? UI.note(`<strong>Paused · ${esc(v.paused.reason)}</strong>Reopens: ${esc(v.paused.until)}. Pickups are still allowed.`, 'pause') : ''}
+        <button type="button" class="details__row" data-expand aria-expanded="${MapUI.expand}" aria-controls="det-items">${icon('community-shelf')}<span class="grow">On this shelf</span><span class="pill" aria-live="polite">${v.count}/${v.capacity} items</span>${icon(MapUI.expand ? 'chevron-up' : 'chevron-down')}</button>
+        <div id="det-items" ${MapUI.expand ? '' : 'hidden'}>${Loc.items(v)}</div>
+        <button type="button" class="details__row" data-rules>${icon('needs-attention')}<span class="grow">View drop-off conditions and rules</span>${icon('chevron-right')}</button>
+        ${leaveBlocked && near ? `<div class="card card--subtle"><p class="t-label c-secondary">Nearest shelf with space</p><div class="row" style="margin-top:var(--space-8)">${UI.marker(near.id)}<div class="grow"><p class="t-title">${esc(near.name)}</p><p class="t-small c-secondary">${esc(near.dist)}${near.hours ? ' · ' + esc(near.hours.toLowerCase()) : ''}</p></div>${UI.button({ label: 'Go here', attrs: `data-goto="${near.id}"` })}</div></div>` : ''}
+        <div class="details__actions">
+          ${UI.button({ label: 'Directions', variant: 'secondary', icon: 'location', attrs: 'data-directions' })}
+          <div class="gate">${UI.button({ label: 'I’m there', icon: 'tap-nfc', attrs: `data-there aria-disabled="${leaveBlocked}" data-missing=".details .avail, .details .note"` })}</div>
+        </div>
+        ${leaveBlocked ? `<p class="gate__hint">${why}</p>` : ''}
+        ${find() ? UI.button({ label: 'Report a problem', variant: 'secondary', icon: 'needs-attention', block: true, attrs: `data-href="#/take/point/${v.id}?report=1"` }) : ''}
+      </div>`;
+    };
+    const rowHTML = v => {
+      const k = availKind(v), chip = availChip(v);
+      if (find()) {
+        const mi = MapUI.food ? matchItem(v, MapUI.food) : null;
+        const l1 = mi ? `${esc(mi.name)}${mi.qty > 1 ? ' ×' + mi.qty : ''}` : `${pl(v.count, 'item')} on the shelf`;
+        const l2 = mi ? `<span class="nowrap">${icon('sealed-badge', 'icon--xs icon--secondary')}Sealed</span> · BB ${esc(mi.bb)} · ${addedText(mi.days)}` : '';
+        return `<button type="button" class="result" data-select="${v.id}">${UI.marker(v.id, k === 'space' ? 'default' : k)}
+          <span class="result__main"><span class="t-title">${esc(v.name)}</span><span class="result__meta">${l1}</span>${l2 ? `<span class="result__meta">${l2}</span>` : ''}<span class="result__meta">${esc(v.dist)}${v.hours ? ' · ' + esc(v.hours) : ''}</span>${chip}</span>${icon('chevron-right')}</button>`;
+      }
+      return `<button type="button" class="result" data-select="${v.id}">${UI.marker(v.id, k === 'space' ? 'default' : k)}
+        <span class="result__main"><span class="t-title">${esc(v.name)}</span><span class="result__meta">${esc(v.dist)}${v.hours ? ' · ' + esc(v.hours) : ''}</span>${chip}</span>${icon('chevron-right')}</button>`;
+    };
+    const noResults = () => {
+      const f = MapUI.food;
+      return `<div class="empty" style="padding:var(--space-16) 0">${icon('search', 'icon--lg icon--reward')}<h3 class="t-h3">${f ? `No ${esc(f.toLowerCase())} nearby right now` : 'No shelves match your filters'}</h3>
+        <p class="t-body c-secondary">${f ? 'We can let you know when someone leaves some on a shelf within 1 km.' : 'Clear the filters to see every shelf.'}</p>
+        <div class="stack-8" style="width:100%;margin-top:var(--space-8)">${f ? UI.button({ label: 'Notify me', icon: 'notification', block: true, attrs: 'data-notify' }) : ''}${UI.button({ label: 'Clear filters', variant: 'secondary', block: true, attrs: 'data-clearfilters' })}</div></div>`;
+    };
     const drawList = () => {
       const list = $('#mapsheet-body', el);
-      const vs = inView();
-      list.innerHTML = (vs.length
-        ? `<div class="stack-8">${vs.map(v => {
-            const mi = MapUI.food ? matchItem(v, MapUI.food) : null, match = mi ? mi.name : '';
-            const k = availKind(v);
-            return UI.resultRow({ n: v.id, venue: v.name, meta: (match ? match + ' · ' : '') + v.dist + (v.hours ? ' · ' + v.hours : ''), kind: k === 'space' ? 'space' : k === 'full' ? 'full' : 'closed', chip: availChip(v) })
-              .replace(`href="#/take/point/${v.id}"`, `href="#/point/${v.id}"`);
-          }).join('')}</div>`
-        : UI.empty({ ic: 'map', title: 'No shelves here', line: 'Zoom out or change the filters.' }));
+      if (sel) { list.innerHTML = detailsHTML(venue(sel)); return; }
+      const all = visible(), vs = inView();
+      el.classList.toggle('no-results', !all.length);
+      list.innerHTML = !all.length ? noResults()
+        : vs.length ? `<div class="stack-8">${vs.map(rowHTML).join('')}</div>`
+        : UI.empty({ ic: 'map', title: 'No shelves here', line: 'Zoom out or change the filters.' });
+      if (!all.length) Store.log('no_results', { food: MapUI.food });
     };
     const syncZoomBtns = () => { $('[data-zoom="in"]', el).disabled = map.getZoom() >= map.getMaxZoom(); $('[data-zoom="out"]', el).disabled = map.getZoom() <= map.getMinZoom(); };
     const placeCtl = () => { $('#mapctl', el).style.top = ($('#maptop', el).offsetHeight + 8) + 'px'; };
-
-    function select(id) {
-      const prev = sel; sel = id;
-      [prev, id].filter(Boolean).forEach(i => markers.get(i).setIcon(pinIcon(venue(i))));
-      const m = markers.get(id); markers.forEach((mm, i) => { const e = mm.getElement(); if (e) e.setAttribute('aria-label', label(venue(i))); });
-      drawBottom();
-      const card = $('.pointcard', el), z = Math.max(map.getZoom(), 0);
-      const offset = card ? card.offsetHeight / 2 : 0;
-      const target = map.unproject(map.project(m.getLatLng(), z).add([0, offset - 40]), z);
+    /* centre a marker in the part of the map the sheet leaves visible */
+    const centreOn = id => {
+      const m = markers.get(id), z = Math.max(map.getZoom(), 0), g = Sheet.geo();
+      const top = $('#maptop', el).offsetHeight, bottom = g.H - Sheet.visible(MapUI.sheet, g);
+      const d = g.H / 2 - (top + Math.max(top + 40, bottom)) / 2;
+      const target = map.unproject(map.project(m.getLatLng(), z).add([0, d]), z);
       rm ? map.setView(target, z, { animate: false }) : map.flyTo(target, z, { duration: .4 });
+    };
+    function select(id, { from = 'list' } = {}) {
+      const prev = sel; sel = id; MapUI.expand = false;
+      [prev, id].filter(Boolean).forEach(i => markers.get(i).setIcon(pinIcon(venue(i))));
+      markers.forEach((mm, i) => { const e = mm.getElement(); if (e) e.setAttribute('aria-label', label(venue(i))); });
+      Sheet.chips(true, false);
+      Sheet.set('half', { from: 'select-' + from });
+      drawList(); drawBottom(); sbody.scrollTop = 0;
+      centreOn(id);
+      history.replaceState(null, '', '#' + Router.parse().path + '?' + new URLSearchParams({ ...(find() ? { find: 1 } : {}), shelf: id }).toString());
+      Router.stack[Router.stack.length - 1] = Router.parse().raw;
+      Store.log('select', { venue: id, from });
       announce(venue(id).name);
+      setTimeout(() => { const t = $('#det-title', el); t && t.setAttribute('tabindex', '-1'); }, 0);
     }
-    function deselect() { if (!sel) return; const p = sel; sel = null; markers.get(p).setIcon(pinIcon(venue(p))); drawBottom(); }
+    function deselect() {
+      if (!sel) return; const p = sel; sel = null; MapUI.expand = false;
+      markers.get(p).setIcon(pinIcon(venue(p))); Sheet.chips(true, false); Sheet.set('half', { from: 'details-back' }); drawList(); drawBottom();
+      history.replaceState(null, '', '#' + Router.parse().path + (find() ? '?find=1' : ''));
+      Router.stack[Router.stack.length - 1] = Router.parse().raw;
+      const row = $(`[data-select="${p}"]`, el); row && row.focus({ preventScroll: false });
+    }
+    const toggleExpand = () => {
+      MapUI.expand = !MapUI.expand;
+      if (MapUI.expand) { Sheet.set('full', { from: 'expand' }); Sheet.chips(false); } else { Sheet.chips(true, false); Sheet.set('half', { from: 'collapse' }); }
+      drawList(); sbody.scrollTop = 0;
+      Store.log('on_this_shelf', { open: MapUI.expand });
+    };
     const fitTo = vs => { if (!vs.length) return; const b = L.latLngBounds(vs.map(v => ll(v.x, v.y))); map.fitBounds(b, { paddingTopLeft: [24, $('#maptop', el).offsetHeight + 16], paddingBottomRight: [64, (MapUI.sheet === 'full' ? 0 : Sheet.visible(MapUI.sheet)) + 72], maxZoom: 0.5, animate: !rm }); };
 
     /* ---------- v0.6 bottom sheet: peek · half · full ---------- */
@@ -2971,18 +3116,16 @@ Views.map = {
     $('#mapswitch', el).innerHTML = UI.segmented([{ label: 'Map', icon: 'map' }, { label: 'List', icon: 'list' }], 0, { id: 'mapmode' });
     const Sheet = {
       dir: 1, chipsHidden: false, chipsH: 0,
-      // geometry, measured live (the search can grow with suggestions, so measure the field, not the bar)
       geo() {
         const H = el.clientHeight, base = el.getBoundingClientRect().top;
         const fieldBottom = $('.search__field', maptop).getBoundingClientRect().bottom - base;
         const chips = $('#mapchips', el);
         if (!this.chipsHidden && chips.offsetHeight) this.chipsH = chips.offsetHeight;
-        // compact = bottom of the bar when the chips are hidden (its 4px bottom padding); top = under the chips
         const compact = Math.round(fieldBottom + 4), top = Math.round(fieldBottom + 8) + this.chipsH;
         return { H, top, compact };
       },
       visible(h, g = this.geo()) {
-        return h === 'peek' ? head.offsetHeight : h === 'half' ? Math.round(g.H * SHEET.half) : g.H - g.top;
+        return h === 'peek' ? head.offsetHeight : h === 'half' ? Math.round(g.H * (sel ? SHEET.detail : SHEET.half)) : g.H - g.top;
       },
       edge(h, g = this.geo()) { return h === 'full' && this.chipsHidden ? g.compact : g.top; },
       apply(h = MapUI.sheet) {
@@ -2994,7 +3137,7 @@ Views.map = {
         const prev = MapUI.sheet, ord = SHEET.order;
         if (ord.indexOf(h) !== ord.indexOf(prev)) this.dir = ord.indexOf(h) > ord.indexOf(prev) ? 1 : -1;
         MapUI.sheet = h; sheetEl.dataset.h = h;
-        if (h !== 'full') { this.chips(true, false); sbody.scrollTop = 0; }
+        if (h !== 'full' && !sel) { this.chips(true, false); sbody.scrollTop = 0; }
         el.classList.toggle('is-list', h === 'full');
         this.apply(h);
         grab.setAttribute('aria-expanded', h === 'full');
@@ -3004,7 +3147,6 @@ Views.map = {
         drawBottom();
         if (prev !== h) Store.log('sheet', { h, from });
       },
-      // grabber tap: peek → half → full → half → peek
       next() { const h = MapUI.sheet; return h === 'peek' ? 'half' : h === 'full' ? 'half' : (this.dir > 0 ? 'full' : 'peek'); },
       step(d) { const ord = SHEET.order, i = Math.min(ord.length - 1, Math.max(0, ord.indexOf(MapUI.sheet) + d)); this.set(ord[i], { from: 'key' }); },
       chips(show, reapply = true) {
@@ -3014,7 +3156,7 @@ Views.map = {
       }
     };
 
-    // drag + flick (touch: Touch Events so the list can still scroll natively at full height; mouse/pen: Pointer Events)
+    // drag + flick (touch: Touch Events so the list can still scroll natively; mouse/pen: Pointer Events)
     let drag = null, justDragged = 0;
     const beginDrag = y => {
       const g = Sheet.geo(), T = Sheet.edge(MapUI.sheet, g);
@@ -3026,8 +3168,8 @@ Views.map = {
       if (!drag.on) { if (Math.abs(dy) < SHEET.slop) return false; drag.on = true; sheetEl.classList.add('is-dragging'); el.classList.remove('is-list'); }
       const max = drag.g.H - drag.T - Sheet.visible('peek', drag.g);
       let off = drag.off0 + dy;
-      if (off < 0) off = off / 4;                         // a little resistance above full
-      if (off > max) off = max + (off - max) / 4;         // and below peek
+      if (off < 0) off = off / 4;
+      if (off > max) off = max + (off - max) / 4;
       drag.off = off;
       sheetEl.style.setProperty('--sheet-y', off + 'px');
       drag.pts.push([performance.now(), y]); if (drag.pts.length > 6) drag.pts.shift();
@@ -3039,20 +3181,22 @@ Views.map = {
       sheetEl.classList.remove('is-dragging'); justDragged = performance.now();
       const vis = d.g.H - d.T - d.off;
       const now = performance.now(), p = d.pts.find(q => now - q[0] < 120) || d.pts[0], last = d.pts[d.pts.length - 1];
-      const v = (last[1] - p[1]) / Math.max(1, last[0] - p[0]);   // + = down
+      const v = (last[1] - p[1]) / Math.max(1, last[0] - p[0]);
       const snaps = SHEET.order.map(h => [h, Sheet.visible(h, d.g)]);
       let target;
       if (Math.abs(v) > SHEET.flick) {
         const up = snaps.filter(s => s[1] > vis + 1), down = snaps.filter(s => s[1] < vis - 1);
         target = v < 0 ? (up[0] || snaps[snaps.length - 1])[0] : (down[down.length - 1] || snaps[0])[0];
       } else target = snaps.reduce((a, b) => Math.abs(b[1] - vis) < Math.abs(a[1] - vis) ? b : a)[0];
-      if (target === 'full') Sheet.chips(true, false);
+      if (target === 'full' && !MapUI.expand) Sheet.chips(true, false);
+      if (target !== 'full' && MapUI.expand) { MapUI.expand = false; drawList(); }
       Sheet.set(target, { from: Math.abs(v) > SHEET.flick ? 'flick' : 'drag' });
     };
+    const scrollsInside = () => MapUI.sheet === 'full' || !!sel;
     const canDragFrom = (target, dy) => {
       if (target.closest('#mapswitch')) return false;
-      if (MapUI.sheet !== 'full' || head.contains(target)) return true;
-      return sbody.scrollTop <= 0 && dy > 0;               // pull down from the top of the list moves the sheet
+      if (!scrollsInside() || head.contains(target)) return true;
+      return sbody.scrollTop <= 0 && dy > 0;
     };
     let tStart = null;
     sheetEl.addEventListener('touchstart', e => { if (e.touches.length !== 1) return; tStart = { y: e.touches[0].clientY, t: e.target, decided: false }; }, { passive: true });
@@ -3061,9 +3205,9 @@ Views.map = {
       const y = e.touches[0].clientY;
       if (!tStart.decided) {
         const dy = y - tStart.y;
-        if (Math.abs(dy) < SHEET.slop) { if (MapUI.sheet !== 'full') e.preventDefault(); return; }
+        if (Math.abs(dy) < SHEET.slop) { if (!scrollsInside()) e.preventDefault(); return; }
         tStart.decided = true;
-        if (!canDragFrom(tStart.t, dy)) { tStart = null; return; }  // native list scroll
+        if (!canDragFrom(tStart.t, dy)) { tStart = null; return; }
         beginDrag(tStart.y);
       }
       e.preventDefault(); moveDrag(y);
@@ -3072,31 +3216,37 @@ Views.map = {
     sheetEl.addEventListener('touchend', tEnd); sheetEl.addEventListener('touchcancel', tEnd);
     sheetEl.addEventListener('pointerdown', e => {
       if (e.pointerType === 'touch' || e.button !== 0) return;
-      if (MapUI.sheet === 'full' && !head.contains(e.target)) return;
-      if (e.target.closest('#mapswitch')) return;
+      if (scrollsInside() && !head.contains(e.target)) return;
+      if (e.target.closest('#mapswitch, button, a')) { if (!head.contains(e.target)) return; }
       beginDrag(e.clientY);
       const mv = ev => moveDrag(ev.clientY);
       const up = () => { window.removeEventListener('pointermove', mv); window.removeEventListener('pointerup', up); window.removeEventListener('pointercancel', up); endDrag(); };
       window.addEventListener('pointermove', mv); window.addEventListener('pointerup', up); window.addEventListener('pointercancel', up);
     });
-    // a drag never doubles as a tap on a row or the grabber
     sheetEl.addEventListener('click', e => { if (performance.now() - justDragged < 300) { e.preventDefault(); e.stopPropagation(); } }, true);
-    grab.addEventListener('click', () => Sheet.set(Sheet.next(), { from: 'grabber' }));
+    grab.addEventListener('click', () => { const n = Sheet.next(); if (n !== 'full' && MapUI.expand) { MapUI.expand = false; drawList(); } Sheet.set(n, { from: 'grabber' }); });
     grab.addEventListener('keydown', e => {
       if (e.key === 'ArrowUp') { e.preventDefault(); Sheet.step(1); }
       if (e.key === 'ArrowDown') { e.preventDefault(); Sheet.step(-1); }
     });
-    // chips hide on scroll down, come back on scroll up (full height only); the search stays
     let lastScroll = 0;
     sbody.addEventListener('scroll', () => {
-      if (MapUI.sheet !== 'full') return;
+      if (MapUI.sheet !== 'full' || sel) return;
       const y = sbody.scrollTop, d = y - lastScroll;
       if (d > 4 && y > 24) Sheet.chips(false); else if (d < -4 || y <= 0) Sheet.chips(true);
       lastScroll = y;
     }, { passive: true });
-    maptop.addEventListener('focusin', () => Sheet.chips(true));
+    maptop.addEventListener('focusin', () => { if (!MapUI.expand) Sheet.chips(true); });
     const onResize = () => Sheet.apply();
     window.addEventListener('resize', onResize);
+    /* Back order (Esc / in-app back): close details → step the sheet down one height → previous screen */
+    el._esc = () => {
+      if ($('.suggest', box)) { renderSearch($('#mapsearch', box).value, null); return; }
+      if (MapUI.expand) { toggleExpand(); return; }
+      if (sel) { deselect(); return; }
+      if (MapUI.sheet !== 'peek') { Sheet.step(-1); return; }
+      Router.back();
+    };
 
     // search: foods (what is on shelves) and places
     const box = $('#map-search', el);
@@ -3109,13 +3259,15 @@ Views.map = {
       return [...foods, ...places].slice(0, 6);
     };
     const renderSearch = (v, list) => { box.innerHTML = UI.search({ id: 'mapsearch', value: v, suggestions: list }); bindSearch(); };
+    const setFood = f => { MapUI.food = f; if (sel) { markers.get(sel) && (sel = null); } drawChips(); applyFilters(); placeCtl(); if (visible().length) { fitTo(visible()); if (MapUI.sheet === 'peek') Sheet.set('half', { from: 'search' }); } else Sheet.set('half', { from: 'no-results' }); };
     const pick = val => {
       const [kind, x] = val.split(':');
-      if (kind === 'food') { MapUI.food = x; sel = null; renderSearch(x, null); drawChips(); applyFilters(); fitTo(visible()); placeCtl(); Store.log('search', { food: x }); }
+      if (kind === 'food') { renderSearch(x, null); setFood(x); Store.log('search', { food: x }); }
+      if (kind === 'free') { const f = x.charAt(0).toUpperCase() + x.slice(1); renderSearch(f, null); setFood(f); Store.log('search', { free: f }); }
       if (kind === 'place') {
         const v = venue(x); renderSearch(v.name, null);
         if (!passes(v)) { MapUI.filters.clear(); MapUI.food = ''; drawChips(); applyFilters(); }
-        cluster.zoomToShowLayer(markers.get(v.id), () => select(v.id));
+        cluster.zoomToShowLayer(markers.get(v.id), () => select(v.id, { from: 'search' }));
         Store.log('search', { place: v.id });
       }
     };
@@ -3127,64 +3279,106 @@ Views.map = {
         renderSearch(v, suggestFor(v));
         const n = $('#mapsearch', box); n.focus(); n.setSelectionRange(v.length, v.length);
       });
-      inp.addEventListener('keydown', e => { if (e.key === 'Enter') { const first = $('[data-suggest]', box); if (first) { e.preventDefault(); pick(first.dataset.suggest); } } });
+      inp.addEventListener('keydown', e => {
+        if (e.key !== 'Enter') return;
+        e.preventDefault();
+        const first = $('[data-suggest]', box), v = inp.value.trim();
+        if (first) pick(first.dataset.suggest); else if (v.length >= 2) pick('free:' + v);
+        inp.blur();
+      });
     }
     bindSearch();
 
     // events
-    map.on('click', () => { if ($('.suggest', box)) renderSearch($('#mapsearch', box).value, null); deselect(); });
-    map.on('moveend', () => { MapUI.center = map.getCenter(); MapUI.zoom = map.getZoom(); if (!sel) drawBottom(); drawList(); });
+    map.on('click', () => { if ($('.suggest', box)) renderSearch($('#mapsearch', box).value, null); if (sel) deselect(); });
+    map.on('moveend', () => { MapUI.center = map.getCenter(); MapUI.zoom = map.getZoom(); if (!sel) { drawBottom(); drawList(); } });
     map.on('zoomend', syncZoomBtns);
     el.addEventListener('click', e => {
-      const s = e.target.closest('[data-suggest]'); if (s) { pick(s.dataset.suggest); return; }
-      if (e.target.closest('[data-pc-close]')) { deselect(); return; }
-      const z = e.target.closest('[data-zoom]'); if (z && !z.disabled) { z.dataset.zoom === 'in' ? map.zoomIn() : map.zoomOut(); return; }
-      if (e.target.closest('.search__filter')) { openFilters(); return; }
-      if (e.target.closest('[data-locate]')) { deselect(); rm ? map.setView(ll(ME.x, ME.y), -1.25, { animate: false }) : map.flyTo(ll(ME.x, ME.y), -1.25, { duration: .5 }); return; }
+      const t = e.target;
+      const s = t.closest('[data-suggest]'); if (s) { pick(s.dataset.suggest); return; }
+      const z = t.closest('[data-zoom]'); if (z && !z.disabled) { z.dataset.zoom === 'in' ? map.zoomIn() : map.zoomOut(); return; }
+      if (t.closest('.search__filter') || t.closest('[data-sortchip]')) { openFilters(); return; }
+      if (t.closest('[data-locate]')) { if (sel) deselect(); rm ? map.setView(ll(ME.x, ME.y), -1.25, { animate: false }) : map.flyTo(ll(ME.x, ME.y), -1.25, { duration: .5 }); return; }
+      const row = t.closest('[data-select]'); if (row) { const id = +row.dataset.select; cluster.zoomToShowLayer(markers.get(id), () => select(id, { from: 'list' })); return; }
+      if (t.closest('[data-details-back]')) { deselect(); return; }
+      if (t.closest('[data-expand]')) { toggleExpand(); return; }
+      if (t.closest('[data-rules]')) { Loc.rulesSheet(); return; }
+      if (t.closest('[data-directions]')) { Loc.directions(venue(sel)); return; }
+      const go = t.closest('[data-goto]'); if (go) { const id = +go.dataset.goto; if (!passes(venue(id))) { MapUI.filters.clear(); MapUI.food = ''; drawChips(); applyFilters(); } cluster.zoomToShowLayer(markers.get(id), () => select(id, { from: 'go-here' })); return; }
+      if (t.closest('[data-there]')) { const v = venue(sel); Store.log('im_there', { venue: v.id, mode: MapUI.mode }); Router.go(find() ? `#/take/tap?shelf=${v.id}` : `#/give/tap?shelf=${v.id}`); return; }
+      if (t.closest('[data-notify]')) { Store.state.alert = { food: MapUI.food, km: 1 }; Store.save(); Store.log('food_alert', { on: true, food: MapUI.food, from: 'R01b' }); toast('success', `Food alert saved: ${esc(MapUI.food)} within 1 km`, { ms: 3500, ic: 'notification' }); return; }
+      if (t.closest('[data-clearfilters]')) { MapUI.filters.clear(); MapUI.food = ''; renderSearch('', null); drawChips(); applyFilters(); placeCtl(); Sheet.set('half', { from: 'clear' }); return; }
     });
     el.addEventListener('chip', e => {
       if (e.target.closest('[data-foodchip]')) { MapUI.food = ''; renderSearch('', null); }
       else e.detail.on ? MapUI.filters.add(e.detail.label) : MapUI.filters.delete(e.detail.label);
       drawChips(); applyFilters(); placeCtl();
     });
-    el.addEventListener('seg', e => { if (e.detail.id === 'mapmode') { deselect(); Sheet.set(e.detail.index ? 'full' : 'peek', { from: 'switch' }); } });
+    el.addEventListener('seg', e => { if (e.detail.id === 'mapmode') { if (sel) deselect(); Sheet.set(e.detail.index ? 'full' : 'peek', { from: 'switch' }); } });
 
     function openFilters() {
+      const fs = find() ? FIND_FILTERS : FILTERS;
       openSheet('Filters', `<div class="stack">
-        <div class="chips" style="flex-wrap:wrap" id="sheetchips">${FILTERS.map(f => UI.chip(f, { pressed: MapUI.filters.has(f) })).join('')}</div>
+        <div class="chips" style="flex-wrap:wrap" id="sheetchips">${fs.map(f => UI.chip(f, { pressed: MapUI.filters.has(f) })).join('')}</div>
+        <div><p class="field__label" style="margin-bottom:var(--space-8)">Sort by</p><div class="radios" role="radiogroup" aria-label="Sort by">${SORTS.map(([k, l]) => UI.radioRow({ name: 'sort', value: k, label: l, checked: MapUI.sort === k })).join('')}</div></div>
         <div><p class="field__label" style="margin-bottom:var(--space-8)">Map</p>
         <ul class="legend"><li>${UI.marker(1)}Open</li><li>${UI.marker(2, 'full')}Full shelf</li><li>${UI.marker(3, 'paused')}Paused</li><li>${UI.marker(4, 'closed')}Closed</li><li><span class="cluster">${icon('community-shelf', 'icon--xs')}2</span>Several shelves</li></ul>
-        <p class="t-small c-secondary" style="margin-top:var(--space-8)">Numbers identify shelves, not item counts.</p></div></div>`);
+        <p class="t-small c-secondary" style="margin-top:var(--space-8)">Numbers identify shelves, not item counts.</p></div>
+        ${UI.button({ label: 'Show results', block: true, attrs: 'data-sheet-close' })}</div>`);
+      const sh = $('#sheet');
       $('#sheetchips').addEventListener('chip', e => { e.stopPropagation(); e.detail.on ? MapUI.filters.add(e.detail.label) : MapUI.filters.delete(e.detail.label); drawChips(); applyFilters(); placeCtl(); });
+      sh.addEventListener('radio', e => { if (e.detail.name === 'sort') { MapUI.sort = e.detail.value; Store.log('sort', { by: MapUI.sort }); drawChips(); drawList(); } });
     }
 
     drawChips(); applyFilters(); syncZoomBtns(); placeCtl();
-    sheetEl.classList.add('is-dragging'); Sheet.set(MapUI.sheet, { from: 'open' }); requestAnimationFrame(() => sheetEl.classList.remove('is-dragging'));
-    if (sel) setTimeout(() => cluster.zoomToShowLayer(markers.get(sel), () => select(sel)), 50);
+    sheetEl.classList.add('is-dragging');
+    if (sel && MapUI.expand) { Sheet.chips(false, false); Sheet.set('full', { from: 'open' }); } else Sheet.set(sel ? 'half' : MapUI.sheet, { from: 'open' });
+    requestAnimationFrame(() => sheetEl.classList.remove('is-dragging'));
+    if (sel) setTimeout(() => cluster.zoomToShowLayer(markers.get(sel), () => { markers.get(sel).setIcon(pinIcon(venue(sel))); drawList(); centreOn(sel); }), 50);
+    else if (MapUI.food && query.food !== undefined && visible().length) setTimeout(() => fitTo(visible()), 60);
     setTimeout(() => { map.invalidateSize(); placeCtl(); Sheet.apply(); drawList(); }, rm ? 0 : 280);
-    if (query.find) setTimeout(() => $('#mapsearch', el).focus(), rm ? 0 : 300);
+    if (query.find && !query.shelf && !query.food) setTimeout(() => $('#mapsearch', el).focus(), rm ? 0 : 300);
     window.__map = map;
     el._cleanup = () => { map.remove(); window.__map = null; window.removeEventListener('resize', onResize); };
   }
 };
 
-/* ---------- G03 Point card (page, from Home and the list) ---------- */
+/* ---------- G03 Point page (from Home and alerts) · G03b full / paused (same layout with the reason) ---------- */
 Views.point = {
   html({ params }) {
-    const v = venue(params.id);
-    return `${UI.topBar({ title: v.name, serif: true })}
-      <div class="point-photo placeholder">${icon('photo', 'icon--lg')}<span>Photo placeholder</span></div>
-      <div class="stack">
-        <div class="row">${UI.marker(v.id, availKind(v) === 'space' ? 'default' : availKind(v))}<p class="t-body">${esc(v.type)} · ${esc(v.dist)}${v.hours ? ' · ' + esc(v.hours) : ''}</p></div>
+    const v = venue(params.id), k = availKind(v), blocked = !canLeave(v), near = blocked ? Loc.nearestOpen(v) : null;
+    const why = { full: ['This shelf is full right now', 'Space opens when someone picks up food. Try another shelf for today.'],
+      paused: ['This shelf is paused', `${v.paused ? v.paused.reason : ''}. Reopens: ${v.paused ? v.paused.until : 'To be agreed'}. Pickups are still allowed.`],
+      closed: ['Closed now', 'Try again during opening hours.'] }[k];
+    const hint = { full: 'Leave food is off while the shelf is full', paused: 'Leave food is off while the shelf is paused', closed: 'Leave food is off while the café is closed' }[k];
+    return `<header class="topbar topbar--center">${UI.iconButton('back', 'Back', 'data-action="back"')}<p class="topbar__title">${esc(v.name)}</p><span class="icon-btn" aria-hidden="true"></span></header>
+      <div class="hero" style="height:var(--size-illus);margin-bottom:var(--space-16)"><span class="placeholder">${icon('photo')}<strong>Shelf photo</strong><span>${esc(v.name)}</span></span></div>
+      <h1 class="t-h1">${esc(v.name)}</h1>
+      <div class="stack" style="margin-top:var(--space-8)">
         <div>${availChip(v)}</div>
-        <div class="card">${UI.pointFacts(v)}</div>
-        ${UI.button({ label: 'Leave food', icon: 'sealed-food', block: true, disabled: !canLeave(v), attrs: `data-href="#/give/tap?shelf=${v.id}"` })}
+        <ul class="facts"><li>${icon('location')}${esc(v.dist)}${v.addr ? ' · ' + esc(v.addr) : ''}</li>${v.hours ? `<li>${icon('paused')}${esc(v.hours)}</li>` : ''}<li>${icon('tap-nfc')}NFC tag and QR code</li><li>${icon('sealed-badge')}Sealed, shelf-stable, within date</li></ul>
+        ${why ? UI.note(`<strong>${esc(why[0])}</strong>${esc(why[1])}`, k === 'paused' ? 'pause' : 'info') : `<button type="button" class="details__row card" data-onshelf aria-expanded="false" aria-controls="pt-items">${icon('community-shelf')}<span class="grow">On this shelf</span><span class="pill">${v.count}/${v.capacity} items</span>${icon('chevron-down')}</button><div id="pt-items" hidden>${Loc.items(v)}</div>`}
+        ${near ? `<section><h2 class="t-section" style="margin-bottom:var(--space-8)">Nearest shelf with space</h2>
+          <div class="card"><div class="row">${UI.marker(near.id)}<div class="grow"><p class="t-title">${esc(near.name)}</p><p class="t-small c-secondary">${esc(near.dist)}${near.hours ? ' · ' + esc(near.hours.toLowerCase()) : ''}</p></div></div>
+          <div class="row" style="justify-content:space-between;margin-top:var(--space-12)">${availChip(near)}${UI.button({ label: 'Go here', attrs: `data-href="#/map?shelf=${near.id}"` })}</div></div></section>` : ''}
+      </div>
+      <div class="actions">
+        ${UI.gated({ label: 'Leave food', icon: 'sealed-food', enabled: !blocked, hint: blocked ? hint : '', missing: '.note', attrs: `data-leave="${v.id}"` })}
+        ${UI.button({ label: 'Directions', variant: 'secondary', icon: 'location', block: true, attrs: 'data-directions' })}
       </div>`;
+  },
+  mount(el, { params }) {
+    const v = venue(params.id);
+    el.addEventListener('click', e => {
+      if (e.target.closest('[data-leave]')) { if (!Store.state.tasks.dropoff) Task.start('dropoff'); Router.go(`#/give/tap?shelf=${v.id}`); }
+      if (e.target.closest('[data-directions]')) Loc.directions(v);
+      const os = e.target.closest('[data-onshelf]'); if (os) { const open = os.getAttribute('aria-expanded') !== 'true'; os.setAttribute('aria-expanded', open); $('#pt-items', el).hidden = !open; $('use', $$('svg', os).pop()).setAttribute('href', open ? '#ss-chevron-up' : '#ss-chevron-down'); }
+    });
   }
 };
 
 /* ---------- G04 Tap the tag ---------- */
-const TAP_OPTS = { idleText: '', note: 'Look for the arrow on the sign. The tag is right below it.' };
+const TAP_OPTS = { idleText: '', note: 'Look for the arrow on the SecondShelf sign.' };
 Views.giveTap = {
   html({ query }) {
     return `${UI.stepHeader({ title: 'Leave food', step: 1, first: true })}
@@ -3195,21 +3389,26 @@ Views.giveTap = {
   mount(el, { query }) {
     if (!hasDraft() || (query.shelf && +query.shelf !== Flow.d.shelf)) { Flow.start(query.shelf || 1); }
     const next = () => Router.go('#/give/photo');
-    el.addEventListener('click', e => {
-      const sec = $('[data-nfc]', el);
-      if (e.target.closest('[data-nfc-tap]')) {
-        const fail = Store.state.sim.tagFail || query.fail === '1';
-        if (Store.state.sim.tagFail) { Store.state.sim.tagFail = false; Store.save(); }
-        Store.log('nfc_tap', { result: fail ? 'not_found' : 'found' });
-        NFC.tap(sec, { fail, onFound: next, opts: TAP_OPTS });
-      }
-      if (e.target.closest('[data-nfc-qr]')) NFC.qr(sec, TAP_OPTS);
-      if (e.target.closest('[data-nfc-sampleqr]')) NFC.found(sec, { onFound: next, opts: TAP_OPTS });
-    });
-    const onCode = () => NFC.found($('[data-nfc]', el), { onFound: next, opts: TAP_OPTS });
-    document.addEventListener('shelfcode', onCode);
-    el._cleanup = () => document.removeEventListener('shelfcode', onCode);
+    NFC.bind(el, { onFound: next, opts: TAP_OPTS, fail: query.fail === '1', log: 'G04' });
   }
+};
+/* shared NFC wiring for G04, R04 and H05 (one component, same states and fallbacks) */
+NFC.bind = (el, { onFound, opts, fail = false, log = '' }) => {
+  let failOnce = fail;
+  el.addEventListener('click', e => {
+    const sec = $('[data-nfc]', el); if (!sec) return;
+    if (e.target.closest('[data-nfc-tap]')) {
+      const f = Store.state.sim.tagFail || failOnce; failOnce = false;
+      if (Store.state.sim.tagFail) { Store.state.sim.tagFail = false; Store.save(); }
+      Store.log('nfc_tap', { screen: log, result: f ? 'not_found' : 'found' });
+      NFC.tap(sec, { fail: f, onFound, opts });
+    }
+    if (e.target.closest('[data-nfc-qr]')) { Store.log('nfc_qr', { screen: log }); NFC.qr(sec, opts); }
+    if (e.target.closest('[data-nfc-sampleqr]')) NFC.found(sec, { onFound, opts });
+  });
+  const onCode = () => { const sec = $('[data-nfc]', el); if (sec) { Store.log('shelf_code', { screen: log }); NFC.found(sec, { onFound, opts }); } };
+  document.addEventListener('shelfcode', onCode);
+  const prev = el._cleanup; el._cleanup = () => { document.removeEventListener('shelfcode', onCode); prev && prev(); };
 };
 
 /* ---------- G05 Take a photo ---------- */
@@ -3220,10 +3419,11 @@ Views.givePhoto = {
       <div class="stack">
         ${UI.banner('success', `<strong>Tag found</strong> · ${esc(v.name)}${v.shelf ? ', ' + esc(v.shelf) : ''}`)}
         <h2 class="t-h1">Photograph your items</h2>
-        <p class="lead">Photograph only your own items, before placing them. The photo suggests a list; it is not proof of delivery.</p>
+        <p class="lead">Take one photo of your items before you place them. It reads the names and dates for you. It isn’t proof of delivery.</p>
         <div>${err ? UI.capture('unreadable', photoURL) : UI.capture('empty')}</div>
+        ${err ? `<p class="t-body">Try again in better light, or add the items yourself.</p>` : ''}
         <div class="stack-8">
-          ${UI.button({ label: 'Take photo', icon: 'camera', block: true, attrs: 'data-take' })}
+          ${UI.button({ label: err ? 'Retake photo' : 'Take photo', icon: err ? 'retry' : 'camera', block: true, attrs: 'data-take' })}
           <input type="file" accept="image/*" capture="environment" class="vh" id="photo-in" tabindex="-1" aria-hidden="true">
           ${UI.button({ label: 'Use sample photo', variant: 'secondary', icon: 'photo', block: true, attrs: 'data-sample' })}
           <div class="center">${UI.button({ label: 'Add items manually', variant: 'link', attrs: 'data-manual' })}</div>
@@ -3245,13 +3445,19 @@ Views.givePhoto = {
   }
 };
 
-/* ---------- G06a Reading your photo ---------- */
+/* ---------- G06a Reading your photo: item rows appear one by one (200 ms stagger, 1.5 s total) ---------- */
 Views.giveReading = {
   html() {
     return `${UI.stepHeader({ title: 'Leave food', step: 2 })}
-      <div class="stack"><h2 class="t-h1">Photograph your items</h2>${UI.capture('reading', photoURL)}</div>`;
+      <div class="stack"><h2 class="t-h1">Photograph your items</h2>${UI.capture('reading', photoURL)}
+      <ul class="reading" id="reading" aria-live="polite" aria-label="Items found so far"></ul></div>`;
   },
-  mount() {
+  mount(el) {
+    const fail = Store.state.sim.photoFail;
+    if (!fail) AI_ITEMS().forEach((i, k) => setTimeout(() => {
+      const ul = $('#reading', el); if (!ul) return;
+      ul.insertAdjacentHTML('beforeend', `<li class="reading__row">${icon('sealed-food', 'icon--sm')}<span>${esc(i.name)}${i.qty > 1 ? ' ×' + i.qty : ''}</span></li>`);
+    }, reduceMotion() ? 0 : 500 + k * 200));
     setTimeout(() => {
       if (!location.hash.startsWith('#/give/reading')) return;
       if (Store.state.sim.photoFail) { Store.state.sim.photoFail = false; Store.save(); Store.log('photo_read', { result: 'unreadable' }); Router.replace('#/give/photo?error=1'); return; }
@@ -3268,30 +3474,29 @@ function itemForm({ name = '', bb = '', qty = 1, submit }) {
     ${UI.input({ id: 'f-name', label: 'Item name', value: name, placeholder: 'e.g. Canned soup' })}
     ${UI.input({ id: 'f-bb', label: 'Best before', value: bb, placeholder: 'MM/YYYY', attrs: 'inputmode="numeric" autocomplete="off"' })}
     <div><span class="field__label">Quantity</span><div style="margin-top:var(--space-8)">${UI.stepper({ id: 'f-qty', value: qty, min: 1, max: 9 })}</div></div>
-    ${UI.button({ label: submit, icon: submit === 'Add item' ? 'plus' : 'done', block: true, attrs: 'type="submit" data-submit' }).replace('type="button" ', '')}
+    <div class="gate">${UI.button({ label: submit, icon: submit === 'Add item' ? 'plus' : 'done', block: true, attrs: 'type="submit" data-submit aria-disabled="true" data-missing="#item-form .field"' }).replace('type="button" ', '')}<p class="gate__hint">Add a name and a best-before date</p></div>
   </form>`;
 }
 Views.giveItems = {
   html() {
     return `${UI.stepHeader({ title: 'Leave food', step: 3 })}
       <h2 class="t-h1">Check your items</h2>
-      <p class="lead c-secondary" id="items-sub" style="margin:var(--space-4) 0 var(--space-16)"></p>
+      <p class="lead c-secondary" id="items-sub" aria-live="polite" style="margin:var(--space-4) 0 var(--space-16)"></p>
       <div class="stack-8" id="items-list"></div>
       <div class="center" style="margin:var(--space-8) 0 var(--space-16)">${UI.button({ label: 'Add item manually', variant: 'link', icon: 'plus', attrs: 'data-add' })}</div>
-      <div class="check-panel"><p class="t-body" style="padding-top:var(--space-4)">Place packs with labels and dates facing out.</p>
+      <div class="check-panel" id="sealed-panel"><p class="t-body" style="padding-top:var(--space-4)">Place packs with labels and dates facing out.</p>
         ${UI.checkbox({ id: 'sealed', label: 'All items are sealed and within their date', checked: !!Flow.d.sealed })}</div>
-      <div class="actions">${UI.button({ label: 'Confirm drop-off', variant: 'accent', icon: 'done', block: true, attrs: 'id="confirm"', disabled: true })}</div>`;
+      <div class="actions actions--sticky">${UI.gated({ label: 'Confirm drop-off', variant: 'accent', icon: 'done', id: 'confirm', hint: 'Tick “All items are sealed and within their date” to confirm', missing: '#sealed-panel' })}</div>`;
   },
   mount(el, { query }) {
     const d = Flow.d; if (!d.items) d.items = AI_ITEMS();
-    const draw = () => {
-      $('#items-list', el).innerHTML = d.items.map(i => UI.foodItem(i)).join('');
-      sync();
-    };
+    const draw = () => { $('#items-list', el).innerHTML = d.items.length ? d.items.map(i => UI.foodItem(i)).join('') : `<div class="card">${UI.empty({ ic: 'sealed-food', title: 'No items yet', line: 'Add what you are leaving.' })}</div>`; sync(); };
     const sync = () => {
-      const n = Flow.count(d.items);
-      $('#items-sub', el).textContent = `${n} item${n === 1 ? '' : 's'} · cans counted individually. Edit anything the photo got wrong.`;
-      $('#confirm', el).disabled = !(d.sealed && d.items.length);
+      const n = Flow.count(d.items), btn = $('#confirm', el), hint = $('.gate__hint', btn.parentElement);
+      $('#items-sub', el).textContent = `${pl(n, 'item')} · cans counted individually. Edit anything the photo got wrong.`;
+      hint.textContent = !d.items.length ? 'Add at least one item to confirm' : 'Tick “All items are sealed and within their date” to confirm';
+      btn.dataset.missing = !d.items.length ? '[data-add]' : '#sealed-panel';
+      gate(btn, !!(d.sealed && d.items.length));
       Store.save();
     };
     const openForm = (item) => {
@@ -3299,15 +3504,16 @@ Views.giveItems = {
       openSheet(editing ? 'Edit item' : 'Add item', itemForm({ ...(item || {}), submit: editing ? 'Save' : 'Add item' }));
       const form = $('#item-form'), btn = $('[data-submit]', form), name = $('#f-name', form), bb = $('#f-bb', form);
       const ok = () => name.value.trim() && bb.value.trim();
-      const valid = () => { btn.disabled = !ok(); };
+      const valid = () => gate(btn, !!ok());
       name.addEventListener('input', valid); bb.addEventListener('input', valid); valid();
       form.addEventListener('submit', e => {
         e.preventDefault(); if (!ok()) return;
         const data = { name: name.value.trim(), short: shortName(name.value), bb: bb.value.trim(), qty: +$('.stepper__value', form).textContent };
         if (editing) { Object.assign(item, data); Store.log('item_edit', { id: item.id }); }
-        else { d.items.push({ id: 'm' + Date.now(), ...data }); Store.log('item_add', {}); }
+        else { d.items.push({ id: 'm' + Date.now(), cat: 'Pasta', ...data }); Store.log('item_add', {}); }
         closeSheet(); draw();
-        if (editing) { const row = $(`[data-item="${item.id}"]`, el); row && row.classList.add('is-edited'); setTimeout(() => row && row.classList.remove('is-edited'), 1200); }
+        const row = $(`[data-item="${editing ? item.id : d.items[d.items.length - 1].id}"]`, el); row && row.classList.add('is-edited'); setTimeout(() => row && row.classList.remove('is-edited'), 1200);
+        toast('success', editing ? 'Item updated' : 'Item added', { ms: 2000 });
       });
     };
     draw();
@@ -3316,60 +3522,70 @@ Views.giveItems = {
       if (rm) {
         const idx = d.items.findIndex(i => i.id === rm.dataset.remove); const [gone] = d.items.splice(idx, 1);
         draw(); Store.log('item_remove', { id: gone.id });
-        toast('info', `${esc(gone.name)} removed`, { action: 'Undo', ic: 'remove', onAction: () => { d.items.splice(idx, 0, gone); draw(); } });
+        toast('info', `${esc(gone.name)} removed`, { action: 'Undo', ic: 'remove', onAction: () => { d.items.splice(idx, 0, gone); draw(); Store.log('item_undo', { id: gone.id }); } });
       }
       const ed = e.target.closest('[data-edit]');
       if (ed) openForm(d.items.find(i => i.id === ed.dataset.edit));
       if (e.target.closest('[data-add]')) openForm(null);
-      if (e.target.closest('#confirm') && !$('#confirm', el).disabled) Views.giveItems.confirm();
+      const c = e.target.closest('#confirm'); if (c) Views.giveItems.confirm(c);
     });
-    el.addEventListener('stepper', e => { const it = d.items.find(i => 'q-' + i.id === e.detail.id); if (it) { it.qty = e.detail.value; sync(); } });
+    el.addEventListener('stepper', e => { const it2 = d.items.find(i => 'q-' + i.id === e.detail.id); if (it2) { it2.qty = e.detail.value; sync(); } });
     el.addEventListener('change', e => { if (e.target.id === 'sealed') { d.sealed = e.target.checked; sync(); } });
     if (query.add) setTimeout(() => openForm(null), reduceMotion() ? 0 : 300);
   },
-  confirm() {
-    const s = Store.state, d = s.draft, n = Flow.count(d.items), id = 'c' + Date.now(), bid = 'b' + Date.now();
-    s.shelfItems.unshift(...d.items.map(i => ({ name: i.short || shortName(i.name), qty: i.qty, venue: d.shelf, status: 'waiting' })));
-    s.coupons.unshift({ id, venue: d.shelf, state: 'active', code: 'SS-4821' });
-    s.bonuses.unshift({ id: bid, venue: d.shelf, picked: 0, total: n });
-    s.lastDrop = { venue: d.shelf, count: n, coupon: id, bonus: bid };
-    Store.log('task_end', { task: 'dropoff', ms: Date.now() - d.started, items: n });
+  async confirm(btn) {
+    await simulate(btn, 700);
+    const s = Store.state, d = s.draft; if (!d) return;
+    const res = Ops.dropOff(d.shelf, d.items);
+    Store.log('dropoff', { items: res.count, capped: res.capped });
     s.draft = null; Store.save(); buzz();
-    Router.replace('#/give/done');
+    Router.replace(res.capped ? '#/give/done?cap=1' : '#/give/done');
   }
 };
 
-/* ---------- G07 Thanks for sharing ---------- */
+/* ---------- G07 Thanks for sharing · G07b Monthly coupon limit reached ---------- */
+const bonusFrom = b => { const from = b.seen ?? 0; b.seen = b.picked; Store.save(); return Math.min(from, b.picked); };
 Views.giveDone = {
-  html() {
+  html({ query }) {
     const s = Store.state, L = s.lastDrop, v = venue(L.venue), b = s.bonuses.find(x => x.id === L.bonus) || { picked: 0, total: L.count };
-    return `<div class="closebar">${UI.iconButton('close', 'Close', 'data-href="#/home"')}</div>
-      <div class="illus"><span class="placeholder">${icon('photo')}<span>Illustration placeholder: packs land on the shelf</span></span></div>
-      <h1 class="t-display">Thanks for sharing.</h1>
-      <p class="t-body-large" style="margin:var(--space-8) 0 var(--space-16)">${L.count} item${L.count === 1 ? ' is' : 's are'} on the shelf at ${esc(v.name)}. People nearby can see them now.</p>
-      <div class="stack-8">
-        <article class="coupon" aria-label="Thank-you coupon"><div class="coupon__band"></div><div class="coupon__body">
-          <div class="coupon__head"><span class="coupon__kind">${icon('coupon', 'icon--reward')}<span class="t-overline">Thank-you coupon · Ready</span></span></div>
-          <dl class="kv-lines" style="margin-top:var(--space-4)"><div class="kv"><dt>Offer value</dt><dd>To be agreed</dd></div><div class="kv"><dt>Participating venue</dt><dd>${esc(v.name)}</dd></div><div class="kv"><dt>Expiry</dt><dd>To be agreed</dd></div></dl>
-          <p class="howto"><strong>How to use your coupon:</strong> Show the counter code. It is not the shelf QR.</p>
-        </div></article>
-        ${UI.rescueBonus({ picked: b.picked, total: b.total, venue: v.name, note: 'Grows as people pick up your items.' })}
-      </div>
-      <div class="actions" style="padding-top:var(--space-16)">
-        ${UI.button({ label: 'Back to Home', icon: 'home', block: true, attrs: 'data-href="#/home"' })}
-        ${UI.button({ label: 'View coupon', variant: 'secondary', icon: 'coupon', block: true, attrs: 'data-href="#/coupons"' })}
+    const cap = query.cap === '1' || L.capped;
+    const bonus = UI.rescueBonus({ picked: b.picked, total: b.total, venue: v.name, sub: `${v.name} · from your ${pl(L.count, 'item')}`, from: b.id ? bonusFrom(b) : 0, note: cap ? '' : 'Grows as people pick up your items.' });
+    return `<div class="closebar">${UI.iconButton('close', 'Close', 'data-done')}</div>
+      <div class="stagger">
+        ${UI.illus('Packs land on the shelf')}
+        <div><h1 class="t-display">Thanks for sharing.</h1>
+        <p class="t-body-large" style="margin-top:var(--space-8)">Your food is on the shelf at ${esc(v.name)}. People nearby can see it now.</p></div>
+        <div class="stack-8">
+          ${cap ? `<div class="note">${icon('coupon', 'icon--reward')}<div><strong>You’ve reached this month’s coupon limit</strong>Thank-you coupons are capped at [To be agreed] a month. A new one comes with your first drop-off next month.</div></div>`
+            : `<article class="coupon" aria-label="Thank-you coupon"><div class="coupon__band"></div><div class="coupon__body">
+              <div class="coupon__head"><span class="coupon__kind">${icon('coupon', 'icon--reward')}<span class="t-overline">Thank-you coupon · Ready</span></span></div>
+              <dl class="kv-lines" style="margin-top:var(--space-4)"><div class="kv"><dt>Offer value</dt><dd>To be agreed</dd></div><div class="kv"><dt>Participating venue</dt><dd>${esc(v.name)}</dd></div><div class="kv"><dt>Expiry</dt><dd>To be agreed</dd></div></dl>
+              <p class="howto"><strong>How to use your coupon:</strong> Show the counter code. It is not the shelf QR.</p>
+            </div></article>`}
+          ${bonus}
+          ${cap ? '<p class="t-small c-secondary">The Rescue Bonus still grows as people take your food.</p>' : ''}
+        </div>
+        <div class="actions" style="padding-top:var(--space-8)">
+          ${UI.button({ label: 'Back to Home', icon: 'home', block: true, attrs: 'data-done' })}
+          ${cap ? '' : UI.button({ label: 'View coupon', variant: 'secondary', icon: 'coupon', block: true, attrs: 'data-href="#/coupons"' })}
+        </div>
       </div>`;
+  },
+  mount(el) {
+    Task.done('dropoff');
+    el.addEventListener('click', e => { if (e.target.closest('[data-done]')) Router.finish('#/home'); });
   }
 };
 
-/* ---------- G08 Coupons ---------- */
+/* ---------- G08 Coupons: active · pending (Rescue Bonus) · used · expired · withdrawn ---------- */
 let couponTab = 0;
 Views.coupons = {
-  html() {
+  html({ query }) {
+    if (query.tab === 'used') couponTab = 1;
     const c = Store.state.coupons, a = c.filter(x => x.state === 'active').length, u = c.filter(x => x.state !== 'active').length;
     return `<h1 class="t-h1 screen-title">Coupons</h1>
-      ${UI.segmented([`Active (${a})`, `Used (${u})`], couponTab, { id: 'coupons' })}
-      <div class="coupons-panel stack" id="coupons-panel" role="tabpanel"></div>`;
+      ${UI.segmented([`Active (${a})`, `Used (${u})`], couponTab, { id: 'coupons', block: true })}
+      <div class="coupons-panel stack" id="coupons-panel" role="tabpanel" aria-live="polite"></div>`;
   },
   mount(el) {
     const draw = () => {
@@ -3377,18 +3593,17 @@ Views.coupons = {
       if (couponTab === 0) {
         const act = s.coupons.filter(x => x.state === 'active');
         const card = x => UI.coupon({ id: x.id, state: 'active', venue: venue(x.venue).name });
-        const bonuses = s.bonuses.map(b => UI.rescueBonus({ picked: b.picked, total: b.total, venue: venue(b.venue).name, note: 'App-free pickups may be unlogged, so counts can be incomplete.' })).join('');
-        // newest coupon, then the Rescue Bonus it started, then older coupons (G08 frame order)
+        const bonuses = s.bonuses.map(b => UI.rescueBonus({ picked: b.picked, total: b.total, venue: venue(b.venue).name, from: bonusFrom(b), link: true, note: 'Pickups made without the app may not be counted.' })).join('');
         p.innerHTML = (act.length ? card(act[0]) + bonuses + act.slice(1).map(card).join('')
-          : `<div class="card">${UI.empty({ ic: 'coupon', title: 'No coupons yet', line: 'Leave food at a shelf to get a thank-you coupon.', action: `<a class="btn btn--primary" href="#/map">${icon('sealed-food')}<span>Leave food</span></a>` })}</div>` + bonuses)
+          : `<div class="card">${UI.empty({ ic: 'coupon', title: 'No coupons yet', line: 'Leave food at a shelf to get a thank-you coupon.', action: `<a class="btn btn--primary" href="#/map" data-action="leave">${icon('sealed-food')}<span>Leave food</span></a>` })}</div>` + bonuses)
           + UI.banner('info', 'Coupon value, expiry and monthly cap are still being agreed.');
       } else {
         const used = s.coupons.filter(x => x.state !== 'active');
-        p.innerHTML = used.map(x => UI.coupon({ id: x.id, state: x.state, venue: venue(x.venue).name })).join('');
+        p.innerHTML = used.length ? used.map(x => UI.coupon({ id: x.id, state: x.state, venue: venue(x.venue).name })).join('') : `<div class="card">${UI.empty({ ic: 'coupon', title: 'Nothing here yet', line: 'Used and expired coupons show up here.' })}</div>`;
       }
     };
     draw();
-    el.addEventListener('seg', e => { if (e.detail.id === 'coupons') { couponTab = e.detail.index; draw(); } });
+    el.addEventListener('seg', e => { if (e.detail.id === 'coupons') { couponTab = e.detail.index; draw(); Store.log('coupons_tab', { tab: couponTab ? 'used' : 'active' }); } });
   }
 };
 
@@ -3396,6 +3611,7 @@ Views.coupons = {
 Views.couponCode = {
   html({ params }) {
     const c = Store.state.coupons.find(x => x.id === params.id) || Store.state.coupons[0];
+    if (!c) return `${UI.topBar({ title: 'Your coupon', serif: true })}${UI.empty({ ic: 'coupon', title: 'No coupons yet', line: 'Leave food at a shelf to get a thank-you coupon.' })}`;
     const v = venue(c.venue);
     return `${UI.topBar({ title: 'Your coupon', serif: true })}
       <div class="stack">
@@ -3404,6 +3620,42 @@ Views.couponCode = {
       </div>
       <div class="spacer"></div>
       <div class="actions">${UI.button({ label: 'Done', icon: 'done', block: true, attrs: 'data-action="back"' })}</div>`;
+  }
+};
+
+/* ---------- G10 Rescue Bonus ---------- */
+Views.bonus = {
+  html() {
+    const s = Store.state, b = s.bonuses[0];
+    const rows = b ? s.shelfItems.filter(r => (b.rows || []).includes(r.id)) : s.shelfItems;
+    const itemRow = r => { const st = UI.rowStatus(r); return `<li class="statuslist__row"><span class="tile tile--sm ${st.done ? '' : 'tile--canvas'}">${icon(st.done ? 'done' : 'paused', 'icon--sm ' + (st.done ? 'icon--success' : 'icon--warning'))}</span>
+      <span class="statuslist__name">${esc(r.name)}${r.qty > 1 ? ' ×' + r.qty : ''}<br><small>${st.done ? 'Picked up' : r.picked ? esc(st.text) : r.days ? `On the shelf ${pl(r.days, 'day')}` : 'Still on the shelf'} · ${esc(venue(r.venue).name)}</small></span></li>`; };
+    return `${UI.topBar({ title: b ? 'Rescue Bonus' : 'My items' })}
+      <div class="stack">
+        ${b ? `<article class="bonus bonus--hero"><div class="coupon__band"></div><div class="bonus__inner">
+            <div class="bonus__head"><span class="tile tile--reward">${icon('rescue-bonus', 'icon--reward')}</span><div class="grow"><h2 class="t-title">${esc(venue(b.venue).name)}</h2><p class="t-small c-secondary">From your drop-off today</p></div></div>
+            <p class="t-h3" style="margin-top:var(--space-16)">Value: To be agreed</p>
+            ${UI.bonusBar(b.picked, b.total, bonusFrom(b))}
+            <p class="bonus__status" aria-live="polite">${b.picked >= b.total ? `${b.total} of ${b.total} picked up` : `${b.picked} of ${b.total} picked up · pending`}</p></div></article>
+          <p class="t-body c-secondary">A bigger coupon unlocks as people take your food.</p>` : ''}
+        <section><h2 class="t-section" style="margin-bottom:var(--space-8)">Your items</h2>
+          ${rows.length ? `<ul class="statuslist">${rows.map(itemRow).join('')}</ul>` : `<div class="card">${UI.empty({ ic: 'sealed-food', title: 'Nothing on shelves yet', line: 'Food you leave on a shelf shows up here.', action: `<a class="btn btn--secondary" href="#/map" data-action="leave">${icon('sealed-food')}<span>Leave food</span></a>` })}</div>`}</section>
+        ${UI.note('<strong>Pickups made without the app may not be counted.</strong>')}
+      </div>`;
+  }
+};
+
+/* ---------- receiver pickup draft (Scenario B) ---------- */
+const Pick = {
+  start(shelf) { Store.state.pickup = { shelf: +shelf || 1, sel: {}, checked: false, started: Date.now() }; Store.save(); },
+  get d() { return Store.state.pickup; },
+  commit(picks) {
+    const s = Store.state, d = s.pickup || { shelf: 1 }, v = venue(d.shelf), before = v.count;
+    const names = picks.map(p => { const i = shelfOf(d.shelf).items.find(x => x.id === p.id); return { name: i ? i.name : '', qty: p.qty }; });
+    const n = Ops.pickup(d.shelf, picks);
+    s.lastPickup = { venue: d.shelf, count: n, before, after: venue(d.shelf).count, items: names };
+    s.pickup = null; Store.save();
+    return n;
   }
 };
 
@@ -3994,10 +4246,11 @@ Router.add('/give/tap', Views.giveTap, { title: 'Tap the tag', code: 'G04', cls:
 Router.add('/give/photo', Views.givePhoto, { title: 'Photograph your items', code: 'G05', guard: hasDraft, flow: 'give' });
 Router.add('/give/reading', Views.giveReading, { title: 'Reading your photo', code: 'G06a', guard: hasDraft, flow: 'give' });
 Router.add('/give/items', Views.giveItems, { title: 'Check your items', code: 'G06', guard: hasDraft, flow: 'give', actionbar: true });
-Router.add('/give/done', Views.giveDone, { title: 'Thanks for sharing', code: 'G07', guard: () => !!Store.state.lastDrop, flow: 'give' });
+Router.add('/give/done', Views.giveDone, { title: 'Thanks for sharing', code: 'G07', guard: () => !!Store.state.lastDrop, flow: 'give', cls: 'with-actions' });
 Router.add('/coupons', Views.coupons, { title: 'Coupons', code: 'G08', tabs: '#/coupons' });
 Router.add('/coupons/code/:id', Views.couponCode, { title: 'Your coupon', code: 'G08d', cls: 'with-actions' });
 Router.add('/impact', Views.impact, { title: 'Monthly impact', code: 'G11', tabs: '#/me' });
+Router.add('/bonus', Views.bonus, { title: 'Rescue Bonus', code: 'G10', tabs: '#/coupons' });
 
 /* =====================================================================
    BOOT
@@ -4005,7 +4258,7 @@ Router.add('/impact', Views.impact, { title: 'Monthly impact', code: 'G11', tabs
 Store.load();
 Mod.init();
 window.addEventListener('hashchange', () => Router.render());
-document.addEventListener('keydown', e => { if (e.key === 'Escape') { if ($('#sheet')._close) closeSheet(); else if (Overlay.current) Overlay.hide(); } });
+document.addEventListener('keydown', e => { if (e.key !== 'Escape') return; if ($('#sheet')._close) closeSheet(); else if (Overlay.current) Overlay.hide(); else { const sc = $('#stage .screen'); if (sc && sc._esc) sc._esc(); } });
 if (!location.hash || location.hash === '#' || location.hash === '#/') history.replaceState(null, '', location.pathname + location.search + defaultRoute());
 Router.render();
 </script>
