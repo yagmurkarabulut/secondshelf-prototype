@@ -153,9 +153,9 @@ Fraunces Bold brings warmth; Rubik keeps instructions clear. Two families only (
 | `caption` | Rubik | 12 / 16 | 400 | 0 | Non-essential metadata (smallest size) |
 | `overline` | Rubik | 12 / 16 | 500 | 0.06em, UPPERCASE | Section labels, "STEP 2 OF 3" |
 
-- Load: `https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&family=Rubik:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500&display=swap`
+- Load: `https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&family=Rubik:wght@400;500;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500&display=swap`
 - Stacks: `--font-serif: Fraunces, Georgia, serif` · `--font-sans: Rubik, system-ui, -apple-system, sans-serif` · **v0.7 [NEW]** `--font-sans-alt: "DM Sans", system-ui, sans-serif` (only behind the moderator toggle "Font: Rubik / DM Sans"; default stays Rubik, see open question Q83)
-- **v0.7 weights:** 500 only for section titles, card titles and buttons (plus the existing `label` / `overline` tokens, unchanged). Everything else is 400.
+- **v0.7 weights:** 500 only for section titles, card titles and buttons (plus the existing `label` / `overline` tokens, unchanged). Everything else is 400. **QA round 4 (Q93):** Rubik 700 only for the Sharing rules list headings (`--type-rules-head`).
 - **v0.5** Screen titles (Fraunces `display`/`heading-1`) are **Pantry Green** (`text-brand`, 10.6:1 on Cream), as in the airy mocks. Fraunces headings on Paper cards are `text-brand` too. Section titles ("Your food on shelves", "Points near you") use **`section`**: Rubik 500 18/24 (**v0.7**), Ink. **v0.7** The Home greeting is Ink, not Pantry Green (`M01-home-v3`). Sentence case everywhere (item names too: "Canned soup").
 - Fraunces is never used under 20px, on buttons or in labels.
 - Inputs are 16px (no iOS zoom). 12px is the floor, and never for instructions. Text reflows at 200%; labels are never truncated.

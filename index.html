@@ -14,7 +14,7 @@
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&family=Rubik:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&family=Rubik:wght@400;500;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500&display=swap">
 <style id="vendor-css">
 /* Leaflet 1.9.4 (BSD-2-Clause, https://leafletjs.com) and Leaflet.markercluster 1.5.3 (MIT,
    https://github.com/Leaflet/Leaflet.markercluster), inlined from npm. Library CSS: not token-styled;
@@ -759,6 +759,12 @@ svg.leaflet-image-layer.leaflet-interactive path {
   --surface-notify-info:var(--paper-0);      --icon-notify-info:var(--green-900);
   --surface-notify-warning:var(--ochre-100); --icon-notify-warning:var(--ochre-800);   /* gold: 4.4:1 icon on tint */
   --surface-notify-error:var(--terracotta-100); --icon-notify-error:var(--terracotta-700); /* 4.6:1 icon on tint */
+  /* [NEW] QA round 4 */
+  --icon-destructive:var(--terracotta-700);  /* delete / remove: 5.8:1 on Paper */
+  --icon-not-allowed:var(--terracotta-700);  /* "Not on the shelf" red flags */
+  --icon-best-before:var(--info-600);        /* best-before date icon (G06) */
+  --surface-sealed:var(--green-100); --icon-sealed:var(--success-700);  /* Sealed badge: Leaf pill, Ink text */
+  --type-rules-head:700 14px/20px var(--font-sans);
   --border-notify-success:var(--green-700); --border-notify-warning:var(--ochre-500); --border-notify-error:var(--terracotta-500);
 }
 
@@ -881,6 +887,7 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{box-shadow:none}
 .icon--neutral{color:var(--icon-neutral)} .icon--on-inverse{color:var(--icon-on-inverse)}
 .icon--success{color:var(--icon-success)} .icon--warning{color:var(--icon-warning)}
 .icon--problem{color:var(--icon-problem)} .icon--info{color:var(--icon-info)}
+.icon--not-allowed{color:var(--icon-not-allowed)} .icon--destructive{color:var(--icon-destructive)}
 
 /* =====================================================================
    3. APP SHELL: phone-width column, centred in a frame on desktop
@@ -972,6 +979,7 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{box-shadow:none}
   transition:background-color var(--motion-fast) var(--ease);
 }
 .icon-btn:active,.icon-btn.is-pressed{background:var(--surface-subtle)}
+.icon-btn--destructive .icon{color:var(--icon-destructive)}
 .screen--brand .icon-btn .icon,.on-brand .icon-btn .icon{color:var(--icon-on-primary)}
 .screen--brand .icon-btn:active,.on-brand .icon-btn:active{background:var(--tint-on-dark)}
 .screen--brand .icon-btn:focus-visible,.on-brand .icon-btn:focus-visible{box-shadow:var(--focus-on-dark)}
@@ -1264,16 +1272,16 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{box-shadow:none}
 .item{display:flex;gap:var(--space-12);align-items:flex-start;background:var(--surface-default);border-radius:var(--radius-lg);padding:var(--space-16);min-height:var(--size-row-min);border:var(--border-w) solid transparent;transition:background-color var(--motion-base) var(--ease)}
 .item__thumb{width:var(--size-control);height:var(--size-control);border-radius:var(--radius-sm);background:var(--surface-selected);display:flex;align-items:center;justify-content:center;flex:none}
 .item__main{flex:1;min-width:0;display:flex;flex-direction:column;gap:var(--space-4)}
-.item__name{font:var(--type-body-list)}
-.item__meta{display:flex;flex-wrap:wrap;gap:var(--space-4) var(--space-8);font:var(--type-body-small);color:var(--text-secondary)}
+.item__name{font:var(--type-body-list);font-weight:500}  /* QA round 4: same as Home status names */
+.item__meta{display:flex;flex-wrap:wrap;gap:var(--space-4) var(--space-8);font:var(--type-body-small);color:var(--text-tertiary)}
 .item__meta span{display:inline-flex;align-items:center;gap:var(--space-4)}
-.item__meta .icon{width:var(--size-icon-16);height:var(--size-icon-16);stroke-width:1.5;color:var(--icon-secondary)}
+.item__meta .icon{width:var(--size-icon-16);height:var(--size-icon-16);stroke-width:1.5;color:var(--icon-best-before)}
 .item{position:relative}
 .item__tools{position:absolute;top:var(--space-8);right:var(--space-4);bottom:var(--space-8);display:flex;flex-direction:column;justify-content:space-between}
 .item:not(.item--check) .item__main{padding-right:var(--space-32)}
 .item__qty{display:flex;align-items:center;justify-content:space-between;gap:var(--space-8);margin-top:var(--space-8)}
-.item__sealed{display:inline-flex;align-items:center;gap:var(--space-4);font:var(--type-body-small);color:var(--text-secondary)}
-.item__sealed .icon{width:var(--size-icon-16);height:var(--size-icon-16);stroke-width:1.5;color:var(--icon-secondary)}
+.item__sealed{display:inline-flex;align-items:center;gap:var(--space-4);min-height:var(--size-chip);padding:0 var(--space-12) 0 var(--space-8);border-radius:var(--radius-full);background:var(--surface-sealed);font:var(--type-label);color:var(--text-primary)}
+.item__sealed .icon{width:var(--size-icon-16);height:var(--size-icon-16);stroke-width:1.5;color:var(--icon-sealed)}
 .item.is-edited{background:var(--surface-selected)}
 .item--check{cursor:pointer;align-items:flex-start;gap:var(--space-12)}
 .item--check.is-checked{border-color:var(--border-brand)}
@@ -1694,7 +1702,7 @@ button.settings__row:active{background:var(--surface-canvas)}
 .rules{background:var(--surface-default);border-radius:var(--radius-lg);padding:var(--space-16);display:flex;flex-direction:column;gap:var(--space-8)}
 .rules li{display:flex;gap:var(--space-12);align-items:flex-start;font:var(--type-body)}
 .rules li .icon{width:var(--size-icon-20);height:var(--size-icon-20);margin-top:var(--space-4)}
-.rules__head{font:var(--type-label);color:var(--text-secondary)}
+.rules .rules__head{font:var(--type-rules-head);color:var(--text-primary)}  /* QA round 4: bold, Ink */
 
 /* radio list (H06b until-when, R07 item picker) */
 .radios{background:var(--surface-default);border-radius:var(--radius-lg);padding:0 var(--space-16)}
@@ -2393,7 +2401,7 @@ const UI = {
         <p class="item__meta"><span>${icon('best-before')}Best before ${esc(bb)}</span></p>
         <div class="item__qty">${UI.stepper({ id: 'q-' + id, value: qty, min: 1, max, label: `Quantity of ${name}` })}<span class="item__sealed">${icon('sealed-badge')}Sealed</span></div>
       </div>
-      <div class="item__tools">${UI.iconButton('edit', `Edit ${name}`, `data-edit="${id}"`)}${UI.iconButton('remove', `Remove ${name}`, `data-remove="${id}"`)}</div>
+      <div class="item__tools">${UI.iconButton('edit', `Edit ${name}`, `data-edit="${id}"`)}${UI.iconButton('remove', `Remove ${name}`, `data-remove="${id}"`, 'icon-btn--destructive')}</div>
     </article>`;
   },
   pickItem({ id, name, bb, onShelf = 1, checked = false, qty = 1 }) {
@@ -3753,7 +3761,8 @@ Views.givePhoto = {
   }
 };
 
-/* ---------- G06a Reading your photo: item rows appear one by one (200 ms stagger, 1.5 s total) ---------- */
+/* ---------- G06a Reading your photo: item rows appear one by one (200 ms stagger, unchanged); the screen stays 4.5 s (QA round 4: 3 × 1.5 s) ---------- */
+const READING_MS = 4500;
 Views.giveReading = {
   html() {
     return `${UI.stepHeader({ title: 'Leave food', step: 2 })}
@@ -3771,7 +3780,7 @@ Views.giveReading = {
       if (Store.state.sim.photoFail) { Store.state.sim.photoFail = false; Store.save(); Store.log('photo_read', { result: 'unreadable' }); Router.replace('#/give/photo?error=1'); return; }
       Flow.d.items = AI_ITEMS(); Store.save(); Store.log('photo_read', { result: 'ok' });
       Router.replace('#/give/items');
-    }, 1500);
+    }, READING_MS);
   }
 };
 
@@ -3801,7 +3810,7 @@ Views.giveItems = {
     const draw = () => { $('#items-list', el).innerHTML = d.items.length ? d.items.map(i => UI.foodItem(i)).join('') : `<div class="card">${UI.empty({ ic: 'sealed-food', title: 'No items yet', line: 'Add what you are leaving.' })}</div>`; sync(); };
     const sync = () => {
       const n = Flow.count(d.items), btn = $('#confirm', el), hint = $('.gate__hint', btn.parentElement);
-      $('#items-sub', el).textContent = `${pl(n, 'item')} · cans counted individually. Edit anything the photo got wrong.`;
+      $('#items-sub', el).textContent = `We found ${pl(n, 'item')}. You can edit them below or add more manually.`;
       hint.textContent = !d.items.length ? 'Add at least one item to confirm' : 'Tick “All items are sealed and within their date” to confirm';
       btn.dataset.missing = !d.items.length ? '[data-add]' : '#sealed-panel';
       gate(btn, !!(d.sealed && d.items.length));
@@ -4406,7 +4415,7 @@ Views.rules = {
     const yes = ['Sealed packs, cans and jars', 'Shelf-stable: pasta, rice, cans, crackers', 'Within the best-before date'];
     const no = ['Opened packs', 'Chilled food, even sealed milk or juice', 'Cooked or homemade food', 'Anything past its date'];
     const lists = `<ul class="rules" aria-label="Yes, please"><li class="rules__head">Yes, please</li>${yes.map(t => `<li>${icon('sealed-food', 'icon--success')}<span>${t}</span></li>`).join('')}</ul>
-      <ul class="rules" aria-label="Not on the shelf" style="margin-top:var(--space-12)"><li class="rules__head">Not on the shelf</li>${no.map(t => `<li>${icon('needs-attention', 'icon--problem')}<span>${t}</span></li>`).join('')}</ul>
+      <ul class="rules" aria-label="Not on the shelf" style="margin-top:var(--space-12)"><li class="rules__head">Not on the shelf</li>${no.map(t => `<li>${icon('needs-attention', 'icon--not-allowed')}<span>${t}</span></li>`).join('')}</ul>
       <div style="margin-top:var(--space-12)">${UI.banner('info', '<strong>Every item you leave is welcome, even if the box is a little worn.</strong>', { ic: 'community-care' })}</div>`;
     if (view) return `${UI.topBar({ title: 'Sharing rules', serif: true })}${lists}<div class="spacer"></div><div class="actions">${UI.button({ label: 'Done', icon: 'done', block: true, attrs: 'data-action="back"' })}</div>`;
     return `${UI.stepHeader({ step: 3, layout: 'stack', h1: 'Sharing rules' })}${lists}
