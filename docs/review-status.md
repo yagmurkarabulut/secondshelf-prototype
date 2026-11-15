@@ -269,6 +269,14 @@ Every open question in `docs/open-questions.md`, grouped by topic. The last two 
 - The ··· moderator button is visible to participants too (at 30% opacity) and is 40 px, below the 44 px tap minimum (Q80). It moves off buttons only when dropped; it stays put while content scrolls or screens change, so on another screen it can sit over a button until it is dragged again.
 - Toasts on screens without a sticky action bar (M02, R06) can sit over the last row for 3–5 s.
 
+**Illustration set v2 (15 Nov, branch `illustrations-v2`): not finished or left for the team**
+- Screenshots of the v2 art are in `docs/screenshots/illustrations-v2/` (390 × 844 at 2x, reduced motion off unless the name starts with `RM-`; `W360-` / `W430-` are the width checks). The older screenshots in `docs/screenshots/` (G04-*, G06, G07, R06, H05, H08b, empty states) still show the dashed placeholders and the ring animation.
+- M02 has no empty state of its own: "Nothing on shelves yet" there is only the My items row subtitle. The row opens My items (`#/bonus`), which now shows `empty-shelf`.
+- H05 Starter kit: the checklist has four rows (sign, NFC plate, QR sticker, window sticker); there is no "shelf" row, so `community-shelf` sits on the "Shelf" pill in "All five parts" (every pill now has its icon). Adding a shelf row would be new copy and a new gate condition, so it was not added.
+- Not wired yet (optional or "planned" in `docs/illustrations-plan.md`): `shelf-full.svg` on G03b, `nfc-plate` on the G03 "NFC and QR" row, `shelf-sign` instead of `info` on the G04 / R04 helper note, `date-strip` on O04 and H08.
+- `tap-the-tag` is full width (284px tall at 390px), so G04 / R04 / H05 activate scroll a little on short phones (667px tall). The helper-line wording is open (Q99).
+- `community-shelf` at 16px in the map cluster pill still reads as a cabinet, but it is denser than the old icon; check it on a phone.
+
 **Animations that are rough**
 - R06 count-down steps one number at a time with timeouts (600 ms in total).
 - Step-header progress animates only the current segment on each screen; it doesn’t carry over between screens.
