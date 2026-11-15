@@ -1850,7 +1850,7 @@ a.bonus{display:block;text-decoration:none;color:inherit}
 .pick__foot .btn--link{font:var(--type-label)}
 .pick.is-missing{background:var(--surface-subtle);opacity:.7}
 .footnote{display:flex;gap:var(--space-8);align-items:center;margin-top:var(--space-16)}
-.attn{display:flex;align-items:center;gap:var(--space-12);text-decoration:none;color:inherit;border-left:var(--space-4) solid var(--icon-problem)}
+.attn{display:flex;align-items:center;gap:var(--space-12);text-decoration:none;color:inherit}
 .repitem{display:flex;flex-direction:column;gap:var(--space-12)}
 .repitem__note{background:var(--surface-canvas);border-radius:var(--radius-sm);padding:var(--space-8) var(--space-12);margin-top:var(--space-8);color:var(--text-primary)}
 .repitem__ask{color:var(--text-secondary)}
@@ -5852,7 +5852,7 @@ Views.hostDash = {
         </div>
         <p class="t-small c-secondary">Coupon cap this month: To be agreed</p>
         <section class="card shelfstate${paused ? ' is-paused' : ''}" aria-labelledby="h06-state">
-          <div class="row"><span class="tile tile--sm ${paused ? 'tile--oat' : ''}">${icon(paused ? 'pause' : 'done', 'icon--sm ' + (paused ? 'icon--waiting' : 'icon--success'))}</span>
+          <div class="row"><span class="tile ${paused ? 'tile--oat' : ''}">${icon(paused ? 'pause' : 'done', paused ? 'icon--waiting' : 'icon--success')}</span>
             <div class="grow"><h2 class="t-title" id="h06-state">${paused ? 'Shelf paused' : 'Shelf open'}</h2><p class="t-small c-secondary">${paused ? `${esc(v.paused.reason)} · until ${esc(v.paused.until)}` : 'People can leave and find food'}</p></div>
             ${paused ? UI.button({ label: 'Resume', icon: 'retry', attrs: 'data-resume' }) : UI.button({ label: 'Pause', variant: 'secondary', icon: 'pause', attrs: 'data-href="#/host/pause"' })}</div>
           ${paused ? '<p class="t-small c-secondary shelfstate__note">People see “Paused” on the map. Pickups are still allowed.</p>' : ''}</section>
