@@ -14,7 +14,7 @@
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&family=Rubik:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&family=Rubik:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500&display=swap">
 <style id="vendor-css">
 /* Leaflet 1.9.4 (BSD-2-Clause, https://leafletjs.com) and Leaflet.markercluster 1.5.3 (MIT,
    https://github.com/Leaflet/Leaflet.markercluster), inlined from npm. Library CSS: not token-styled;
@@ -707,6 +707,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
   --ink-900:#2B241E; --stone-700:#5C554C; --stone-600:#6E665C; --stone-500:#8C8477; --stone-300:#CFC6B6;
   --oat-200:#E9DFCC; --cream-100:#F6F1E7; --paper-0:#FFFFFF;
   --sand-200:#E8D7B9; --stone-200:#E6DED0;
+  --ochre-300:#E3B65A; --ink-950:#1F1A16; --sand-400:#D5B377; /* [NEW] M01-home-v3 */
   --map-land:#FFFFFF; --map-road:#D9DED8; --map-road-main:#798C75; --map-water:#85D5EB;
   --success-700:#2C6E46; --warning-600:#A86A12; --slate-600:#51666D; --info-600:#2F6E8C;
   /* text */
@@ -730,9 +731,15 @@ svg.leaflet-image-layer.leaflet-interactive path {
   --border-subtle:var(--stone-300); --border-strong:var(--stone-500); --border-brand:var(--green-900); --border-focus:var(--info-600);
   --action-primary:var(--green-900); --action-primary-hover:var(--green-700); --action-primary-pressed:var(--green-950);
   --action-accent:var(--terracotta-700); --action-accent-pressed:var(--terracotta-800); --action-disabled:var(--oat-200);
+  /* [NEW] M01-home-v3: dark Home action cards, Home-only hero gradient, waiting clock */
+  --action-leave:var(--ink-900); --action-leave-pressed:var(--ink-950); --icon-on-leave:var(--ochre-500);
+  --action-find:var(--green-700); --action-find-pressed:var(--green-900); --icon-on-find:var(--ochre-300);
+  --surface-home-hero:linear-gradient(180deg,var(--sand-400) 0%,var(--sand-200) 55%,var(--cream-100) 100%);
+  --icon-waiting:var(--ochre-800);
   --map-park:var(--green-100); --map-marker:var(--ink-900);
   /* type */
   --font-serif:Fraunces,Georgia,serif; --font-sans:Rubik,system-ui,-apple-system,sans-serif;
+  --font-sans-alt:"DM Sans",system-ui,-apple-system,sans-serif; /* [NEW] moderator font comparison */
   /* spacing (multiples of 4) */
   --space-4:4px; --space-8:8px; --space-12:12px; --space-16:16px; --space-20:20px; --space-24:24px;
   --space-28:28px; --space-32:32px; --space-40:40px; --space-48:48px; --space-56:56px; --space-64:64px;
@@ -757,8 +764,10 @@ svg.leaflet-image-layer.leaflet-interactive path {
   --type-heading-1:700 28px/36px var(--font-serif);
   --type-heading-2:700 24px/32px var(--font-serif);
   --type-heading-3:700 20px/28px var(--font-serif);
-  --type-section:500 20px/28px var(--font-sans);
-  --type-title:500 18px/24px var(--font-sans);
+  --type-section:500 18px/24px var(--font-sans);   /* v0.7: was 20/28 */
+  --type-title:500 17px/22px var(--font-sans);     /* v0.7: was 18/24 */
+  --type-action-title:400 18px/24px var(--font-sans); /* [NEW] Home action cards */
+  --type-body-list:400 15px/22px var(--font-sans);  /* [NEW] list rows, item names, settings rows */
   --type-body-large:400 18px/28px var(--font-sans);
   --type-body:400 16px/24px var(--font-sans);
   --type-button:500 16px/24px var(--font-sans);
@@ -793,6 +802,9 @@ svg.leaflet-image-layer.leaflet-interactive path {
   --scrim:rgba(43,36,30,.4);             /* behind bottom sheets */
   --tint-me:rgba(47,110,140,.2);          /* halo around the "you are here" dot (info-600 at 20%) */
 }
+
+/* moderator font comparison (Q83): swaps the sans family everywhere */
+:root[data-font="dm"]{--font-sans:var(--font-sans-alt)}
 
 /* =====================================================================
    2. BASE
@@ -1058,13 +1070,21 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{box-shadow:none}
 /* ---- Action card (Home) ---- */
 .action-cards{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-16)}
 .action-card{
-  display:flex;flex-direction:column;gap:var(--space-12);text-align:left;
-  background:var(--surface-default);border-radius:var(--radius-lg);box-shadow:var(--shadow-card);padding:var(--space-16);
-  transition:transform var(--motion-fast) var(--ease);
+  display:flex;flex-direction:column;gap:var(--space-8);text-align:left;min-height:var(--size-tap-min);
+  border-radius:var(--radius-lg);padding:var(--space-24) var(--space-20);
+  transition:transform var(--motion-fast) var(--ease),background-color var(--motion-fast) var(--ease);
 }
-.action-card:active,.action-card.is-pressed{transform:scale(.98);background:var(--surface-canvas)}
-.action-card__title{font:var(--type-section);color:var(--text-primary)}
-.action-card__desc{font:var(--type-body-small);color:var(--text-secondary)}
+.action-card--leave{background:var(--action-leave)}
+.action-card--find{background:var(--action-find)}
+.action-card--leave:active,.action-card--leave.is-pressed{background:var(--action-leave-pressed)}
+.action-card--find:active,.action-card--find.is-pressed{background:var(--action-find-pressed)}
+.action-card:active,.action-card.is-pressed{transform:scale(.98)}
+.action-card > .icon{width:var(--size-icon-tile);height:var(--size-icon-tile);margin-bottom:var(--space-8)}
+.action-card--leave > .icon{color:var(--icon-on-leave)}
+.action-card--find > .icon{color:var(--icon-on-find)}
+.action-card__title{font:var(--type-action-title);color:var(--text-on-inverse)}
+.action-card__desc{font:var(--type-body-small);color:var(--text-on-inverse-secondary)}
+.action-card:focus-visible{box-shadow:var(--shadow-focus)}
 
 /* ---- Feature card ---- */
 .feature{background:var(--surface-accent-subtle);border-radius:var(--radius-lg);padding:var(--space-16);display:flex;gap:var(--space-12);align-items:flex-start}
@@ -1201,7 +1221,7 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{box-shadow:none}
 .item{display:flex;gap:var(--space-12);align-items:flex-start;background:var(--surface-default);border-radius:var(--radius-lg);padding:var(--space-16);min-height:var(--size-row-min);border:var(--border-w) solid transparent;transition:background-color var(--motion-base) var(--ease)}
 .item__thumb{width:var(--size-control);height:var(--size-control);border-radius:var(--radius-sm);background:var(--surface-selected);display:flex;align-items:center;justify-content:center;flex:none}
 .item__main{flex:1;min-width:0;display:flex;flex-direction:column;gap:var(--space-4)}
-.item__name{font:var(--type-title)}
+.item__name{font:var(--type-body-list)}
 .item__meta{display:flex;flex-wrap:wrap;gap:var(--space-4) var(--space-8);font:var(--type-body-small);color:var(--text-secondary)}
 .item__meta span{display:inline-flex;align-items:center;gap:var(--space-4)}
 .item__meta .icon{width:var(--size-icon-16);height:var(--size-icon-16);stroke-width:1.5;color:var(--icon-secondary)}
@@ -1246,9 +1266,11 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{box-shadow:none}
 .statuslist__head{display:flex;align-items:center;gap:var(--space-8);min-height:var(--size-tap-min)}
 .statuslist__head h2{flex:1}
 .statuslist__row{display:flex;align-items:center;gap:var(--space-12);min-height:var(--size-status-row)}
-.statuslist__name{flex:1;min-width:0;font:var(--type-body)}
-.statuslist__name small{font:var(--type-body-small);color:var(--text-secondary)}
-.statuslist__venue{font:var(--type-body-small);color:var(--text-secondary);white-space:nowrap}
+.statuslist__name{flex:1;min-width:0;font:var(--type-body-list)}
+.statuslist__name small{font:var(--type-body-small);color:var(--text-secondary);white-space:nowrap}
+.statuslist__venue{font:var(--type-body-small);color:var(--text-secondary);white-space:nowrap;text-align:right}
+.tile--oat{background:var(--surface-subtle)}
+.icon--waiting{color:var(--icon-waiting)}
 
 /* ---- Availability chip ---- */
 .avail{display:inline-flex;align-items:center;gap:var(--space-4);min-height:var(--size-chip);padding:0 var(--space-12);border-radius:var(--radius-full);font:var(--type-label);white-space:nowrap;background:var(--surface-track);color:var(--text-primary)}
@@ -1278,7 +1300,7 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{box-shadow:none}
 .settings__row + .settings__row{border-top:1px solid var(--border-subtle)}
 button.settings__row:active{background:var(--surface-canvas)}
 .settings__text{flex:1;min-width:0}
-.settings__title{font:var(--type-title)}
+.settings__title{font:var(--type-body-list)}
 .settings__sub{font:var(--type-body-small);color:var(--text-secondary)}
 
 /* ---- Toggle ---- */
@@ -1417,8 +1439,11 @@ button.settings__row:active{background:var(--surface-canvas)}
 .illus .placeholder{position:absolute;inset:0;font:var(--type-body-small)}
 .closebar{display:flex;justify-content:flex-end;margin:calc(var(--space-12) * -1) calc(var(--space-12) * -1) var(--space-8)}
 
-/* Home */
+/* Home (M01-home-v3) */
 .statuslist .statuslist__head h2{font:var(--type-section)}
+.screen--home{background:var(--surface-home-hero);background-attachment:local}
+.screen--home .greet .t-h1{color:var(--text-primary)}
+.screen--home .statuslist,.screen--home .shelf{box-shadow:none}
 
 /* Tap the tag */
 .tap-title{text-align:center;margin-bottom:var(--space-8)}
@@ -1717,6 +1742,9 @@ a.bonus{display:block;text-decoration:none;color:inherit}
 .pick.is-missing{background:var(--surface-subtle);opacity:.7}
 .pick.is-missing .pick__main{cursor:default}
 .pick .item__taking{padding:0 0 var(--space-8) calc(var(--size-checkbox) + var(--space-12))}
+/* v0.7 type: item names and list rows use body-list (15/22, 400) */
+.pick .t-title,.shelfitem .t-body,.suggest__item,.radiorow{font:var(--type-body-list)}
+.item:not(.item--check) .item__qty{flex-wrap:wrap;margin-right:var(--space-16)}
 .chip[role="radio"][aria-checked="true"]{background:var(--action-primary);color:var(--text-on-primary);border-color:var(--action-primary)}
 .countdown{display:inline-block;min-width:1ch}
 
@@ -2136,10 +2164,10 @@ const UI = {
   },
   actionCard(kind, state = '') {
     const k = kind === 'leave'
-      ? { tile: 'tile--accent', ic: 'sealed-food', icls: 'icon--accent', title: 'Leave food', desc: 'Pass on sealed food you won’t eat', route: '#/map' }
-      : { tile: 'tile--reward', ic: 'search', icls: 'icon--reward', title: 'Find food', desc: 'Find free food at shelves near you', route: '#/map?find=1' };
-    return `<a class="action-card ${state}" href="${k.route}">
-      <span class="tile ${k.tile}">${icon(k.ic, 'icon--tile ' + k.icls)}</span>
+      ? { ic: 'sealed-food', title: 'Leave food', desc: 'Pass on sealed food you won’t eat', route: '#/map' }
+      : { ic: 'search', title: 'Find food', desc: 'Free food at shelves near you', route: '#/map?find=1' };
+    return `<a class="action-card action-card--${kind} ${state}" href="${k.route}">
+      ${icon(k.ic)}
       <span class="action-card__title">${k.title}</span>
       <span class="action-card__desc">${k.desc}</span></a>`;
   },
@@ -2346,7 +2374,7 @@ const UI = {
   statusList(items) {
     const total = items.reduce((n, r) => n + (r.qty || 1), 0), rows = items.slice(0, 4);
     return `<section class="statuslist" aria-labelledby="yf-title"><div class="statuslist__head"><h2 class="t-section" id="yf-title">Your food on shelves</h2><span class="pill">${total} item${total === 1 ? '' : 's'}</span></div>
-      ${rows.map(r => { const done = r.status === 'done'; return `<div class="statuslist__row"><span class="tile tile--sm ${done ? '' : 'tile--canvas'}">${icon(done ? 'done' : 'paused', 'icon--sm ' + (done ? 'icon--success' : 'icon--warning'))}</span>
+      ${rows.map(r => { const done = r.status === 'done'; return `<div class="statuslist__row"><span class="tile tile--sm ${done ? '' : 'tile--oat'}">${icon(done ? 'done' : 'paused', 'icon--sm ' + (done ? 'icon--success' : 'icon--waiting'))}</span>
         <span class="statuslist__name">${esc(r.name)}${r.qty > 1 ? ' ×' + r.qty : ''} <small>· ${done ? 'Picked up' : 'On the shelf'}</small></span><span class="statuslist__venue">${esc(venue(r.venue).name)}</span></div>`; }).join('')}</section>`;
   },
   pointFacts(v) {
@@ -3691,7 +3719,7 @@ Views.bonus = {
   html() {
     const s = Store.state, b = s.bonuses[0];
     const rows = b ? s.shelfItems.filter(r => (b.rows || []).includes(r.id)) : s.shelfItems;
-    const itemRow = r => { const st = UI.rowStatus(r); return `<li class="statuslist__row"><span class="tile tile--sm ${st.done ? '' : 'tile--canvas'}">${icon(st.done ? 'done' : 'paused', 'icon--sm ' + (st.done ? 'icon--success' : 'icon--warning'))}</span>
+    const itemRow = r => { const st = UI.rowStatus(r); return `<li class="statuslist__row"><span class="tile tile--sm ${st.done ? '' : 'tile--oat'}">${icon(st.done ? 'done' : 'paused', 'icon--sm ' + (st.done ? 'icon--success' : 'icon--waiting'))}</span>
       <span class="statuslist__name">${esc(r.name)}${r.qty > 1 ? ' ×' + r.qty : ''}<br><small>${st.done ? 'Picked up' : r.picked ? esc(st.text) : r.days ? `On the shelf ${pl(r.days, 'day')}` : 'Still on the shelf'} · ${esc(venue(r.venue).name)}</small></span></li>`; };
     return `${UI.topBar({ title: b ? 'Rescue Bonus' : 'My items' })}
       <div class="stack">
@@ -3753,10 +3781,10 @@ Object.assign(UI, {
   },
   actionCard(kind, state = '') {
     const k = kind === 'leave'
-      ? { tile: 'tile--accent', ic: 'sealed-food', icls: 'icon--accent', title: 'Leave food', desc: 'Pass on sealed food you won’t eat', route: '#/map' }
-      : { tile: 'tile--reward', ic: 'search', icls: 'icon--reward', title: 'Find food', desc: 'Find free food at shelves near you', route: '#/map?find=1' };
-    return `<a class="action-card ${state}" href="${k.route}" data-action="${kind}">
-      <span class="tile ${k.tile}">${icon(k.ic, 'icon--tile ' + k.icls)}</span>
+      ? { ic: 'sealed-food', title: 'Leave food', desc: 'Pass on sealed food you won’t eat', route: '#/map' }
+      : { ic: 'search', title: 'Find food', desc: 'Free food at shelves near you', route: '#/map?find=1' };
+    return `<a class="action-card action-card--${kind} ${state}" href="${k.route}" data-action="${kind}">
+      ${icon(k.ic)}
       <span class="action-card__title">${k.title}</span>
       <span class="action-card__desc">${k.desc}</span></a>`;
   },
@@ -3769,7 +3797,7 @@ Object.assign(UI, {
   statusList(items) {
     const total = items.reduce((n, r) => n + (r.qty || 1), 0), rows = items.slice(0, 4);
     return `<section class="statuslist" aria-labelledby="yf-title"><div class="statuslist__head"><h2 class="t-section" id="yf-title">Your food on shelves</h2><span class="pill" aria-live="polite">${total} item${total === 1 ? '' : 's'}</span></div>
-      ${rows.map(r => { const st = UI.rowStatus(r); return `<div class="statuslist__row"><span class="tile tile--sm ${st.done ? '' : 'tile--canvas'}">${icon(st.done ? 'done' : 'paused', 'icon--sm ' + (st.done ? 'icon--success' : 'icon--warning'))}</span>
+      ${rows.map(r => { const st = UI.rowStatus(r); return `<div class="statuslist__row"><span class="tile tile--sm ${st.done ? '' : 'tile--oat'}">${icon(st.done ? 'done' : 'paused', 'icon--sm ' + (st.done ? 'icon--success' : 'icon--waiting'))}</span>
         <span class="statuslist__name">${esc(r.name)}${r.qty > 1 ? ' ×' + r.qty : ''} <small>· ${esc(st.text)}</small></span><span class="statuslist__venue">${esc(venue(r.venue).name)}</span></div>`; }).join('')}
       ${items.length > 4 ? `<div class="center">${UI.button({ label: `See all ${items.length}`, variant: 'link', attrs: 'data-href="#/bonus"' })}</div>` : ''}</section>`;
   },
@@ -3978,6 +4006,13 @@ const Jump = {
    MODERATOR MENU (test only): the movable ··· button, or a long press (800 ms) on the wordmark / greeting
    Labels here may say "Simulate"; participants never see them (Q4).
    ===================================================================== */
+/* moderator display preferences: per phone, not part of the demo state (Reset demo keeps them) */
+const Prefs = {
+  get(k, d) { try { return localStorage.getItem('secondshelf-pref-' + k) || d; } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem('secondshelf-pref-' + k, v); } catch (e) { /* private mode */ } },
+  applyFont() { const dm = Prefs.get('font', 'rubik') === 'dm'; if (dm) document.documentElement.dataset.font = 'dm'; else delete document.documentElement.dataset.font; }
+};
+Prefs.applyFont();
 const Mod = {
   scenario(which, go = true) {
     const persona = which === 'B' ? 'jonas' : 'brenda';
@@ -4004,11 +4039,13 @@ const Mod = {
       <div class="mod__sec"><p class="field__label">Task timing (last run)</p>
         <p class="mod__times">A drop-off (target &lt; 90 s): ${last('dropoff')}<br>B pickup: ${last('pickup')}<br>C daily check (target &lt; 2 min): ${last('check')}</p>
         <div class="mod__grid">${UI.button({ label: 'Export log (JSON)', variant: 'secondary', icon: 'share', attrs: 'data-mod-export' })}${UI.button({ label: 'Screen index', variant: 'secondary', icon: 'list', attrs: 'data-mod-screens' })}</div></div>
+      <div class="mod__sec"><p class="field__label">Font (team comparison, Q83)</p>${UI.segmented(['Rubik', 'DM Sans'], Prefs.get('font', 'rubik') === 'dm' ? 1 : 0, { id: 'mod-font', block: true })}</div>
       <div class="mod__sec">${UI.button({ label: 'Reset demo', icon: 'retry', attrs: 'data-mod-reset' })}<p class="t-small c-secondary">Restores the start state and shows Welcome again.</p></div>
     </div>`);
     const sheet = $('#sheet');
     sheet.onclick = e => {
       const t = e.target;
+      const font = t.closest('[data-seg="mod-font"] [data-seg-i]'); if (font) { Prefs.set('font', font.dataset.segI === '1' ? 'dm' : 'rubik'); Prefs.applyFont(); Store.log('font', { font: Prefs.get('font') }); return; }
       const scn = t.closest('[data-mod-scn]'); if (scn) { this.scenario(scn.dataset.modScn); return; }
       if (t.closest('[data-mod-go]')) { const r = $('#mod-jump').value; closeSheet(); Jump.go(r); return; }
       const sim = t.closest('[data-mod-sim]'); if (sim) { closeSheet(); this.sim(sim.dataset.modSim); return; }
@@ -4995,7 +5032,7 @@ Router.add('/welcome', Views.welcome, { title: 'Welcome', code: 'O01', cls: 'wit
 Router.add('/how', Views.how, { title: 'How it works', code: 'O02', cls: 'with-actions', flow: 'onboarding' });
 Router.add('/role', Views.role, { title: 'Choose how you use it', code: 'O03', cls: 'with-actions', flow: 'onboarding' });
 Router.add('/rules', Views.rules, { title: 'Sharing rules', code: 'O04', cls: 'with-actions', flow: 'onboarding' });
-Router.add('/home', Views.home, { title: 'Home', code: 'M01', tabs: '#/home' });
+Router.add('/home', Views.home, { title: 'Home', code: 'M01', tabs: '#/home', cls: 'screen--home' });
 Router.add('/me', Views.me, { title: 'Me', code: 'M02', tabs: '#/me' });
 Router.add('/map', Views.map, { title: 'Map', code: 'G02', tabs: '#/map', cls: 'screen--map' });
 Router.add('/point/:id', Views.point, { title: 'Point', code: 'G03', tabs: '#/map' });
