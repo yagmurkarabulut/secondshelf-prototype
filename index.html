@@ -1256,33 +1256,12 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{box-shadow:none}
 
 /* ---- NFC tap card ---- */
 .nfc{display:flex;flex-direction:column;gap:var(--space-16);color:var(--text-on-primary)}
-.nfc__stage{
-  position:relative;border-radius:var(--radius-lg);background:var(--tint-on-dark);
-  min-height:240px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--space-16);padding:var(--space-24);text-align:center;
-}
-.nfc__art{position:relative;width:128px;height:128px;display:flex;align-items:center;justify-content:center}
-.nfc__core{position:relative;z-index:1;width:72px;height:72px;border-radius:var(--radius-full);background:var(--surface-default);display:flex;align-items:center;justify-content:center;transition:background-color var(--motion-fast) var(--ease)}
-.nfc__core .icon{width:var(--size-icon-32);height:var(--size-icon-32);color:var(--icon-primary)}
-.nfc__ring{position:absolute;inset:28px;border-radius:var(--radius-full);border:2px solid var(--text-on-primary);opacity:0}
-.nfc[data-state="idle"] .nfc__ring{animation:pulse 2.4s var(--ease) infinite}
-.nfc[data-state="idle"] .nfc__ring:nth-child(2){animation-delay:.8s}
-.nfc[data-state="idle"] .nfc__ring:nth-child(3){animation-delay:1.6s}
-.nfc[data-state="idle"] .nfc__phone{animation:approach 2.4s var(--ease) infinite}
-.nfc[data-state="scanning"] .nfc__ring{animation:pulse 1.2s linear infinite}
-.nfc[data-state="scanning"] .nfc__ring:nth-child(2){animation-delay:.4s}
-.nfc[data-state="scanning"] .nfc__ring:nth-child(3){animation-delay:.8s}
-.nfc[data-state="found"] .nfc__core{background:var(--surface-selected)}
-.nfc[data-state="found"] .nfc__core .icon{color:var(--icon-success)}
-.nfc[data-state="notfound"] .nfc__core{background:var(--surface-subtle)}
-.nfc[data-state="notfound"] .nfc__core .icon{color:var(--icon-problem)}
-@keyframes pulse{0%{transform:scale(1);opacity:.7}100%{transform:scale(2.1);opacity:0}}
-@keyframes approach{0%,100%{transform:translateY(-6px)}50%{transform:translateY(4px)}}
+.nfc__stage{position:relative;display:flex;flex-direction:column;align-items:stretch;gap:var(--space-16);text-align:center}
 .nfc__status{font:var(--type-title);color:var(--text-on-primary)}
 .nfc__hint{font:var(--type-body);color:var(--text-on-inverse-secondary)}
 .nfc__actions{display:flex;flex-direction:column;gap:var(--space-12)}
 .nfc__note{display:flex;gap:var(--space-12);align-items:flex-start;font:var(--type-body);color:var(--text-on-primary)}
 .nfc__note .icon{color:var(--icon-on-primary)}
-.nfc__qr{width:160px;height:160px;border-radius:var(--radius-md);border:2px dashed var(--text-on-primary);display:flex;align-items:center;justify-content:center}
 
 .nfc__more{text-align:center}
 .on-brand .btn--link,.screen--brand .btn--link{color:var(--text-on-primary)}
@@ -1546,7 +1525,6 @@ button.settings__row:active{background:var(--surface-canvas)}
 /* Tap the tag */
 .tap-title{text-align:center;margin-bottom:var(--space-8)}
 .tap-sub{text-align:center;font:var(--type-body-large);color:var(--text-on-primary);margin-bottom:var(--space-24)}
-.screen--brand .nfc__stage{min-height:240px}
 #nfc-slot{flex:1;display:flex;flex-direction:column}
 #nfc-slot .nfc{flex:1}
 #nfc-slot .nfc__actions{margin-top:auto;padding-top:var(--space-24)}
@@ -1693,7 +1671,6 @@ button.settings__row:active{background:var(--surface-canvas)}
 /* NFC: tag not found shake, tick draws in */
 .is-shake{animation:shake 300ms var(--ease) both}
 @keyframes shake{0%,100%{transform:none}20%{transform:translateX(calc(var(--space-8) * -1))}40%{transform:translateX(var(--space-8))}60%{transform:translateX(calc(var(--space-4) * -1))}80%{transform:translateX(var(--space-4))}}
-.nfc[data-state="found"] .nfc__core svg use{stroke-dasharray:24;stroke-dashoffset:24;animation:draw 300ms var(--ease) forwards}
 @keyframes draw{to{stroke-dashoffset:0}}
 .tick{width:var(--size-result-icon);height:var(--size-result-icon);border-radius:var(--radius-full);background:var(--surface-selected);display:flex;align-items:center;justify-content:center;margin:0 auto}
 .tick .icon{width:var(--size-icon-32);height:var(--size-icon-32);color:var(--icon-success)}
@@ -1918,7 +1895,6 @@ a.bonus{display:block;text-decoration:none;color:inherit}
    ===================================================================== */
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:1ms!important;animation-iteration-count:1!important;transition-duration:1ms!important;scroll-behavior:auto!important}
-  .nfc__ring{display:none}
 }
 </style>
 </head>
@@ -3059,10 +3035,9 @@ const UI = {
     return `<header class="topbar">${back ? UI.iconButton('back', 'Back', 'data-action="back"') : ''}<h1 class="topbar__title${serif ? ' topbar__title--serif' : ''}">${esc(title)}</h1>${action}</header>`;
   },
   nfc({ state = 'idle', id = 'nfc', idleText = 'Hold your phone to the tag on the shelf', note = '' } = {}) {
-    const core = { idle: 'phone-tap', scanning: 'tap-nfc', found: 'done', notfound: 'needs-attention', qr: 'qr-code' }[state];
     const status = { idle: idleText, scanning: 'Scanning…', found: 'Tag found', notfound: 'Tag not found', qr: 'Scan the QR code' }[state];
-    let art = `<div class="nfc__art" aria-hidden="true"><span class="nfc__ring"></span><span class="nfc__ring"></span><span class="nfc__ring"></span><span class="nfc__core nfc__phone">${icon(core)}</span></div>`;
-    if (state === 'qr') art = `<div class="nfc__qr" aria-hidden="true">${icon('qr-code', 'icon--lg icon--on-primary')}</div><p class="nfc__hint">The sticker is next to the tag.</p>`;
+    const art = UI.art('tap-the-tag', { attrs: `data-state="${state}"` });
+    const hint = state === 'qr' ? '<p class="nfc__hint">The sticker is next to the tag.</p>' : '';
     let actions = '';
     if (state === 'idle') actions = UI.button({ label: 'Tap shelf tag', variant: 'on-brand', icon: 'tap-nfc', block: true, attrs: `data-nfc-tap="${id}"` })
       + UI.button({ label: 'Scan the QR code instead', variant: 'outline-on-brand', icon: 'qr-code', block: true, attrs: `data-nfc-qr="${id}"` })
@@ -3074,7 +3049,7 @@ const UI = {
     if (state === 'qr') actions = UI.button({ label: 'Use sample QR code', variant: 'on-brand', icon: 'qr-code', block: true, attrs: `data-nfc-sampleqr="${id}"` })
       + UI.button({ label: 'Type shelf code', variant: 'outline-on-brand', icon: 'shelf-code', block: true, attrs: 'data-action="shelf-code"' });
     return `<section class="nfc" data-state="${state}" data-nfc="${id}">
-      <div class="nfc__stage">${art}<p class="nfc__status" aria-live="polite">${status}</p></div>${note ? `<p class="nfc__note">${icon('info')}<span>${esc(note)}</span></p>` : ''}
+      <div class="nfc__stage">${art}${hint}<p class="nfc__status" aria-live="polite">${status}</p></div>${note ? `<p class="nfc__note">${icon('info')}<span>${esc(note)}</span></p>` : ''}
       <div class="nfc__actions">${actions}</div></section>`;
   },
   foodItem({ id, name, bb, qty = 1, max = 9, state = '' }) {
@@ -3581,16 +3556,26 @@ document.addEventListener('click', e => {
 
 /* NFC tap card controller (shared by G04, R04, H05) */
 const NFC = {
+  /* Updates the card in place: the tap-the-tag <svg> stays mounted and only its data-state changes,
+     so the idle loop never restarts and the found pop / not-found blink start from the new state's rules. */
   render(section, st, opts = {}) {
     const n = document.createElement('div'); n.innerHTML = UI.nfc({ ...opts, state: st, id: section.dataset.nfc });
-    const fresh = n.firstElementChild; section.replaceWith(fresh);
-    const s = $('.nfc__status', fresh).textContent; if (s) announce(s);
-    return fresh;
+    const fresh = n.firstElementChild, svg = $('.art svg', section);
+    if (!svg) { section.replaceWith(fresh); const s = $('.nfc__status', fresh).textContent; if (s) announce(s); return fresh; }
+    const stage = $('.nfc__stage', section), fStage = $('.nfc__stage', fresh), status = $('.nfc__status', stage);
+    section.dataset.state = st; svg.setAttribute('data-state', st);
+    stage.classList.remove('is-shake');
+    $$('.nfc__hint', stage).forEach(x => x.remove());
+    const hint = $('.nfc__hint', fStage); if (hint) stage.insertBefore(hint, status);
+    status.textContent = $('.nfc__status', fStage).textContent; // aria-live="polite" announces it
+    [...section.children].forEach(c => { if (c !== stage) c.remove(); });
+    [...fresh.children].forEach(c => { if (c !== fStage) section.appendChild(c); });
+    return section;
   },
   async tap(section, { onFound, fail = false, opts = {} } = {}) {
     section = this.render(section, 'scanning', opts);
     await wait(1200);
-    if (fail) { section = this.render(section, 'notfound', opts); buzzFail(); const st = $('.nfc__stage', section); if (st) st.classList.add('is-shake'); opts.onFail && opts.onFail(); return; }
+    if (fail) { section = this.render(section, 'notfound', opts); buzzFail(); const st = $('.nfc__stage', section); if (st) { void st.offsetWidth; st.classList.add('is-shake'); } opts.onFail && opts.onFail(); return; }
     await this.found(section, { onFound, opts });
   },
   async found(section, { onFound, opts = {} } = {}) {
