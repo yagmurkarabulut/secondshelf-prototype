@@ -4513,6 +4513,7 @@ Views.giveItems = {
     return `${UI.stepHeader({ title: 'Leave food', step: 3 })}
       <h2 class="t-h1">Check your items</h2>
       <p class="lead c-secondary" id="items-sub" aria-live="polite" style="margin:var(--space-4) 0 var(--space-16)"></p>
+      <div id="items-shelf" style="margin-bottom:var(--space-16)">${UI.art('shelf-fill', { attrs: 'data-mine="0"', label: '0 of your items on the shelf' })}</div>
       <div class="stack-8" id="items-list"></div>
       <div class="center" style="margin:var(--space-8) 0 var(--space-16)">${UI.button({ label: 'Add item manually', variant: 'link', icon: 'plus', attrs: 'data-add' })}</div>
       <div class="check-panel" id="sealed-panel">${UI.checkbox({ id: 'sealed', label: 'I acknowledge and confirm that all items are sealed and within their date.', checked: !!Flow.d.sealed })}</div>
@@ -4524,6 +4525,9 @@ Views.giveItems = {
     const sync = () => {
       const n = Flow.count(d.items), btn = $('#confirm', el), hint = $('.gate__hint', btn.parentElement);
       $('#items-sub', el).textContent = `We found ${pl(n, 'item')}. You can edit them below or add more manually.`;
+      // shelf-fill: one drawn unit per item (0–6); only the attribute changes, so only new units drop in
+      const shelf = $('#items-shelf svg', el);
+      if (shelf) { shelf.setAttribute('data-mine', String(Math.max(0, Math.min(6, n)))); shelf.setAttribute('aria-label', `${n} of your items on the shelf`); }
       hint.textContent = !d.items.length ? 'Add at least one item to confirm' : 'Tick the box above to confirm';
       btn.dataset.missing = !d.items.length ? '[data-add]' : '#sealed-panel';
       gate(btn, !!(d.sealed && d.items.length));
