@@ -77,40 +77,47 @@ Most sharing-app users only take food, so supply from givers is the bottleneck. 
 
 Codes follow the testing protocol. Exact names, order and states come from the Figma frames (`[FRAME]`). Route = hash route in the app.
 
-| Code | Name | Route | Frame status |
+| Code | Name | Route | Frame / status (16 Nov build) |
 |---|---|---|---|
-| O01 | Welcome | `#/welcome` | [FRAME] |
-| O02 | How it works | `#/how` | [FRAME] |
-| O03 | Choose how you use it | `#/role` | [FRAME] |
-| O04 | Sharing rules | `#/rules` | [FRAME] |
-| M01 | Home | `#/home` | `frames/M01-home-v2.png` (airy, v0.5) · `frames/M01-home.png` |
-| M02 | Me | `#/me` | `frames/M02-me-v2.png` (airy, v0.5) · `frames/M02-me.png` |
-| G01 | Travel prompt (push + in-app) | `#/give/prompt` | [FRAME] |
-| G02 | Map (shared with R01) | `#/map` | `frames/G02-map.png` |
-| G03 | Point card | `#/point/:id` | [FRAME] |
-| G04 / G04b | Tap the tag / Tag found (+ not found, QR, shelf code) | `#/give/tap` | `frames/G04-tap-the-tag.png` (states [FRAME]) |
-| G05 | Take a photo | `#/give/photo` | `frames/G05-photograph-your-items.png` |
-| G06a | Reading your photo | `#/give/reading` | [FRAME] |
-| G06 / G06c | Confirm item list / Edit or add item | `#/give/items` | `frames/G06-check-and-place.png` (G06c [FRAME]) |
-| G07 | Thanks for sharing + split reward | `#/give/done` | `frames/G07-thanks-for-sharing.png` |
-| G08 / G08d | Coupons (wallet) / Show at the counter (QR sheet) | `#/coupons` | `frames/G08-coupons-v2.png`, `frames/G08d-show-at-counter.png` · `frames/G08-coupons.png` |
-| G09 / G09b | Rescue push / Rescue banner in app | overlay | [FRAME] |
-| G10 | Rescue Bonus progress | `#/bonus` | [FRAME] |
-| G11 | Monthly impact | `#/impact` | [FRAME] |
-| R01 | Find food (map opened from the Find food card, search focused) | `#/map?find=1` | uses `frames/G02-map.png` |
-| R02 | Search results (list view of the map) | `#/take/results` | `frames/R01b-find-food-list.png` |
-| R03 | Shelf listing | `#/take/point/:id` | `frames/R03-shelf-listing.png` |
-| R04 | Check and tap | `#/take/tap` | `frames/R04-check-and-tap.png` |
-| R05 | What are you taking | `#/take/items` | `frames/R05-what-did-you-take.png` (title stays "What are you taking") |
-| R06 | Pickup logged | `#/take/done` | `frames/R06-pickup-logged.png` |
-| H01 | Become a host | `#/host` | `frames/H01-understand-the-service.png` |
-| H02 | Venue details | `#/host/venue` | `frames/H02-venue-details.png` |
-| H03 / H03c | Host agreement / Application under review | `#/host/agreement` | `frames/H03-responsibilities.png` (H03c [FRAME]) |
-| H04 | Operator verification | `#/host/verify` | `frames/H04-operator-verification.png` |
-| H05 | Starter kit checklist + activation tap + shelf is live | `#/host/kit` | `frames/H05-starter-kit.png`, `frames/H06-activate-go-live.png`, `frames/H07-shelf-is-live.png` (mock numbering differs, see Q10) |
-| H06 | Host dashboard | `#/host/dashboard` | [FRAME] |
-| H07 / H07b | Redeem coupon / Valid | `#/host/redeem` | [FRAME] |
-| H08 | Daily shelf check | `#/host/check` | [FRAME] |
+| O01 | Welcome | `#/welcome` | `frames/O01-welcome.png` · built from frame |
+| O02 | How it works (Step 1 of 3) | `#/how` | `frames/O02-how-it-works.png` · built from frame |
+| O03 | Choose how you use it (Step 2 of 3) | `#/role` | `frames/O03-choose-how-you-use-it.png` · built from frame (two role cards, Q42) |
+| O04 | Sharing rules (Step 3 of 3; read-only from Me) | `#/rules`, `#/rules?view=1` | `frames/O04-sharing-rules.png` · built from frame |
+| M01 | Home (Brenda; Jonas = empty state) | `#/home` | `frames/M01-home-v2.png` (airy, v0.5) · built |
+| M02 | Me | `#/me` | `frames/M02-me-v2.png` · built from frame |
+| G01 | Travel prompt (overlay banner on Home) | overlay (`#/home?sim=travel` via moderator) | `frames/G01-travel-prompt.png` · built from frame |
+| G02 / R01 | Map, Leave / Find mode, **sheet v0.6** (peek · half · full, Steps A–C) | `#/map`, `#/map?find=1` | `frames/G02-map.png`, `G02a`–`G02d` · built |
+| G03 | Location details in the map sheet / point page | `#/map?shelf=:id`, `#/point/:id` | `frames/G03-location-half.png` · built (v0.6) |
+| G03b | Point full / paused | `#/point/:id` | `frames/G03b-point-full.png` · built from frame |
+| G04 / G04b / G04c | Tap the tag / found / not found (+ QR, shelf code) | `#/give/tap` | `frames/G04-tap-the-tag.png` · built |
+| G05 | Photograph your items (+ unreadable) | `#/give/photo` | `frames/G05-photograph-your-items.png` · built |
+| G06a | Reading your photo | `#/give/reading` | no frame · built without frame |
+| G06 / G06c | Check items / edit or add sheet | `#/give/items` | `frames/G06-check-and-place.png` · built |
+| G07 | Thanks for sharing | `#/give/done` | `frames/G07-thanks-for-sharing.png` · built |
+| G07b | Monthly coupon limit reached | `#/give/done?cap=1` | `frames/G07b-monthly-coupon-limit-reached.png` · built from frame |
+| G08 / G08d | Coupons (active · used · expired · withdrawn) / Show at the counter | `#/coupons`, `#/coupons/code/:id` | `frames/G08-coupons-v2.png`, `frames/G08d-show-at-counter.png` · built |
+| G09 | Rescue push (lock screen) | — | not built (P3) |
+| G09b | Rescue banner in app | overlay (`#/home?sim=rescue`) | `frames/G09b-rescue-banner-in-app.png` · built from frame |
+| G10 | Rescue Bonus | `#/bonus` | `frames/G10-rescue-bonus.png` · built from frame |
+| G11 | Monthly impact | `#/impact` | `frames/G11-monthly-impact.png` · built from frame |
+| R01b | No results (map sheet state) | `#/map?find=1&food=…` | `frames/R01b-no-results.png` · built from frame |
+| R02 | Search results (list view of the map) | `#/map?find=1&view=list` | `frames/R01b-find-food-list.png` · built |
+| R03 | Shelf listing / location expanded | `#/take/point/:id`, `#/map?find=1&shelf=:id&expand=1` | `frames/R03-shelf-listing.png`, `frames/R03-location-expanded.png` · built from frame |
+| R04 / R04c | Check and tap / Tag not found | `#/take/tap` | `frames/R04-check-and-tap.png`, `frames/R04c-tag-not-found.png` · built from frame |
+| R05 | What are you taking | `#/take/items` | `frames/R05-what-did-you-take.png` (title stays "What are you taking") · built from frame |
+| R06 | Pickup logged | `#/take/done` | `frames/R06-pickup-logged.png` · built from frame |
+| R07 / R07b | Report a problem / Report sent (sheet) | sheet on R03–R06 (`#/take/point/:id?report=1`) | `frames/R07-report-a-problem.png`, `frames/R07b-report-sent.png` · built from frame |
+| H01 | Become a host | `#/host` | `frames/H01-understand-the-service.png` · built from frame |
+| H02 | Venue details | `#/host/venue` | `frames/H02-venue-details.png` · built from frame |
+| H03 / H03c | Host agreement / Application under review | `#/host/agreement`, `#/host/review` | `frames/H03-responsibilities.png`, `frames/H03c-application-under-review.png` · built from frame |
+| H04 | Operator verification | `#/host/verify` | `frames/H04-operator-verification.png` · built from frame |
+| H05 / H05b | Starter kit → activation tap → shelf is live / activation error | `#/host/kit`, `#/host/activate`, `#/host/live` | `frames/H05-starter-kit.png`, `frames/H06-activate-go-live.png`, `frames/H07-shelf-is-live.png`, `frames/H05b-activation-error.png` (mock numbering differs, see Q10) · built from frame |
+| H06 / H06b | Host dashboard (titled Home) / Pause the shelf | `#/host/dashboard`, `#/host/pause` | `frames/H06-host-dashboard.png`, `frames/H06b-pause-the-shelf.png` · built from frame |
+| H07 / H07b / H07c | Redeem / Valid / Used, expired, not found | `#/host/redeem`, `#/host/redeem/result?code=…` | `frames/H07-redeem-coupon.png`, `frames/H07b-coupon-valid.png`, `frames/H07c-coupon-already-used-or-expired.png` · built from frame |
+| H08 / H08b / H08c | Daily check / Done / Missed (dashboard banner) | `#/host/check`, `#/host/check/done` | `frames/H08-daily-shelf-check.png`, `frames/H08b-check-done.png`, `frames/H08c-missed-check.png` · built from frame |
+| X01 | "I took something" no-app web page (not in this spec; Q55) | `#/x/:shelf` | `frames/X01-i-took-something-web.png` · built, moderator menu only |
+| — | Screen index (team, hidden) | `#/screens` | — |
+| O05, O06, H09, H10 | Location / notification permission, Shelf tab, Settings | — | not built (P3, not in this spec) |
 
 ---
 
