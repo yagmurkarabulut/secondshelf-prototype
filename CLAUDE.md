@@ -66,7 +66,7 @@ Most sharing-app users only take food, so supply from givers is the bottleneck. 
 | F-18 | Host dashboard with analytics: drop-offs, pickups, coupons redeemed, activity log | Host | H06 |
 | F-19 | Redeem a coupon at the counter (valid / used / expired) | Host | H07, H07b |
 | F-20 | **Daily shelf check** (about 2 min): flagged items, keep / remove, confirm; reminders; any staff member can do it | Host | H08 |
-| F-21 | Pause the point (shelf full, café closed) | Host | H06/H08 |
+| F-21 | Pause the point (shelf full, café closed). **QA round 12:** while paused, nobody can pick up or leave food ("I’m there" and Leave food are off) | Host | H06/H08 |
 | F-22 | Me: profile row, monthly impact card, My items, Food alerts, Sharing rules, Help and FAQ, Switch to host mode, Log out (placeholder) | All | M02 |
 | F-24 | **Food alerts** (from the M02 frame): a receiver saves a food + distance ("Pasta within 1 km") and gets an in-app banner when it appears on a nearby shelf (simulated from the moderator menu) | Receiver | M02, banner |
 | F-23 | **Moderator tools** (test only): reset demo, jump to screen, choose scenario | Facilitator | hidden |
@@ -215,6 +215,7 @@ Open with the movable ··· button (team decision, 16 Nov: 40 × 40, 30% opacit
 - Use the same words for the same action everywhere: **Leave food** (giver entry) / **Find food** (receiver entry) / **Tap shelf tag** / **Confirm** / **Report**. Inside the pickup flow the verb is "take" ("What are you taking", "Take what you can use").
 - Sentence case for item names and labels ("Canned soup", not "Canned Soup").
 - Fixed strings: "Thanks for sharing." · "Pickup logged." · "Full shelf" (availability chip, v0.5) · "Report a problem" (R05 general link; was "Not here? Report missing stock", QA round 8) · "Care for the shelf, together." · "Numbers identify shelves, not item counts." ("Every item you leave is welcome…" removed from the rules, QA round 8, Q101)
+- H06b (QA round 12): title "Taking a break?", body "Once you pause the shelf, the map shows it as paused. People can’t pick up or leave food until you resume it."
 - R05 description (QA round 8): "Review and tick every item you are taking. Make sure not to tick more items than you are about to collect."
 - Unknown values show **To be agreed** (coupon value, expiry, monthly cap). Don't invent numbers.
 - Sample content (from the frames): user **Brenda Kowalska**; venues **Café Daisy** (200 m, closing 20:00, 4 spots), **Café Lumi** (1.2 km, closing 18:00, Full shelf), **Pizza Nonna** (2.1 km, 3 spots) [TBD per city]; items fusilli pasta 500 g (BB 2027-03), tomato soup ×2 (BB 2027-08), crackers (BB 2027-01), canned tuna, all-purpose flour; impact "11 items passed on · 8 saved by neighbours".

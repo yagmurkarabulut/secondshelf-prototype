@@ -769,7 +769,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
   --icon-not-allowed:var(--terracotta-700);  /* "Not on the shelf" red flags */
   --icon-best-before:var(--info-600);        /* best-before date icon (G06) */
   --surface-sealed:var(--green-100); --icon-sealed:var(--success-700);  /* Sealed badge: Leaf pill, Ink text */
-  --type-rules-head:700 18px/24px var(--font-sans);   /* QA round 8: body-large size (18), was 14 */
+  --type-rules-head:700 18px/24px var(--font-sans);
+  --type-stat:700 28px/36px var(--font-serif);   /* [NEW] QA round 12 (Q105): H06 stat numbers, 4px over heading-2 */   /* QA round 8: body-large size (18), was 14 */
   /* [NEW] QA round 9 (Q102): G11 weekly bars, one green ramp, lighter = fewer items (no gold: Ochre stays for rewards) */
   --chart-1:var(--green-100); --chart-2:var(--green-300); --chart-3:var(--green-700); --chart-4:var(--green-900); --chart-edge:var(--green-700);
   --border-notify-success:var(--green-700); --border-notify-warning:var(--ochre-500); --border-notify-error:var(--terracotta-500);
@@ -1523,7 +1524,7 @@ button.settings__row:active{background:var(--surface-canvas)}
 
 /* Home (M01-home-v3) */
 .statuslist .statuslist__head h2{font:var(--type-section)}
-.screen--home .greet .t-h1{color:var(--text-primary)}
+.screen--home .greet .t-h1,.greet--ink .t-h1{color:var(--text-primary)}
 .screen--home .statuslist,.screen--home .shelf{box-shadow:none}
 
 /* Tap the tag */
@@ -1890,10 +1891,10 @@ a.bonus{display:block;text-decoration:none;color:inherit}
 .tl--now .tl__dot::after{content:"";width:var(--space-12);height:var(--space-12);border-radius:var(--radius-full);background:var(--action-primary)}
 .tl--next .t-title{color:var(--text-secondary)}
 .card .timeline{margin-top:0}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-8)}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-8)}   /* QA round 12: 2 × 2 */
 .stat{background:var(--surface-default);border-radius:var(--radius-lg);padding:var(--space-12)}
-.stat__num{font:var(--type-heading-2);color:var(--text-brand)}
-.stat__cap{font:var(--type-caption);color:var(--text-secondary);margin-top:var(--space-4)}
+.stat__num{font:var(--type-stat);letter-spacing:var(--tracking-heading);color:var(--text-brand)}   /* QA round 12: 28/36 (heading-2 + 4) */
+.stat__cap{font:var(--type-body-small);color:var(--text-secondary);margin-top:var(--space-4)}
 .scanbox{position:relative;height:var(--size-hero);border-radius:var(--radius-lg);background:var(--surface-subtle);display:flex;align-items:flex-end;justify-content:center;padding:var(--space-16)}
 .scanbox__frame{position:absolute;left:50%;top:var(--space-24);width:var(--size-illus);height:var(--size-illus);transform:translateX(-50%);border:2px dashed var(--border-strong);border-radius:var(--radius-md)}
 .scanbox .placeholder{position:relative;font:var(--type-body-small);text-align:center}
@@ -4094,7 +4095,7 @@ Views.map = {
         <div class="details__title"><h2 class="t-h2" id="det-title">${esc(v.name)}</h2><span class="t-label c-brand">${esc(v.dist)}</span></div>
         <p class="t-small c-secondary">${esc(v.addr || v.type)}${v.addr ? ' · ' + esc(v.type) : ''}</p>
         ${Loc.chips(v)}
-        ${k === 'paused' ? UI.note(`<strong>Paused · ${esc(v.paused.reason)}</strong>Reopens: ${esc(v.paused.until)}. Pickups are still allowed.`, 'pause') : ''}
+        ${k === 'paused' ? UI.note(`<strong>Paused · ${esc(v.paused.reason)}</strong>Reopens: ${esc(v.paused.until)}. No pickups or drop-offs until then.`, 'pause') : ''}
         <button type="button" class="details__row" data-expand aria-expanded="${MapUI.expand}" aria-controls="det-items">${icon('community-shelf')}<span class="grow">On this shelf</span><span class="pill" aria-live="polite">${v.count}/${v.capacity} items</span>${icon(MapUI.expand ? 'chevron-up' : 'chevron-down')}</button>
         <div id="det-items" ${MapUI.expand ? '' : 'hidden'}>${Loc.items(v)}</div>
         <button type="button" class="details__row" data-rules>${icon('needs-attention')}<span class="grow">View drop-off conditions and rules</span>${icon('chevron-right')}</button>
@@ -4427,7 +4428,7 @@ Views.point = {
   html({ params }) {
     const v = venue(params.id), k = availKind(v), blocked = !canLeave(v), near = blocked ? Loc.nearestOpen(v) : null;
     const why = { full: ['This shelf is full right now', 'Space opens when someone picks up food. Try another shelf for today.'],
-      paused: ['This shelf is paused', `${v.paused ? v.paused.reason : ''}. Reopens: ${v.paused ? v.paused.until : 'To be agreed'}. Pickups are still allowed.`],
+      paused: ['This shelf is paused', `${v.paused ? v.paused.reason : ''}. Reopens: ${v.paused ? v.paused.until : 'To be agreed'}. No pickups or drop-offs until then.`],
       closed: ['Closed now', 'Try again during opening hours.'] }[k];
     const hint = { full: 'Leave food is off while the shelf is full', paused: 'Leave food is off while the shelf is paused', closed: 'Leave food is off while the café is closed' }[k];
     return `<header class="topbar topbar--center">${UI.iconButton('back', 'Back', 'data-action="back"')}<p class="topbar__title">${esc(v.name)}</p><span class="icon-btn" aria-hidden="true"></span></header>
@@ -5248,10 +5249,28 @@ Views.rules = {
 Views.me = {
   html() {
     const s = Store.state, onShelf = s.shelfItems.reduce((n, r) => n + (r.qty - r.picked), 0);
+    if (s.mode === 'host') {   // QA round 12: the host's own Me page
+      const h = s.host, v = venue(h.venue), n = unreadNotes().length;
+      return `<h1 class="t-h1 screen-title">Me</h1>
+      <div class="stack">
+        ${UI.profileRow(hostUser()).replace(/<span class="avatar[^"]*"/, '<span class="avatar"').replace(/<img[^>]*>/, '')}
+        <div class="settings">
+          ${UI.settingsRow({ ic: 'notification', title: 'Notifications', sub: n ? `${n} new` : 'Drop-offs, pickups, reports', href: '#/host/notifications' })}
+          ${UI.settingsRow({ ic: 'staff', title: 'Staff', sub: h.staff.join(', ') }).replace('class="settings__row"', 'class="settings__row" data-host-staff')}
+          ${UI.settingsRow({ ic: 'reminder', title: 'Daily check reminder', sub: `Every day at ${h.reminder}`, href: '#/host/check' })}
+          ${UI.settingsRow({ ic: 'pause', title: v.status === 'paused' ? 'Shelf paused' : 'Pause the shelf', sub: v.status === 'paused' ? `${v.paused.reason} · until ${v.paused.until}` : 'When the shelf is full or the café is closed', href: '#/host/pause' })}
+        </div>
+        <div class="settings">
+          ${UI.settingsRow({ ic: 'info', title: 'Sharing rules', sub: 'Sealed, shelf-stable, within date', href: '#/rules?view=1' })}
+          ${UI.settingsRow({ ic: 'help', title: 'Host FAQ', sub: 'Coupons, liability, full shelf' }).replace('class="settings__row"', 'class="settings__row" data-host-faq')}
+        </div>
+        ${UI.hostCard()}
+        <div class="center">${UI.button({ label: 'Log out', variant: 'link', attrs: 'data-action="logout"' })}</div>
+      </div>`;
+    }
     return `<h1 class="t-h1 screen-title">Me</h1>
       <div class="stack">
         ${UI.profileRow(s.user).replace('class="card profile"', 'class="card profile" data-action="profile"')}
-        ${s.mode === 'host' ? `<div class="settings">${UI.settingsRow({ ic: 'notification', title: 'Notifications', sub: (n => n ? `${n} new` : 'Drop-offs, pickups, reports')(unreadNotes().length), href: '#/host/notifications' })}</div>` : ''}
         ${s.persona === 'brenda' ? UI.impact({ passed: s.impact.passed, saved: s.impact.saved, tap: true }) : ''}
         <div class="settings">
           ${UI.settingsRow({ ic: 'sealed-food', title: 'My items', sub: onShelf ? `${onShelf} on shelves` : 'Nothing on shelves yet', href: '#/bonus' })}
@@ -5264,6 +5283,10 @@ Views.me = {
       </div>`;
   },
   mount(el) {
+    el.addEventListener('click', e => {
+      if (e.target.closest('[data-host-staff]')) addStaff(() => Router.render('none'));
+      if (e.target.closest('[data-host-faq]')) hostFaq();
+    });
     el.addEventListener('toggle', e => {
       if (!e.target.closest('[data-alert-toggle]')) return;
       const s = Store.state; s.alert = e.detail.on ? { food: 'Pasta', km: 1 } : null; Store.save();
@@ -5416,7 +5439,7 @@ Views.takePoint = {
         <h1 class="t-h1">${esc(v.name)}</h1>
         <p class="t-small c-secondary">${esc(v.addr || v.type)}${v.hours ? ' · ' + esc(v.hours) : ''}</p>
         <div class="chiprow" style="margin-top:var(--space-12)">${k === 'closed' ? UI.avail('closed', 'Closed') : k === 'paused' ? UI.avail('closed', 'Paused') : `<span class="pill pill--leaf">${icon('paused')}Open now</span>`}${availChip(v).includes('Full shelf') ? availChip(v) : `<span class="pill">${pl(v.spots, 'space')}</span>`}<span class="pill">${icon('tap-nfc')}NFC tag and QR code</span></div>
-        ${k === 'paused' ? `<div style="margin-top:var(--space-12)">${UI.note(`<strong>Paused · ${esc(v.paused.reason)}</strong>Pickups are still allowed. Reopens: ${esc(v.paused.until)}.`, 'pause')}</div>` : ''}
+        ${k === 'paused' ? `<div style="margin-top:var(--space-12)">${UI.note(`<strong>Paused · ${esc(v.paused.reason)}</strong>No pickups or drop-offs until it reopens: ${esc(v.paused.until)}.`, 'pause')}</div>` : ''}
         <div class="sechead" style="margin-top:var(--space-16)"><h2 class="t-section">On this shelf now</h2><span class="t-small c-secondary">Stock may change</span></div>
         <div id="r03-items">${Loc.items(v)}</div>
         <div class="stack-8" style="margin-top:var(--space-16)">
@@ -5424,7 +5447,7 @@ Views.takePoint = {
         </div>
         <div class="details__actions" style="margin-top:var(--space-24)">
           ${UI.button({ label: 'Directions', variant: 'secondary', icon: 'location', attrs: 'data-directions' })}
-          ${UI.button({ label: 'I’m there', icon: 'tap-nfc', attrs: `data-href="#/take/tap?shelf=${v.id}"` })}
+          ${UI.button({ label: 'I’m there', icon: 'tap-nfc', attrs: k === 'paused' ? 'aria-disabled="true" data-blocked="Pickups are off while the shelf is paused"' : `data-href="#/take/tap?shelf=${v.id}"` })}
         </div>
       </div>`;
   },
@@ -5602,6 +5625,8 @@ Views.takeDone = {
    H07 redeem, H08 daily check, X01 no-app page
    ===================================================================== */
 const HOST_STEPS = 6;
+/* QA round 12: in host mode the person is the host (Anna, owner of the demo venue), not Brenda */
+const hostUser = () => { const h = Store.state.host, n = h.owner || 'Host'; return { name: n, first: n, initials: n.slice(0, 1).toUpperCase(), email: `Owner · ${venue(h.venue).name}` }; };
 const hostHead = (title, step, first = false) => UI.stepHeader({ title, step, of: HOST_STEPS, first });
 /* shared: add a steward (H02, H03) */
 function addStaff(onAdd) {
@@ -5614,7 +5639,7 @@ function addStaff(onAdd) {
 }
 const staffChips = () => `<div class="chips" style="flex-wrap:wrap">${Store.state.host.staff.map(n => `<span class="pill pill--leaf">${icon('staff')}${esc(n)}${n === Store.state.host.owner ? ' (owner)' : ''}</span>`).join('')}<button type="button" class="chip" data-addstaff>${icon('plus')}<span>Add staff</span></button></div>`;
 const hostFaq = () => openSheet('Host FAQ', `<dl class="faq"><dt>Who funds the coupons?</dt><dd>Still open: three funding options are being compared (Q1). [To be agreed]</dd>
-  <dt>Who is liable for the food?</dt><dd>[To be agreed with the operator and local rules]</dd><dt>What if the shelf is full?</dt><dd>Pause it from the dashboard. Pickups are still allowed.</dd></dl>
+  <dt>Who is liable for the food?</dt><dd>[To be agreed with the operator and local rules]</dd><dt>What if the shelf is full?</dt><dd>Pause it from the dashboard. While it is paused, nobody can pick up or leave food.</dd></dl>
   <div class="actions">${UI.button({ label: 'Done', block: true, attrs: 'data-sheet-close' })}</div>`);
 
 /* ---------- H01 Become a host ---------- */
@@ -5839,14 +5864,14 @@ const logSheet = r => {
 Views.hostDash = {
   html() {
     const s = Store.state, h = s.host, v = venue(h.venue), paused = v.status === 'paused';
-    return `<p class="t-overline c-secondary">Home</p>
-      <header class="greet" style="margin-bottom:var(--space-4)"><h1 class="t-h1" data-logo>${esc(v.name)}</h1></header>
-      <p class="t-small c-secondary" style="margin-bottom:var(--space-16)">Host · ${esc(h.owner)} (owner)</p>
+    const hu = hostUser();
+    return `<header class="greet greet--ink"><h1 class="t-h1" data-logo>${esc(v.name)}</h1><a href="#/me" class="avatar" aria-label="Me, ${esc(hu.name)}">${esc(hu.initials)}</a></header>
       <div class="stack">
         ${h.missed ? `<section class="banner banner--problem" role="alert">${icon('needs-attention')}<div class="banner__text"><strong>Yesterday’s shelf check was missed</strong><br><span class="t-small">Do it now; it takes about 2 minutes. Old items may still be on the shelf.</span></div><a class="btn btn--link banner__action" href="#/host/check" data-startcheck>Start</a></section>` : ''}
         ${UI.reportCard(openReports())}
         <div class="stats">
-          <div class="stat"><p class="stat__num" aria-live="polite">${v.count}</p><p class="stat__cap">items on shelf · ${pl(v.spots, 'spot')} left</p></div>
+          <div class="stat"><p class="stat__num" aria-live="polite">${v.count}</p><p class="stat__cap">items on shelf</p></div>
+          <div class="stat"><p class="stat__num">${v.spots}</p><p class="stat__cap">${v.spots === 1 ? 'spot' : 'spots'} available</p></div>
           <div class="stat"><p class="stat__num">${h.stats.pickups}</p><p class="stat__cap">pickups this week</p></div>
           <div class="stat"><p class="stat__num">${h.stats.redeemed}</p><p class="stat__cap">coupons redeemed</p></div>
         </div>
@@ -5854,7 +5879,7 @@ Views.hostDash = {
         <section class="card shelfstate${paused ? ' is-paused' : ''}" aria-labelledby="h06-state">
           <div class="row"><span class="tile ${paused ? 'tile--oat' : ''}">${icon(paused ? 'pause' : 'done', paused ? 'icon--waiting' : 'icon--success')}</span>
             <div class="grow"><h2 class="t-title" id="h06-state">${paused ? 'Shelf paused' : 'Shelf open'}</h2><p class="t-small c-secondary">${paused ? `${esc(v.paused.reason)} · until ${esc(v.paused.until)}` : 'People can leave and find food'}</p></div></div>
-          ${paused ? '<p class="t-small c-secondary shelfstate__note">People see “Paused” on the map. Pickups are still allowed.</p>' : ''}
+          ${paused ? '<p class="t-small c-secondary shelfstate__note">The map shows it as paused. No pickups or drop-offs until you resume.</p>' : ''}
           <div class="row" style="justify-content:flex-end;margin-top:var(--space-8)">${paused ? UI.button({ label: 'Resume', icon: 'retry', attrs: 'data-resume' }) : UI.button({ label: 'Pause', variant: 'secondary', icon: 'pause', attrs: 'data-href="#/host/pause"' })}</div></section>
         ${h.checkDue ? `<section class="card card--shadow duecard"><div class="row"><span class="tile tile--accent">${icon('shelf-check', 'icon--accent')}</span><div class="grow"><h2 class="t-title">Shelf check due at ${esc(h.reminder)}</h2><p class="t-small c-secondary">About 2 minutes</p></div></div>
             <div class="row" style="justify-content:flex-end;margin-top:var(--space-8)">${UI.button({ label: 'Start', attrs: 'data-startcheck' })}</div></section>`
@@ -5940,9 +5965,9 @@ Views.hostNotes = {
 /* ---------- H06b Pause the shelf ---------- */
 Views.hostPause = {
   html() {
-    return `${UI.topBar({ title: 'Pause the shelf' })}
-      <h2 class="t-h1">Pause the shelf</h2>
-      <p class="t-body c-secondary" style="margin:var(--space-8) 0 var(--space-16)">People see “Paused” on the map. Pickups are still allowed.</p>
+    return `${UI.topBar({ title: 'Pause the shelf', serif: true })}
+      <h2 class="t-h2">Taking a break?</h2>
+      <p class="t-body c-secondary" style="margin:var(--space-8) 0 var(--space-16)">Once you pause the shelf, the map shows it as paused. People can’t pick up or leave food until you resume it.</p>
       <p class="field__label" id="h06b-why">Why?</p>
       <div class="chips" style="flex-wrap:wrap;margin:var(--space-8) 0 var(--space-16)" role="radiogroup" aria-labelledby="h06b-why" id="h06b-reasons">${['Shelf full', 'Café closed', 'Cleaning', 'Other'].map((r, i) => `<button type="button" role="radio" class="chip" aria-checked="${i === 0}" data-radio="why" data-value="${r}">${i === 0 ? icon('done') : ''}<span>${r}</span></button>`).join('')}</div>
       <p class="field__label" id="h06b-until" style="margin-bottom:var(--space-8)">Until when?</p>
