@@ -86,7 +86,7 @@ Codes follow the testing protocol. Exact names, order and states come from the F
 | M01 | Home (Brenda; Jonas = empty state) | `#/home` | `M01-home-v3` (v0.7: dark action cards, Home gradient; replaces `frames/M01-home-v2.png` for layout, colour and type size, Q81) · built |
 | M02 | Me | `#/me` | `frames/M02-me-v2.png` · built from frame |
 | G01 | Travel prompt (overlay banner on Home) | overlay (`#/home?sim=travel` via moderator) | `frames/G01-travel-prompt.png` · built from frame |
-| G02 / R01 | Map, Leave / Find mode, **sheet v0.6** (peek · half · full, Steps A–C) | `#/map`, `#/map?find=1` | `frames/G02-map.png`, `G02a`–`G02d` · built |
+| G02 / R01 | Map, Leave / Find mode, **sheet v0.6** (peek · half · full, Steps A–C) | `#/map`, `#/map?find=1` | `frames/G02-map.png`, `G02a`–`G02d` · built; v0.7 real zoomable OpenStreetMap map, test-city switch, Locate me, offline SVG fallback (Q85–Q87) |
 | G03 | Location details in the map sheet / point page | `#/map?shelf=:id`, `#/point/:id` | `frames/G03-location-half.png` · built (v0.6) |
 | G03b | Point full / paused | `#/point/:id` | `frames/G03b-point-full.png` · built from frame |
 | G04 / G04b / G04c | Tap the tag / found / not found (+ QR, shelf code) | `#/give/tap` | `frames/G04-tap-the-tag.png` · built |

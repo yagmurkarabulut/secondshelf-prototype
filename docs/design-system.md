@@ -46,7 +46,7 @@ Proportions: about **60% Cream and Paper · 30% Pantry Green and Ink · 10% Ochr
 | `warning-600` | `#A86A12` | Warning (icons only) |
 | `slate-600` | `#51666D` | Slate: problems. **No red anywhere.** |
 | `info-600` | `#2F6E8C` | Info, focus ring |
-| `map-land` · `map-road` · `map-road-main` · `map-water` | `#FFFFFF` · `#D9DED8` · `#798C75` · `#85D5EB` | **v0.4** Map illustration only, never UI |
+| `map-land` · `map-road` · `map-road-main` · `map-water` | `#FFFFFF` · `#D9DED8` · `#798C75` · `#85D5EB` | **v0.4** Map illustration only, never UI (**v0.7**: only the offline SVG map uses them) |
 
 ### 2.2 Text
 | Token | → | Contrast on Cream | Use |
@@ -117,6 +117,7 @@ Proportions: about **60% Cream and Paper · 30% Pantry Green and Ink · 10% Ochr
 | `action-leave` / `-pressed` | ink-900 / ink-950 | **v0.7 [NEW]** Leave food card fill (Home) |
 | `action-find` / `-pressed` | green-700 / green-900 | **v0.7 [NEW]** Find food card fill (Home) |
 | `map-park` · `map-marker` | green-100 · ink-900 | **v0.4** Map parks; marker fill (Paper number) |
+| `map-tile-filter` | `saturate(.55) sepia(.3) brightness(1.04) contrast(.9)` | **v0.7 [NEW]** CSS filter on the map **tile pane only**: calms the OpenStreetMap tiles and warms them toward Cream. Markers, clusters, chips, sheets and the attribution are not filtered |
 
 ### 2.5 Colour rules
 - **Ochre means "you earned something".** Use it only for coupons, the Rescue Bonus and thank-you moments.
@@ -303,7 +304,7 @@ Every component uses semantic tokens only and is built with all its states.
 | **NFC tap card** | (layout from G04 / R04 / H06 mocks) On `surface-brand`: illustration, instruction in `text-on-primary`, status, fallback links | idle · scanning · found · not found · QR fallback |
 | **Food item row** | Thumb `radius-sm`, `title`, best-before `body-small`, sealed badge, **round** stepper, 44px remove; min 72px rows (v0.5 ItemRows) | default · edited · removed (Undo toast) · checkbox variant (receiver) |
 | **Map marker** **v0.4** | 32px numbered circle: `map-marker` (Ink) fill, Paper number | default · selected (`action-primary` + Leaf halo) · full · paused · closed; legend "Numbers identify shelves, not item counts" |
-| **Map controls** **v0.4** | Flat pill search + filter button (v0.5: `border-strong` outline, no shadow); scrolling filter chips (Open now · Has space · Nearby); count pill on `surface-inverse` ("32 locations in this area"); **Map / List toggle** at the bottom | — |
+| **Map controls** **v0.4** | Flat pill search + filter button (v0.5: `border-strong` outline, no shadow); scrolling filter chips (Open now · Has space · Nearby); count pill on `surface-inverse` ("32 locations in this area"); **Map / List toggle** at the bottom; **v0.7** zoom + / − (48px), a 48px round **Locate me** button (`location`, Paper + `border-strong` + `shadow-card`) that appears only after the map moved or zoomed away from you and flies back (instant under reduced motion); the attribution "© OpenStreetMap contributors" in `caption` `text-secondary` on Paper, top left under the chips, where the sheet never covers it | — |
 | **Item status list** **v0.4** | Paper `radius-lg`; header `section` + count chip (`surface-track`) + chevron; 48px rows: 32px status tile (`radius-sm`) + name + venue `text-secondary`; hidden status label | picked up (Leaf + `done` in `icon-success`) · waiting (**v0.7** Oat tile + `paused` in `icon-waiting`); **v0.7** no shadow, names `body-list` in sentence case, venue right-aligned |
 | **Shelf card** **v0.4** | Paper `radius-lg`, `shadow-card`, photo top, distance `text-brand` 14/500, venue `title`, closing time `text-secondary`, availability chip; horizontal carousel with 12px gaps | has space (`surface-track` chip) · **full** (`surface-unavailable` chip + `shelf-full` icon, **v0.5** label "Full shelf") · closed |
 | **Availability chip** **v0.4** | `radius-full`, 32px, `label` type, nowrap | spots available · Full shelf (Terracotta 700) |
@@ -368,6 +369,7 @@ Every component uses semantic tokens only and is built with all its states.
   --action-primary:var(--green-900); --action-primary-hover:var(--green-700); --action-primary-pressed:var(--green-950);
   --action-accent:var(--terracotta-700); --action-accent-pressed:var(--terracotta-800); --action-disabled:var(--oat-200);
   --map-park:var(--green-100); --map-marker:var(--ink-900);
+  --map-tile-filter:saturate(.55) sepia(.3) brightness(1.04) contrast(.9); /* v0.7 [NEW] tile pane only */
   /* v0.7 [NEW] Home (M01-home-v3) */
   --action-leave:var(--ink-900); --action-leave-pressed:var(--ink-950); --icon-on-leave:var(--ochre-500);
   --action-find:var(--green-700); --action-find-pressed:var(--green-900); --icon-on-find:var(--ochre-300);

@@ -32,6 +32,6 @@ Open the moderator menu › **Choose scenario**. Each one resets the demo and sk
 5. After the session: moderator menu › Export log (JSON) for task times and screen views; note anything else on paper.
 
 ## Working on it
-- Everything is in one self-contained `index.html` (inline CSS + vanilla JS, hash routing). The map uses Leaflet 1.9.4 (BSD-2) and Leaflet.markercluster 1.5.3 (MIT), inlined with their licence headers, on a mock neighbourhood: no tile server, no API key. Tokens are block 1 of the `<style>`; the icon sprite is inlined at the top of `<body>`.
+- Everything is in one self-contained `index.html` (inline CSS + vanilla JS, hash routing). The map uses Leaflet 1.9.4 (BSD-2) and Leaflet.markercluster 1.5.3 (MIT), inlined with their licence headers, on keyless OpenStreetMap tiles (no API key; falls back to the old mock-neighbourhood SVG when offline). The moderator menu switches the test city (Tallinn, Prague, Tbilisi). Tokens are block 1 of the `<style>`; the icon sprite is inlined at the top of `<body>`.
 - One store (`Store.state`, saved to localStorage) holds the shelves, coupons, Rescue Bonus, host log and timings; `Ops` updates every screen that shows the same data.
 - Screenshots: run `python3 -m http.server 8123` in the repo, then `node tools/shot.js '#/components' out.png 390 844` (Playwright).
