@@ -261,19 +261,18 @@ Every open question in `docs/open-questions.md`, grouped by topic. The last two 
 - No real Web NFC, camera QR scanning or maps integration (placeholders by design).
 
 **Styling inconsistencies to look at**
-- Older CSS from earlier phases still holds some literal sizes (NFC art 128px, NFC stage 240px, shelf-card photo 72px, marker badge 20px / 14px icon, cluster 36px, "you are here" dot 18px, toggle knob 22px / 19px travel). New code uses tokens; these could move to `--size-*` tokens.
+- Older CSS from earlier phases still holds some literal sizes (shelf-card photo 72px, marker badge 20px / 14px icon, cluster 36px, "you are here" dot 18px, toggle knob 22px / 19px travel). New code uses tokens; these could move to `--size-*` tokens.
 - R02 find-mode rows are tall (item, sealed + BB + added, distance + hours, chip); the R01b frame row is more compact.
 - Generated venues use catalogue names ("Fusilli 500 g") while the spec venues use the frame format ("Fusilli pasta, 500 g").
 - Pill chips in the details chip row are Paper with a subtle border; the frame uses Oat chips.
-- G03 / R03 photos, G07 / R06 / H05 / H08b illustrations and the H07 camera are dashed placeholders.
+- G03 / R03 photos (until the photo URLs are pasted in, Q88) and the H07 camera are dashed placeholders. The G07 / R06 / H05 live / H08b illustrations are now the v2 art (`assets/illustrations/`).
 - The ··· moderator button is visible to participants too (at 30% opacity) and is 40 px, below the 44 px tap minimum (Q80). It moves off buttons only when dropped; it stays put while content scrolls or screens change, so on another screen it can sit over a button until it is dragged again.
 - Toasts on screens without a sticky action bar (M02, R06) can sit over the last row for 3–5 s.
 
 **Animations that are rough**
-- NFC tick draw uses a fixed stroke-dash length; the found state swaps the whole card rather than morphing.
 - R06 count-down steps one number at a time with timeouts (600 ms in total).
 - Step-header progress animates only the current segment on each screen; it doesn’t carry over between screens.
-- Reduced motion turns every animation into an instant change (NFC rings hidden, static first frame). The screenshots in `docs/screenshots/` were taken with reduced motion on.
+- Reduced motion turns every animation into an instant change; the illustrations show their still end frame (tap-the-tag: phone on the plate with two ripples; G06: items already in place; G07: items placed and sparkles shown). The screenshots in `docs/screenshots/` were taken with reduced motion on.
 
 **To check on real phones before Tuesday**
 - iPhone Safari and Android Chrome: sheet drag, map pinch, `100dvh`, safe areas, vibration (iOS ignores `navigator.vibrate`).

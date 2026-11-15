@@ -287,6 +287,31 @@ Set CSS `color` on the icon with an icon token (§2.3), never a raw hex:
 
 If a screen needs an icon that isn't here, add it to `assets/icons/` in the same style (24px grid, 2px rounded stroke) and list it in this table. Don't pull in another icon set.
 
+## 7b. Illustration
+**SecondShelf illustration set v2** (15 Nov) in `assets/illustrations/`: 12 SVGs in direction C, "Neighbour's notebook" (a lightly inked Pantry Green line with flat colour patches printed slightly off the line), drawn to match the physical starter kit. `assets/illustrations/README.md` lists each file's states; `preview.html` shows them all. Venue photos stay photographic (they show **which café**); illustrations show **what to do**.
+
+- **In the app:** inlined by `node tools/illus.js` into `const ILLUS` in `index.html` (no runtime fetch) and rendered with `UI.art(name, { cls, attrs, label })` inside `<div class="art art--name">`. Sizes: `.art` full width (NFC card, G06 shelf), `.art--illus` `--size-illus` 160px tall (confirmations, H05 kit), `.art--sm` `--size-illus-sm` 120px (empty states, via `UI.empty({ art })`).
+- **Stateful files** are changed by attribute, never rebuilt: `tap-the-tag` `data-state` = idle · scanning · found · notfound · qr (G04, R04, H05 activate); `shelf-fill` `data-mine` = 0–6 (G06).
+- **Colours** inside the files are the primitives from §2.1 with hex fallbacks, so they follow this file when inlined.
+- **Accessibility:** each file has `role="img"`, an `aria-label` and a `<title>`; the screen copy carries the meaning, the drawing never replaces it. `aria-live` stays on the NFC status text, not on the SVG.
+- **Reduced motion:** each file stops its own animation; the still frame is the end state.
+
+### Patch meaning
+| Patch | Means |
+|---|---|
+| Oat back panel, Sand boards | The shelf itself |
+| Paper | Food already on the shelf |
+| Terracotta tint + Terracotta 500 band | Your items in this drop-off, and the target to aim at |
+| Ochre 500 | Thank-you sparkles only (G07) |
+| Leaf | Done: the phone tick, the plate core after a read, the dates strip, the check badge |
+
+### Drawing rules (for new illustrations)
+- Line: Pantry Green, 2.5 px for the shelf and phone, 2 px for small items, round caps and joins, light ink wobble (`feTurbulence` + `feDisplacementMap`, scale 1.8).
+- Patch: flat fill, shifted 1.5–2 px down-left of the line. No gradients or shadows.
+- People: hands only, Sand skin and a Leaf sleeve, no faces. Fingers wrap the phone's right edge and the thumb sits on the left, so the grip reads at a glance.
+- No words inside drawings. Shapes are generic (no brands), so one drawing works in every city.
+- One accent per scene: Terracotta for "act here / yours", Ochre only for thank-you moments.
+
 ## 8. Components
 Every component uses semantic tokens only and is built with all its states.
 
@@ -306,7 +331,7 @@ Every component uses semantic tokens only and is built with all its states.
 | **Coupon ticket** **v0.5 light** | Paper, `radius-lg`, `shadow-card`, 6px gold band (`surface-reward`) on top; `coupon` icon `icon-reward` + label `text-secondary`; value Fraunces 32/40 `text-brand`; Leaf "Ready to use" chip (Ink text); dashed tear line (`border-subtle`) with two notches in the canvas colour; validity `text-secondary` + **Primary** pill Show button with `qr-code` | active · used · expired · pending; value and validity say "to be agreed" |
 | **Segmented control** | Pill track `surface-segment` (**v0.5 Oat**), 4px padding; selected segment Paper + Rubik 500; ≥ 40px segments; `role=tablist` | Active (n) / Used (n) |
 | **Rescue Bonus card** | Paper `radius-lg`; 44px `surface-reward-subtle` tile + `rescue-bonus` in `icon-reward`; title `title`, venue `text-secondary`; 8px bar, **v0.5 gold fill** (`surface-reward`) on `surface-track`; status as plain text "n of N items picked up" (Q94) (never a button-looking chip; no targets or countdowns) | 0 · partial · complete · expired |
-| **NFC tap card** | (layout from G04 / R04 / H06 mocks) On `surface-brand`: illustration, instruction in `text-on-primary`, status, fallback links | idle · scanning · found · not found · QR fallback |
+| **NFC tap card** | (layout from G04 / R04 / H06 mocks) On `surface-brand`: the `tap-the-tag` illustration (its own Cream card, `data-state` follows the card, §7b), instruction in `text-on-primary`, status (`aria-live`) on the dark screen under the art, fallback links | idle · scanning · found · not found · QR fallback |
 | **Food item row** | Thumb `radius-sm`, `title`, best-before `body-small`, sealed badge, **round** stepper, 44px remove; min 72px rows (v0.5 ItemRows) | default · edited · removed (Undo toast) · checkbox variant (receiver) |
 | **Map marker** **v0.4** | 32px numbered circle: `map-marker` (Ink) fill, Paper number | default · selected (`action-primary` + Leaf halo) · full · paused · closed; legend "Numbers identify shelves, not item counts" |
 | **Map controls** **v0.4** | Flat pill search + filter button (v0.5: `border-strong` outline, no shadow); scrolling filter chips (Open now · Has space · Nearby); count pill on `surface-inverse` ("32 locations in this area"); **Map / List toggle** at the bottom; **v0.7** zoom + / − (48px), a 48px round **Locate me** button (`location`, Paper + `border-strong` + `shadow-card`) that appears only after the map moved or zoomed away from you and flies back (instant under reduced motion); the attribution "© OpenStreetMap contributors" in `caption` `text-secondary` on Paper, top left under the chips, where the sheet never covers it | — |
@@ -330,7 +355,7 @@ Every component uses semantic tokens only and is built with all its states.
 | **Top bar** | Back, title (`title`), optional action | default · on `surface-brand` |
 | **Tab bar** **v0.4** | Paper bar, 4 tabs, 24px icon over `label` in `text-primary`; active = 64 × 32 `surface-indicator` pill behind an `icon-primary` icon; inactive `icon-neutral` | consumer: Home · Map · Coupons · Me; host: Dashboard · Check · Redeem · Me |
 | **Bottom sheet** | Paper, `radius-xl` top, grabber, `shadow-sheet` | manual add · report · filters |
-| **Empty state** | 32px `icon-tertiary`, `heading-3`, one line, action | no results · no coupons · shelf empty |
+| **Empty state** | 32px `icon-tertiary` (inside small cards and sheets) **or**, for a whole screen or main section, a 120px illustration (`UI.empty({ art })`, §7b), `heading-3`, one line, action | no results · no coupons · shelf empty |
 
 ## 9. Layout patterns
 - **Standard screen (v0.5):** flat `surface-canvas` (`#F6F1E7`) → screen title (Fraunces, Pantry Green) or greeting header → content stack of 16px cards (gap 16, gutter 20) → tab bar. Detail screens add a top bar with Back.
