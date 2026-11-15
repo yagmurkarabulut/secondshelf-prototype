@@ -427,6 +427,7 @@ Added while building `index.html` (phase 1). Listed in `docs/open-questions.md` 
 | Steward check row (v2) | Item + reason + Keep / Remove 44px; decided = Leaf (kept) or Oat (removed) with a status label and Undo | to check · kept · removed |
 | Timeline | 24px dots joined by a 2px line; done = Pantry Green dot + tick, now = ring + dot, next = outline | done · now · next |
 | Stat tile | Paper, `radius-lg`, number in `heading-2` `text-brand`, caption | — |
+| **Notification** (QA round 3, Q92) | Top of the screen, 16px side gutter, newest on top, 8px gap; `radius-md`, `shadow-card`, icon + Ink text + optional action + 44px Close (X); drops in over `--motion-notify` (600 ms), auto-hides after 5 s; fade only under reduced motion | success (Leaf) · info (Paper + `border-subtle`) · warning (Ochre tint, Ochre 800 icon, Ochre 500 outline) · error (Terracotta tint, Terracotta 700 icon, Terracotta 500 outline). Warning and error colours are an exception to §2.5 under review |
 | Result icon | 80px round tile: Leaf + success tick (valid, sent), Oat + Slate flag (problem), Forest on dark screens | done · problem · brand |
 
 **v0.7 photo tokens [NEW]** (Q88):

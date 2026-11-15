@@ -753,6 +753,13 @@ svg.leaflet-image-layer.leaflet-interactive path {
   --size-tap-min:44px; --size-control:48px; --frame-max:430px; --size-avatar:48px; --size-tab-indicator:64px;
   --motion-fast:150ms; --motion-base:250ms; --ease:cubic-bezier(.2,0,0,1);
   --motion-tab:200ms; --ease-in-out:cubic-bezier(.65,0,.35,1); /* [NEW] QA round 2: sliding tab indicator */
+  /* [NEW] QA round 3: notifications (top toasts) */
+  --motion-notify:600ms; --notify-ms:5000; --tint-pressed:rgba(43,36,30,.08);
+  --surface-notify-success:var(--green-100); --icon-notify-success:var(--success-700);
+  --surface-notify-info:var(--paper-0);      --icon-notify-info:var(--green-900);
+  --surface-notify-warning:var(--ochre-100); --icon-notify-warning:var(--ochre-800);   /* gold: 4.4:1 icon on tint */
+  --surface-notify-error:var(--terracotta-100); --icon-notify-error:var(--terracotta-700); /* 4.6:1 icon on tint */
+  --border-notify-warning:var(--ochre-500); --border-notify-error:var(--terracotta-500);
 }
 
 /* =====================================================================
@@ -1124,10 +1131,27 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{box-shadow:none}
 .banner--reward{background:var(--surface-reward-subtle);color:var(--text-primary)}
 .banner--reward > .icon{color:var(--icon-reward)}
 .banner--plain{background:var(--surface-default)}
-.toast-host{position:absolute;left:var(--space-16);right:var(--space-16);bottom:calc(var(--space-16) + env(safe-area-inset-bottom));z-index:40;display:flex;flex-direction:column;gap:var(--space-8);pointer-events:none}
-.app.has-tabs .toast-host{bottom:calc(88px + env(safe-area-inset-bottom))}
-.toast{pointer-events:auto;box-shadow:var(--shadow-card);animation:fade-in var(--motion-fast) var(--ease) both}
-.toast.is-leaving{opacity:0;transition:opacity var(--motion-fast) var(--ease)}
+/* ---- Notification (QA round 3): drops in from the top (600 ms), X to dismiss, auto-hides after 5 s,
+   newest on top, 8px between stacked ones. success = Leaf · info = Paper · warning = gold tint · error = terracotta tint. Ink text always. */
+.toast-host{position:absolute;left:var(--space-16);right:var(--space-16);top:max(env(safe-area-inset-top),var(--space-12));z-index:60;display:flex;flex-direction:column;gap:var(--space-8);pointer-events:none}
+.notify{pointer-events:auto;display:flex;align-items:flex-start;gap:var(--space-12);padding:var(--space-4) var(--space-4) var(--space-4) var(--space-16);border-radius:var(--radius-md);box-shadow:var(--shadow-card);font:var(--type-body);color:var(--text-primary);border:1px solid transparent;
+  animation:notify-in var(--motion-notify) var(--ease) both}
+.notify > .icon{margin-top:var(--space-12);flex:none}
+.notify__text{flex:1;min-width:0;padding:var(--space-12) 0}
+.notify__text strong{font-weight:500}
+.notify .banner__action{margin:0;align-self:center}
+.notify__close{flex:none;width:var(--size-tap-min);height:var(--size-tap-min);display:inline-flex;align-items:center;justify-content:center;border-radius:var(--radius-full);color:var(--icon-primary)}
+.notify__close:active{background:var(--tint-pressed)}
+.notify__close .icon{width:var(--size-icon-20);height:var(--size-icon-20)}
+.notify--success{background:var(--surface-notify-success)} .notify--success > .icon{color:var(--icon-notify-success)}
+.notify--info{background:var(--surface-notify-info);border-color:var(--border-subtle)} .notify--info > .icon{color:var(--icon-notify-info)}
+.notify--warning{background:var(--surface-notify-warning);border-color:var(--border-notify-warning)} .notify--warning > .icon{color:var(--icon-notify-warning)}
+.notify--error{background:var(--surface-notify-error);border-color:var(--border-notify-error)} .notify--error > .icon{color:var(--icon-notify-error)}
+.notify.is-leaving{animation:notify-out var(--motion-notify) var(--ease) both}
+@keyframes notify-in{from{opacity:0;transform:translateY(calc(-100% - var(--space-24)))}to{opacity:1;transform:none}}
+@keyframes notify-out{from{opacity:1;transform:none}to{opacity:0;transform:translateY(calc(-100% - var(--space-24)))}}
+@media (prefers-reduced-motion:reduce){.notify,.notify.is-leaving{animation-name:fade-in;animation-duration:var(--motion-fast)}.notify.is-leaving{animation-direction:reverse}}
+.static-notify{position:static;animation:none}
 
 /* ---- Coupon ticket: QA 15 Nov ----
    Two Paper halves; each has its two notch corners cut out with a mask, so the canvas shows through for real.
@@ -1590,10 +1614,7 @@ button.settings__row:active{background:var(--surface-canvas)}
 @keyframes fade-out{to{opacity:0}}
 .sheet__body .actions{padding-top:var(--space-16)}
 
-/* toast: fades up */
-.toast{animation:fade-up var(--motion-fast) var(--ease) both}
 @keyframes fade-up{from{opacity:0;transform:translateY(var(--space-8))}to{opacity:1;transform:none}}
-.app.has-actionbar .toast-host{bottom:calc(var(--space-64) * 2 + env(safe-area-inset-bottom))}
 /* sticky action bar for long task screens (G06, R05, H08): the closing action stays in reach */
 .actions--sticky{position:sticky;bottom:calc(var(--space-32) * -1);margin:var(--space-16) calc(var(--space-20) * -1) calc(var(--space-32) * -1);padding:var(--space-12) var(--space-20) calc(var(--space-16) + env(safe-area-inset-bottom));background:var(--surface-canvas);box-shadow:var(--shadow-sheet);z-index:3}
 .stagger{display:flex;flex-direction:column;gap:var(--space-16)}
@@ -1730,7 +1751,7 @@ textarea.input{min-height:calc(var(--size-control) * 2);resize:vertical}
 .screen--map.has-details .mapsheet{touch-action:pan-y}
 .screen--map.has-details .mapsheet__body{overflow-y:auto;padding-bottom:var(--space-32)}
 .details{display:flex;flex-direction:column;gap:var(--space-8)}
-.details .avail--space{background:var(--surface-default)}  /* stands out from the Cream sheet in location details */
+.details .avail--space{background:var(--surface-default);border:1px solid var(--border-subtle)}  /* same as the other chips in the row (QA round 3) */
 .details__back{display:inline-flex;align-items:center;gap:var(--space-4);align-self:center;min-height:var(--size-tap-min);padding:0 var(--space-12);border-radius:var(--radius-full);font:var(--type-body);color:var(--text-primary)}
 .details__back:active{background:var(--surface-subtle)}
 .details__photo{height:var(--size-photo-sm);border-radius:var(--radius-lg);background:var(--surface-subtle)}
@@ -2290,6 +2311,11 @@ const UI = {
     const def = { success: 'done', info: 'info', problem: 'needs-attention', reward: 'saved-food', plain: 'info' }[kind];
     return `<div class="banner banner--${kind}" role="${kind === 'problem' ? 'alert' : 'status'}">${icon(ic || def)}<div class="banner__text">${html}</div>${action}</div>`;
   },
+  notify(kind, html, { ic, action = '', cls = '' } = {}) {
+    const k = kind === 'problem' ? 'error' : (['success', 'info', 'warning', 'error'].includes(kind) ? kind : 'info');
+    const def = { success: 'done', info: 'info', warning: 'needs-attention', error: 'needs-attention' }[k];
+    return `<div class="notify notify--${k}${cls ? ' ' + cls : ''}" role="${k === 'error' ? 'alert' : 'status'}">${icon(ic || def)}<div class="notify__text">${html}</div>${action}<button type="button" class="notify__close" aria-label="Dismiss">${icon('close')}</button></div>`;
+  },
   coupon({ id = 'c1', state = 'active', venue = 'Café Daisy', value = 2, expires = '2026-12-09' } = {}) {
     const chip = { active: '<span class="pill pill--leaf">Ready to use</span>', used: '<span class="pill pill--oat">Used</span>', expired: '<span class="pill pill--oat">Expired</span>', pending: '<span class="pill pill--reward">Pending</span>', withdrawn: '<span class="pill pill--oat">Withdrawn</span>' }[state];
     const btn = state === 'active'
@@ -2521,15 +2547,21 @@ const SAMPLE_PHOTO = `<div class="capture__img placeholder" style="background:va
    OVERLAYS (hand-off §3.1): toast, bottom sheet, overlay banner. Written once, reused everywhere.
    ===================================================================== */
 /* Toast: fades up above the tab bar / action bar. Undo toasts last 5 s. */
-function toast(kind, html, { action, onAction, ms = 5000, ic } = {}) {
+/* Notification (QA round 3): every toast drops in from the top, has an X, and hides itself after 5 s.
+   Kinds: success · info · warning · error ('problem' is read as error). The old per-call ms is ignored on purpose. */
+const NOTIFY_MS = 5000;
+function toast(kind, html, { action, onAction, ic } = {}) {
   const host = $('#toasts');
   const el = document.createElement('div');
-  el.innerHTML = UI.banner(kind, html, { ic, action: action ? `<button type="button" class="btn btn--link banner__action">${icon('undo')}<span>${esc(action)}</span></button>` : '' });
-  const t = el.firstElementChild; t.classList.add('toast'); t.setAttribute('role', 'status');
-  host.appendChild(t);
-  const close = () => { t.classList.add('is-leaving'); setTimeout(() => t.remove(), 160); };
+  el.innerHTML = UI.notify(kind, html, { ic, action: action ? `<button type="button" class="btn btn--link banner__action">${icon('undo')}<span>${esc(action)}</span></button>` : '' });
+  const t = el.firstElementChild;
+  host.prepend(t);
+  let gone = false;
+  const close = () => { if (gone) return; gone = true; clearTimeout(timer); t.classList.add('is-leaving');
+    setTimeout(() => t.remove(), reduceMotion() ? 160 : 600); };
+  const timer = setTimeout(close, NOTIFY_MS);
+  $('.notify__close', t).addEventListener('click', close);
   if (action) $('.banner__action', t).addEventListener('click', () => { onAction && onAction(); close(); });
-  setTimeout(close, ms);
   return close;
 }
 /* Bottom sheet: slides up, scrim fades in; drag down / scrim tap / Esc / Close closes; focus moves in and returns on close. */
@@ -2845,7 +2877,7 @@ Views.components = {
     const st = s => `<span class="gal__state">${s}</span>`;
     const sw = names => `<div class="gal__swatches">${names.map(n => `<div class="swatch"><div class="swatch__chip" style="background:var(--${n})"></div><div class="swatch__name">--${n}</div></div>`).join('')}</div>`;
     const icons = $$('#sprite symbol').map(s => s.id.replace('ss-', ''));
-    const toc = ['tokens', 'type', 'icons', 'button', 'input', 'search', 'chip', 'checkbox', 'stepper', 'card', 'action', 'feature', 'status', 'banner', 'coupon', 'segmented', 'bonus', 'nfc', 'item', 'marker', 'mapctl', 'statuslist', 'shelf', 'avail', 'settings', 'toggle', 'profile', 'impact', 'host', 'greeting', 'stephead', 'qrsheet', 'capture', 'result', 'verify', 'benefit', 'checkrow', 'log', 'topbar', 'tabbar', 'sheet', 'empty'];
+    const toc = ['tokens', 'type', 'icons', 'button', 'input', 'search', 'chip', 'checkbox', 'stepper', 'card', 'action', 'feature', 'status', 'banner', 'notify', 'coupon', 'segmented', 'bonus', 'nfc', 'item', 'marker', 'mapctl', 'statuslist', 'shelf', 'avail', 'settings', 'toggle', 'profile', 'impact', 'host', 'greeting', 'stephead', 'qrsheet', 'capture', 'result', 'verify', 'benefit', 'checkrow', 'log', 'topbar', 'tabbar', 'sheet', 'empty'];
     return `<div class="gal">
       <h1 class="t-h1">Components</h1>
       <p class="gal__intro">UI Kit v0.5 · hidden page for the team. Every component from design-system.md §8 with its states. Sample text comes from CLAUDE.md and the frames.</p>
@@ -2915,6 +2947,13 @@ Views.components = {
         ${UI.banner('problem', 'Couldn’t read the photo', { action: UI.button({ label: 'Try again', variant: 'link', icon: 'retry' }).replace('btn btn--link', 'btn btn--link banner__action') })}
         ${UI.banner('reward', '2 of your items were saved')}</div>
         ${st('Toast with Undo (5 s)')}${UI.button({ label: 'Show Undo toast', variant: 'secondary', attrs: 'data-gal="toast"' })}`)}
+
+      ${sec('notify', 'Notification', 'QA round 3: drops in from the top (600 ms), X to dismiss, auto-hides after 5 s, newest on top, 8px stack gap. Ink text on every kind.',
+        `<div class="stack-8">${UI.notify('success', '<strong>Pickup logged.</strong> 2 items', { cls: 'static-notify' })}
+        ${UI.notify('info', 'The shelf steward will be told', { cls: 'static-notify' })}
+        ${UI.notify('warning', 'Map is in offline mode', { ic: 'map', cls: 'static-notify' })}
+        ${UI.notify('error', 'Couldn’t read the photo', { cls: 'static-notify' })}</div>
+        ${st('Live')}<div class="row" style="flex-wrap:wrap;gap:var(--space-8)">${['success', 'info', 'warning', 'error'].map(k => UI.button({ label: k[0].toUpperCase() + k.slice(1), variant: 'secondary', attrs: `data-gal="notify-${k}"` })).join('')}</div>`)}
 
       ${sec('coupon', 'Coupon ticket', 'QA 15 Nov: ticket shape (notches cut out, shadow follows the shape), no gold band, value Fraunces 30/38, expiry date, Primary Show button.',
         st('Active') + UI.coupon({ state: 'active' }) + st('Pending') + UI.coupon({ state: 'pending' }) + st('Used') + UI.coupon({ state: 'used' }) + st('Expired') + UI.coupon({ state: 'expired' }))}
@@ -3042,6 +3081,7 @@ Views.components = {
       if (sq) { const s = sq.closest('[data-nfc]'); const n = document.createElement('div'); n.innerHTML = UI.nfc({ state: 'found', id: s.dataset.nfc }); s.replaceWith(n.firstElementChild); buzz(); }
       const g = e.target.closest('[data-gal]');
       if (g && g.dataset.gal === 'toast') toast('info', 'Crackers, 200 g removed', { action: 'Undo', ic: 'remove' });
+      if (g && g.dataset.gal.startsWith('notify-')) { const k = g.dataset.gal.slice(7); toast(k, { success: '<strong>Tag found</strong> · Café Daisy', info: 'The shelf steward will be told', warning: 'Map is in offline mode', error: 'Couldn’t export the log' }[k]); }
       if (g && g.dataset.gal === 'sheet') openSheet('Add item', `<div class="stack">${UI.input({ id: 'm-name', label: 'Item name', placeholder: 'e.g. Canned soup' })}${UI.input({ id: 'm-bb', label: 'Best before', type: 'month' })}<div><span class="field__label">Quantity</span><div style="margin-top:var(--space-8)">${UI.stepper({ id: 'm-q', value: 1 })}</div></div>${UI.button({ label: 'Add item', icon: 'plus', block: true, attrs: 'data-sheet-close' })}</div>`);
       // remove with Undo on item rows
       const rm = e.target.closest('[data-remove]');
@@ -3215,7 +3255,7 @@ Views.map = {
       const goOffline = why => {
         if (MapUI.offline || !el.isConnected) return;
         MapUI.offline = true; Store.log('map_offline', { why });
-        toast('info', 'Map is in offline mode', { ms: 3000, ic: 'map' });
+        toast('warning', 'Map is in offline mode', { ic: 'map' });
         setTimeout(() => { if (el.isConnected) Router.render('none'); }, 0);
       };
       tiles.on('tileerror', () => { errs++; if (errs > TILE_FAIL.errors && performance.now() - t0 < TILE_FAIL.ms) goOffline('tileerror'); });
@@ -4278,7 +4318,7 @@ const Mod = {
       const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([data], { type: 'application/json' }));
       a.download = `secondshelf-log-${Date.now()}.json`; document.body.appendChild(a); a.click(); a.remove();
       toast('success', 'Log exported', { ms: 2000 });
-    } catch (e) { toast('problem', 'Couldn’t export the log'); }
+    } catch (e) { toast('error', 'Couldn’t export the log'); }
   }
 };
 
