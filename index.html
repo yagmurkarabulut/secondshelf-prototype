@@ -1489,6 +1489,159 @@ button.settings__row:active{background:var(--surface-canvas)}
 .coupons-panel{margin-top:var(--space-16)}
 
 /* =====================================================================
+   4c. SHARED INTERACTION SYSTEM (hand-off §3) + screens added 15–16 Nov
+   ===================================================================== */
+:root{
+  /* [NEW] tokens added for the 16 Nov build (docs/design-system.md §10b) */
+  --motion-stagger:200ms;                 /* confirmation screens: headline, card, button */
+  --motion-slow:600ms;                    /* count / bonus fill / bar animations */
+  --shadow-card-pressed:0 1px 2px rgba(43,36,30,.12),0 10px 28px rgba(43,36,30,.14);
+  --size-hero:240px;                      /* onboarding / venue photo placeholder */
+  --size-illus:160px;                     /* confirmation illustration placeholder */
+  --size-result-icon:80px;                /* round result icon (H07b, H05b, R04c) */
+  --size-radio:24px;
+  --size-chart:160px;                     /* G11 bar chart height */
+}
+/* pressed states (§3.2): buttons scale .98 (in .btn), cards .99 with a stronger shadow */
+.card--tap:active,.shelf:active,.result:active,.rolecard:active,.action-card:active{transform:scale(.99);box-shadow:var(--shadow-card-pressed)}
+.btn{transition:background-color var(--motion-fast) var(--ease),transform 100ms var(--ease)}
+
+/* sheet: grab button, closing animation */
+.sheet__grab{display:flex;width:100%;height:var(--space-24);align-items:center;justify-content:center;margin-bottom:var(--space-4)}
+.sheet__grab .sheet__grabber{margin:0}
+.sheet{transition:transform var(--motion-base) var(--ease)}
+.sheet-host.is-closing .sheet{animation:sheet-out var(--motion-base) var(--ease) both}
+.sheet-host.is-closing .sheet-scrim{animation:fade-out var(--motion-base) var(--ease) both}
+@keyframes sheet-out{to{transform:translateY(100%)}}
+@keyframes fade-out{to{opacity:0}}
+.sheet__body .actions{padding-top:var(--space-16)}
+
+/* toast: fades up */
+.toast{animation:fade-up var(--motion-fast) var(--ease) both}
+@keyframes fade-up{from{opacity:0;transform:translateY(var(--space-8))}to{opacity:1;transform:none}}
+.app.has-actionbar .toast-host{bottom:calc(var(--space-64) + var(--space-32) + env(safe-area-inset-bottom))}
+
+/* overlay banner: slides down from the top */
+.ov-host{position:absolute;left:0;right:0;top:0;z-index:45;pointer-events:none;padding:max(env(safe-area-inset-top),var(--space-12)) var(--space-12) 0}
+.ov{pointer-events:auto;animation:ov-in var(--motion-base) var(--ease) both}
+.ov.is-leaving{animation:ov-out var(--motion-base) var(--ease) both}
+@keyframes ov-in{from{transform:translateY(-120%)}to{transform:none}}
+@keyframes ov-out{to{transform:translateY(-120%);opacity:0}}
+.notice{background:var(--surface-default);border-radius:var(--radius-lg);box-shadow:var(--shadow-card);padding:var(--space-16);display:flex;flex-direction:column;gap:var(--space-12)}
+.notice__head{display:flex;gap:var(--space-12);align-items:center}
+.notice__actions{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-8)}
+.notice .btn{padding-left:var(--space-12);padding-right:var(--space-12)}
+.ov .banner{box-shadow:var(--shadow-card)}
+
+/* gated button: one-line hint under a disabled closing action; highlight what is missing */
+.gate{display:flex;flex-direction:column;gap:var(--space-8)}
+.gate__hint{font:var(--type-body-small);color:var(--text-secondary);text-align:center}
+.gate__hint[hidden]{display:none}
+.is-flash{animation:flash 1.2s var(--ease) both;border-radius:var(--radius-lg)}
+@keyframes flash{0%,100%{box-shadow:none}20%,60%{box-shadow:var(--shadow-focus)}}
+
+/* confirmation screens: content staggers in (headline, card, button) */
+.stagger > *{animation:rise var(--motion-base) var(--ease) both}
+.stagger > *:nth-child(2){animation-delay:var(--motion-stagger)}
+.stagger > *:nth-child(3){animation-delay:calc(var(--motion-stagger) * 2)}
+.stagger > *:nth-child(4){animation-delay:calc(var(--motion-stagger) * 3)}
+.stagger > *:nth-child(n+5){animation-delay:calc(var(--motion-stagger) * 4)}
+@keyframes rise{from{opacity:0;transform:translateY(var(--space-8))}to{opacity:1;transform:none}}
+
+/* NFC: tag not found shake, tick draws in */
+.is-shake{animation:shake 300ms var(--ease) both}
+@keyframes shake{0%,100%{transform:none}20%{transform:translateX(calc(var(--space-8) * -1))}40%{transform:translateX(var(--space-8))}60%{transform:translateX(calc(var(--space-4) * -1))}80%{transform:translateX(var(--space-4))}}
+.nfc[data-state="found"] .nfc__core svg use{stroke-dasharray:24;stroke-dashoffset:24;animation:draw 300ms var(--ease) forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.tick{width:var(--size-result-icon);height:var(--size-result-icon);border-radius:var(--radius-full);background:var(--surface-selected);display:flex;align-items:center;justify-content:center;margin:0 auto}
+.tick .icon{width:var(--size-icon-32);height:var(--size-icon-32);color:var(--icon-success)}
+.tick svg use{stroke-dasharray:24;stroke-dashoffset:24;animation:draw 300ms var(--ease) 200ms forwards}
+.tick--problem{background:var(--surface-subtle)}
+.tick--problem .icon{color:var(--icon-problem)}
+.tick--problem svg use{animation:none;stroke-dasharray:none;stroke-dashoffset:0}
+.tick--brand{background:var(--surface-brand-soft)}
+.tick--brand .icon{color:var(--icon-on-primary)}
+
+/* count change: number crossfades */
+.num-fade{animation:fade-in var(--motion-fast) var(--ease) both}
+
+/* step header, stacked variant (onboarding, R04c, H05b frames): back/close, centred overline, bar, then title */
+.stephead--stack{gap:var(--space-8)}
+.stephead--stack .stephead__bar{justify-content:center;position:relative;min-height:var(--size-tap-min)}
+.stephead--stack .stephead__bar .icon-btn{position:absolute;left:0}
+.stephead--stack .stephead__step{text-align:center}
+.stephead--stack + .t-h1,.stephead--stack + h1{margin-top:var(--space-8)}
+.progress__seg{transition:background-color var(--motion-base) var(--ease)}
+.progress__seg.is-on{animation:grow var(--motion-base) var(--ease) both;transform-origin:left}
+@keyframes grow{from{transform:scaleX(.2)}to{transform:none}}
+.progress__seg.is-on.is-old{animation:none}
+
+/* onboarding */
+.wordmark{font:var(--type-heading-3);color:var(--text-brand);margin-bottom:var(--space-16);display:inline-block;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.hero{height:var(--size-hero);border-radius:var(--radius-lg);background:var(--surface-subtle);position:relative;margin-bottom:var(--space-24)}
+.hero::before{content:"";position:absolute;inset:var(--space-12);border:var(--border-w) dashed var(--border-strong);border-radius:var(--radius-md)}
+.hero .placeholder{position:absolute;inset:0;font:var(--type-body-small)}
+.rolecards{display:flex;flex-direction:column;gap:var(--space-12)}
+.rolecard{display:flex;flex-direction:column;gap:var(--space-8);width:100%;text-align:left;background:var(--surface-default);border:var(--border-w) solid var(--border-strong);border-radius:var(--radius-lg);padding:var(--space-16);position:relative;transition:transform var(--motion-fast) var(--ease)}
+.rolecard[aria-checked="true"]{background:var(--surface-selected);border-color:var(--border-brand);border-width:2px}
+.rolecard__icons{display:flex;gap:var(--space-8)}
+.rolecard .tile{background:var(--surface-default)}
+.rolecard[aria-checked="false"] .tile{background:var(--surface-selected)}
+.radio{position:absolute;top:var(--space-16);right:var(--space-16);width:var(--size-radio);height:var(--size-radio);border-radius:var(--radius-full);border:var(--border-w) solid var(--border-strong);background:var(--surface-default);display:flex;align-items:center;justify-content:center}
+.radio::after{content:"";width:var(--space-12);height:var(--space-12);border-radius:var(--radius-full);background:transparent}
+[aria-checked="true"] > .radio,.is-on > .radio{border-color:var(--border-brand);border-width:2px}
+[aria-checked="true"] > .radio::after,.is-on > .radio::after{background:var(--action-primary)}
+.rolecard__sel{font:var(--type-label);color:var(--text-brand);display:none;align-items:center;gap:var(--space-4)}
+.rolecard[aria-checked="true"] .rolecard__sel{display:inline-flex}
+.rules{background:var(--surface-default);border-radius:var(--radius-lg);padding:var(--space-16);display:flex;flex-direction:column;gap:var(--space-8)}
+.rules li{display:flex;gap:var(--space-12);align-items:flex-start;font:var(--type-body)}
+.rules li .icon{width:var(--size-icon-20);height:var(--size-icon-20);margin-top:var(--space-4)}
+.rules__head{font:var(--type-label);color:var(--text-secondary)}
+
+/* radio list (H06b until-when, R07 item picker) */
+.radios{background:var(--surface-default);border-radius:var(--radius-lg);padding:0 var(--space-16)}
+.radiorow{display:flex;align-items:center;gap:var(--space-12);min-height:var(--size-control);padding:var(--space-8) 0;width:100%;text-align:left;font:var(--type-body);position:relative}
+.radiorow + .radiorow{border-top:1px solid var(--border-subtle)}
+.radiorow .radio{position:static;flex:none}
+
+/* moderator menu (test only) */
+.modfab{position:absolute;top:max(env(safe-area-inset-top),var(--space-8));right:var(--space-8);z-index:44;opacity:.55;background:var(--surface-default);border:var(--border-w) solid var(--border-strong)}
+.mod .btn{min-height:var(--size-tap-min);padding:var(--space-8) var(--space-12);font:var(--type-label)}
+.mod__grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-8)}
+.mod__sec{display:flex;flex-direction:column;gap:var(--space-8);padding-top:var(--space-16);margin-top:var(--space-16);border-top:1px solid var(--border-subtle)}
+.mod select{width:100%;min-height:var(--size-control);border-radius:var(--radius-md);border:var(--border-w) solid var(--border-strong);background:var(--surface-default);padding:0 var(--space-12);font:var(--type-body)}
+.mod__times{font:var(--type-body-small);color:var(--text-secondary)}
+.select{width:100%;min-height:var(--size-control);border-radius:var(--radius-md);border:var(--border-w) solid var(--border-strong);background:var(--surface-default);padding:0 var(--space-12);font:var(--type-body);color:var(--text-primary);-webkit-appearance:none;appearance:none}
+.select:focus{border-color:var(--border-brand);box-shadow:var(--shadow-focus)}
+textarea.input{min-height:calc(var(--size-control) * 2);resize:vertical}
+
+/* screen index (#/screens, team only) */
+.sx{display:flex;flex-direction:column;gap:var(--space-8)}
+.sx__group{margin-top:var(--space-24)}
+.sx__row{display:flex;gap:var(--space-12);align-items:flex-start;width:100%;text-align:left;background:var(--surface-default);border-radius:var(--radius-md);padding:var(--space-12)}
+.sx__code{font:var(--type-label);min-width:var(--space-56)}
+.sx__route{font:var(--type-caption);color:var(--text-secondary);word-break:break-all}
+.sx__chip{font:var(--type-caption);padding:0 var(--space-8);border-radius:var(--radius-full);background:var(--surface-selected);white-space:nowrap}
+.sx__chip--without{background:var(--surface-reward-subtle)}
+.sx__chip--placeholder{background:var(--surface-subtle)}
+.sx__chip--not{background:var(--surface-default);border:1px solid var(--border-strong)}
+
+/* M02 / G11 */
+.impact--tap{display:block;width:100%;text-align:left;text-decoration:none;color:inherit}
+.bars{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-16);align-items:end;height:var(--size-chart);padding:0 var(--space-8);border-bottom:1px solid var(--border-subtle)}
+.bar{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:var(--space-4);height:100%}
+.bar__fill{width:100%;max-width:var(--space-48);background:var(--action-primary);border-radius:var(--radius-sm) var(--radius-sm) 0 0;height:var(--h);transform-origin:bottom;animation:bar-up var(--motion-slow) var(--ease) both}
+.bar:nth-child(2) .bar__fill{animation-delay:100ms}.bar:nth-child(3) .bar__fill{animation-delay:200ms}.bar:nth-child(4) .bar__fill{animation-delay:300ms}
+@keyframes bar-up{from{transform:scaleY(0)}to{transform:none}}
+.bar__val{font:var(--type-label)}
+.bars__labels{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-16);padding:var(--space-8) var(--space-8) 0;text-align:center;font:var(--type-caption);color:var(--text-secondary)}
+.note{display:flex;gap:var(--space-12);align-items:flex-start;background:var(--surface-subtle);border-radius:var(--radius-md);padding:var(--space-12) var(--space-16);font:var(--type-body-small);color:var(--text-primary)}
+.note .icon{color:var(--icon-info);width:var(--size-icon-20);height:var(--size-icon-20);flex:none}
+.note strong{font-weight:500;display:block;font-size:inherit}
+.faq dt{font:var(--type-title);margin-top:var(--space-12)}
+.faq dd{margin:var(--space-4) 0 0;font:var(--type-body-small);color:var(--text-secondary)}
+
+/* =====================================================================
    5. COMPONENT GALLERY (#/components only)
    ===================================================================== */
 .gal h1{margin-bottom:var(--space-8)}
@@ -1593,6 +1746,7 @@ button.settings__row:active{background:var(--surface-canvas)}
   <main class="stage" id="stage" aria-live="off"></main>
   <nav class="tabbar" id="tabbar" aria-label="Main" hidden></nav>
   <div class="toast-host" id="toasts" aria-live="polite"></div>
+  <div class="ov-host" id="overlay"></div>
   <div class="sheet-host" id="sheet"></div>
   <div class="vh" id="announcer" aria-live="polite"></div>
 </div>
@@ -1620,14 +1774,16 @@ const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>'
 const icon = (name, cls = '', label = '') =>
   `<svg class="icon ${cls}" ${label ? `role="img" aria-label="${esc(label)}"` : 'aria-hidden="true"'} focusable="false"><use href="#ss-${name}"/></svg>`;
 const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const buzz = () => { try { navigator.vibrate && navigator.vibrate(30); } catch (e) {} };
+/* Haptics (hand-off §3.2): 30ms on tag found and successful submits, [30,60,30] on tag not found. Never on navigation. */
+const buzz = (p = 30) => { try { navigator.vibrate && navigator.vibrate(p); } catch (e) {} };
+const buzzFail = () => buzz([30, 60, 30]);
 const announce = msg => { const a = $('#announcer'); a.textContent = ''; setTimeout(() => a.textContent = msg, 30); };
 const wait = ms => new Promise(r => setTimeout(r, ms));
 
 /* =====================================================================
    STATE: memory + localStorage (try/catch), Reset demo restores START
    ===================================================================== */
-const STORE_KEY = 'secondshelf-demo-v2';
+const STORE_KEY = 'secondshelf-demo-v3';
 
 /* =====================================================================
    MAP DATA: mock neighbourhood (map units; 1 unit = 2 m), food catalogue, shelves
@@ -1648,11 +1804,31 @@ const FOOD_OF = Object.fromEntries(Object.entries(FOOD).flatMap(([c, items]) => 
 const ALL_PACKS = Object.keys(FOOD_OF);
 
 /* The three spec venues (CLAUDE.md §7) keep their distances; 29 generated food places share shelves too.
-   Generated names are fictional sample data (docs/open-questions.md Q36). */
+   Generated names are fictional sample data (docs/open-questions.md Q36).
+   Each venue carries a SEED shelf (capacity + items). The live shelf lives in Store.state.shelves and
+   syncVenues() copies counts, spots, foods and pause state back onto VENUES, so the map, list, Home,
+   point card and host dashboard always read the same numbers (hand-off §4). */
+const it = (id, name, cat, bb, qty, days, extra = {}) => ({ id, name, cat, bb, qty, days, owner: null, drop: null, missing: false, ...extra });
 const SPEC_VENUES = [
-  { id: 1, name: 'Café Daisy', type: 'Café', metres: 200, hours: 'Open until 20:00', spots: 4, status: 'open', shelf: 'shelf 2', addr: 'Aia 8', angle: 40, foods: ['Penne 1 kg', 'Tomato soup 400 g', 'Crackers 200 g'] },
-  { id: 2, name: 'Café Lumi', type: 'Café', metres: 1200, hours: 'Open until 18:00', spots: 0, status: 'open', shelf: '', addr: '', angle: 200, foods: ['Fusilli 500 g', 'Canned tuna 160 g'] },
-  { id: 3, name: 'Pizza Nonna', type: 'Pizzeria', metres: 2100, hours: '', spots: 3, status: 'open', shelf: '', addr: '', angle: 320, foods: ['Spaghetti 500 g', 'All-purpose flour 1 kg'] }
+  { id: 1, name: 'Café Daisy', type: 'Café', metres: 200, hours: 'Open until 20:00', status: 'open', shelf: 'shelf 2', code: 'DAISY-2', addr: 'Aia 8', angle: 40,
+    seed: { capacity: 10, items: [
+      it('d1', 'Fusilli pasta, 500 g', 'Pasta', '03/2027', 1, 0, { owner: 'brenda', mine: 'r-fusilli' }),
+      it('d2', 'Tomato soup, 400 g can', 'Canned soup', '11/2027', 2, 0),
+      it('d3', 'Crackers, 200 g', 'Crackers', '01/2027', 1, 7),
+      it('d4', 'Rice, 1 kg', 'Rice', '05/2027', 1, 6),
+      it('d5', 'Chickpeas, 400 g can', 'Canned beans', '10/2026', 1, 5)] } },
+  { id: 2, name: 'Café Lumi', type: 'Café', metres: 1200, hours: 'Open until 18:00', status: 'open', shelf: 'shelf 1', code: 'LUMI-1', addr: 'Kalamaja', angle: 200,
+    seed: { capacity: 6, items: [
+      it('l1', 'Fusilli pasta, 500 g', 'Pasta', '02/2027', 2, 1),
+      it('l2', 'Canned tuna, 160 g', 'Canned fish', '06/2028', 1, 2, { owner: 'brenda', mine: 'r-tuna' }),
+      it('l3', 'Oats, 500 g', 'Oats', '09/2027', 1, 3),
+      it('l4', 'Black tea, 20 bags', 'Tea', '12/2027', 1, 1),
+      it('l5', 'Biscuits, 300 g', 'Biscuits', '04/2027', 1, 4)] } },
+  { id: 3, name: 'Pizza Nonna', type: 'Pizzeria', metres: 2100, hours: '', status: 'open', shelf: 'shelf 1', code: 'NONNA-1', addr: '', angle: 320,
+    seed: { capacity: 6, items: [
+      it('n1', 'Spaghetti, 500 g', 'Pasta', '07/2027', 1, 2),
+      it('n2', 'Tomato pasta sauce, 400 g', 'Pasta sauce', '03/2027', 1, 1),
+      it('n3', 'Red lentils, 500 g', 'Lentils', '08/2027', 1, 3)] } }
 ];
 const GEN_PLACES = [
   ['Corner Bakery', 'Bakery'], ['Café Kastan', 'Café'], ['Green Bowl', 'Restaurant'], ['Pizzeria Forno', 'Pizzeria'], ['Deli Marta', 'Deli'],
@@ -1665,7 +1841,7 @@ const GEN_PLACES = [
 const VENUES = (() => {
   const r = rng(20261110), out = [];
   const at = (deg, metres) => { const a = deg * Math.PI / 180, u = metres / M_PER_UNIT; return { x: Math.round(ME.x + Math.cos(a) * u), y: Math.round(ME.y - Math.sin(a) * u) }; };
-  SPEC_VENUES.forEach(v => out.push({ ...v, ...at(v.angle, v.metres), dist: fmtDist(v.metres), full: v.spots === 0 }));
+  SPEC_VENUES.forEach(v => out.push({ ...v, ...at(v.angle, v.metres), dist: fmtDist(v.metres), baseStatus: v.status }));
   const HOURS = ['Open until 16:00', 'Open until 17:00', 'Open until 18:00', 'Open until 19:00', 'Open until 20:00', 'Open until 21:00', 'Open until 22:00'];
   const STATUS = { 4: 'full', 9: 'full', 17: 'full', 6: 'paused', 21: 'paused', 12: 'closed', 26: 'closed' };
   GEN_PLACES.forEach(([name, type], i) => {
@@ -1674,55 +1850,129 @@ const VENUES = (() => {
     while (tries < 200 && out.some(o => Math.hypot(o.x - p.x, o.y - p.y) < 90));
     const metres = Math.round(Math.hypot(p.x - ME.x, p.y - ME.y) * M_PER_UNIT);
     const st = STATUS[i] || 'open', full = st === 'full';
-    const foods = [...new Set(Array.from({ length: 1 + Math.floor(r() * 4) }, () => ALL_PACKS[Math.floor(r() * ALL_PACKS.length)]))];
-    out.push({ id: out.length + 1, name, type, ...p, metres, dist: fmtDist(metres), hours: st === 'closed' ? 'Closed now' : HOURS[Math.floor(r() * HOURS.length)],
-      spots: full ? 0 : 1 + Math.floor(r() * 5), full, status: full ? 'open' : st, shelf: '', addr: '', foods });
+    const packs = [...new Set(Array.from({ length: 1 + Math.floor(r() * 4) }, () => ALL_PACKS[Math.floor(r() * ALL_PACKS.length)]))];
+    const items = packs.map((pk, j) => it(`g${i}-${j}`, pk, FOOD_OF[pk], `${String(1 + Math.floor(r() * 12)).padStart(2, '0')}/2027`, 1, Math.floor(r() * 6)));
+    const spots = full ? 0 : 1 + Math.floor(r() * 5);
+    const id = out.length + 1;
+    out.push({ id, name, type, ...p, metres, dist: fmtDist(metres), hours: st === 'closed' ? 'Closed now' : HOURS[Math.floor(r() * HOURS.length)],
+      baseStatus: st === 'closed' ? 'closed' : 'open', shelf: 'shelf 1', code: 'SHELF-' + id, addr: '',
+      seed: { capacity: items.length + spots, items, paused: st === 'paused' ? { reason: 'Café closed', until: 'Tomorrow at opening' } : null } });
   });
   return out;
 })();
-const shelvesWith = cat => VENUES.filter(v => v.foods.some(f => FOOD_OF[f] === cat));
+const shelfOf = id => Store.state.shelves[id];
+const liveItems = sh => sh.items.filter(i => i.qty > 0);
+const shelfCount = sh => liveItems(sh).filter(i => !i.missing).reduce((n, i) => n + i.qty, 0);
+/* copy the live shelf state onto VENUES (call after every change) */
+function syncVenues() {
+  VENUES.forEach(v => {
+    const sh = shelfOf(v.id); if (!sh) return;
+    v.count = shelfCount(sh); v.capacity = sh.capacity;
+    v.spots = Math.max(0, sh.capacity - v.count); v.full = v.spots === 0;
+    v.items = liveItems(sh);
+    v.foods = v.items.filter(i => !i.missing).map(i => i.name);
+    v.cats = new Set(v.items.filter(i => !i.missing).map(i => i.cat));
+    v.paused = sh.paused;
+    v.status = v.baseStatus === 'closed' ? 'closed' : sh.paused ? 'paused' : 'open';
+  });
+}
+const shelvesWith = cat => VENUES.filter(v => v.cats && v.cats.has(cat));
+const matchItem = (v, cat) => (v.items || []).find(i => i.cat === cat && !i.missing);
 /* availability state used by markers, chips and buttons */
 const availKind = v => v.status === 'closed' ? 'closed' : v.status === 'paused' ? 'paused' : v.full ? 'full' : 'space';
 const availChip = v => { const k = availKind(v); return k === 'paused' ? UI.avail('closed', 'Paused') : k === 'closed' ? UI.avail('closed', 'Closed') : UI.avail(k, v.spots + ' spot' + (v.spots === 1 ? '' : 's')); };
 const canLeave = v => availKind(v) === 'space';
 const venue = id => VENUES.find(v => v.id === +id) || VENUES[0];
+const nowHM = () => new Date().toTimeString().slice(0, 5);
+const bbPast = bb => { const [m, y] = String(bb).split('/').map(Number); if (!m || !y) return false; const d = new Date(); return y < d.getFullYear() || (y === d.getFullYear() && m < d.getMonth() + 1); };
+const addedText = d => d === 0 ? 'added today' : d === 1 ? 'added yesterday' : `added ${d} days ago`;
 
 /* Scripted "AI" result for the one photo (CLAUDE.md §6) */
 const AI_ITEMS = () => [
-  { id: 'fusilli', name: 'Fusilli pasta, 500 g', short: 'Fusilli pasta', bb: '03/2027', qty: 1 },
-  { id: 'soup', name: 'Tomato soup, 400 g can', short: 'Tomato soup', bb: '08/2027', qty: 2 },
-  { id: 'crackers', name: 'Crackers, 200 g', short: 'Crackers', bb: '01/2027', qty: 1 }
+  { id: 'fusilli', name: 'Fusilli pasta, 500 g', short: 'Fusilli pasta', cat: 'Pasta', bb: '03/2027', qty: 1 },
+  { id: 'soup', name: 'Tomato soup, 400 g can', short: 'Tomato soup', cat: 'Canned soup', bb: '08/2027', qty: 2 },
+  { id: 'crackers', name: 'Crackers, 200 g', short: 'Crackers', cat: 'Crackers', bb: '01/2027', qty: 1 }
 ];
 
-/* Start state. Brenda is a returning giver: the M01-v2 frame shows 4 items already on shelves,
+/* Demo people. Brenda (giver) runs Scenarios A and C; Jonas (receiver, nothing on shelves) runs Scenario B. */
+const PERSONAS = {
+  brenda: { id: 'brenda', name: 'Brenda Kowalska', first: 'Brenda', email: 'brenda@example.com', initials: 'BK' },
+  jonas: { id: 'jonas', name: 'Jonas', first: 'Jonas', email: 'jonas@example.com', initials: 'J' }
+};
+/* Start state (Q27). Brenda is a returning giver: the M01-v2 frame shows 4 items already on shelves,
    and the G08 frame shows Active (2) / Used (1) after today's drop-off. */
-const START = () => ({
-  user: { name: 'Brenda Kowalska', first: 'Brenda', email: 'brenda@example.com', initials: 'BK' },
-  mode: 'consumer',
-  shelfItems: [
-    { name: 'Tomato soup', venue: 1, status: 'done' },
-    { name: 'Fusilli pasta', venue: 1, status: 'waiting' },
-    { name: 'All-purpose flour', venue: 3, status: 'done' },
-    { name: 'Canned tuna', venue: 2, status: 'waiting' }
-  ],
-  coupons: [
-    { id: 'c1', venue: 3, state: 'active', code: 'SS-4817' },
-    { id: 'c0', venue: 2, state: 'used', code: 'SS-4790' }
-  ],
-  bonuses: [],
-  draft: null,          // drop-off in progress: { shelf, photo, items, started }
-  sim: { tagFail: false, photoFail: false },   // set from the moderator menu (phase 3)
-  events: []
-});
+const START = (persona = 'brenda') => {
+  const shelves = {};
+  VENUES.forEach(v => { shelves[v.id] = JSON.parse(JSON.stringify({ capacity: v.seed.capacity, items: v.seed.items, paused: v.seed.paused || null })); });
+  const brenda = persona === 'brenda';
+  return {
+    persona, user: { ...PERSONAS[persona] },
+    onboarded: false, browse: false, role: 'leave',
+    mode: 'consumer',
+    shelves,
+    shelfItems: brenda ? [
+      { id: 'r-soup', name: 'Tomato soup', qty: 1, picked: 1, venue: 1, days: 3 },
+      { id: 'r-fusilli', name: 'Fusilli pasta', qty: 1, picked: 0, venue: 1, days: 0 },
+      { id: 'r-flour', name: 'All-purpose flour', qty: 1, picked: 1, venue: 3, days: 4 },
+      { id: 'r-tuna', name: 'Canned tuna', qty: 1, picked: 0, venue: 2, days: 2 }
+    ] : [],
+    coupons: brenda ? [
+      { id: 'c1', venue: 3, state: 'active', code: 'SS-4817' },
+      { id: 'c0', venue: 2, state: 'used', code: 'SS-4790', usedAt: 'yesterday at 17:30' }
+    ] : [],
+    couponsThisMonth: brenda ? 1 : 0,
+    bonuses: [],
+    impact: { passed: 11, saved: 8, weeks: [2, 4, 1, 4] },
+    alert: null,                 // food alert, e.g. { food: 'Pasta', km: 1 }
+    draft: null,                 // drop-off in progress
+    pickup: null,                // pickup in progress
+    lastDrop: null, lastPickup: null,
+    rescueBanner: null,          // { count, venue } shown on Home once (G09b)
+    seenTravel: false,
+    reports: [],
+    host: {
+      status: 'none',            // none · applied · verified · live
+      venue: 1, owner: 'Anna', staff: ['Anna', 'Brenda'], reminder: '09:00',
+      form: { name: 'Café Daisy', addr: 'Aia 8, Tallinn', reg: '', capacity: '10', reminder: '09:00' },
+      kit: { sign: false, nfc: false, qr: false, window: false },
+      checkDue: true, missed: false, nextBy: 'Anna',
+      lastCheck: null, checkStarted: null,
+      stats: { pickups: 9, redeemed: 3 }
+    },
+    log: [
+      { kind: 'pickup', text: 'Pickup · 2 items', time: '08:42' },
+      { kind: 'dropoff', text: 'Drop-off · 3 items · Donor A7', time: '08:10' },
+      { kind: 'redeem', text: 'Coupon redeemed · SS-4790', time: 'Yesterday 17:30' },
+      { kind: 'check', text: 'Shelf check done · Anna', time: 'Yesterday 09:04' }
+    ],
+    sim: { tagFail: false, photoFail: false, cap: false },
+    tasks: {},                   // running task timers
+    timings: [],                 // finished task durations
+    events: []
+  };
+};
 const Store = {
   state: null,
   load() {
-    try { const raw = localStorage.getItem(STORE_KEY); this.state = raw ? Object.assign(START(), JSON.parse(raw)) : START(); }
-    catch (e) { this.state = START(); }
+    try { const raw = localStorage.getItem(STORE_KEY); const st = raw ? JSON.parse(raw) : null; this.state = st && st.v === 3 ? st : Object.assign(START(), { v: 3 }); }
+    catch (e) { this.state = Object.assign(START(), { v: 3 }); }
+    syncVenues();
   },
-  save() { try { localStorage.setItem(STORE_KEY, JSON.stringify(this.state)); } catch (e) {} },
-  reset() { this.state = START(); this.save(); },
-  log(type, data = {}) { this.state.events.push({ t: new Date().toISOString(), type, ...data }); this.save(); }
+  save() { syncVenues(); try { localStorage.setItem(STORE_KEY, JSON.stringify(this.state)); } catch (e) {} },
+  reset(persona = 'brenda') { this.state = Object.assign(START(persona), { v: 3 }); this.save(); },
+  log(type, data = {}) { const ev = this.state.events; ev.push({ t: new Date().toISOString(), type, ...data }); if (ev.length > 600) ev.splice(0, ev.length - 600); this.save(); }
+};
+/* Host activity log (H06) */
+const hostLog = (kind, text) => { Store.state.log.unshift({ kind, text, time: nowHM() }); };
+/* Task timing (hand-off §6): A drop-off, B pickup, C daily check. Never shown to participants. */
+const Task = {
+  start(task) { Store.state.tasks[task] = Date.now(); Store.log('task_start', { task }); },
+  done(task) {
+    const t0 = Store.state.tasks[task]; if (!t0) return;
+    const ms = Date.now() - t0; delete Store.state.tasks[task];
+    Store.state.timings.unshift({ task, ms, at: new Date().toISOString() }); Store.state.timings.length = Math.min(Store.state.timings.length, 20);
+    Store.log('task_done', { task, ms });
+  }
 };
 
 /* =====================================================================
@@ -2011,42 +2261,136 @@ function highlight(text, q) {
 const SAMPLE_PHOTO = `<div class="capture__img placeholder" style="background:var(--surface-subtle)">${icon('photo', 'icon--lg')}<span>Sample photo: pasta, 2 tins of soup, crackers</span></div>`;
 
 /* =====================================================================
-   OVERLAYS: toast + bottom sheet
+   OVERLAYS (hand-off §3.1): toast, bottom sheet, overlay banner. Written once, reused everywhere.
    ===================================================================== */
+/* Toast: fades up above the tab bar / action bar. Undo toasts last 5 s. */
 function toast(kind, html, { action, onAction, ms = 5000, ic } = {}) {
   const host = $('#toasts');
   const el = document.createElement('div');
   el.innerHTML = UI.banner(kind, html, { ic, action: action ? `<button type="button" class="btn btn--link banner__action">${icon('undo')}<span>${esc(action)}</span></button>` : '' });
-  const t = el.firstElementChild; t.classList.add('toast');
+  const t = el.firstElementChild; t.classList.add('toast'); t.setAttribute('role', 'status');
   host.appendChild(t);
   const close = () => { t.classList.add('is-leaving'); setTimeout(() => t.remove(), 160); };
   if (action) $('.banner__action', t).addEventListener('click', () => { onAction && onAction(); close(); });
   setTimeout(close, ms);
   return close;
 }
-function openSheet(title, body, { onClose } = {}) {
+/* Bottom sheet: slides up, scrim fades in; drag down / scrim tap / Esc / Close closes; focus moves in and returns on close. */
+function openSheet(title, body, { onClose, head = true, label = '' } = {}) {
   const host = $('#sheet');
+  if (host._close) host._close(true);
   const lastFocus = document.activeElement;
+  const token = host._token = (host._token || 0) + 1;
   host.innerHTML = `<div class="sheet-scrim" data-sheet-close></div>
-    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
-      <div class="sheet__grabber" aria-hidden="true"></div>
-      <div class="sheet__head"><h2 class="t-h3" id="sheet-title">${esc(title)}</h2>${UI.iconButton('close', 'Close', 'data-sheet-close')}</div>
-      ${body}</div>`;
+    <div class="sheet" role="dialog" aria-modal="true" ${head ? 'aria-labelledby="sheet-title"' : `aria-label="${esc(label || title)}"`}>
+      <button type="button" class="sheet__grab" aria-label="Close" data-sheet-close><span class="sheet__grabber" aria-hidden="true"></span></button>
+      ${head ? `<div class="sheet__head"><h2 class="t-h3" id="sheet-title">${esc(title)}</h2>${UI.iconButton('close', 'Close', 'data-sheet-close')}</div>` : ''}
+      <div class="sheet__body">${body}</div></div>`;
   host.classList.add('is-open');
-  const close = () => { host.classList.remove('is-open'); host.innerHTML = ''; onClose && onClose(); lastFocus && lastFocus.focus && lastFocus.focus(); };
-  $$('[data-sheet-close]', host).forEach(b => b.addEventListener('click', close));
-  setTimeout(() => { const f = $('.sheet button, .sheet input', host); f && f.focus(); }, 50);
+  const sheet = $('.sheet', host);
+  let closed = false;
+  const close = (instant = false) => {
+    if (closed) return; closed = true; host._close = null;
+    const done = () => { if (host._token === token) { host.classList.remove('is-open', 'is-closing'); host.innerHTML = ''; } onClose && onClose(); if (lastFocus && lastFocus.isConnected && lastFocus.focus) lastFocus.focus({ preventScroll: true }); };
+    if (instant || reduceMotion()) { done(); return; }
+    host.classList.add('is-closing'); setTimeout(done, 240);
+  };
+  host.addEventListener('click', function h(e) { if (!host.contains(sheet)) { host.removeEventListener('click', h); return; } if (e.target.closest('[data-sheet-close]')) close(); });
+  // drag down from the grabber or the head to close
+  let y0 = null, dy = 0;
+  const grabZone = t => t.closest('.sheet__grab, .sheet__head');
+  sheet.addEventListener('touchstart', e => { if (!grabZone(e.target)) return; y0 = e.touches[0].clientY; dy = 0; sheet.style.transition = 'none'; }, { passive: true });
+  sheet.addEventListener('touchmove', e => { if (y0 == null) return; dy = Math.max(0, e.touches[0].clientY - y0); sheet.style.transform = `translateY(${dy}px)`; }, { passive: true });
+  sheet.addEventListener('touchend', () => { if (y0 == null) return; y0 = null; sheet.style.transition = ''; if (dy > 80) close(); else sheet.style.transform = ''; });
+  setTimeout(() => { const f = $('.sheet__body input, .sheet__body button, .sheet__body select, .sheet__body textarea', host) || $('.sheet button', host); f && f.focus({ preventScroll: true }); }, 60);
   host._close = close;
   return close;
 }
 const closeSheet = () => { const h = $('#sheet'); h._close && h._close(); };
 
+/* Overlay banner (G01, G09b, food alert, reminders): slides down from the top, swipe up or Close dismisses,
+   stays until dismissed unless autoHide; never covers the tab bar (it sits at the top of the screen). */
+const Overlay = {
+  current: null,
+  show(html, { id = 'ov', autoHide = 0, onClose, label = 'Notification' } = {}) {
+    this.hide(true);
+    const host = $('#overlay');
+    const el = document.createElement('div');
+    el.className = 'ov'; el.dataset.ov = id; el.setAttribute('role', 'region'); el.setAttribute('aria-label', label); el.setAttribute('aria-live', 'polite');
+    el.innerHTML = html; host.appendChild(el);
+    let y0 = null;
+    el.addEventListener('touchstart', e => { y0 = e.touches[0].clientY; }, { passive: true });
+    el.addEventListener('touchmove', e => { if (y0 == null) return; const d = Math.min(0, e.touches[0].clientY - y0); el.style.transform = `translateY(${d}px)`; }, { passive: true });
+    el.addEventListener('touchend', e => { if (y0 == null) return; const d = (e.changedTouches[0].clientY - y0); y0 = null; if (d < -40) this.hide(); else el.style.transform = ''; });
+    el.addEventListener('click', e => { if (e.target.closest('[data-ov-close]')) this.hide(); });
+    const timer = autoHide ? setTimeout(() => this.hide(), autoHide) : null;
+    this.current = { el, onClose, timer, id };
+    return el;
+  },
+  hide(instant = false) {
+    const c = this.current; if (!c) return; this.current = null; clearTimeout(c.timer);
+    const done = () => { c.el.remove(); c.onClose && c.onClose(); };
+    if (instant || reduceMotion()) done(); else { c.el.classList.add('is-leaving'); setTimeout(done, 240); }
+  }
+};
+
+/* Loading button: spinner with the label kept, disabled while loading (simulated network step). */
+function setLoading(btn, on) {
+  if (!btn) return;
+  if (on) {
+    btn._lead = $('svg', btn); btn._lead && btn._lead.remove();
+    btn.insertAdjacentHTML('afterbegin', '<span class="spinner" aria-hidden="true"></span>');
+    btn.classList.add('is-loading'); btn.setAttribute('aria-busy', 'true'); btn.disabled = true;
+  } else {
+    const sp = $('.spinner', btn); sp && sp.remove(); btn._lead && btn.prepend(btn._lead);
+    btn.classList.remove('is-loading'); btn.removeAttribute('aria-busy'); btn.disabled = false;
+  }
+}
+const simulate = async (btn, ms = 700) => { setLoading(btn, true); await wait(ms); };
+
+/* Gated (disabled) closing button: aria-disabled + a one-line hint under it saying why.
+   Tapping it while disabled scrolls to and briefly highlights what is missing (data-missing selector). */
+function gate(btn, enabled) {
+  if (!btn) return;
+  btn.setAttribute('aria-disabled', String(!enabled));
+  const hint = btn.parentElement && $('.gate__hint', btn.parentElement);
+  if (hint) hint.hidden = enabled;
+}
+function flash(els) {
+  els = (Array.isArray(els) ? els : [els]).filter(Boolean);
+  if (!els.length) return;
+  els[0].scrollIntoView({ block: 'center', behavior: reduceMotion() ? 'auto' : 'smooth' });
+  els.forEach(el => { el.classList.remove('is-flash'); void el.offsetWidth; el.classList.add('is-flash'); setTimeout(() => el.classList.remove('is-flash'), 1300); });
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('[aria-disabled="true"]');
+  if (!b) return;
+  e.preventDefault(); e.stopImmediatePropagation();
+  const sel = b.dataset.missing;
+  if (sel) { const scope = b.closest('.screen, .sheet') || document; flash($$(sel, scope)); }
+  const hint = b.parentElement && $('.gate__hint', b.parentElement);
+  if (hint) announce(hint.textContent);
+}, true);
+
+/* Long press (800 ms) on the wordmark / logo / greeting opens the moderator menu */
+(() => {
+  let t = null;
+  const start = e => { const l = e.target.closest('[data-logo]'); if (!l) return; t = setTimeout(() => { t = null; Mod.open(); }, 800); };
+  const stop = () => { if (t) { clearTimeout(t); t = null; } };
+  document.addEventListener('pointerdown', start); ['pointerup', 'pointercancel', 'pointerleave', 'pointermove'].forEach(ev => document.addEventListener(ev, e => { if (ev !== 'pointermove' || Math.abs(e.movementY) > 6) stop(); }));
+  document.addEventListener('contextmenu', e => { if (e.target.closest('[data-logo]')) e.preventDefault(); });
+})();
+
 /* =====================================================================
-   ROUTER: hash routes, push/back direction, tab bar visibility
+   ROUTER: hash routes, push / back / tab crossfade, finished flows replace history
    ===================================================================== */
+const TAB_ROOTS = ['/home', '/map', '/coupons', '/me', '/host/dashboard', '/host/check', '/host/redeem'];
+const defaultRoute = () => !Store.state.onboarded ? '#/welcome' : Store.state.mode === 'host' ? '#/host/dashboard' : '#/home';
+const homeRoute = () => Store.state.mode === 'host' ? '#/host/dashboard' : '#/home';
 const Router = {
   routes: [],
   stack: [],
+  scroll: {},
   add(pattern, view, opts = {}) {
     const keys = [];
     const re = new RegExp('^' + pattern.replace(/:([a-z]+)/g, (_, k) => (keys.push(k), '([^/]+)')) + '$');
@@ -2062,46 +2406,69 @@ const Router = {
     return null;
   },
   go(hash) { if (location.hash === hash) this.render('none'); else location.hash = hash; },
-  replace(hash) { this._replace = true; location.replace(hash); },
-  back() { if (this.stack.length > 1) history.back(); else this.go(DEFAULT_ROUTE); },
+  replace(hash) { if (location.hash === hash) { this.render(this._fade ? 'fade' : 'none'); this._fade = false; return; } this._replace = true; location.replace(hash); },
+  back() { if (this.stack.length > 1) history.back(); else { this._fade = true; this.replace(homeRoute()); } },
+  /* Flow done → Home: step history back to where the flow was entered, then replace it,
+     so Back from Home doesn't return into the finished flow. */
+  finish(hash = homeRoute()) {
+    const s = this.stack; let idx = -1;
+    for (let i = s.length - 2; i >= 0; i--) { const m = this.match(s[i].split('?')[0]); if (!m || !m.r.opts.flow) { idx = i; break; } }
+    const steps = idx < 0 ? 0 : s.length - 1 - idx;
+    if (steps <= 0) { this.stack = []; this._fade = true; this.replace(hash); return; }
+    this._after = { hash, keep: idx + 1 }; history.go(-steps);
+  },
   direction(raw) {
     const s = this.stack;
-    if (this._replace) { this._replace = false; s[s.length - 1] = raw; return 'fwd'; }
+    if (this._replace) { this._replace = false; s[s.length - 1] = raw; if (!s.length) s.push(raw); if (this._fade) { this._fade = false; return 'fade'; } return 'fwd'; }
     if (s.length > 1 && s[s.length - 2] === raw) { s.pop(); return 'back'; }
     if (s[s.length - 1] === raw) return 'none';
     s.push(raw); return s.length === 1 ? 'none' : 'fwd';
   },
   render(dirOverride) {
     const { path, query, raw } = this.parse();
+    if (this._after) {
+      const a = this._after; this._after = null; this.stack.length = a.keep;
+      if ('#' + raw !== a.hash) { this._fade = true; this._replace = true; location.replace(a.hash); return; }
+      this.stack[this.stack.length - 1] = raw; dirOverride = 'fade';
+    }
     const found = this.match(path);
-    if (!found) { location.replace('#' + DEFAULT_ROUTE.replace(/^#/, '')); return; }
-    const dir = dirOverride || this.direction(raw);
+    if (!found) { this._fade = true; this._replace = true; location.replace(defaultRoute()); return; }
     const { r, params } = found;
-    if (r.opts.guard && !r.opts.guard({ params, query })) { this.replace(r.opts.guardTo || DEFAULT_ROUTE); return; }
+    if (r.opts.guard && !r.opts.guard({ params, query })) { this._fade = true; this.replace(r.opts.guardTo || homeRoute()); return; }
     const stage = $('#stage');
     const old = stage.firstElementChild && !stage.firstElementChild.classList.contains('leave-fwd') && !stage.firstElementChild.classList.contains('leave-back') ? stage.firstElementChild : null;
+    let dir = dirOverride || this.direction(raw);
+    const isRoot = TAB_ROOTS.includes(path) && !raw.includes('?');
+    if (old && old._root && isRoot && old._path !== path && dir !== 'none') dir = 'tab';
+    if (old && old._root) this.scroll[old._path] = old.scrollTop;
     $$('.screen', stage).forEach(s => { if (s !== old) s.remove(); });
     if (old && old._cleanup) { old._cleanup(); old._cleanup = null; }
+    { const sh = $('#sheet'); sh._close && sh._close(true); } if (Overlay.current && !Overlay.current.keep) Overlay.hide(true);
     const el = document.createElement('section');
     el.className = 'screen' + (r.opts.cls ? ' ' + r.opts.cls : '');
     el.setAttribute('aria-label', r.opts.title || 'SecondShelf');
+    el._path = path; el._root = isRoot;
     el.innerHTML = r.view.html({ params, query });
     stage.appendChild(el);
-    // tab bar
+    // tab bar (host routes always show the host tabs)
     const tb = $('#tabbar');
-    if (r.opts.tabs) { tb.hidden = false; tb.innerHTML = UI.tabBar(Store.state.mode, r.opts.tabs); $('#app').classList.add('has-tabs'); }
+    if (r.opts.tabs) { tb.hidden = false; tb.innerHTML = UI.tabBar(r.opts.tabMode || Store.state.mode, r.opts.tabs); $('#app').classList.add('has-tabs'); }
     else { tb.hidden = true; $('#app').classList.remove('has-tabs'); }
-    // transition
+    $('#app').classList.toggle('has-actionbar', !!r.opts.actionbar);
+    // transition: push / back slide 250 ms, tab crossfade 150 ms, reduced motion = instant swap
     const anim = !reduceMotion() && old && dir !== 'none';
-    if (anim) {
+    if (anim && (dir === 'tab' || dir === 'fade')) { el.classList.add('enter-fade'); old.remove(); setTimeout(() => el.classList.remove('enter-fade'), 160); }
+    else if (anim) {
       el.classList.add(dir === 'back' ? 'enter-back' : 'enter-fwd');
       old.classList.add(dir === 'back' ? 'leave-back' : 'leave-fwd');
       setTimeout(() => { old.remove(); el.classList.remove('enter-back', 'enter-fwd'); }, 260);
     } else if (old) old.remove();
+    if (isRoot && (dir === 'tab' || dir === 'back') && this.scroll[path]) el.scrollTop = this.scroll[path];
     document.title = (r.opts.title ? r.opts.title + ' · ' : '') + 'SecondShelf';
-    Store.log('view', { route: raw || path });
+    Store.log('view', { route: raw || path, code: r.opts.code || '' });
     r.view.mount && r.view.mount(el, { params, query });
     const h = $('h1', el); if (h && dir !== 'none') { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); }
+    document.dispatchEvent(new CustomEvent('routed', { detail: { path, query, code: r.opts.code } }));
   }
 };
 
@@ -2187,7 +2554,7 @@ const NFC = {
   async tap(section, { onFound, fail = false, opts = {} } = {}) {
     section = this.render(section, 'scanning', opts);
     await wait(1200);
-    if (fail) { this.render(section, 'notfound', opts); return; }
+    if (fail) { section = this.render(section, 'notfound', opts); buzzFail(); const st = $('.nfc__stage', section); if (st) st.classList.add('is-shake'); opts.onFail && opts.onFail(); return; }
     await this.found(section, { onFound, opts });
   },
   async found(section, { onFound, opts = {} } = {}) {
@@ -2452,22 +2819,6 @@ const Flow = {
 };
 const hasDraft = () => !!Store.state.draft;
 
-/* ---------- M01 Home ---------- */
-Views.home = {
-  html() {
-    const s = Store.state;
-    return `${UI.greeting(s.user)}
-    <div class="stack">
-      <div class="action-cards">${UI.actionCard('leave')}${UI.actionCard('find')}</div>
-      ${UI.statusList(s.shelfItems)}
-      <section aria-labelledby="pn-title">
-        <div class="sechead"><h2 class="t-section" id="pn-title">Points near you</h2><a class="btn btn--link" href="#/map">Open map</a></div>
-        <div class="carousel">${VENUES.slice(0, 3).map(v => UI.shelfCard({ n: v.id, dist: v.dist, venue: v.name, hours: v.hours, kind: v.full ? 'full' : 'space', spots: v.spots + ' spots' })).join('')}</div>
-      </section>
-    </div>`;
-  }
-};
-
 /* ---------- G02 Map (R01 with ?find=1): Leaflet on a mock, token-styled neighbourhood ---------- */
 let MAP_SVG_CACHE = '';
 function mapSvg() {
@@ -2563,7 +2914,7 @@ Views.map = {
     const passes = v => (!MapUI.filters.has('Open now') || v.status !== 'closed')
       && (!MapUI.filters.has('Has space') || availKind(v) === 'space')
       && (!MapUI.filters.has('Nearby') || v.metres <= 1000)
-      && (!MapUI.food || v.foods.some(f => FOOD_OF[f] === MapUI.food));
+      && (!MapUI.food || v.cats.has(MapUI.food));
     const visible = () => VENUES.filter(passes);
     const inView = () => { const b = map.getBounds(); return visible().filter(v => b.contains(ll(v.x, v.y))).sort((a, b2) => a.metres - b2.metres); };
     const countText = n => MapUI.food ? `${n} shel${n === 1 ? 'f has' : 'ves have'} ${MapUI.food.toLowerCase()}` : `${n} location${n === 1 ? '' : 's'} in this area`;
@@ -2591,7 +2942,7 @@ Views.map = {
       const vs = inView();
       list.innerHTML = (vs.length
         ? `<div class="stack-8">${vs.map(v => {
-            const match = MapUI.food ? v.foods.find(f => FOOD_OF[f] === MapUI.food) : '';
+            const mi = MapUI.food ? matchItem(v, MapUI.food) : null, match = mi ? mi.name : '';
             const k = availKind(v);
             return UI.resultRow({ n: v.id, venue: v.name, meta: (match ? match + ' · ' : '') + v.dist + (v.hours ? ' · ' + v.hours : ''), kind: k === 'space' ? 'space' : k === 'full' ? 'full' : 'closed', chip: availChip(v) })
               .replace(`href="#/take/point/${v.id}"`, `href="#/point/${v.id}"`);
@@ -3057,27 +3408,605 @@ Views.couponCode = {
 };
 
 /* =====================================================================
-   ROUTES (§4)
+   UI ADDITIONS (16 Nov): shared pieces for the new screens
    ===================================================================== */
-const DEFAULT_ROUTE = '#/home';
+Object.assign(UI, {
+  /* Step header. layout 'inline' = title left, "Step n of N" right (G04–G06, R04–R05, H01–H05 frames);
+     'stack' = Back/Close, centred overline, bar, then a big title below (O02–O04, R04c, H05b frames). */
+  stepHeader({ title, step, of = 3, first = false, back = 'back', layout = 'inline', h1 = '' }) {
+    const nav = first ? UI.iconButton('close', 'Close', `data-action="${back}"`) : UI.iconButton('back', 'Back', `data-action="${back}"`);
+    const bar = `<div class="progress" role="progressbar" aria-label="Step ${step} of ${of}" aria-valuemin="1" aria-valuemax="${of}" aria-valuenow="${step}">
+        ${Array.from({ length: of }, (_, i) => `<span class="progress__seg${i < step ? ' is-on' : ''}${i < step - 1 ? ' is-old' : ''}"></span>`).join('')}</div>`;
+    if (layout === 'stack') return `<header class="stephead stephead--stack"><div class="stephead__bar">${nav}<span class="t-overline stephead__step">Step ${step} of ${of}</span></div>${bar}</header>${h1 ? `<h1 class="t-h1" style="margin-bottom:var(--space-8)">${esc(h1)}</h1>` : ''}`;
+    return `<header class="stephead">
+      <div class="stephead__bar">${nav}<h1 class="stephead__title">${esc(title)}</h1><span class="t-overline stephead__step">Step ${step} of ${of}</span></div>${bar}</header>`;
+  },
+  /* closing action that can be disabled with a reason; see gate() */
+  gated({ label, variant = 'primary', icon: ic, attrs = '', enabled = false, hint = '', missing = '', id = '' }) {
+    return `<div class="gate">${UI.button({ label, variant, icon: ic, block: true, attrs: `${id ? `id="${id}"` : ''} aria-disabled="${!enabled}" ${missing ? `data-missing="${esc(missing)}"` : ''} ${attrs}` })}${hint ? `<p class="gate__hint" ${enabled ? 'hidden' : ''}>${esc(hint)}</p>` : ''}</div>`;
+  },
+  tick(kind = 'done', ic) {
+    return `<div class="tick${kind === 'problem' ? ' tick--problem' : kind === 'brand' ? ' tick--brand' : ''}" aria-hidden="true">${icon(ic || (kind === 'problem' ? 'needs-attention' : 'done'))}</div>`;
+  },
+  illus(label) { return `<div class="illus" style="min-height:var(--size-illus)"><span class="placeholder">${icon('photo')}<strong>Illustration placeholder</strong><span>${esc(label)}</span></span></div>`; },
+  note(html, ic = 'info') { return `<div class="note">${icon(ic)}<div>${html}</div></div>`; },
+  radioRow({ name, value, label, checked = false, sub = '' }) {
+    return `<button type="button" role="radio" class="radiorow${checked ? ' is-on' : ''}" aria-checked="${checked}" data-radio="${esc(name)}" data-value="${esc(value)}"><span class="radio" aria-hidden="true"></span><span class="grow">${esc(label)}${sub ? `<span class="t-small c-secondary" style="display:block">${esc(sub)}</span>` : ''}</span></button>`;
+  },
+  greeting(u) {
+    return `<header class="greet"><h1 class="t-h1" data-logo>Hi ${esc(u.first)}</h1><a href="#/me" class="avatar" aria-label="Me">${esc(u.initials)}</a></header>`;
+  },
+  actionCard(kind, state = '') {
+    const k = kind === 'leave'
+      ? { tile: 'tile--accent', ic: 'sealed-food', icls: 'icon--accent', title: 'Leave food', desc: 'Pass on sealed food you won’t eat', route: '#/map' }
+      : { tile: 'tile--reward', ic: 'search', icls: 'icon--reward', title: 'Find food', desc: 'Find free food at shelves near you', route: '#/map?find=1' };
+    return `<a class="action-card ${state}" href="${k.route}" data-action="${kind}">
+      <span class="tile ${k.tile}">${icon(k.ic, 'icon--tile ' + k.icls)}</span>
+      <span class="action-card__title">${k.title}</span>
+      <span class="action-card__desc">${k.desc}</span></a>`;
+  },
+  /* M01 "Your food on shelves": picked up / partly / on the shelf n days (L12) */
+  rowStatus(r) {
+    if (r.picked >= r.qty) return { done: true, text: 'Picked up' };
+    if (r.picked > 0) return { done: false, text: `${r.picked} of ${r.qty} picked up` };
+    return { done: false, text: r.days ? `On the shelf ${r.days} day${r.days === 1 ? '' : 's'}` : 'On the shelf' };
+  },
+  statusList(items) {
+    const total = items.reduce((n, r) => n + (r.qty || 1), 0), rows = items.slice(0, 4);
+    return `<section class="statuslist" aria-labelledby="yf-title"><div class="statuslist__head"><h2 class="t-section" id="yf-title">Your food on shelves</h2><span class="pill" aria-live="polite">${total} item${total === 1 ? '' : 's'}</span></div>
+      ${rows.map(r => { const st = UI.rowStatus(r); return `<div class="statuslist__row"><span class="tile tile--sm ${st.done ? '' : 'tile--canvas'}">${icon(st.done ? 'done' : 'paused', 'icon--sm ' + (st.done ? 'icon--success' : 'icon--warning'))}</span>
+        <span class="statuslist__name">${esc(r.name)}${r.qty > 1 ? ' ×' + r.qty : ''} <small>· ${esc(st.text)}</small></span><span class="statuslist__venue">${esc(venue(r.venue).name)}</span></div>`; }).join('')}
+      ${items.length > 4 ? `<div class="center">${UI.button({ label: `See all ${items.length}`, variant: 'link', attrs: 'data-href="#/bonus"' })}</div>` : ''}</section>`;
+  },
+  impact({ month = monthName(), passed = 11, saved = 8, tap = false } = {}) {
+    const inner = `<div class="impact__head"><span class="t-overline">My impact · ${esc(month)}</span>${icon('saved-food')}</div>
+      <div class="impact__nums"><div><p class="impact__num">${passed}</p><p class="impact__cap">items passed on</p></div>
+      <div><p class="impact__num">${saved}</p><p class="impact__cap">saved by neighbours</p></div></div>`;
+    return tap ? `<a class="impact impact--tap card--tap" href="#/impact" aria-label="My impact this month: ${passed} items passed on, ${saved} saved by neighbours. Open monthly impact">${inner}</a>` : `<section class="impact">${inner}</section>`;
+  },
+  hostCard() {
+    const host = Store.state.mode === 'host';
+    return `<button type="button" class="hostcard" data-action="host-mode"><span class="tile tile--sand">${icon(host ? 'switch-role' : 'community-shelf', 'icon--on-inverse')}</span>
+      <span class="grow"><span class="t-title" style="display:block">${host ? 'Switch to leave and find' : 'Switch to host mode'}</span><span class="settings__sub">${host ? 'Home, Map and Coupons tabs' : 'Run a community shelf at your café'}</span></span>${icon('chevron-right', 'chev')}</button>`;
+  }
+});
+const monthName = () => new Date().toLocaleString('en-GB', { month: 'long' });
+const pl = (n, one, many = one + 's') => `${n} ${n === 1 ? one : many}`;
+/* radio groups (role="radio" buttons with data-radio="group") */
+document.addEventListener('click', e => {
+  const r = e.target.closest('[role="radio"][data-radio]');
+  if (!r) return;
+  const grp = r.dataset.radio, scope = r.closest('[role="radiogroup"]') || document;
+  $$(`[data-radio="${grp}"]`, scope).forEach(b => { const on = b === r; b.setAttribute('aria-checked', on); b.classList.toggle('is-on', on); });
+  r.dispatchEvent(new CustomEvent('radio', { bubbles: true, detail: { name: grp, value: r.dataset.value } }));
+});
+
+/* =====================================================================
+   OPS: every action updates every place that shows it (hand-off §4)
+   ===================================================================== */
+const Ops = {
+  /* giver drop-off (G06 Confirm) */
+  dropOff(venueId, items) {
+    const s = Store.state, sh = shelfOf(venueId), n = items.reduce((a, i) => a + i.qty, 0), stamp = Date.now();
+    const bid = 'b' + stamp, rows = [];
+    items.forEach((i, k) => {
+      const rowId = 'r' + stamp + k;
+      sh.items.push({ id: 'x' + stamp + k, name: i.name, cat: i.cat || 'Pasta', bb: i.bb, qty: i.qty, days: 0, owner: s.persona, drop: bid, mine: rowId, missing: false });
+      rows.push({ id: rowId, name: i.short || shortName(i.name), qty: i.qty, picked: 0, venue: venueId, days: 0, drop: bid });
+    });
+    s.shelfItems.unshift(...rows);
+    s.bonuses.unshift({ id: bid, venue: venueId, picked: 0, total: n, rows: rows.map(r => r.id), at: Date.now() });
+    const capped = !!s.sim.cap;
+    let cid = null;
+    if (!capped) { cid = 'c' + stamp; s.coupons.unshift({ id: cid, venue: venueId, state: 'active', code: 'SS-4821' }); s.couponsThisMonth++; }
+    s.sim.cap = false;
+    s.impact.passed += n;
+    s.lastDrop = { venue: venueId, count: n, coupon: cid, bonus: bid, capped };
+    hostLog('dropoff', `Drop-off · ${pl(n, 'item')} · Donor A7`);
+    Store.save();
+    return s.lastDrop;
+  },
+  /* receiver pickup (R05 Confirm, X01, Simulate). picks = [{ id, qty }]. app=false: no-app pickup, no Rescue Bonus move (X01). */
+  pickup(venueId, picks, { app = true, source = 'app' } = {}) {
+    const s = Store.state, sh = shelfOf(venueId); let n = 0, mine = 0;
+    picks.forEach(p => {
+      const item = sh.items.find(i => i.id === p.id); if (!item) return;
+      const q = Math.min(p.qty, item.qty); if (q <= 0) return;
+      item.qty -= q; n += q;
+      if (item.owner) {
+        const row = s.shelfItems.find(r => r.id === item.mine);
+        if (row) row.picked = Math.min(row.qty, row.picked + q);
+        if (app && item.drop) { const b = s.bonuses.find(x => x.id === item.drop); if (b) b.picked = Math.min(b.total, b.picked + q); }
+        if (item.owner === s.persona) mine += q;
+      }
+    });
+    sh.items = sh.items.filter(i => i.qty > 0);
+    s.host.stats.pickups++;
+    if (mine) s.impact.saved += mine;
+    hostLog('pickup', `Pickup · ${pl(n, 'item')}${source === 'web' ? ' · no app' : ''}`);
+    if (mine && s.persona === 'brenda') s.rescueBanner = { count: mine, venue: venueId };
+    Store.save();
+    return n;
+  },
+  /* report / "Not here?" (R05, R07): the item greys out; the bonus is not changed (open question Q46) */
+  report(venueId, itemId, reason, note = '') {
+    const s = Store.state, sh = shelfOf(venueId), item = sh.items.find(i => i.id === itemId);
+    if (item && (reason === 'Missing' || reason === 'Not here')) item.missing = true;
+    if (item) item.flag = reason;
+    s.reports.push({ venue: venueId, item: itemId, reason, note, t: Date.now() });
+    hostLog('report', `Report · ${item ? shortName(item.name) : 'shelf'} · ${reason}`);
+    Store.save();
+  },
+  pause(venueId, reason, until) { shelfOf(venueId).paused = { reason, until }; hostLog('pause', `Shelf paused · ${reason}`); Store.save(); },
+  resume(venueId) { shelfOf(venueId).paused = null; hostLog('pause', 'Shelf open again'); Store.save(); },
+  redeem(code) {
+    const s = Store.state, c = s.coupons.find(x => x.code === code && x.state === 'active') || s.coupons.find(x => x.code === code);
+    if (c) { c.state = 'used'; c.usedAt = 'today at ' + nowHM(); }
+    s.host.stats.redeemed++;
+    s.redeemed = s.redeemed || {}; s.redeemed[code] = 'today at ' + nowHM();
+    hostLog('redeem', `Coupon redeemed · ${code}`);
+    Store.save();
+  }
+};
+
+/* =====================================================================
+   SCREEN REGISTRY: #/screens, moderator "Jump to screen", docs/review-status.md
+   status: frame = Built from frame · noframe = Built without frame · placeholder · not = Not built
+   ===================================================================== */
+const SCREENS = [
+  ['Onboarding', [
+    ['O01', 'Welcome', '#/welcome', 'O01-welcome', 'frame', 'Q5, Q6, Q41'],
+    ['O02', 'How it works (Step 1 of 3)', '#/how', 'O02-how-it-works', 'frame', 'Q5, Q41'],
+    ['O03', 'Choose how you use it (Step 2 of 3)', '#/role', 'O03-choose-how-you-use-it', 'frame', 'Q5, Q42'],
+    ['O04', 'Sharing rules (Step 3 of 3)', '#/rules', 'O04-sharing-rules', 'frame', 'Q43'],
+    ['O04', 'Sharing rules, read-only (from Me)', '#/rules?view=1', 'O04-sharing-rules', 'frame', ''],
+    ['O05', 'Location permission', '', '', 'not', 'P3, not in CLAUDE.md'],
+    ['O06', 'Notification permission', '', '', 'not', 'P3, not in CLAUDE.md']]],
+  ['Main', [
+    ['M01', 'Home (Brenda, giver)', '#/home', 'M01-home-v2', 'frame', 'Q21, Q35'],
+    ['M01', 'Home (Jonas, receiver, empty state)', '#/home?as=jonas', 'M01-home-v2', 'frame', 'Q44'],
+    ['M02', 'Me', '#/me', 'M02-me-v2', 'frame', 'Q7, Q8, Q17']]],
+  ['Scenario A · giver', [
+    ['G01', 'Travel prompt (overlay on Home)', '#/home?sim=travel', 'G01-travel-prompt', 'frame', 'Q14'],
+    ['G02', 'Map, Leave mode (sheet at half)', '#/map', 'G02b-map-half', 'frame', 'Q25, Q36, Q38, Q39'],
+    ['G02', 'Map, sheet at peek', '#/map?sheet=peek', 'G02a-map-peek', 'frame', ''],
+    ['G02', 'Map, list at full height', '#/map?view=list', 'G02c-map-full', 'frame', ''],
+    ['G03', 'Location details in the sheet', '#/map?shelf=1', 'G03-location-half', 'frame', 'Q23'],
+    ['G03', 'Point page (from Home)', '#/point/1', 'G03-location-half', 'frame', 'Q23'],
+    ['G03b', 'Point full', '#/point/2', 'G03b-point-full', 'frame', 'Q13'],
+    ['G03b', 'Point paused (same layout, reason + reopening)', '#/point/10', 'G03b-point-full', 'frame', 'Q13'],
+    ['G04', 'Tap the tag (idle → scanning → found)', '#/give/tap?shelf=1', 'G04-tap-the-tag', 'frame', 'Q4, Q28, Q45'],
+    ['G04c', 'Tag not found', '#/give/tap?shelf=1&fail=1', 'G04-tap-the-tag', 'noframe', 'Q14, Q45'],
+    ['G05', 'Photograph your items', '#/give/photo', 'G05-photograph-your-items', 'frame', 'Q20, Q29'],
+    ['G05', 'Photo unreadable', '#/give/photo?error=1', 'G05-photograph-your-items', 'noframe', 'Q14'],
+    ['G06a', 'Reading your photo', '#/give/reading', 'G05-photograph-your-items', 'noframe', 'Q24'],
+    ['G06', 'Check items', '#/give/items', 'G06-check-and-place', 'frame', 'Q29, Q47'],
+    ['G06c', 'Edit or add item (sheet)', '#/give/items?add=1', 'G06-check-and-place', 'noframe', 'Q24'],
+    ['G07', 'Thanks for sharing', '#/give/done', 'G07-thanks-for-sharing', 'frame', 'Q1, Q30'],
+    ['G07b', 'Monthly coupon limit reached', '#/give/done?cap=1', 'G07b-monthly-coupon-limit-reached', 'frame', 'Q1'],
+    ['G08', 'Coupons', '#/coupons', 'G08-coupons-v2', 'frame', 'Q1, Q12, Q32'],
+    ['G08', 'Coupons, used / expired / withdrawn', '#/coupons?tab=used', 'G08-coupons-v2', 'frame', 'Q12, Q48'],
+    ['G08d', 'Show at the counter', '#/coupons/code/c1', 'G08d-show-at-counter', 'frame', 'Q31'],
+    ['G09', 'Rescue push on the lock screen', '', '', 'not', 'P3, not in CLAUDE.md'],
+    ['G09b', 'Rescue banner (overlay on Home)', '#/home?sim=rescue', 'G09b-rescue-banner-in-app', 'frame', 'Q12'],
+    ['G10', 'Rescue Bonus', '#/bonus', 'G10-rescue-bonus', 'frame', 'Q1, Q49'],
+    ['G11', 'Monthly impact', '#/impact', 'G11-monthly-impact', 'frame', 'Q14']]],
+  ['Scenario B · receiver', [
+    ['R01', 'Find food (map, search focused)', '#/map?find=1', 'G02a-map-peek', 'frame', 'Q37, Q39'],
+    ['R01b', 'No results', '#/map?find=1&food=Baby%20food', 'R01b-no-results', 'frame', 'Q14'],
+    ['R02', 'Search results (list)', '#/map?find=1&view=list&food=Pasta', 'R01b-find-food-list', 'frame', 'Q37'],
+    ['R03', 'Shelf listing', '#/take/point/1', 'R03-shelf-listing', 'frame', 'Q2, Q14'],
+    ['R03', 'Location expanded ("On this shelf")', '#/map?find=1&shelf=1&expand=1', 'R03-location-expanded', 'frame', ''],
+    ['R04', 'Check and tap', '#/take/tap?shelf=1', 'R04-check-and-tap', 'frame', 'Q45'],
+    ['R04c', 'Tag not found', '#/take/tap?shelf=1&fail=1', 'R04c-tag-not-found', 'frame', ''],
+    ['R05', 'What are you taking', '#/take/items', 'R05-what-did-you-take', 'frame', 'Q11, Q50'],
+    ['R06', 'Pickup logged', '#/take/done', 'R06-pickup-logged', 'frame', ''],
+    ['R07', 'Report a problem (sheet)', '#/take/point/1?report=1', 'R07-report-a-problem', 'frame', 'Q46'],
+    ['R07b', 'Report sent (sheet)', '#/take/point/1?report=sent', 'R07b-report-sent', 'frame', '']]],
+  ['Scenario C · host', [
+    ['H01', 'Become a host', '#/host', 'H01-understand-the-service', 'frame', 'Q1, Q5, Q51'],
+    ['H02', 'Venue details', '#/host/venue', 'H02-venue-details', 'frame', 'Q52'],
+    ['H03', 'Host agreement', '#/host/agreement', 'H03-responsibilities', 'frame', 'Q53'],
+    ['H03c', 'Application under review', '#/host/review', 'H03c-application-under-review', 'frame', 'Q14'],
+    ['H04', 'Operator verification', '#/host/verify', 'H04-operator-verification', 'frame', ''],
+    ['H05', 'Starter kit', '#/host/kit', 'H05-starter-kit', 'frame', 'Q10'],
+    ['H05', 'Activation tap', '#/host/activate', 'H06-activate-go-live', 'frame', 'Q10, Q45'],
+    ['H05', 'Shelf is live', '#/host/live', 'H07-shelf-is-live', 'frame', 'Q10'],
+    ['H05b', 'Activation error', '#/host/activate?fail=1', 'H05b-activation-error', 'frame', ''],
+    ['H06', 'Host dashboard', '#/host/dashboard', 'H06-host-dashboard', 'frame', 'Q1, Q14'],
+    ['H06b', 'Pause the shelf', '#/host/pause', 'H06b-pause-the-shelf', 'frame', ''],
+    ['H07', 'Redeem coupon', '#/host/redeem', 'H07-redeem-coupon', 'frame', 'Q1'],
+    ['H07b', 'Coupon valid', '#/host/redeem/result?code=SS-4817', 'H07b-coupon-valid', 'frame', 'Q1'],
+    ['H07c', 'Coupon already used', '#/host/redeem/result?code=SS-4790', 'H07c-coupon-already-used-or-expired', 'frame', ''],
+    ['H07c', 'Coupon expired', '#/host/redeem/result?code=SS-4817&sim=expired', 'H07c-coupon-already-used-or-expired', 'frame', ''],
+    ['H07c', 'Coupon not found', '#/host/redeem/result?code=SS-0000', 'H07c-coupon-already-used-or-expired', 'frame', ''],
+    ['H08', 'Daily shelf check', '#/host/check', 'H08-daily-shelf-check', 'frame', 'Q54'],
+    ['H08b', 'Check done', '#/host/check/done', 'H08b-check-done', 'frame', ''],
+    ['H08c', 'Missed check (banner on H06)', '#/host/dashboard?sim=missed', 'H08c-missed-check', 'frame', ''],
+    ['H09', 'Shelf tab', '', '', 'not', 'P3, not in CLAUDE.md'],
+    ['H10', 'Settings', '', '', 'not', 'P3, not in CLAUDE.md (pause, reminder, stewards covered elsewhere)']]],
+  ['No-app', [
+    ['X01', '"I took something" web page', '#/x/1', 'X01-i-took-something-web', 'frame', 'Q55']]]
+];
+const STATUS_LABEL = { frame: 'Built from frame', noframe: 'Built without frame', placeholder: 'Placeholder', not: 'Not built (P3, not in CLAUDE.md)' };
+
+/* Jump: prepare the state a screen needs, then go there (moderator menu, #/screens) */
+const Jump = {
+  go(route) {
+    const s = Store.state;
+    const [path, qs = ''] = route.replace(/^#/, '').split('?');
+    const q = Object.fromEntries(new URLSearchParams(qs));
+    if (!/^\/(welcome|how|role|rules)$/.test(path)) s.onboarded = true;
+    if (q.as === 'jonas') { Mod.scenario('B', false); }
+    if (/^\/give\/(photo|reading|items)/.test(path) && !s.draft) Flow.start(1);
+    if (path === '/give/items' && !s.draft.items) s.draft.items = AI_ITEMS();
+    if (path === '/give/done' && (!s.lastDrop || (q.cap && !s.lastDrop.capped))) { if (q.cap) s.sim.cap = true; Ops.dropOff(1, AI_ITEMS()); }
+    if (path === '/bonus' && !s.bonuses.length) Ops.dropOff(1, AI_ITEMS());
+    if (/^\/take\/(items|done)/.test(path) && !s.pickup) Pick.start(1, true);
+    if (path === '/take/done' && !s.lastPickup) { const sh = shelfOf(1); Pick.commit([{ id: sh.items[0].id, qty: 1 }]); }
+    if (path.startsWith('/host/')) {
+      const order = ['none', 'applied', 'verified', 'live'];
+      const need = /dashboard|pause|redeem|check/.test(path) ? 'live' : /verify|kit|activate|live/.test(path) ? 'verified' : /review/.test(path) ? 'applied' : 'none';
+      if (order.indexOf(s.host.status) < order.indexOf(need)) s.host.status = need;
+      if (need === 'live') s.mode = 'host';
+    }
+    if (path === '/host/check/done' && !s.host.lastCheck) Check.fake();
+    if (q.sim === 'expired') { const c = s.coupons.find(x => x.code === q.code); if (c) c.state = 'expired'; }
+    if (q.sim === 'missed') s.host.missed = true;
+    Store.save();
+    const clean = '#' + path + (qs ? '?' + qs.split('&').filter(x => !/^(as|sim)=/.test(x) || /^sim=(travel|rescue)/.test(x)).join('&') : '');
+    Router.go(clean.replace(/\?$/, ''));
+  }
+};
+
+/* =====================================================================
+   MODERATOR MENU (test only): ?mod=1 or an 800 ms long press on the wordmark / greeting
+   Labels here may say "Simulate"; participants never see them (Q4).
+   ===================================================================== */
+const Mod = {
+  on: false,
+  init() {
+    const q = location.search + location.hash;
+    try { if (/[?&]mod=1/.test(q)) sessionStorage.setItem('ss-mod', '1'); this.on = sessionStorage.getItem('ss-mod') === '1'; } catch (e) { this.on = /[?&]mod=1/.test(q); }
+    if (this.on) {
+      const b = document.createElement('div');
+      b.innerHTML = UI.iconButton('more', 'Moderator menu', 'data-action="mod"', 'modfab');
+      $('#app').appendChild(b.firstElementChild);
+    }
+  },
+  scenario(which, go = true) {
+    const persona = which === 'B' ? 'jonas' : 'brenda';
+    Store.reset(persona);
+    const s = Store.state; s.onboarded = true;
+    Store.save();
+    MapUI.filters.clear(); MapUI.food = ''; MapUI.center = null; MapUI.zoom = null; MapUI.sheet = 'half';
+    Store.log('scenario', { which });
+    if (go) { Router.stack = []; Router.replace(which === 'C' ? '#/host' : '#/home'); closeSheet(); toast('success', `Scenario ${which} ready · ${s.user.first}`, { ms: 2500 }); }
+  },
+  open() {
+    const s = Store.state;
+    const fmt = ms => { const t = Math.round(ms / 1000); return `${Math.floor(t / 60)} min ${t % 60} s`; };
+    const last = task => { const x = s.timings.find(t => t.task === task); return x ? fmt(x.ms) : '—'; };
+    const sims = [['tagFail', 'Tag not found'], ['photoFail', 'Photo unreadable'], ['pickup2', 'Receiver picked up 2 items'], ['travel', 'Travel prompt'], ['alert', 'Alert match'], ['cap', 'Monthly cap reached'],
+      ['used', 'Coupon already used'], ['expired', 'Coupon expired'], ['withdrawn', 'Coupon withdrawn'], ['missed', 'Missed check'], ['paused', 'Shelf paused'], ['full', 'Shelf full']];
+    const opts = SCREENS.map(([g, rows]) => `<optgroup label="${esc(g)}">${rows.filter(r => r[2]).map(r => `<option value="${esc(r[2])}">${esc(r[0] + ' · ' + r[1])}</option>`).join('')}</optgroup>`).join('');
+    openSheet('Moderator menu', `<div class="mod">
+      <p class="t-small c-secondary">For the test team only. Participants never see this menu.</p>
+      <div class="mod__sec" style="border:0;margin-top:0"><p class="field__label">Choose scenario</p>
+        <div class="stack-8">${UI.button({ label: 'A · giver (Brenda) → Home', variant: 'secondary', attrs: 'data-mod-scn="A"' })}${UI.button({ label: 'B · receiver (Jonas) → Home', variant: 'secondary', attrs: 'data-mod-scn="B"' })}${UI.button({ label: 'C · host → Become a host', variant: 'secondary', attrs: 'data-mod-scn="C"' })}</div></div>
+      <div class="mod__sec"><label class="field__label" for="mod-jump">Jump to screen</label><select id="mod-jump" class="select">${opts}</select>${UI.button({ label: 'Go', attrs: 'data-mod-go' })}</div>
+      <div class="mod__sec"><p class="field__label">Simulate</p><div class="mod__grid">${sims.map(([k, l]) => UI.button({ label: l, variant: 'secondary', attrs: `data-mod-sim="${k}"` })).join('')}</div></div>
+      <div class="mod__sec"><p class="field__label">Task timing (last run)</p>
+        <p class="mod__times">A drop-off (target &lt; 90 s): ${last('dropoff')}<br>B pickup: ${last('pickup')}<br>C daily check (target &lt; 2 min): ${last('check')}</p>
+        <div class="mod__grid">${UI.button({ label: 'Export log (JSON)', variant: 'secondary', icon: 'share', attrs: 'data-mod-export' })}${UI.button({ label: 'Screen index', variant: 'secondary', icon: 'list', attrs: 'data-mod-screens' })}</div></div>
+      <div class="mod__sec">${UI.button({ label: 'Reset demo', icon: 'retry', attrs: 'data-mod-reset' })}<p class="t-small c-secondary">Restores the start state and shows Welcome again.</p></div>
+    </div>`);
+    const sheet = $('#sheet');
+    sheet.onclick = e => {
+      const t = e.target;
+      const scn = t.closest('[data-mod-scn]'); if (scn) { this.scenario(scn.dataset.modScn); return; }
+      if (t.closest('[data-mod-go]')) { const r = $('#mod-jump').value; closeSheet(); Jump.go(r); return; }
+      const sim = t.closest('[data-mod-sim]'); if (sim) { closeSheet(); this.sim(sim.dataset.modSim); return; }
+      if (t.closest('[data-mod-export]')) { this.export(); return; }
+      if (t.closest('[data-mod-screens]')) { closeSheet(); Router.go('#/screens'); return; }
+      if (t.closest('[data-mod-reset]')) { Store.reset(); MapUI.filters.clear(); MapUI.food = ''; MapUI.center = null; MapUI.sheet = 'half'; closeSheet(); Router.stack = []; Router.replace('#/welcome'); toast('success', 'Demo reset', { ms: 2000 }); }
+    };
+  },
+  sim(k) {
+    const s = Store.state; Store.log('simulate', { what: k });
+    const note = t => toast('info', t, { ms: 3500, ic: 'info' });
+    if (k === 'tagFail') { s.sim.tagFail = true; Store.save(); note('Next tag tap will not find the tag.'); }
+    if (k === 'photoFail') { s.sim.photoFail = true; Store.save(); note('Next photo will be unreadable.'); }
+    if (k === 'cap') { s.sim.cap = true; Store.save(); note('Next drop-off reaches the monthly coupon limit.'); }
+    if (k === 'pickup2') {
+      const mine = []; VENUES.forEach(v => shelfOf(v.id).items.forEach(i => { if (i.owner === s.persona && !i.missing) mine.push([v.id, i]); }));
+      mine.sort((a, b) => (b[1].drop ? 1 : 0) - (a[1].drop ? 1 : 0));
+      if (!mine.length) { note('No items of yours are on a shelf. Leave food first.'); return; }
+      const vId = mine[0][0], picks = []; let left = 2;
+      mine.filter(m => m[0] === vId).forEach(([, i]) => { if (left > 0) { const q = Math.min(left, i.qty); picks.push({ id: i.id, qty: q }); left -= q; } });
+      Ops.pickup(vId, picks);
+      if (location.hash.startsWith('#/home')) Router.render('none'); else Router.go('#/home');
+    }
+    if (k === 'travel') { s.seenTravel = false; Store.save(); if (location.hash === '#/home') Banners.travel(); else Router.go('#/home?sim=travel'); }
+    if (k === 'alert') { if (!s.alert) s.alert = { food: 'Pasta', km: 1 }; Store.save(); Banners.alert(); }
+    if (k === 'used') { Store.state.mode = 'host'; if (Store.state.host.status !== 'live') Store.state.host.status = 'live'; Store.save(); Router.go('#/host/redeem/result?code=SS-4790'); }
+    if (k === 'expired') { const c = s.coupons.find(x => x.state === 'active'); if (!c) { note('No active coupon to expire.'); return; } c.state = 'expired'; Store.save(); note(`${c.code} is now expired (Coupons › Used; H07c if checked).`); if (location.hash.startsWith('#/coupons')) Router.render('none'); }
+    if (k === 'withdrawn') { const c = s.coupons.find(x => x.state === 'active'); if (!c) { note('No active coupon to withdraw.'); return; } c.state = 'withdrawn'; Store.save(); couponTab = 1; Router.go('#/coupons'); if (location.hash === '#/coupons') Router.render('none'); }
+    if (k === 'missed') { s.host.missed = true; s.host.status = 'live'; s.mode = 'host'; Store.save(); Router.go('#/host/dashboard'); if (location.hash === '#/host/dashboard') Router.render('none'); }
+    if (k === 'paused') { Ops.pause(1, 'Café closed', 'Tomorrow at opening'); note('Café Daisy is paused.'); Router.render('none'); }
+    if (k === 'full') { const sh = shelfOf(1), free = sh.capacity - shelfCount(sh); if (free > 0) sh.items.push(it('fill' + Date.now(), 'Biscuits, 300 g', 'Biscuits', '04/2027', free, 0)); Store.save(); note('Café Daisy is now a full shelf.'); Router.render('none'); }
+  },
+  export() {
+    const data = JSON.stringify({ exported: new Date().toISOString(), persona: Store.state.persona, timings: Store.state.timings, events: Store.state.events }, null, 2);
+    try {
+      const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([data], { type: 'application/json' }));
+      a.download = `secondshelf-log-${Date.now()}.json`; document.body.appendChild(a); a.click(); a.remove();
+      toast('success', 'Log exported', { ms: 2000 });
+    } catch (e) { toast('problem', 'Couldn’t export the log'); }
+  }
+};
+
+/* In-app overlay banners (G01 travel prompt, G09b rescue banner, food alert) */
+const Banners = {
+  travel() {
+    const v = venue(1);
+    Overlay.show(`<section class="notice" aria-labelledby="g01-t">
+      <div class="notice__head"><span class="tile">${icon('travel')}</span><div class="grow"><h2 class="t-title" id="g01-t">Going away this weekend?</h2><p class="t-caption c-tertiary">Now</p></div></div>
+      <p class="t-body">${esc(v.name)}, ${esc(v.dist)} on your way to the station, has space for ${pl(v.spots, 'item')}. Pass on what you won’t eat.</p>
+      <div class="notice__actions">${UI.button({ label: 'Find a shelf', icon: 'location', attrs: 'data-g01="go"' })}${UI.button({ label: 'Not now', variant: 'secondary', attrs: 'data-g01="no" data-ov-close' })}</div>
+    </section>`, { id: 'g01', label: 'Travel prompt', onClose: () => { Store.state.seenTravel = true; Store.save(); } });
+    Store.log('banner', { code: 'G01' });
+    $('#overlay').onclick = e => { const b = e.target.closest('[data-g01]'); if (!b) return; if (b.dataset.g01 === 'go') { Overlay.hide(true); Store.state.seenTravel = true; Task.start('dropoff'); MapUI.sheet = 'half'; Router.go('#/map?shelf=1'); } };
+  },
+  rescue() {
+    const r = Store.state.rescueBanner; if (!r) return;
+    Store.state.rescueBanner = null; Store.save();
+    Overlay.show(`${UI.banner('success', `<strong>${r.count} of your items ${r.count === 1 ? 'was' : 'were'} saved</strong><br><span class="t-small">Picked up at ${esc(venue(r.venue).name)} · just now</span>`, { ic: 'saved-food', action: `<a class="btn btn--link banner__action" href="#/bonus">View</a>` })}`, { id: 'g09b', autoHide: 8000, label: 'Rescue banner' });
+    Store.log('banner', { code: 'G09b' });
+  },
+  alert() {
+    const a = Store.state.alert || { food: 'Pasta', km: 1 };
+    Overlay.show(`${UI.banner('info', `<strong>${esc(a.food)} is on a shelf 200 m away</strong><br><span class="t-small">Café Daisy · your food alert</span>`, { ic: 'notification', action: `<a class="btn btn--link banner__action" href="#/take/point/1" data-ov-close>View</a>` })}`, { id: 'alert', label: 'Food alert' });
+    Store.log('banner', { code: 'alert' });
+  }
+};
+
+/* ---------- Onboarding (O01–O04) ---------- */
+Views.welcome = {
+  html() {
+    return `<span class="wordmark" data-logo>SecondShelf</span>
+      <div class="hero"><span class="placeholder">${icon('photo', 'icon--lg')}<strong>Community photo</strong><span>From the guideline stock set</span></span></div>
+      <h1 class="t-display">Food that’s still good, passed on.</h1>
+      <p class="t-body-large c-secondary" style="margin-top:var(--space-12)">Leave sealed food you won’t eat on a café shelf near you, or find something you can use.</p>
+      <div class="spacer"></div>
+      <div class="actions">
+        ${UI.button({ label: 'Get started', block: true, attrs: 'data-href="#/how"' })}
+        ${UI.button({ label: 'Just browse', variant: 'secondary', block: true, attrs: 'data-o01="browse"' })}
+        <p class="center t-small c-secondary">Already have an account? ${UI.button({ label: 'Log in', variant: 'link', attrs: 'data-o01="login"' })}</p>
+      </div>`;
+  },
+  mount(el) {
+    el.addEventListener('click', e => {
+      const b = e.target.closest('[data-o01]'); if (!b) return;
+      const s = Store.state;
+      if (b.dataset.o01 === 'browse') { s.onboarded = true; s.browse = true; Store.log('onboarding', { choice: 'browse' }); }
+      if (b.dataset.o01 === 'login') { s.onboarded = true; s.browse = false; Store.log('onboarding', { choice: 'login' }); }
+      Store.save(); Router.finish('#/home');
+    });
+  }
+};
+Views.how = {
+  html() {
+    const rows = [['community-shelf', 'A shelf in a café near you', 'Look for the SecondShelf sign.'], ['sealed-food', 'Sealed, shelf-stable food only', 'Pasta, rice, canned food, crackers, within date.'],
+      ['tap-nfc', 'Tap the tag on the shelf', 'Your phone logs what you leave or take.'], ['coupon', 'A thank-you for givers', 'A coupon from the café, and a Rescue Bonus as people take your food.']];
+    return `${UI.stepHeader({ step: 1, layout: 'stack', h1: 'How it works' })}
+      <p class="t-body c-secondary" style="margin-bottom:var(--space-24)">Shelves in local cafés, open to everyone. Givers and takers never need to meet.</p>
+      <ul class="stack-24">${rows.map(r => `<li class="benefit"><span class="tile">${icon(r[0])}</span><div><p class="t-title">${r[1]}</p><p class="t-small c-secondary">${r[2]}</p></div></li>`).join('')}</ul>
+      <div class="spacer"></div>
+      <div class="actions">${UI.button({ label: 'Continue', block: true, attrs: 'data-href="#/role"' })}</div>`;
+  }
+};
+Views.role = {
+  html() {
+    const r = Store.state.role;
+    const card = (val, icons, title, sub) => `<button type="button" role="radio" class="rolecard" aria-checked="${r === val}" data-radio="role" data-value="${val}">
+      <span class="rolecard__icons">${icons.map(i => `<span class="tile">${icon(i)}</span>`).join('')}</span><span class="radio" aria-hidden="true"></span>
+      <span class="t-title">${title}</span><span class="t-small c-secondary">${sub}</span><span class="rolecard__sel">${icon('done', 'icon--sm')}Selected</span></button>`;
+    return `${UI.stepHeader({ step: 2, layout: 'stack', h1: 'How will you use SecondShelf?' })}
+      <p class="t-body c-secondary" style="margin-bottom:var(--space-24)">You can change this later in Me.</p>
+      <div class="rolecards" role="radiogroup" aria-label="How will you use SecondShelf?">
+        ${card('leave', ['sealed-food', 'pickup-bag'], 'Leave and find food', 'Pass on food you won’t eat and pick up what you can use.')}
+        ${card('host', ['community-shelf'], 'Host a shelf', 'For cafés and venues. Give a shelf a home and welcome new visitors.')}
+      </div>
+      <div style="margin-top:var(--space-16)">${UI.note('<strong>Hosts can still leave and find food.</strong>')}</div>
+      <div class="spacer"></div>
+      <div class="actions">${UI.button({ label: 'Continue', block: true, attrs: 'data-href="#/rules"' })}</div>`;
+  },
+  mount(el) { el.addEventListener('radio', e => { Store.state.role = e.detail.value; Store.save(); }); }
+};
+Views.rules = {
+  html({ query }) {
+    const view = !!query.view;
+    const yes = ['Sealed packs, cans and jars', 'Shelf-stable: pasta, rice, cans, crackers', 'Within the best-before date'];
+    const no = ['Opened packs', 'Chilled food, even sealed milk or juice', 'Cooked or homemade food', 'Anything past its date'];
+    const lists = `<ul class="rules" aria-label="Yes, please"><li class="rules__head">Yes, please</li>${yes.map(t => `<li>${icon('sealed-food', 'icon--success')}<span>${t}</span></li>`).join('')}</ul>
+      <ul class="rules" aria-label="Not on the shelf" style="margin-top:var(--space-12)"><li class="rules__head">Not on the shelf</li>${no.map(t => `<li>${icon('needs-attention', 'icon--problem')}<span>${t}</span></li>`).join('')}</ul>
+      <div style="margin-top:var(--space-12)">${UI.banner('info', '<strong>Every item you leave is welcome, even if the box is a little worn.</strong>', { ic: 'community-care' })}</div>`;
+    if (view) return `${UI.topBar({ title: 'Sharing rules', serif: true })}${lists}<div class="spacer"></div><div class="actions">${UI.button({ label: 'Done', icon: 'done', block: true, attrs: 'data-action="back"' })}</div>`;
+    return `${UI.stepHeader({ step: 3, layout: 'stack', h1: 'Sharing rules' })}${lists}
+      <div class="spacer"></div>
+      <div class="actions" style="padding-top:var(--space-16)">
+        <div id="rules-ok">${UI.checkbox({ id: 'agree', label: 'I’ll follow the sharing rules and terms' })}</div>
+        ${UI.gated({ label: 'Start using SecondShelf', id: 'o04-start', hint: 'Tick the box to continue', missing: '#rules-ok' })}
+      </div>`;
+  },
+  mount(el, { query }) {
+    if (query.view) return;
+    const btn = $('#o04-start', el);
+    el.addEventListener('change', e => { if (e.target.id === 'agree') gate(btn, e.target.checked); });
+    btn.addEventListener('click', () => {
+      const s = Store.state; s.onboarded = true; s.browse = false; Store.save();
+      Store.log('onboarding', { choice: s.role });
+      Router.finish(s.role === 'host' ? '#/host' : '#/home');
+    });
+  }
+};
+
+/* ---------- M02 Me ---------- */
+Views.me = {
+  html() {
+    const s = Store.state, onShelf = s.shelfItems.reduce((n, r) => n + (r.qty - r.picked), 0);
+    return `<h1 class="t-h1 screen-title">Me</h1>
+      <div class="stack">
+        ${UI.profileRow(s.user).replace('class="card profile"', 'class="card profile" data-action="profile"')}
+        ${s.persona === 'brenda' ? UI.impact({ passed: s.impact.passed, saved: s.impact.saved, tap: true }) : ''}
+        <div class="settings">
+          ${UI.settingsRow({ ic: 'sealed-food', title: 'My items', sub: onShelf ? `${onShelf} on shelves` : 'Nothing on shelves yet', href: '#/bonus' })}
+          ${UI.settingsRow({ ic: 'notification', tile: 'tile--reward', icls: 'icon--reward', title: 'Food alerts', sub: s.alert ? `${s.alert.food} within ${s.alert.km} km` : 'Off', toggle: { on: !!s.alert, attrs: 'data-alert-toggle' } })}
+          ${UI.settingsRow({ ic: 'info', title: 'Sharing rules', sub: 'Sealed, shelf-stable, within date', href: '#/rules?view=1' })}
+          ${UI.settingsRow({ ic: 'help', title: 'Help and FAQ', sub: 'Coupons, safety, contact' }).replace('class="settings__row"', 'class="settings__row" data-action="faq"')}
+        </div>
+        ${UI.hostCard()}
+        <div class="center">${UI.button({ label: 'Log out', variant: 'link', attrs: 'data-action="logout"' })}</div>
+      </div>`;
+  },
+  mount(el) {
+    el.addEventListener('toggle', e => {
+      if (!e.target.closest('[data-alert-toggle]')) return;
+      const s = Store.state; s.alert = e.detail.on ? { food: 'Pasta', km: 1 } : null; Store.save();
+      const sub = e.target.closest('.settings__row').querySelector('.settings__sub');
+      sub.textContent = s.alert ? 'Pasta within 1 km' : 'Off';
+      Store.log('food_alert', { on: e.detail.on });
+      toast('success', e.detail.on ? 'Food alert saved: Pasta within 1 km' : 'Food alert off', { ms: 3000, ic: 'notification' });
+    });
+  }
+};
+
+/* ---------- G11 Monthly impact ---------- */
+Views.impact = {
+  html() {
+    const s = Store.state, w = s.impact.weeks, max = Math.max(...w, 1);
+    return `${UI.topBar({ title: 'Monthly impact' })}
+      <h2 class="t-h1" style="margin-bottom:var(--space-16)">Your ${esc(monthName())}</h2>
+      <div class="stack">
+        <section class="impact"><div class="impact__head"><span class="row" style="gap:var(--space-8)">${icon('saved-food', 'icon--sm')}<span class="t-label">This month</span></span></div>
+          <div class="impact__nums"><div><p class="impact__num">${s.impact.passed}</p><p class="impact__cap">items passed on</p></div><div><p class="impact__num">${s.impact.saved}</p><p class="impact__cap">saved by neighbours</p></div></div></section>
+        <section class="card" aria-labelledby="g11-chart"><h3 class="t-label c-secondary" id="g11-chart" style="margin-bottom:var(--space-16)">Items passed on by week</h3>
+          <div class="bars" role="img" aria-label="Items passed on by week: ${w.map((n, i) => `week ${i + 1}, ${n}`).join('; ')}">${w.map(n => `<div class="bar"><span class="bar__val">${n}</span><span class="bar__fill" style="--h:${Math.round(n / max * 80)}%"></span></div>`).join('')}</div>
+          <div class="bars__labels" aria-hidden="true">${w.map((_, i) => `<span>Week ${i + 1}</span>`).join('')}</div></section>
+        ${UI.note('<strong>A tip for next month</strong>You passed on crackers three times. A smaller pack might suit your week better.')}
+      </div>`;
+  }
+};
+
+/* ---------- #/screens: team index (hidden) ---------- */
+Views.screens = {
+  html() {
+    return `${UI.topBar({ title: 'Screen index', serif: true })}
+      <p class="t-small c-secondary">Team review only. Each row prepares the demo state and opens the screen. Open questions are in docs/open-questions.md.</p>
+      ${SCREENS.map(([g, rows]) => `<section class="sx__group"><h2 class="t-section" style="margin-bottom:var(--space-8)">${esc(g)}</h2><div class="sx">
+        ${rows.map(r => `<button type="button" class="sx__row" ${r[2] ? `data-jump="${esc(r[2])}"` : 'disabled'}><span class="sx__code">${r[0]}</span><span class="grow"><span class="t-body" style="display:block">${esc(r[1])}</span><span class="sx__route">${esc(r[2] || '—')}${r[3] ? ' · frame ' + esc(r[3]) : ''}</span>${r[5] ? `<span class="sx__route" style="display:block">Questions: ${esc(r[5])}</span>` : ''}</span><span class="sx__chip sx__chip--${r[4]}">${STATUS_LABEL[r[4]].replace(' (P3, not in CLAUDE.md)', '')}</span></button>`).join('')}</div></section>`).join('')}`;
+  },
+  mount(el) { el.addEventListener('click', e => { const j = e.target.closest('[data-jump]'); if (j) Jump.go(j.dataset.jump); }); }
+};
+
+/* ---------- shared named actions (data-action) ---------- */
+Object.assign(Actions, {
+  /* M01 Leave food: browse mode asks to finish onboarding first; starts the Scenario A timer */
+  leave() {
+    if (Store.state.browse) {
+      openSheet('Finish setting up first', `<p class="t-body">To leave food you need to finish the three short setup steps, so we can give you a thank-you coupon.</p>
+        <div class="actions">${UI.button({ label: 'Finish setting up', block: true, attrs: 'data-sheet-close data-href="#/how"' })}${UI.button({ label: 'Not now', variant: 'secondary', block: true, attrs: 'data-sheet-close' })}</div>`);
+      return;
+    }
+    Task.start('dropoff'); MapUI.sheet = 'half'; Router.go('#/map');
+  },
+  find() { Task.start('pickup'); Router.go('#/map?find=1'); },
+  mod() { Mod.open(); },
+  profile() {
+    const u = Store.state.user;
+    openSheet('Profile', `<div class="stack">${UI.profileRow(u).replace('<button type="button"', '<div').replace('</button>', '</div>').replace(icon('chevron-right'), '')}
+      ${UI.note('Real accounts are not part of this test. Whether givers and hosts need an account is still open (Q7).')}
+      ${UI.button({ label: 'Done', block: true, attrs: 'data-sheet-close' })}</div>`);
+  },
+  faq() {
+    openSheet('Help and FAQ', `<dl class="faq">
+      <dt>How do coupons work?</dt><dd>Show the counter code at the café. Value, expiry and the monthly limit are [To be agreed].</dd>
+      <dt>Is the food safe?</dt><dd>Only sealed, shelf-stable food within its date. Check the seal and date before you take anything, and report anything wrong.</dd>
+      <dt>Contact</dt><dd>[To be agreed]</dd></dl>
+      <div class="actions">${UI.button({ label: 'Done', block: true, attrs: 'data-sheet-close' })}</div>`);
+  },
+  logout() {
+    const s = Store.state; s.onboarded = false; s.mode = 'consumer'; Store.save(); Store.log('logout');
+    Router.finish('#/welcome');
+  },
+  'host-mode'() {
+    const s = Store.state;
+    if (s.mode === 'host') { s.mode = 'consumer'; Store.save(); Router.finish('#/home'); toast('success', 'Leave and find mode', { ms: 2000 }); return; }
+    if (s.host.status === 'live') { s.mode = 'host'; Store.save(); Router.finish('#/host/dashboard'); toast('success', 'Host mode', { ms: 2000 }); return; }
+    Router.go(s.host.status === 'none' ? '#/host' : s.host.status === 'applied' ? '#/host/review' : '#/host/verify');
+  }
+});
+
+/* ---------- M01 Home (Brenda: her food on shelves · Jonas: empty state) ---------- */
+Views.home = {
+  html() {
+    const s = Store.state;
+    const mine = s.shelfItems.length ? UI.statusList(s.shelfItems)
+      : `<section class="statuslist" aria-labelledby="yf-title"><div class="statuslist__head"><h2 class="t-section" id="yf-title">Your food on shelves</h2></div>
+          ${UI.empty({ ic: 'sealed-food', title: 'Nothing on shelves yet', line: 'Food you leave on a shelf shows up here.', action: `<a class="btn btn--secondary" href="#/map" data-action="leave">${icon('sealed-food')}<span>Leave food</span></a>` }).replace('class="empty"', 'class="empty" style="padding:var(--space-16) 0 var(--space-8)"')}</section>`;
+    return `${UI.greeting(s.user)}
+    <div class="stack">
+      <div class="action-cards">${UI.actionCard('leave')}${UI.actionCard('find')}</div>
+      ${mine}
+      <section aria-labelledby="pn-title">
+        <div class="sechead"><h2 class="t-section" id="pn-title">Points near you</h2><a class="btn btn--link" href="#/map">Open map</a></div>
+        <div class="carousel">${VENUES.slice(0, 3).map(v => { const k = availKind(v); return UI.shelfCard({ n: v.id, dist: v.dist, venue: v.name, hours: v.hours, kind: k === 'space' ? 'space' : k === 'full' ? 'full' : 'closed', spots: k === 'paused' ? 'Paused' : k === 'closed' ? 'Closed' : pl(v.spots, 'spot') }); }).join('')}</div>
+      </section>
+    </div>`;
+  },
+  mount(el, { query }) {
+    const s = Store.state;
+    if (query.sim === 'travel') { s.seenTravel = false; history.replaceState(null, '', '#/home'); Router.stack[Router.stack.length - 1] = '/home'; }
+    if (query.sim === 'rescue' && !s.rescueBanner) { s.rescueBanner = { count: 2, venue: 1 }; history.replaceState(null, '', '#/home'); Router.stack[Router.stack.length - 1] = '/home'; }
+    setTimeout(() => {
+      if (!el.isConnected) return;
+      if (s.rescueBanner) Banners.rescue();
+      else if (query.sim === 'travel') Banners.travel();
+    }, reduceMotion() ? 0 : 300);
+  }
+};
+
+/* =====================================================================
+   ROUTES (§4 + hand-off §2). flow: routes inside a task flow (a finished flow steps back past them).
+   ===================================================================== */
 Router.add('/components', Views.components, { title: 'Components' });
-Router.add('/home', Views.home, { title: 'Home', tabs: '#/home' });
-Router.add('/map', Views.map, { title: 'Map', tabs: '#/map', cls: 'screen--map' });
-Router.add('/point/:id', Views.point, { title: 'Point', tabs: '#/map' });
-Router.add('/give/tap', Views.giveTap, { title: 'Tap the tag', cls: 'screen--brand with-actions' });
-Router.add('/give/photo', Views.givePhoto, { title: 'Photograph your items', guard: hasDraft, guardTo: '#/home' });
-Router.add('/give/reading', Views.giveReading, { title: 'Reading your photo', guard: hasDraft, guardTo: '#/home' });
-Router.add('/give/items', Views.giveItems, { title: 'Check your items', guard: hasDraft, guardTo: '#/home' });
-Router.add('/give/done', Views.giveDone, { title: 'Thanks for sharing', guard: () => !!Store.state.lastDrop, guardTo: '#/home' });
-Router.add('/coupons', Views.coupons, { title: 'Coupons', tabs: '#/coupons' });
-Router.add('/coupons/code/:id', Views.couponCode, { title: 'Your coupon', cls: 'with-actions' });
+Router.add('/screens', Views.screens, { title: 'Screen index' });
+Router.add('/welcome', Views.welcome, { title: 'Welcome', code: 'O01', cls: 'with-actions' });
+Router.add('/how', Views.how, { title: 'How it works', code: 'O02', cls: 'with-actions', flow: 'onboarding' });
+Router.add('/role', Views.role, { title: 'Choose how you use it', code: 'O03', cls: 'with-actions', flow: 'onboarding' });
+Router.add('/rules', Views.rules, { title: 'Sharing rules', code: 'O04', cls: 'with-actions', flow: 'onboarding' });
+Router.add('/home', Views.home, { title: 'Home', code: 'M01', tabs: '#/home' });
+Router.add('/me', Views.me, { title: 'Me', code: 'M02', tabs: '#/me' });
+Router.add('/map', Views.map, { title: 'Map', code: 'G02', tabs: '#/map', cls: 'screen--map' });
+Router.add('/point/:id', Views.point, { title: 'Point', code: 'G03', tabs: '#/map' });
+Router.add('/give/tap', Views.giveTap, { title: 'Tap the tag', code: 'G04', cls: 'screen--brand with-actions', flow: 'give' });
+Router.add('/give/photo', Views.givePhoto, { title: 'Photograph your items', code: 'G05', guard: hasDraft, flow: 'give' });
+Router.add('/give/reading', Views.giveReading, { title: 'Reading your photo', code: 'G06a', guard: hasDraft, flow: 'give' });
+Router.add('/give/items', Views.giveItems, { title: 'Check your items', code: 'G06', guard: hasDraft, flow: 'give', actionbar: true });
+Router.add('/give/done', Views.giveDone, { title: 'Thanks for sharing', code: 'G07', guard: () => !!Store.state.lastDrop, flow: 'give' });
+Router.add('/coupons', Views.coupons, { title: 'Coupons', code: 'G08', tabs: '#/coupons' });
+Router.add('/coupons/code/:id', Views.couponCode, { title: 'Your coupon', code: 'G08d', cls: 'with-actions' });
+Router.add('/impact', Views.impact, { title: 'Monthly impact', code: 'G11', tabs: '#/me' });
 
 /* =====================================================================
    BOOT
    ===================================================================== */
 Store.load();
+Mod.init();
 window.addEventListener('hashchange', () => Router.render());
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSheet(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { if ($('#sheet')._close) closeSheet(); else if (Overlay.current) Overlay.hide(); } });
+if (!location.hash || location.hash === '#' || location.hash === '#/') history.replaceState(null, '', location.pathname + location.search + defaultRoute());
 Router.render();
 </script>
 </body>
