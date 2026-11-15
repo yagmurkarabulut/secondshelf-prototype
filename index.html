@@ -1536,9 +1536,6 @@ button.settings__row:active{background:var(--surface-canvas)}
 .howto{font:var(--type-body-small);color:var(--text-secondary);margin-top:var(--space-12)}
 .howto strong{color:var(--text-primary);font-weight:500}
 .banner--plain > .icon{color:var(--icon-primary)}
-.illus{border-radius:var(--radius-lg);background:var(--surface-subtle);min-height:120px;position:relative;margin-bottom:var(--space-20)}
-.illus::before{content:"";position:absolute;inset:var(--space-12);border:var(--border-w) dashed var(--border-strong);border-radius:var(--radius-md)}
-.illus .placeholder{position:absolute;inset:0;font:var(--type-body-small)}
 .closebar{display:flex;justify-content:flex-end;margin:calc(var(--space-12) * -1) calc(var(--space-12) * -1) var(--space-8)}
 
 /* Home (M01-home-v3) */
@@ -4600,7 +4597,7 @@ Views.giveDone = {
     const bonus = UI.rescueBonus({ picked: b.picked, total: b.total, venue: v.name, sub: `${v.name} · from your ${pl(L.count, 'item')}`, from: b.id ? bonusFrom(b) : 0, note: cap ? '' : 'Grows as people pick up your items.' });
     return `<div class="closebar">${UI.iconButton('close', 'Close', 'data-done')}</div>
       <div class="stagger">
-        ${UI.illus('Packs land on the shelf')}
+        ${UI.art('drop-off-done', { cls: 'art--illus' })}
         <div><h1 class="t-display">Thanks for sharing.</h1>
         <p class="t-body-large" style="margin-top:var(--space-8)">Your food is on the shelf at ${esc(v.name)}. People nearby can see it now.</p></div>
         <div class="stack-8">
@@ -4728,7 +4725,6 @@ Object.assign(UI, {
   tick(kind = 'done', ic) {
     return `<div class="tick${kind === 'problem' ? ' tick--problem' : kind === 'brand' ? ' tick--brand' : ''}" aria-hidden="true">${icon(ic || (kind === 'problem' ? 'needs-attention' : 'done'))}</div>`;
   },
-  illus(label) { return `<div class="illus" style="min-height:var(--size-illus)"><span class="placeholder">${icon('photo')}<strong>Illustration placeholder</strong><span>${esc(label)}</span></span></div>`; },
   note(html, ic = 'info') { return `<div class="note">${icon(ic)}<div>${html}</div></div>`; },
   radioRow({ name, value, label, checked = false, sub = '' }) {
     return `<button type="button" role="radio" class="radiorow${checked ? ' is-on' : ''}" aria-checked="${checked}" data-radio="${esc(name)}" data-value="${esc(value)}"><span class="radio" aria-hidden="true"></span><span class="grow">${esc(label)}${sub ? `<span class="t-small c-secondary" style="display:block">${esc(sub)}</span>` : ''}</span></button>`;
@@ -5427,7 +5423,7 @@ Views.takeDone = {
     const p = Store.state.lastPickup, v = venue(p.venue);
     return `<div class="closebar">${UI.iconButton('close', 'Close', 'data-done')}</div>
       <div class="stagger">
-        ${UI.illus('Bag fills with food')}
+        ${UI.art('pickup-done', { cls: 'art--illus' })}
         <div><h1 class="t-display">Pickup logged.</h1>
           <p class="t-body-large" style="margin-top:var(--space-8)">Enjoy your food. You saved ${pl(p.count, 'item')} that ${p.count === 1 ? 'is' : 'are'} still good.</p></div>
         <section class="card"><p class="t-overline c-secondary">You took</p>
@@ -5655,7 +5651,7 @@ Views.hostLive = {
   html() {
     const h = Store.state.host, v = venue(h.venue);
     return `<div class="stagger">
-      ${UI.illus('Shelf appears on the map')}
+      ${UI.art('shelf-live', { cls: 'art--illus' })}
       <div><h1 class="t-display">${esc(v.name)} is live.</h1><p class="t-body-large" style="margin-top:var(--space-8)">People nearby can now find your community shelf.</p></div>
       <section><p class="t-overline c-secondary" style="margin-bottom:var(--space-8)">How people see you</p>
         ${UI.shelfCard({ n: v.id, dist: v.dist, venue: v.name, hours: v.hours, kind: availKind(v) === 'full' ? 'full' : 'space', spots: pl(v.spots, 'spot') }).replace('<a class="shelf', '<div class="shelf shelf--wide').replace('</a>', '</div>').replace(/href="[^"]*"/, '')}</section>
@@ -5892,7 +5888,7 @@ Views.hostCheckDone = {
   html() {
     const h = Store.state.host, L = h.lastCheck;
     return `<div class="stagger">
-      ${UI.illus('Shelf tidies, tick')}
+      ${UI.art('check-done', { cls: 'art--illus' })}
       <div><h1 class="t-display">Shelf checked.</h1><p class="t-body-large" style="margin-top:var(--space-8)">Saved to the food-safety record.</p></div>
       <dl class="card kv-lines">
         <div class="kv"><dt class="c-secondary">Checked by</dt><dd>${esc(L.by)}</dd></div>
