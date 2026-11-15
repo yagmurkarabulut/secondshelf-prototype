@@ -3207,7 +3207,7 @@ Views.map = {
         const up = ord.indexOf(this.next()) > ord.indexOf(h);
         grab.setAttribute('aria-label', up ? 'Show more of the list' : 'Show less of the list');
         $$('#mapswitch .segmented__seg', el).forEach((s, i) => s.setAttribute('aria-selected', (h === 'full') === (i === 1)));
-        drawBottom(); ModFab.later(350);
+        drawBottom();
         if (prev !== h) Store.log('sheet', { h, from });
       },
       next() { const h = MapUI.sheet; return h === 'peek' ? 'half' : h === 'full' ? 'half' : (this.dir > 0 ? 'full' : 'peek'); },
@@ -3354,7 +3354,7 @@ Views.map = {
 
     // events
     map.on('click', () => { if ($('.suggest', box)) renderSearch($('#mapsearch', box).value, null); if (sel) deselect(); });
-    map.on('moveend', () => { MapUI.center = map.getCenter(); MapUI.zoom = map.getZoom(); if (!sel) { drawBottom(); drawList(); } ModFab.later(250); });
+    map.on('moveend', () => { MapUI.center = map.getCenter(); MapUI.zoom = map.getZoom(); if (!sel) { drawBottom(); drawList(); } });
     map.on('zoomend', syncZoomBtns);
     el.addEventListener('click', e => {
       const t = e.target;
@@ -5030,8 +5030,8 @@ Router.add('/x/:id', Views.x01, { title: 'I took something', code: 'X01' });
 
 /* =====================================================================
    MODERATOR BUTTON: tap = moderator menu; drag = move it anywhere inside the app.
-   On release it snaps to the 8 px grid, then moves to the nearest free spot so it never
-   covers a button, link or field. Rests at 30% opacity; full opacity while touched.
+   It stays put on screen while the content scrolls or the screen changes. Only when the
+   user drops it does it snap to the 8 px grid and move to the nearest spot that covers no button. Rests at 30% opacity; full opacity while touched.
    Its position is a per-device convenience (localStorage, try/catch).
    ===================================================================== */
 const ModFab = {
@@ -5048,10 +5048,8 @@ const ModFab = {
     if (!this.pos) this.pos = { x: 4, y: Math.round(app.clientHeight / 2) };
     this.place(this.pos, false);
     this.bind();
-    document.addEventListener('routed', () => { this.later(320); setTimeout(() => this.later(0), 1100); });
-    window.addEventListener('resize', () => this.later(200));
-    $('#stage').addEventListener('scroll', () => this.later(250), true);
-    this.later(400);
+    // it only moves when someone drags it; a resize just keeps it inside the app
+    window.addEventListener('resize', () => this.place(this.pos, false));
   },
   size() { return this.el.offsetWidth; },
   bounds() { const a = $('#app'); return { w: a.clientWidth, h: a.clientHeight }; },
