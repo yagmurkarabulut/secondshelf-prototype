@@ -418,6 +418,15 @@ Added while building `index.html` (phase 1). Listed in `docs/open-questions.md` 
 | `--size-modfab` | `40px` | Movable moderator button (team request; below the 44px tap minimum, test-only) |
 | `--opacity-idle` | `.3` | Moderator button at rest |
 
+**Illustration v2 [NEW]** (15 Nov, `assets/illustrations/`, wired in by `tools/illus.js`; see §7b):
+| Token | Value | Use |
+|---|---|---|
+| `--size-illus-sm` | `120px` | Empty-state illustrations (`UI.empty({ art })`) |
+| `--motion-nfc-loop` | `4s` | Idle teaching loop in `tap-the-tag.svg` (G04, R04, H05 activate) |
+| `--motion-drop` | `450ms` | One item drops onto the shelf (`shelf-fill.svg`, G06) |
+
+`--size-illus` (160px) now sizes the real confirmation illustrations (G07, R06, H05 live, H08b) and the H05 Starter kit art.
+
 **16 Nov components [NEW]** (built once in `index.html`, reused):
 | Component | Recipe | States |
 |---|---|---|
