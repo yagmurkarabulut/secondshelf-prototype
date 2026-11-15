@@ -1175,11 +1175,12 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{box-shadow:none}
 .coupon__value{display:flex;align-items:center;justify-content:center;text-align:center;margin-top:var(--space-12);padding:var(--space-20) var(--space-24);
   border-radius:var(--radius-md);background:var(--surface-reward-subtle);font:var(--type-coupon-value);letter-spacing:var(--tracking-heading);color:var(--text-brand)}
 .coupon__value + .coupon__meta{margin-top:var(--space-12)}
+.qrsheet__value{align-self:stretch;margin-top:0}
+.qrsheet.is-used .qrsheet__value{background:var(--surface-subtle);color:var(--text-secondary)}
 .coupon.is-used .coupon__value,.coupon.is-expired .coupon__value{background:var(--surface-subtle);color:var(--text-secondary)}
 .coupon__body{padding:var(--space-16) var(--space-16) var(--space-12)}
 .coupon__head{display:flex;align-items:center;gap:var(--space-8);justify-content:space-between}
 .coupon__kind{display:flex;align-items:center;gap:var(--space-8);color:var(--text-secondary)}
-.bonus--hero .coupon__band{height:var(--size-band);background:var(--surface-reward)}
 .coupon__meta{font:var(--type-body-small);color:var(--text-secondary);margin-top:var(--space-4)}
 .kv{display:flex;justify-content:space-between;gap:var(--space-16);font:var(--type-body);padding:var(--space-4) 0}
 .kv dt{color:var(--text-primary)}
@@ -1524,7 +1525,10 @@ button.settings__row:active{background:var(--surface-canvas)}
 
 /* Map (G02 / R01): Leaflet with SecondShelf styling */
 .screen--map{padding:0;overflow:hidden}
-.lmap{position:absolute;inset:0;z-index:0}
+.lmap{position:absolute;inset:0;top:env(safe-area-inset-top);z-index:0}
+/* QA round 5: nothing of the map runs under the clock / battery, so the phone's status-bar blur has nothing to blur.
+   A solid Cream strip fills the safe area (0 px on desktop and in browsers without a notch). */
+.screen--map::before{content:"";position:absolute;left:0;right:0;top:0;height:env(safe-area-inset-top);background:var(--surface-canvas);z-index:6;pointer-events:none}
 .leaflet-container{background:var(--map-land);font:var(--type-body);-webkit-tap-highlight-color:transparent}
 .leaflet-container:focus-visible{box-shadow:inset 0 0 0 3px var(--border-focus)}
 .pin-icon,.me-icon{background:none;border:0}
@@ -2349,12 +2353,12 @@ const UI = {
   },
   /* Rescue Bonus card: gold bar animates from its old to its new value (from → picked) */
   bonusBar(picked, total, from = picked, state = '') {
-    const text = state === 'expired' ? `${picked} of ${total} picked up · expired` : picked >= total ? `${total} of ${total} picked up` : `${picked} of ${total} picked up · pending`;
+    const text = state === 'expired' ? `${picked} of ${total} items picked up · expired` : `${Math.min(picked, total)} of ${total} items picked up`;
     return `<div class="bonus__bar" role="img" aria-label="${text}">${Array.from({ length: total }, (_, i) => `<span class="bonus__seg${i < picked ? ' is-on' : ''}${i >= from && i < picked ? ' is-new' : ''}" style="--d:${(i - from) * 150}ms"></span>`).join('')}</div>`;
   },
   rescueBonus({ picked = 0, total = 4, venue = 'Café Daisy', state, note = '', sub = '', from, link = false } = {}) {
     state = state || (picked >= total ? 'complete' : 'pending');
-    const text = state === 'expired' ? `${picked} of ${total} picked up · expired` : state === 'complete' ? `${total} of ${total} picked up` : `${picked} of ${total} picked up · pending`;
+    const text = state === 'expired' ? `${picked} of ${total} items picked up · expired` : `${state === 'complete' ? total : picked} of ${total} items picked up`;
     const tag = link ? 'a' : 'article';
     return `<${tag} class="bonus${state === 'expired' ? ' is-expired' : ''}${link ? ' card--tap' : ''}" ${link ? 'href="#/bonus"' : ''} aria-label="Rescue Bonus, ${esc(venue)}, ${text}">
       <div class="bonus__head"><span class="tile tile--reward">${icon('rescue-bonus', 'icon--reward')}</span>
@@ -2483,12 +2487,12 @@ const UI = {
   qrSheet({ state = 'active', code = 'SS-4821', venue = 'Café Daisy', coupon = null } = {}) {
     return `<div class="qrsheet${state === 'used' ? ' is-used' : ''}">
       <p class="t-overline c-secondary">Show at the counter</p>
-      <h2 class="t-h2">Thank-you coupon</h2>
+      <h2 class="coupon__value qrsheet__value">${couponValue(coupon)}</h2>
       <p class="t-small c-secondary">${esc(venue)}</p>
       <div class="qr" role="img" aria-label="Counter code ${esc(code)}">${UI.qr(code)}</div>
       <p class="qrcode-text">${esc(code)}</p>
-      ${state === 'used' ? UI.statusLabel('done', 'Used') : '<p class="t-small c-secondary">Works once. Staff scan it at the counter.</p>'}
-      <dl style="width:100%"><div class="kv"><dt>Value</dt><dd>${couponValue(coupon)}</dd></div><div class="kv"><dt>Expires</dt><dd>${couponExpiry(coupon)}</dd></div></dl>
+      ${state === 'used' ? UI.statusLabel('done', 'Used') : '<p class="t-small c-secondary">This is a one-time coupon only. Ask staff to scan it to redeem it.</p>'}
+      <dl style="width:100%"><div class="kv"><dt>Expires</dt><dd>${couponExpiry(coupon)}</dd></div></dl>
     </div>`;
   },
   capture(state = 'empty', src = '') {
@@ -2969,7 +2973,7 @@ Views.components = {
       ${sec('segmented', 'Segmented control', 'Oat pill track, 4px padding, selected segment Paper + Rubik 500, role=tablist.',
         UI.segmented(['Active (2)', 'Used (1)'], 0, { id: 'g-seg' }) + st('Map / List toggle') + UI.segmented([{ label: 'Map', icon: 'map' }, { label: 'List', icon: 'list' }], 1, { id: 'g-ml' }))}
 
-      ${sec('bonus', 'Rescue Bonus card', 'Gold fill on the track, always with the text “n of N picked up · pending”. No targets or countdowns.',
+      ${sec('bonus', 'Rescue Bonus card', 'Gold fill on the track, always with the text “n of N items picked up”. No targets or countdowns.',
         `<div class="stack">${UI.rescueBonus({ picked: 0 })}${UI.rescueBonus({ picked: 2 })}${UI.rescueBonus({ picked: 4 })}${UI.rescueBonus({ picked: 2, state: 'expired' })}</div>`)}
 
       ${sec('nfc', 'NFC tap card', 'Idle → Scanning 1.2 s → Found → auto-advance 600 ms. Alternative: QR. Error: not found → retry, QR, shelf code.',
@@ -3735,7 +3739,7 @@ Views.givePhoto = {
       <div class="stack">
         ${UI.banner('success', `<strong>Tag found</strong> · ${esc(v.name)}${v.shelf ? ', ' + esc(v.shelf) : ''}`)}
         <h2 class="t-h1">Photograph your items</h2>
-        <p class="lead">Take one photo of your items before you place them. It reads the names and dates for you. It isn’t proof of delivery.</p>
+        <p class="lead">Place the items on the shelf and take a picture so the app can analyze and add them for you.</p>
         <div>${err ? UI.capture('unreadable', photoURL) : UI.capture('empty')}</div>
         ${err ? `<p class="t-body">Try again in better light, or add the items yourself.</p>` : ''}
         <div class="stack-8">
@@ -3801,9 +3805,8 @@ Views.giveItems = {
       <p class="lead c-secondary" id="items-sub" aria-live="polite" style="margin:var(--space-4) 0 var(--space-16)"></p>
       <div class="stack-8" id="items-list"></div>
       <div class="center" style="margin:var(--space-8) 0 var(--space-16)">${UI.button({ label: 'Add item manually', variant: 'link', icon: 'plus', attrs: 'data-add' })}</div>
-      <div class="check-panel" id="sealed-panel"><p class="t-body" style="padding-top:var(--space-4)">Place packs with labels and dates facing out.</p>
-        ${UI.checkbox({ id: 'sealed', label: 'All items are sealed and within their date', checked: !!Flow.d.sealed })}</div>
-      <div class="actions actions--sticky">${UI.gated({ label: 'Confirm drop-off', variant: 'accent', icon: 'done', id: 'confirm', hint: 'Tick “All items are sealed and within their date” to confirm', missing: '#sealed-panel' })}</div>`;
+      <div class="check-panel" id="sealed-panel">${UI.checkbox({ id: 'sealed', label: 'I acknowledge and confirm that all items are sealed and within their date.', checked: !!Flow.d.sealed })}</div>
+      <div class="actions actions--sticky">${UI.gated({ label: 'Confirm drop-off', variant: 'primary', icon: 'done', id: 'confirm', hint: 'Tick the box above to confirm', missing: '#sealed-panel' })}</div>`;
   },
   mount(el, { query }) {
     const d = Flow.d; if (!d.items) d.items = AI_ITEMS();
@@ -3811,7 +3814,7 @@ Views.giveItems = {
     const sync = () => {
       const n = Flow.count(d.items), btn = $('#confirm', el), hint = $('.gate__hint', btn.parentElement);
       $('#items-sub', el).textContent = `We found ${pl(n, 'item')}. You can edit them below or add more manually.`;
-      hint.textContent = !d.items.length ? 'Add at least one item to confirm' : 'Tick “All items are sealed and within their date” to confirm';
+      hint.textContent = !d.items.length ? 'Add at least one item to confirm' : 'Tick the box above to confirm';
       btn.dataset.missing = !d.items.length ? '[data-add]' : '#sealed-panel';
       gate(btn, !!(d.sealed && d.items.length));
       Store.save();
@@ -3934,7 +3937,6 @@ Views.couponCode = {
     return `${UI.topBar({ title: 'Your coupon', serif: true })}
       <div class="stack">
         <div class="card">${UI.qrSheet({ state: c.state === 'active' ? 'active' : 'used', code: c.code, venue: v.name + (v.addr ? ' · ' + v.addr : ''), coupon: c })}</div>
-        ${UI.banner('plain', 'Not the shelf QR. This code is for the counter.', { ic: 'location' })}
       </div>
       <div class="spacer"></div>
       <div class="actions">${UI.button({ label: 'Done', icon: 'done', block: true, attrs: 'data-action="back"' })}</div>`;
@@ -3948,14 +3950,14 @@ Views.bonus = {
     const rows = b ? s.shelfItems.filter(r => (b.rows || []).includes(r.id)) : s.shelfItems;
     const itemRow = r => { const st = UI.rowStatus(r); return `<li class="statuslist__row"><span class="tile tile--sm ${st.done ? '' : 'tile--oat'}">${icon(st.done ? 'done' : 'paused', 'icon--sm ' + (st.done ? 'icon--success' : 'icon--waiting'))}</span>
       <span class="statuslist__name">${esc(r.name)}${r.qty > 1 ? ' ×' + r.qty : ''}<small>${st.done ? 'Picked up' : r.picked ? esc(st.text) : r.days ? `On the shelf ${pl(r.days, 'day')}` : 'Still on the shelf'} · ${esc(venue(r.venue).name)}</small></span></li>`; };
-    return `${UI.topBar({ title: b ? 'Rescue Bonus' : 'My items' })}
+    return `${UI.topBar({ title: b ? 'Rescue Bonus' : 'My items', serif: true })}
       <div class="stack">
-        ${b ? `<article class="bonus bonus--hero"><div class="coupon__band"></div><div class="bonus__inner">
+        ${b ? `<article class="bonus bonus--hero"><div class="bonus__inner">
             <div class="bonus__head"><span class="tile tile--reward">${icon('rescue-bonus', 'icon--reward')}</span><div class="grow"><h2 class="t-title">${esc(venue(b.venue).name)}</h2><p class="t-small c-secondary">From your drop-off today</p></div></div>
-            <p class="t-h3" style="margin-top:var(--space-16)">Value: To be agreed</p>
+            <p class="coupon__value" aria-label="Rescue Bonus value">${couponValue({ value: couponValueFor(b.total) })}</p>
             ${UI.bonusBar(b.picked, b.total, bonusFrom(b))}
-            <p class="bonus__status" aria-live="polite">${b.picked >= b.total ? `${b.total} of ${b.total} picked up` : `${b.picked} of ${b.total} picked up · pending`}</p></div></article>
-          <p class="t-body c-secondary">A bigger coupon unlocks as people take your food.</p>` : ''}
+            <p class="bonus__status" aria-live="polite">${Math.min(b.picked, b.total)} of ${b.total} items picked up</p></div></article>
+          <p class="t-body c-secondary">You will unlock a Rescue Bonus when the items you dropped off are picked up by other people.</p>` : ''}
         <section><h2 class="t-section" style="margin-bottom:var(--space-8)">Your items</h2>
           ${rows.length ? `<ul class="statuslist">${rows.map(itemRow).join('')}</ul>` : `<div class="card">${UI.empty({ ic: 'sealed-food', title: 'Nothing on shelves yet', line: 'Food you leave on a shelf shows up here.', action: `<a class="btn btn--secondary" href="#/map" data-action="leave">${icon('sealed-food')}<span>Leave food</span></a>` })}</div>`}</section>
         ${UI.note('<strong>Pickups made without the app may not be counted.</strong>')}

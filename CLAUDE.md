@@ -137,7 +137,7 @@ Codes follow the testing protocol. Exact names, order and states come from the F
   - Given G06, then each item shows its name, best-before date and a stepper (min 44 px). I can edit, remove or **Add item manually**.
   - **Confirm** stays disabled until "All items are sealed and within their date" is checked.
 - **US-06** As a giver, I want to understand my reward right away.
-  - Given G07, then I see "Thanks for sharing.", the thank-you coupon (value **To be agreed**), the Rescue Bonus at "0 of 4 picked up · pending", and a one-line **How to use your coupon**.
+  - Given G07, then I see "Thanks for sharing.", the thank-you coupon (value **To be agreed**), the Rescue Bonus at "0 of 4 items picked up" (Q94), and a one-line **How to use your coupon**.
 - **US-07** As a giver, I want to know when my food is saved.
   - Given a receiver logged a pickup (simulated), then a banner says "2 of your items were saved", and G10 shows "2 of 4 picked up".
 - **US-08** As a giver, I want a monthly summary of what I passed on.
@@ -215,7 +215,7 @@ Open with the movable ··· button (team decision, 16 Nov: 40 × 40, 30% opacit
 - Fixed strings: "Thanks for sharing." · "Pickup logged." · "Full shelf" (availability chip, v0.5) · "Not here? Report missing stock" · "Care for the shelf, together." · "Every item you leave is welcome, even if the box is a little worn." · "Numbers identify shelves, not item counts."
 - Unknown values show **To be agreed** (coupon value, expiry, monthly cap). Don't invent numbers.
 - Sample content (from the frames): user **Brenda Kowalska**; venues **Café Daisy** (200 m, closing 20:00, 4 spots), **Café Lumi** (1.2 km, closing 18:00, Full shelf), **Pizza Nonna** (2.1 km, 3 spots) [TBD per city]; items fusilli pasta 500 g (BB 2027-03), tomato soup ×2 (BB 2027-08), crackers (BB 2027-01), canned tuna, all-purpose flour; impact "11 items passed on · 8 saved by neighbours".
-- Coupon value and validity show **"to be agreed"**, even though the G08 frame shows "€2 off" and "22 Nov 2026". Rescue Bonus says "2 of 4 picked up · pending", not "Only 2 more items to go!".
+- Coupon value and validity show **"to be agreed"**, even though the G08 frame shows "€2 off" and "22 Nov 2026". Rescue Bonus says "2 of 4 items picked up" (Q94), not "Only 2 more items to go!". **Designer QA (Q90, Q94) overrides "to be agreed" for coupons and the Rescue Bonus:** demo values €2 / €4 and a generated expiry date.
 
 ---
 

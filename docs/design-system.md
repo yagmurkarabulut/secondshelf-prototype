@@ -110,7 +110,7 @@ Proportions: about **60% Cream and Paper · 30% Pantry Green and Ink · 10% Ochr
 | `border-brand` | green-900 | Secondary button outline, selected card |
 | `border-focus` | info-600 | Focus ring on light surfaces |
 | `action-primary` / `-hover` / `-pressed` | green-900 / green-700 / green-950 | Primary buttons |
-| `action-accent` / `-pressed` | terracotta-700 / terracotta-800 | **One closing action per flow**: Confirm drop-off, Confirm pickup, Go live. Never Clay. |
+| `action-accent` / `-pressed` | terracotta-700 / terracotta-800 | **One closing action per flow**: Confirm pickup, Go live (Confirm drop-off is Primary green since Q94). Never Clay. |
 | `action-disabled` | oat-200 | Disabled button fill (with `text-disabled`) |
 | `action-leave` / `-pressed` | ink-900 / ink-950 | **v0.7 [NEW]** Leave food card fill (Home) |
 | `action-find` / `-pressed` | green-700 / green-900 | **v0.7 [NEW]** Find food card fill (Home) |
@@ -119,12 +119,12 @@ Proportions: about **60% Cream and Paper · 30% Pantry Green and Ink · 10% Ochr
 
 ### 2.5 Colour rules
 - **Ochre means "you earned something".** Use it only for coupons, the Rescue Bonus and thank-you moments.
-- **Terracotta is never an error or a warning.** Problems are Slate, calm and with a clear way forward.
+- **Terracotta = unavailable, wrong or destructive (updated 15 Nov, Q94; was "never an error or a warning").** Use it for availability limits ("Full shelf"), error notifications, things that are not allowed (the "Not on the shelf" flags) and destructive actions (delete). Always Terracotta 700 for icons and text on light surfaces, always with words or a clear icon, never colour alone. Calm problem *messages* inside a screen (an unreadable photo, a missing item report) can stay Slate. Still **no red anywhere**: Terracotta is the warm stand-in. Warnings use the gold tint (Q92).
 - **Terracotta marks availability limits** (**v0.5** label "Full shelf") as a `surface-unavailable` chip: Terracotta **700** + Paper text (5.84:1) + the `shelf-full` icon. White on Terracotta 500 is 4.39:1 and fails AA, so 500 is never used behind normal-size text.
 - **Gold icons** appear on Ink (`icon-on-inverse`, `icon-on-leave`) and, on light surfaces, as `icon-reward` (Ochre 800) for search and rewards. **v0.7** On Forest, gold icons use light gold **`ochre-300`** (`icon-on-find`, 4.0:1), never Ochre 500 (2.5:1); other icons on Forest stay Leaf.
 - **v0.7 Ink** is no longer host-mode only: it fills the Home **Leave food** card (`action-leave`), the host-mode card, map markers and the count pill. Forest fills the **Find food** card (`action-find`).
 - **v0.5 Where the warmth goes (airy style):** Terracotta 700 = the closing action and "Full shelf"; Terracotta 500 = step progress (**v0.7**: no longer the Leave food icon); Ochre 500 = coupon band and Rescue Bonus fill; Ochre 800 = reward and search icons. Everything else is Cream, Paper and Pantry Green.
-- **v0.5 Rescue Bonus bar**: Ochre 500 on the Cream track is 2.7:1, so the bar is always paired with the text "n of N picked up · pending", which carries the meaning.
+- **v0.5 Rescue Bonus bar**: Ochre 500 on the Cream track is 2.7:1, so the bar is always paired with the text "n of N items picked up" (Q94), which carries the meaning.
 - **v0.4 Grey text**: never the frames' `#95918E` (3.1:1); use `text-secondary` or `text-tertiary`.
 - Never put Ochre 500 as text or icons on Cream (2.7:1); use `ochre-800`. Never put Ochre 800 text on the ochre tint (4.4:1); use Ink.
 - Normal-size text is never placed on `terracotta-500`.
@@ -298,7 +298,7 @@ Every component uses semantic tokens only and is built with all its states.
 | **Banner / toast** | `radius-md`, padding 12/16, icon + text + optional action | success (`surface-selected`) · info (`surface-subtle`) · problem (Paper + Slate text) · reward (`surface-reward-subtle`) |
 | **Coupon ticket** **v0.5 light** | Paper, `radius-lg`, `shadow-card`, 6px gold band (`surface-reward`) on top; `coupon` icon `icon-reward` + label `text-secondary`; value Fraunces 32/40 `text-brand`; Leaf "Ready to use" chip (Ink text); dashed tear line (`border-subtle`) with two notches in the canvas colour; validity `text-secondary` + **Primary** pill Show button with `qr-code` | active · used · expired · pending; value and validity say "to be agreed" |
 | **Segmented control** | Pill track `surface-segment` (**v0.5 Oat**), 4px padding; selected segment Paper + Rubik 500; ≥ 40px segments; `role=tablist` | Active (n) / Used (n) |
-| **Rescue Bonus card** | Paper `radius-lg`; 44px `surface-reward-subtle` tile + `rescue-bonus` in `icon-reward`; title `title`, venue `text-secondary`; 8px bar, **v0.5 gold fill** (`surface-reward`) on `surface-track`; status as plain text "n of N picked up · pending" (never a button-looking chip; no targets or countdowns) | 0 · partial · complete · expired |
+| **Rescue Bonus card** | Paper `radius-lg`; 44px `surface-reward-subtle` tile + `rescue-bonus` in `icon-reward`; title `title`, venue `text-secondary`; 8px bar, **v0.5 gold fill** (`surface-reward`) on `surface-track`; status as plain text "n of N items picked up" (Q94) (never a button-looking chip; no targets or countdowns) | 0 · partial · complete · expired |
 | **NFC tap card** | (layout from G04 / R04 / H06 mocks) On `surface-brand`: illustration, instruction in `text-on-primary`, status, fallback links | idle · scanning · found · not found · QR fallback |
 | **Food item row** | Thumb `radius-sm`, `title`, best-before `body-small`, sealed badge, **round** stepper, 44px remove; min 72px rows (v0.5 ItemRows) | default · edited · removed (Undo toast) · checkbox variant (receiver) |
 | **Map marker** **v0.4** | 32px numbered circle: `map-marker` (Ink) fill, Paper number | default · selected (`action-primary` + Leaf halo) · full · paused · closed; legend "Numbers identify shelves, not item counts" |
