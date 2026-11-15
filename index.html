@@ -758,6 +758,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
   --surface-notify-info:var(--paper-0);      --icon-notify-info:var(--green-900);
   --surface-notify-warning:var(--ochre-100); --icon-notify-warning:var(--ochre-800);   /* gold: 4.4:1 icon on tint */
   --surface-notify-error:var(--terracotta-100); --icon-notify-error:var(--terracotta-700); /* 4.6:1 icon on tint */
+  /* [NEW] QA round 8 */
+  --surface-result:var(--green-100); --surface-result-pressed:var(--oat-200); --border-result:var(--green-700);  /* map / list location rows */
   /* [NEW] QA round 7 */
   --surface-toggle-on:var(--ink-900); --icon-on-toggle:var(--ochre-500);  /* Map / List selected: Ink, gold icon 5.1:1 */
   /* [NEW] QA round 4 */
@@ -1451,8 +1453,9 @@ button.settings__row:active{background:var(--surface-canvas)}
 /* ---- List result row ---- */
 .result{display:flex;align-items:center;gap:var(--space-16);width:100%;text-align:left;background:var(--surface-default);border-radius:var(--radius-lg);padding:var(--space-16);min-height:var(--size-row-min)}
 .result:active{background:var(--surface-canvas)}
-.mapsheet .result{border:1px solid var(--border-subtle)}  /* QA round 7: rows on the white sheet */
-.mapsheet .result.is-selected{border-color:var(--border-brand)}
+.mapsheet .result{background:var(--surface-result);border:1px solid var(--border-result)}  /* QA round 8: Leaf rows with a Forest outline on the white sheet */
+.mapsheet .result:active{background:var(--surface-result-pressed)}
+.mapsheet .result.is-selected{border:2px solid var(--border-brand)}
 .result.is-selected{background:var(--surface-selected)}
 .result__main{flex:1;min-width:0;display:flex;flex-direction:column;gap:var(--space-4);align-items:flex-start}
 .result__meta{font:var(--type-body-small);color:var(--text-secondary)}
