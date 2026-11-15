@@ -9,7 +9,7 @@
       "name": "community-shelf",
       "id": "ss-community-shelf",
       "label": "Community shelf",
-      "description": "Find a place to share",
+      "description": "Find a place to share (the two-tier host shelf)",
       "category": "reference"
     },
     {
@@ -51,7 +51,7 @@
       "name": "tap-nfc",
       "id": "ss-tap-nfc",
       "label": "Tap NFC",
-      "description": "Open shelf information",
+      "description": "Open shelf information (3 waves, like the plate)",
       "category": "reference"
     },
     {
@@ -353,6 +353,34 @@
       "id": "ss-calendar",
       "label": "Calendar",
       "description": "Dates and schedules",
+      "category": "food-and-shelf"
+    },
+    {
+      "name": "nfc-plate",
+      "id": "ss-nfc-plate",
+      "label": "NFC plate",
+      "description": "The plate on the shelf you hold your phone to",
+      "category": "food-and-shelf"
+    },
+    {
+      "name": "shelf-sign",
+      "id": "ss-shelf-sign",
+      "label": "Shelf sign",
+      "description": "The A5 sign above the shelf, arrow to the plate",
+      "category": "food-and-shelf"
+    },
+    {
+      "name": "window-sticker",
+      "id": "ss-window-sticker",
+      "label": "Window sticker",
+      "description": "Shows from the street that the café has a shelf",
+      "category": "food-and-shelf"
+    },
+    {
+      "name": "date-strip",
+      "id": "ss-date-strip",
+      "label": "Date strip",
+      "description": "Labels out, dates visible",
       "category": "food-and-shelf"
     },
     {

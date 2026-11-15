@@ -259,7 +259,7 @@ Recommendation: accounts for givers and hosts, optional for receivers. Decision 
 - Mobile first: viewport meta with `viewport-fit=cover`, `min-height: 100dvh`, `env(safe-area-inset-*)`, max-width 430 px (centred in a phone frame on desktop). Input text ≥ 16 px. No hover-only interactions.
 - Web app manifest + `theme-color` so testers can Add to Home Screen.
 - Every colour, size, radius and shadow comes from `docs/design-system.md` tokens as CSS custom properties. No literal values in components.
-- Icons: only the SecondShelf icon library v2.0 (`assets/icons/sprite.svg`, 68 icons). Placement and colour rules: `docs/design-system.md` §7.
+- Icons: only the SecondShelf icon library v2.0 (`assets/icons/sprite.svg`, 72 icons). Placement and colour rules: `docs/design-system.md` §7.
 - Fonts: Fraunces Bold (headings, 20px+) and Rubik 400/500 (everything else) from Google Fonts with `display=swap` and system fallbacks.
 - Colour roles (v0.5, airy; v0.7 Home): flat Cream `#F6F1E7` background (no gradients; Q82); light Paper cards; **Pantry Green** = screen titles, Fraunces headings and primary (pill) buttons; **Ink** = the Home Leave food card (v0.7), host-mode card, map markers and count pill; **Forest** = the Home Find food card (v0.7); **Ochre = rewards** (coupon band, Rescue Bonus fill, Ochre 800 reward/search icons; v0.7 light gold `ochre-300` icon on the Forest Find food card); **Terracotta 700 = the single closing action of a flow** and "Full shelf"; **Terracotta 500** = step progress; Slate = problems. No red anywhere.
 - Accessibility: WCAG AA contrast, visible focus ring, labelled controls, `aria-live` for scanning / status changes.

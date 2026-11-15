@@ -212,7 +212,7 @@ Nested rule: inner radius = outer radius − padding. In practice, items inside 
   - Respect `prefers-reduced-motion`
 
 ## 7. Iconography
-**SecondShelf icon library v2.0** in `assets/icons/`: 68 rounded line icons (12 reference icons redrawn softer + 56 for the app). It's also the **Icons** asset group in the design system artifact.
+**SecondShelf icon library v2.0** in `assets/icons/`: 72 rounded line icons (12 reference icons redrawn softer + 60 for the app; **15 Nov**: +4 starter-kit icons, `tap-nfc` with 3 waves, `community-shelf` redrawn as the two-tier host cabinet). It's also the **Icons** asset group in the design system artifact.
 
 ### Style
 - 24 × 24 grid, 2px stroke, **round caps and joins**, generous corner radii, no fills.
@@ -248,7 +248,7 @@ Set CSS `color` on the icon with an icon token (§2.3), never a raw hex:
 | Reference | `community-shelf` · `sealed-food` · `pickup-bag` · `community-care` · `saved-food` · `filter` · `tap-nfc` · `done` · `paused` · `needs-attention` · `location` · `continue` |
 | Navigation | `home` · `map` · `list` · `coupon` · `profile` · `back` · `chevron-left` · `chevron-right` · `chevron-down` · `chevron-up` · `close` · `more` · `dashboard` |
 | Actions | `search` · `sort` · `plus` · `minus` · `edit` · `remove` · `undo` · `retry` · `camera` · `photo` · `qr-code` · `shelf-code` · `phone-tap` · `switch-role` · `share` |
-| Food and shelf | `shelf-full` · `venue` · `coffee` · `package` · `tin` · `pasta` · `best-before` · `sealed-badge` · `travel` · `calendar` |
+| Food and shelf | `shelf-full` · `venue` · `coffee` · `package` · `tin` · `pasta` · `best-before` · `sealed-badge` · `travel` · `calendar` · **[NEW]** `nfc-plate` · `shelf-sign` · `window-sticker` · `date-strip` |
 | Status and feedback | `info` · `help` · `pause` · `notification` · `reminder` · `checkbox` · `checkbox-empty` · `new` |
 | Rewards and impact | `rescue-bonus` · `impact` · `thank-you` · `redeem` |
 | Host and steward | `shelf-check` · `staff` · `agreement` · `starter-kit` · `activity` · `verified` |
@@ -275,6 +275,8 @@ Set CSS `color` on the icon with an icon token (§2.3), never a raw hex:
 | Reports and problems | `needs-attention`, `retry` | `icon-problem` |
 | New shelf highlight | `new` | `icon-accent` |
 | H01–H05 host onboarding | `community-shelf`, `agreement`, `verified`, `starter-kit` | `icon-primary` |
+| H05 starter kit (part pills + checklist rows) **[NEW]** | `community-shelf` (shelf) · `shelf-sign` (sign) · `nfc-plate` (NFC plate) · `qr-code` (QR sticker) · `window-sticker` (window sticker) | `icon-primary` |
+| Labels out, dates visible **[NEW]** (planned: O04 rules, H08 check) · NFC plate **[NEW]** (planned: G03 "NFC and QR" row) | `date-strip` · `nfc-plate` | `icon-primary` |
 | H06 dashboard | `activity`, `staff`, `coupon` | `icon-primary` / `icon-secondary` |
 | H08 daily check | `shelf-check`, `reminder`, `pause`, `shelf-full` | `icon-primary` |
 | Status labels | `done` · `paused` · `needs-attention` · `info` | success · warning · problem · info |

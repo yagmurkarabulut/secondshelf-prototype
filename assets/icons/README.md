@@ -1,6 +1,8 @@
 # SecondShelf icons v2.0
 
-68 rounded line icons for the SecondShelf prototype. The 12 icons from the reference sheet are redrawn softer, and 56 icons are added for the app's screens, messages and states.
+72 rounded line icons for the SecondShelf prototype. The 12 icons from the reference sheet are redrawn softer, and 60 icons are added for the app's screens, messages and states.
+
+**15 Nov (illustration set v2):** 4 new icons for the starter-kit props (`nfc-plate`, `shelf-sign`, `window-sticker`, `date-strip`); `tap-nfc` now has 3 waves (like the plate) and `community-shelf` is the host's two-tier cabinet with the plate at the lower right. Drafts stay in `proposed/`.
 
 ## Style
 - 24 × 24 grid, about 2px padding
@@ -18,6 +20,7 @@
 | `icons.json` | Name, id, label, description, category |
 | `preview.html` | Browsable preview with a colour switch for the icon tokens |
 | `png-preview/contact-sheet.png` | All icons at 48px and 24px |
+| `proposed/` | Drafts of the 15 Nov additions (now merged into the files above) |
 
 ## Colour
 Set `color` with the icon tokens from `docs/design-system.md`:
@@ -32,7 +35,7 @@ Set `color` with the icon tokens from `docs/design-system.md`:
 - **Reference (12):** community-shelf, sealed-food, pickup-bag, community-care, saved-food, filter, tap-nfc, done, paused, needs-attention, location, continue
 - **Navigation (13):** home, map, list, coupon, profile, back, chevron-left/right/down/up, close, more, dashboard
 - **Actions (15):** search, sort, plus, minus, edit, remove, undo, retry, camera, photo, qr-code, shelf-code, phone-tap, switch-role, share
-- **Food and shelf (10):** shelf-full, venue, coffee, package, tin, pasta, best-before, sealed-badge, travel, calendar
+- **Food and shelf (14):** shelf-full, venue, coffee, package, tin, pasta, best-before, sealed-badge, travel, calendar, nfc-plate, shelf-sign, window-sticker, date-strip
 - **Status and feedback (8):** info, help, pause, notification, reminder, checkbox, checkbox-empty, new
 - **Rewards and impact (4):** rescue-bonus, impact, thank-you, redeem
 - **Host and steward (6):** shelf-check, staff, agreement, starter-kit, activity, verified
@@ -55,6 +58,8 @@ Set `color` with the icon tokens from `docs/design-system.md`:
 | R05 pickup | checkbox / checkbox-empty |
 | Report | needs-attention |
 | H01–H05 onboarding | community-shelf, agreement, verified, starter-kit |
+| H05 starter kit (parts and checklist) | community-shelf (shelf), shelf-sign (sign), nfc-plate (NFC plate), qr-code (QR sticker), window-sticker (window sticker) |
+| Labels out, dates visible (O04 rules, H08 check; planned) | date-strip |
 | H06 dashboard | activity, staff |
 | H08 daily check | shelf-check, reminder, pause, shelf-full |
 | Status labels | done (success) · paused (waiting) · needs-attention (problem) · info |
