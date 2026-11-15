@@ -774,6 +774,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
   --type-body-small:400 14px/20px var(--font-sans);
   --type-label:500 14px/20px var(--font-sans);
   --type-caption:400 12px/16px var(--font-sans);
+  --type-status-sub:400 13px/18px var(--font-sans);
+  --type-coupon-value:700 30px/38px var(--font-serif); /* [NEW] QA 15 Nov: coupon value (heading-2 + 6px) */ /* [NEW] QA 15 Nov: status under item names (body-list − 2px) */
   --type-overline:500 12px/16px var(--font-sans);
   --tracking-display:-0.02em; --tracking-heading:-0.01em; --tracking-overline:0.06em;
   /* §6 sizes */
@@ -788,7 +790,13 @@ svg.leaflet-image-layer.leaflet-interactive path {
   --size-tile:44px;                 /* icon tile */
   --size-tile-sm:32px;              /* item status tile */
   --size-icon-tile:28px;            /* icon inside action-card tile */
-  --size-band:6px;                  /* coupon band */
+  --size-band:6px;                  /* Rescue Bonus hero band (coupons no longer have one, QA 15 Nov) */
+  --size-notch:10px;                /* [NEW] coupon ticket notch radius */
+  --notch-l-bottom:radial-gradient(circle var(--size-notch) at 0 100%, transparent 98%, #000) left / 51% 100% no-repeat;
+  --notch-r-bottom:radial-gradient(circle var(--size-notch) at 100% 100%, transparent 98%, #000) right / 51% 100% no-repeat;
+  --notch-l-top:radial-gradient(circle var(--size-notch) at 0 0, transparent 98%, #000) left / 51% 100% no-repeat;
+  --notch-r-top:radial-gradient(circle var(--size-notch) at 100% 0, transparent 98%, #000) right / 51% 100% no-repeat;
+  --shadow-ticket:drop-shadow(0 1px 1px rgba(43,36,30,.10)) drop-shadow(0 6px 10px rgba(43,36,30,.08)); /* [NEW] shadow-card as a filter, follows the ticket shape */
   --size-step-bar:6px;              /* step header progress */
   --size-bonus-bar:8px;             /* Rescue Bonus bar */
   --size-row-min:72px;              /* food item row */
@@ -1109,7 +1117,7 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{box-shadow:none}
 .banner--success{background:var(--surface-selected);color:var(--text-primary)}
 .banner--success > .icon{color:var(--icon-success)}
 .banner--info{background:var(--surface-subtle);color:var(--text-primary)}
-.banner--info > .icon{color:var(--icon-info)}
+.banner--info > .icon{color:var(--icon-primary)}  /* QA 15 Nov: inline notice icons are Pantry Green */
 .banner--problem{background:var(--surface-default);color:var(--text-problem);border:var(--border-w) solid var(--border-strong)}
 .banner--problem > .icon{color:var(--icon-problem)}
 .banner--reward{background:var(--surface-reward-subtle);color:var(--text-primary)}
@@ -1120,27 +1128,30 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{box-shadow:none}
 .toast{pointer-events:auto;box-shadow:var(--shadow-card);animation:fade-in var(--motion-fast) var(--ease) both}
 .toast.is-leaving{opacity:0;transition:opacity var(--motion-fast) var(--ease)}
 
-/* ---- Coupon ticket: v0.5 light ---- */
-.coupon{position:relative;background:var(--surface-default);border-radius:var(--radius-lg);box-shadow:var(--shadow-card);overflow:hidden}
-.coupon__band{height:var(--size-band);background:var(--surface-reward)}
+/* ---- Coupon ticket: QA 15 Nov ----
+   Two Paper halves; each has its two notch corners cut out with a mask, so the canvas shows through for real.
+   The shadow is a drop-shadow filter on the wrapper, so it follows the ticket outline (notches included). */
+.coupon{position:relative;filter:var(--shadow-ticket)}
+.coupon > .coupon__body,.coupon > .coupon__foot{background:var(--surface-default)}
+.coupon > .coupon__body:only-child{border-radius:var(--radius-lg)}
+.coupon > .coupon__body:not(:only-child){border-radius:var(--radius-lg) var(--radius-lg) 0 0;padding-bottom:var(--space-16);
+  -webkit-mask:var(--notch-l-bottom),var(--notch-r-bottom);mask:var(--notch-l-bottom),var(--notch-r-bottom)}
+.coupon > .coupon__foot{position:relative;border-radius:0 0 var(--radius-lg) var(--radius-lg);padding-top:var(--space-16);
+  -webkit-mask:var(--notch-l-top),var(--notch-r-top);mask:var(--notch-l-top),var(--notch-r-top)}
+.coupon > .coupon__foot::before{content:"";position:absolute;left:var(--space-20);right:var(--space-20);top:0;border-top:var(--border-w) dashed var(--border-subtle)}
+.coupon__value{font:var(--type-coupon-value);letter-spacing:var(--tracking-heading);color:var(--text-brand);margin-top:var(--space-8)}
+.coupon.is-used .coupon__value,.coupon.is-expired .coupon__value{color:var(--text-secondary)}
 .coupon__body{padding:var(--space-16) var(--space-16) var(--space-12)}
 .coupon__head{display:flex;align-items:center;gap:var(--space-8);justify-content:space-between}
 .coupon__kind{display:flex;align-items:center;gap:var(--space-8);color:var(--text-secondary)}
-.coupon__title{margin-top:var(--space-8)}
+.bonus--hero .coupon__band{height:var(--size-band);background:var(--surface-reward)}
 .coupon__meta{font:var(--type-body-small);color:var(--text-secondary);margin-top:var(--space-4)}
 .kv{display:flex;justify-content:space-between;gap:var(--space-16);font:var(--type-body);padding:var(--space-4) 0}
 .kv dt{color:var(--text-primary)}
 .kv dd{margin:0;font-weight:500;text-align:right}
 .coupon__terms{margin:var(--space-12) 0 0}
-.coupon__tear{position:relative;height:var(--space-24)}
-.coupon__tear::before{content:"";position:absolute;left:var(--space-16);right:var(--space-16);top:50%;border-top:var(--border-w) dashed var(--border-subtle)}
-.coupon__notch{position:absolute;top:50%;width:var(--space-20);height:var(--space-20);border-radius:var(--radius-full);background:var(--surface-canvas);transform:translateY(-50%)}
-.coupon__notch--l{left:calc(var(--space-12) * -1)} .coupon__notch--r{right:calc(var(--space-12) * -1)}
-.coupon__foot{display:flex;align-items:center;gap:var(--space-12);padding:0 var(--space-16) var(--space-16)}
-.coupon__foot p{flex:1;font:var(--type-body-small);color:var(--text-secondary)}
+.coupon__foot{display:flex;align-items:center;justify-content:flex-end;gap:var(--space-12);padding:0 var(--space-16) var(--space-16)}
 .coupon__foot .btn{flex:none}
-.coupon.is-used .coupon__band,.coupon.is-expired .coupon__band{background:var(--surface-subtle)}
-.coupon.is-pending .coupon__band{background:var(--surface-reward-subtle)}
 .pill{display:inline-flex;align-items:center;gap:var(--space-4);min-height:var(--size-icon-24);padding:var(--space-4) var(--space-12);border-radius:var(--radius-full);font:var(--type-label);white-space:nowrap;background:var(--surface-track);color:var(--text-primary)}
 .pill .icon{width:var(--size-icon-16);height:var(--size-icon-16);stroke-width:1.5}
 .pill--leaf{background:var(--surface-selected)}
@@ -1272,7 +1283,7 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{box-shadow:none}
 .statuslist__head h2{flex:1}
 .statuslist__row{display:flex;align-items:center;gap:var(--space-12);min-height:var(--size-status-row)}
 .statuslist__name{flex:1;min-width:0;font:var(--type-body-list)}
-.statuslist__name small{font:var(--type-body-small);color:var(--text-secondary);white-space:nowrap}
+.statuslist__name small{display:block;font:var(--type-status-sub);color:var(--text-secondary);white-space:nowrap}
 .statuslist__venue{font:var(--type-body-small);color:var(--text-secondary);white-space:nowrap;text-align:right}
 .tile--oat{background:var(--surface-subtle)}
 .icon--waiting{color:var(--icon-waiting)}
@@ -1285,7 +1296,8 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{box-shadow:none}
 .on-paper .avail--space{background:var(--surface-canvas)}
 
 /* ---- Shelf card + carousel ---- */
-.carousel{display:flex;gap:var(--space-12);overflow-x:auto;scroll-snap-type:x mandatory;margin:0 calc(var(--space-20) * -1);padding:var(--space-4) var(--space-20) var(--space-16);scrollbar-width:none}
+.carousel{display:flex;gap:var(--space-12);overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:var(--space-20);margin:0 calc(var(--space-20) * -1);padding:var(--space-4) var(--space-20) var(--space-16);scrollbar-width:none}
+.shelf--nomarker .shelf__body{padding-top:var(--space-12)}
 .carousel::-webkit-scrollbar{display:none}
 .shelf{flex:none;width:160px;scroll-snap-align:start;background:var(--surface-default);border-radius:var(--radius-lg);box-shadow:var(--shadow-card);overflow:hidden;text-align:left;display:flex;flex-direction:column}
 .shelf:active{transform:scale(.98)}
@@ -1449,7 +1461,7 @@ button.settings__row:active{background:var(--surface-canvas)}
 .kv-lines .kv + .kv{border-top:1px solid var(--border-subtle)}
 .howto{font:var(--type-body-small);color:var(--text-secondary);margin-top:var(--space-12)}
 .howto strong{color:var(--text-primary);font-weight:500}
-.banner--plain > .icon{color:var(--icon-info)}
+.banner--plain > .icon{color:var(--icon-primary)}
 .illus{border-radius:var(--radius-lg);background:var(--surface-subtle);min-height:120px;position:relative;margin-bottom:var(--space-20)}
 .illus::before{content:"";position:absolute;inset:var(--space-12);border:var(--border-w) dashed var(--border-strong);border-radius:var(--radius-md)}
 .illus .placeholder{position:absolute;inset:0;font:var(--type-body-small)}
@@ -2140,8 +2152,8 @@ const START = (persona = 'brenda') => {
       { id: 'r-tuna', name: 'Canned tuna', qty: 1, picked: 0, venue: 2, days: 2 }
     ] : [],
     coupons: brenda ? [
-      { id: 'c1', venue: 3, state: 'active', code: 'SS-4817' },
-      { id: 'c0', venue: 2, state: 'used', code: 'SS-4790', usedAt: 'yesterday at 17:30' }
+      { id: 'c1', venue: 3, state: 'active', code: 'SS-4817', value: 2, expires: '2026-12-09' },
+      { id: 'c0', venue: 2, state: 'used', code: 'SS-4790', usedAt: 'yesterday at 17:30', value: 4, expires: '2026-11-21' }
     ] : [],
     couponsThisMonth: brenda ? 1 : 0,
     bonuses: [],
@@ -2269,22 +2281,21 @@ const UI = {
     const def = { success: 'done', info: 'info', problem: 'needs-attention', reward: 'saved-food', plain: 'info' }[kind];
     return `<div class="banner banner--${kind}" role="${kind === 'problem' ? 'alert' : 'status'}">${icon(ic || def)}<div class="banner__text">${html}</div>${action}</div>`;
   },
-  coupon({ id = 'c1', state = 'active', venue = 'Café Daisy' } = {}) {
+  coupon({ id = 'c1', state = 'active', venue = 'Café Daisy', value = 2, expires = '2026-12-09' } = {}) {
     const chip = { active: '<span class="pill pill--leaf">Ready to use</span>', used: '<span class="pill pill--oat">Used</span>', expired: '<span class="pill pill--oat">Expired</span>', pending: '<span class="pill pill--reward">Pending</span>', withdrawn: '<span class="pill pill--oat">Withdrawn</span>' }[state];
     const btn = state === 'active'
       ? UI.button({ label: 'Show code', icon: 'qr-code', attrs: `data-href="#/coupons/code/${id}"` })
       : UI.button({ label: 'Show code', icon: 'qr-code', disabled: true });
-    return `<article class="coupon is-${state === 'withdrawn' ? 'used' : state}" aria-label="Thank-you coupon, ${state}">
-      <div class="coupon__band"></div>
+    const c = { value, expires };
+    return `<article class="coupon is-${state === 'withdrawn' ? 'used' : state}" aria-label="Thank-you coupon, ${couponValue(c)}, ${state}">
       <div class="coupon__body">
         <div class="coupon__head"><span class="coupon__kind">${icon('coupon', 'icon--reward')}<span class="t-overline">Thank-you coupon</span></span>${chip}</div>
-        <h3 class="t-h2 coupon__title">Thanks for sharing.</h3>
+        <h3 class="coupon__value">${couponValue(c)}</h3>
         <p class="coupon__meta">${esc(venue)} · after your drop-off</p>
-        <dl class="coupon__terms"><div class="kv"><dt>Offer value</dt><dd>To be agreed</dd></div><div class="kv"><dt>Expiry</dt><dd>To be agreed</dd></div></dl>
+        <dl class="coupon__terms"><div class="kv"><dt>${state === 'expired' ? 'Expired' : 'Expires'}</dt><dd>${couponExpiry(c)}</dd></div></dl>
         ${state === 'withdrawn' ? `<div style="margin-top:var(--space-12)">${UI.statusLabel('problem', 'The steward removed items that didn’t meet the rules')}</div>` : ''}
       </div>
-      <div class="coupon__tear" aria-hidden="true"><span class="coupon__notch coupon__notch--l"></span><span class="coupon__notch coupon__notch--r"></span></div>
-      <div class="coupon__foot"><p>Show the counter code. It is not the shelf QR.</p>${btn}</div>
+      <div class="coupon__foot">${btn}</div>
     </article>`;
   },
   segmented(items, selected = 0, { id = 'seg', block = false } = {}) {
@@ -2373,10 +2384,10 @@ const UI = {
   photo(url, alt) {
     return url ? `<img class="photo" src="${esc(url)}" alt="${esc(alt)}" loading="lazy" decoding="async" onload="this.parentNode.classList.add('is-loaded')" onerror="this.parentNode.classList.remove('has-photo');this.remove()">` : '';
   },
-  shelfCard({ n, dist, venue, hours, kind, spots }) {
+  shelfCard({ n, dist, venue, hours, kind, spots, marker = true }) {
     const v = VENUES.find(x => x.id === +n), url = v ? venuePhoto(v) : '';
-    return `<a class="shelf${kind === 'closed' ? ' is-closed' : ''}" href="#/point/${n}">
-      <div class="shelf__photo${url ? ' has-photo' : ''}">${UI.photo(url, `${venue} interior`)}<span class="placeholder">${icon('photo')}<span>Photo placeholder</span></span>${UI.marker(n)}</div>
+    return `<a class="shelf${kind === 'closed' ? ' is-closed' : ''}${marker ? '' : ' shelf--nomarker'}" href="#/point/${n}">
+      <div class="shelf__photo${url ? ' has-photo' : ''}">${UI.photo(url, `${venue} interior`)}<span class="placeholder">${icon('photo')}<span>Photo placeholder</span></span>${marker ? UI.marker(n) : ''}</div>
       <div class="shelf__body"><span class="shelf__dist">${esc(dist)}</span><span class="shelf__venue">${esc(venue)}</span>${hours ? `<span class="shelf__hours">${esc(hours)}</span>` : ''}${UI.avail(kind, spots)}</div></a>`;
   },
   resultRow({ n, venue, meta, kind, spots, selected = false, chip = '' }) {
@@ -2425,7 +2436,7 @@ const UI = {
     for (let x = 0; x < N; x++) for (let y = 0; y < N; y++) if (!inFinder(x, y) && rnd() > .55) cells.push([x, y]);
     return `<svg viewBox="0 0 ${N} ${N}" shape-rendering="crispEdges" aria-hidden="true">${cells.map(([x, y]) => `<rect x="${x}" y="${y}" width="1" height="1" fill="currentColor"/>`).join('')}</svg>`;
   },
-  qrSheet({ state = 'active', code = 'SS-4821', venue = 'Café Daisy' } = {}) {
+  qrSheet({ state = 'active', code = 'SS-4821', venue = 'Café Daisy', coupon = null } = {}) {
     return `<div class="qrsheet${state === 'used' ? ' is-used' : ''}">
       <p class="t-overline c-secondary">Show at the counter</p>
       <h2 class="t-h2">Thank-you coupon</h2>
@@ -2433,7 +2444,7 @@ const UI = {
       <div class="qr" role="img" aria-label="Counter code ${esc(code)}">${UI.qr(code)}</div>
       <p class="qrcode-text">${esc(code)}</p>
       ${state === 'used' ? UI.statusLabel('done', 'Used') : '<p class="t-small c-secondary">Works once. Staff scan it at the counter.</p>'}
-      <dl style="width:100%"><div class="kv"><dt>Offer value</dt><dd>To be agreed</dd></div><div class="kv"><dt>Expiry</dt><dd>To be agreed</dd></div></dl>
+      <dl style="width:100%"><div class="kv"><dt>Value</dt><dd>${couponValue(coupon)}</dd></div><div class="kv"><dt>Expires</dt><dd>${couponExpiry(coupon)}</dd></div></dl>
     </div>`;
   },
   capture(state = 'empty', src = '') {
@@ -2470,7 +2481,7 @@ const UI = {
     const total = items.reduce((n, r) => n + (r.qty || 1), 0), rows = items.slice(0, 4);
     return `<section class="statuslist" aria-labelledby="yf-title"><div class="statuslist__head"><h2 class="t-section" id="yf-title">Your food on shelves</h2><span class="pill">${total} item${total === 1 ? '' : 's'}</span></div>
       ${rows.map(r => { const done = r.status === 'done'; return `<div class="statuslist__row"><span class="tile tile--sm ${done ? '' : 'tile--oat'}">${icon(done ? 'done' : 'paused', 'icon--sm ' + (done ? 'icon--success' : 'icon--waiting'))}</span>
-        <span class="statuslist__name">${esc(r.name)}${r.qty > 1 ? ' ×' + r.qty : ''} <small>· ${done ? 'Picked up' : 'On the shelf'}</small></span><span class="statuslist__venue">${esc(venue(r.venue).name)}</span></div>`; }).join('')}</section>`;
+        <span class="statuslist__name">${esc(r.name)}${r.qty > 1 ? ' ×' + r.qty : ''}<small>${done ? 'Picked up' : 'On the shelf'}</small></span><span class="statuslist__venue">${esc(venue(r.venue).name)}</span></div>`; }).join('')}</section>`;
   },
   pointFacts(v) {
     return `<ul class="facts"><li>${icon('tap-nfc')}NFC tag and QR code</li><li>${icon('sealed-badge')}Sealed, shelf-stable, within date</li></ul>`;
@@ -2885,7 +2896,7 @@ Views.components = {
         ${UI.banner('reward', '2 of your items were saved')}</div>
         ${st('Toast with Undo (5 s)')}${UI.button({ label: 'Show Undo toast', variant: 'secondary', attrs: 'data-gal="toast"' })}`)}
 
-      ${sec('coupon', 'Coupon ticket', 'v0.5 light: Paper, 6px gold band, coupon icon in icon-reward, tear line with notches, Primary Show button. Values say “To be agreed”.',
+      ${sec('coupon', 'Coupon ticket', 'QA 15 Nov: ticket shape (notches cut out, shadow follows the shape), no gold band, value Fraunces 30/38, expiry date, Primary Show button.',
         st('Active') + UI.coupon({ state: 'active' }) + st('Pending') + UI.coupon({ state: 'pending' }) + st('Used') + UI.coupon({ state: 'used' }) + st('Expired') + UI.coupon({ state: 'expired' }))}
 
       ${sec('segmented', 'Segmented control', 'Oat pill track, 4px padding, selected segment Paper + Rubik 500, role=tablist.',
@@ -2920,7 +2931,7 @@ Views.components = {
         `<section class="statuslist"><div class="statuslist__head"><h2 class="t-section">Your food on shelves</h2><span class="pill">4 items</span>${icon('chevron-right')}</div>
         ${[['done', 'Tomato soup', 'Picked up', 'Café Daisy'], ['waiting', 'Fusilli pasta', 'On the shelf', 'Café Daisy'], ['done', 'All-purpose flour', 'Picked up', 'Pizza Nonna'], ['waiting', 'Canned tuna', 'On the shelf', 'Café Lumi']].map(r =>
           `<div class="statuslist__row"><span class="tile tile--sm ${r[0] === 'done' ? '' : 'tile--canvas'}">${icon(r[0] === 'done' ? 'done' : 'paused', 'icon--sm ' + (r[0] === 'done' ? 'icon--success' : 'icon--warning'))}</span>
-          <span class="statuslist__name">${r[1]} <small>· ${r[2]}</small></span><span class="statuslist__venue">${r[3]}</span></div>`).join('')}</section>`)}
+          <span class="statuslist__name">${r[1]}<small>${r[2]}</small></span><span class="statuslist__venue">${r[3]}</span></div>`).join('')}</section>`)}
 
       ${sec('shelf', 'Shelf card', 'Paper, shadow-card, photo top, distance text-brand, venue title, closing time, availability chip; carousel with 12px gaps.',
         `<div class="carousel">${UI.shelfCard({ n: 1, dist: '200 m', venue: 'Café Daisy', hours: 'Open until 20:00', kind: 'space', spots: '4 spots' })}${UI.shelfCard({ n: 2, dist: '1.2 km', venue: 'Café Lumi', hours: 'Open until 18:00', kind: 'full' })}${UI.shelfCard({ n: 3, dist: '2.1 km', venue: 'Pizza Nonna', hours: 'Closed now', kind: 'closed' })}</div>`)}
@@ -3785,7 +3796,7 @@ const bonusFrom = b => { const from = b.seen ?? 0; b.seen = b.picked; Store.save
 Views.giveDone = {
   html({ query }) {
     const s = Store.state, L = s.lastDrop, v = venue(L.venue), b = s.bonuses.find(x => x.id === L.bonus) || { picked: 0, total: L.count };
-    const cap = query.cap === '1' || L.capped;
+    const cap = query.cap === '1' || L.capped, cp = s.coupons.find(x => x.id === L.coupon) || { value: couponValueFor(L.count) };
     const bonus = UI.rescueBonus({ picked: b.picked, total: b.total, venue: v.name, sub: `${v.name} · from your ${pl(L.count, 'item')}`, from: b.id ? bonusFrom(b) : 0, note: cap ? '' : 'Grows as people pick up your items.' });
     return `<div class="closebar">${UI.iconButton('close', 'Close', 'data-done')}</div>
       <div class="stagger">
@@ -3794,9 +3805,10 @@ Views.giveDone = {
         <p class="t-body-large" style="margin-top:var(--space-8)">Your food is on the shelf at ${esc(v.name)}. People nearby can see it now.</p></div>
         <div class="stack-8">
           ${cap ? `<div class="note">${icon('coupon', 'icon--reward')}<div><strong>You’ve reached this month’s coupon limit</strong>Thank-you coupons are capped at [To be agreed] a month. A new one comes with your first drop-off next month.</div></div>`
-            : `<article class="coupon" aria-label="Thank-you coupon"><div class="coupon__band"></div><div class="coupon__body">
+            : `<article class="coupon" aria-label="Thank-you coupon, ${couponValue(cp)}"><div class="coupon__body">
               <div class="coupon__head"><span class="coupon__kind">${icon('coupon', 'icon--reward')}<span class="t-overline">Thank-you coupon · Ready</span></span></div>
-              <dl class="kv-lines" style="margin-top:var(--space-4)"><div class="kv"><dt>Offer value</dt><dd>To be agreed</dd></div><div class="kv"><dt>Participating venue</dt><dd>${esc(v.name)}</dd></div><div class="kv"><dt>Expiry</dt><dd>To be agreed</dd></div></dl>
+              <p class="coupon__value">${couponValue(cp)}</p>
+              <dl class="kv-lines" style="margin-top:var(--space-4)"><div class="kv"><dt>Participating venue</dt><dd>${esc(v.name)}</dd></div><div class="kv"><dt>Expires</dt><dd>${couponExpiry(cp)}</dd></div></dl>
               <p class="howto"><strong>How to use your coupon:</strong> Show the counter code. It is not the shelf QR.</p>
             </div></article>`}
           ${bonus}
@@ -3829,14 +3841,14 @@ Views.coupons = {
       const s = Store.state, p = $('#coupons-panel', el);
       if (couponTab === 0) {
         const act = s.coupons.filter(x => x.state === 'active');
-        const card = x => UI.coupon({ id: x.id, state: 'active', venue: venue(x.venue).name });
+        const card = x => UI.coupon({ id: x.id, state: 'active', venue: venue(x.venue).name, value: x.value, expires: x.expires });
         const bonuses = s.bonuses.map(b => UI.rescueBonus({ picked: b.picked, total: b.total, venue: venue(b.venue).name, from: bonusFrom(b), link: true, note: 'Pickups made without the app may not be counted.' })).join('');
         p.innerHTML = (act.length ? card(act[0]) + bonuses + act.slice(1).map(card).join('')
           : `<div class="card">${UI.empty({ ic: 'coupon', title: 'No coupons yet', line: 'Leave food at a shelf to get a thank-you coupon.', action: `<a class="btn btn--primary" href="#/map" data-action="leave">${icon('sealed-food')}<span>Leave food</span></a>` })}</div>` + bonuses)
           + UI.banner('info', 'Coupon value, expiry and monthly cap are still being agreed.');
       } else {
         const used = s.coupons.filter(x => x.state !== 'active');
-        p.innerHTML = used.length ? used.map(x => UI.coupon({ id: x.id, state: x.state, venue: venue(x.venue).name })).join('') : `<div class="card">${UI.empty({ ic: 'coupon', title: 'Nothing here yet', line: 'Used and expired coupons show up here.' })}</div>`;
+        p.innerHTML = used.length ? used.map(x => UI.coupon({ id: x.id, state: x.state, venue: venue(x.venue).name, value: x.value, expires: x.expires })).join('') : `<div class="card">${UI.empty({ ic: 'coupon', title: 'Nothing here yet', line: 'Used and expired coupons show up here.' })}</div>`;
       }
     };
     draw();
@@ -3852,7 +3864,7 @@ Views.couponCode = {
     const v = venue(c.venue);
     return `${UI.topBar({ title: 'Your coupon', serif: true })}
       <div class="stack">
-        <div class="card">${UI.qrSheet({ state: c.state === 'active' ? 'active' : 'used', code: c.code, venue: v.name + (v.addr ? ' · ' + v.addr : '') })}</div>
+        <div class="card">${UI.qrSheet({ state: c.state === 'active' ? 'active' : 'used', code: c.code, venue: v.name + (v.addr ? ' · ' + v.addr : ''), coupon: c })}</div>
         ${UI.banner('plain', 'Not the shelf QR. This code is for the counter.', { ic: 'location' })}
       </div>
       <div class="spacer"></div>
@@ -3866,7 +3878,7 @@ Views.bonus = {
     const s = Store.state, b = s.bonuses[0];
     const rows = b ? s.shelfItems.filter(r => (b.rows || []).includes(r.id)) : s.shelfItems;
     const itemRow = r => { const st = UI.rowStatus(r); return `<li class="statuslist__row"><span class="tile tile--sm ${st.done ? '' : 'tile--oat'}">${icon(st.done ? 'done' : 'paused', 'icon--sm ' + (st.done ? 'icon--success' : 'icon--waiting'))}</span>
-      <span class="statuslist__name">${esc(r.name)}${r.qty > 1 ? ' ×' + r.qty : ''}<br><small>${st.done ? 'Picked up' : r.picked ? esc(st.text) : r.days ? `On the shelf ${pl(r.days, 'day')}` : 'Still on the shelf'} · ${esc(venue(r.venue).name)}</small></span></li>`; };
+      <span class="statuslist__name">${esc(r.name)}${r.qty > 1 ? ' ×' + r.qty : ''}<small>${st.done ? 'Picked up' : r.picked ? esc(st.text) : r.days ? `On the shelf ${pl(r.days, 'day')}` : 'Still on the shelf'} · ${esc(venue(r.venue).name)}</small></span></li>`; };
     return `${UI.topBar({ title: b ? 'Rescue Bonus' : 'My items' })}
       <div class="stack">
         ${b ? `<article class="bonus bonus--hero"><div class="coupon__band"></div><div class="bonus__inner">
@@ -3944,7 +3956,7 @@ Object.assign(UI, {
     const total = items.reduce((n, r) => n + (r.qty || 1), 0), rows = items.slice(0, 4);
     return `<section class="statuslist" aria-labelledby="yf-title"><div class="statuslist__head"><h2 class="t-section" id="yf-title">Your food on shelves</h2><span class="pill" aria-live="polite">${total} item${total === 1 ? '' : 's'}</span></div>
       ${rows.map(r => { const st = UI.rowStatus(r); return `<div class="statuslist__row"><span class="tile tile--sm ${st.done ? '' : 'tile--oat'}">${icon(st.done ? 'done' : 'paused', 'icon--sm ' + (st.done ? 'icon--success' : 'icon--waiting'))}</span>
-        <span class="statuslist__name">${esc(r.name)}${r.qty > 1 ? ' ×' + r.qty : ''} <small>· ${esc(st.text)}</small></span><span class="statuslist__venue">${esc(venue(r.venue).name)}</span></div>`; }).join('')}
+        <span class="statuslist__name">${esc(r.name)}${r.qty > 1 ? ' ×' + r.qty : ''}<small>${esc(st.text)}</small></span><span class="statuslist__venue">${esc(venue(r.venue).name)}</span></div>`; }).join('')}
       ${items.length > 4 ? `<div class="center">${UI.button({ label: `See all ${items.length}`, variant: 'link', attrs: 'data-href="#/bonus"' })}</div>` : ''}</section>`;
   },
   impact({ month = monthName(), passed = 11, saved = 8, tap = false } = {}) {
@@ -3961,6 +3973,12 @@ Object.assign(UI, {
 });
 const monthName = () => new Date().toLocaleString('en-GB', { month: 'long' });
 const pl = (n, one, many = one + 's') => `${n} ${n === 1 ? one : many}`;
+/* QA 15 Nov (overrides "To be agreed" on coupons, see Q89): demo values. Bigger drop-off = bigger coupon;
+   expiry = about a month after the drop-off, plus a few random days. */
+const couponValueFor = n => n >= 4 ? 4 : 2;
+const couponExpiryFrom = t => { const d = new Date(t); d.setDate(d.getDate() + 28 + Math.floor(Math.random() * 6)); return d.toISOString().slice(0, 10); };
+const couponValue = c => `€${(c && c.value) || 2}`;
+const couponExpiry = c => { const d = new Date(((c && c.expires) || couponExpiryFrom(Date.now())) + 'T12:00:00'); return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }); };
 /* radio groups (role="radio" buttons with data-radio="group") */
 document.addEventListener('click', e => {
   const r = e.target.closest('[role="radio"][data-radio]');
@@ -3987,7 +4005,7 @@ const Ops = {
     s.bonuses.unshift({ id: bid, venue: venueId, picked: 0, total: n, rows: rows.map(r => r.id), at: Date.now() });
     const capped = !!s.sim.cap;
     let cid = null;
-    if (!capped) { cid = 'c' + stamp; s.coupons.unshift({ id: cid, venue: venueId, state: 'active', code: 'SS-4821' }); s.couponsThisMonth++; }
+    if (!capped) { cid = 'c' + stamp; s.coupons.unshift({ id: cid, venue: venueId, state: 'active', code: 'SS-4821', value: couponValueFor(n), expires: couponExpiryFrom(Date.now()) }); s.couponsThisMonth++; }
     s.sim.cap = false;
     s.impact.passed += n;
     s.lastDrop = { venue: venueId, count: n, coupon: cid, bonus: bid, capped };
@@ -4309,7 +4327,7 @@ Views.role = {
     const r = Store.state.role;
     const card = (val, icons, title, sub) => `<button type="button" role="radio" class="rolecard" aria-checked="${r === val}" data-radio="role" data-value="${val}">
       <span class="rolecard__icons">${icons.map(i => `<span class="tile">${icon(i)}</span>`).join('')}</span><span class="radio" aria-hidden="true"></span>
-      <span class="t-title">${title}</span><span class="t-small c-secondary">${sub}</span><span class="rolecard__sel">${icon('done', 'icon--sm')}Selected</span></button>`;
+      <span class="t-title">${title}</span><span class="t-small c-secondary">${sub}</span></button>`;
     return `${UI.stepHeader({ step: 2, layout: 'stack', h1: 'How will you use SecondShelf?' })}
       <p class="t-body c-secondary" style="margin-bottom:var(--space-24)">You can change this later in Me.</p>
       <div class="rolecards" role="radiogroup" aria-label="How will you use SecondShelf?">
@@ -4944,11 +4962,11 @@ Views.hostRedeemResult = {
     const code = (query.code || '').toUpperCase(), r = Views.hostRedeemResult.state(code), v = r.c ? venue(r.c.venue) : venue(1);
     const head = `${UI.topBar({ title: 'Redeem a coupon' })}`;
     if (r.k === 'valid') return `${head}<div class="stagger center">${UI.tick()}<h2 class="t-display">Valid coupon</h2>
-        <article class="coupon" style="text-align:left"><div class="coupon__band"></div><div class="coupon__body">
+        <article class="coupon" style="text-align:left"><div class="coupon__body">
           <p class="coupon__kind">${icon('coupon', 'icon--reward')}<span class="t-label">Thank-you coupon</span></p>
-          <p class="t-h2" style="margin-top:var(--space-8)">To be agreed</p>
+          <p class="coupon__value">${couponValue(r.c)}</p>
           <p class="t-small c-secondary">Code ${esc(code)} · ${esc(Store.state.user.first)} ${esc((Store.state.user.name.split(' ')[1] || '').charAt(0))}${Store.state.user.name.includes(' ') ? '.' : ''}</p>
-          <p class="t-small c-secondary">From a drop-off at ${esc(v.name)} · valid until [To be agreed]</p></div></article>
+          <p class="t-small c-secondary">From a drop-off at ${esc(v.name)} · valid until ${couponExpiry(r.c)}</p></div></article>
         ${UI.note('Give the discount, then mark it as redeemed so it can’t be used twice.')}</div>
         <div class="spacer"></div>
         <div class="actions">${UI.button({ label: 'Mark as redeemed', variant: 'accent', icon: 'redeem', block: true, attrs: 'data-markredeemed' })}${UI.button({ label: 'Cancel', variant: 'secondary', block: true, attrs: 'data-action="back"' })}</div>`;
@@ -5151,6 +5169,9 @@ Object.assign(Actions, {
 });
 
 /* ---------- M01 Home (Brenda: her food on shelves · Jonas: empty state) ---------- */
+/* Points near you (QA 15 Nov): the three spec venues plus the three nearest other shelves, by distance; no map numbers on Home */
+const homePoints = () => { const spec = VENUES.slice(0, 3), rest = VENUES.filter(v => isNear(v) && !spec.includes(v)).sort((a, b) => a.metres - b.metres).slice(0, 3);
+  return [...spec, ...rest].sort((a, b) => a.metres - b.metres); };
 Views.home = {
   html() {
     const s = Store.state;
@@ -5163,7 +5184,7 @@ Views.home = {
       ${mine}
       <section aria-labelledby="pn-title">
         <div class="sechead"><h2 class="t-section" id="pn-title">Points near you</h2><a class="btn btn--link" href="#/map">Open map</a></div>
-        <div class="carousel">${VENUES.slice(0, 3).map(v => { const k = availKind(v); return UI.shelfCard({ n: v.id, dist: v.dist, venue: v.name, hours: v.hours, kind: k === 'space' ? 'space' : k === 'full' ? 'full' : 'closed', spots: k === 'paused' ? 'Paused' : k === 'closed' ? 'Closed' : pl(v.spots, 'spot') }); }).join('')}</div>
+        <div class="carousel" aria-label="Points near you, scroll sideways">${homePoints().map(v => { const k = availKind(v); return UI.shelfCard({ n: v.id, dist: v.dist, venue: v.name, hours: v.hours, kind: k === 'space' ? 'space' : k === 'full' ? 'full' : 'closed', spots: k === 'paused' ? 'Paused' : k === 'closed' ? 'Closed' : pl(v.spots, 'spot'), marker: false }); }).join('')}</div>
       </section>
     </div>`;
   },
