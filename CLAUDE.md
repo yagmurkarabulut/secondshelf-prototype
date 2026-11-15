@@ -115,6 +115,8 @@ Codes follow the testing protocol. Exact names, order and states come from the F
 | H06 / H06b | Host dashboard (titled Home) / Pause the shelf | `#/host/dashboard`, `#/host/pause` | `frames/H06-host-dashboard.png`, `frames/H06b-pause-the-shelf.png` · built from frame |
 | H07 / H07b / H07c | Redeem / Valid / Used, expired, not found | `#/host/redeem`, `#/host/redeem/result?code=…` | `frames/H07-redeem-coupon.png`, `frames/H07b-coupon-valid.png`, `frames/H07c-coupon-already-used-or-expired.png` · built from frame |
 | H08 / H08b / H08c | Daily check / Done / Missed (dashboard banner) | `#/host/check`, `#/host/check/done` | `frames/H08-daily-shelf-check.png`, `frames/H08b-check-done.png`, `frames/H08c-missed-check.png` · built from frame |
+| H06c / H11 | "Needs your attention" callout on H06 → Reported items (all OK · mark missing · remove) | `#/host/dashboard`, `#/host/reports` | no frame · built without frame (QA round 9, Q102) |
+| H12 | Notifications (host Me): drop-offs, pickups, reports, new / earlier, push toggle (simulated) | `#/host/notifications` | no frame · built without frame (QA round 9, Q102) |
 | X01 | "I took something" no-app web page (not in this spec; Q55) | `#/x/:shelf` | `frames/X01-i-took-something-web.png` · built, moderator menu only |
 | — | Screen index (team, hidden) | `#/screens` | — |
 | O05, O06, H09, H10 | Location / notification permission, Shelf tab, Settings | — | not built (P3, not in this spec) |

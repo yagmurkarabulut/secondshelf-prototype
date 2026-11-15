@@ -701,7 +701,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
    ===================================================================== */
 :root{
   /* primitives */
-  --green-950:#172E20; --green-900:#1F3D2B; --green-700:#3F5B3A; --green-100:#CFE3C8; --green-50:#E7F1E4; /* [NEW] Q97: half Leaf, half Paper */
+  --green-950:#172E20; --green-900:#1F3D2B; --green-700:#3F5B3A; --green-100:#CFE3C8; --green-50:#E7F1E4; /* [NEW] Q97: half Leaf, half Paper */ --green-300:#9FC096; /* [NEW] Q102: chart ramp step between Leaf and Forest */
   --terracotta-800:#89432D; --terracotta-700:#A14C33; --terracotta-500:#C2593A; --terracotta-100:#F0DFD2; --terracotta-50:#F8EFE8;
   --ochre-800:#876326; --ochre-500:#BF8B2E; --ochre-100:#EFE5D1; --ochre-50:#F7F2E8; --clay-500:#8A6F4A;
   --ink-900:#2B241E; --stone-700:#5C554C; --stone-600:#6E665C; --stone-500:#8C8477; --stone-300:#CFC6B6;
@@ -769,9 +769,9 @@ svg.leaflet-image-layer.leaflet-interactive path {
   --icon-not-allowed:var(--terracotta-700);  /* "Not on the shelf" red flags */
   --icon-best-before:var(--info-600);        /* best-before date icon (G06) */
   --surface-sealed:var(--green-100); --icon-sealed:var(--success-700);  /* Sealed badge: Leaf pill, Ink text */
-  --type-rules-head:700 18px/24px var(--font-sans);
-  --chart-low:var(--ochre-500);   /* [NEW] QA round 8 (Q101): G11 bars under 5 items */
-  --chart-high:var(--green-900);  /* [NEW] G11 bars, 5 items or more */   /* QA round 8: body-large size (18), was 14 */
+  --type-rules-head:700 18px/24px var(--font-sans);   /* QA round 8: body-large size (18), was 14 */
+  /* [NEW] QA round 9 (Q102): G11 weekly bars, one green ramp, lighter = fewer items (no gold: Ochre stays for rewards) */
+  --chart-1:var(--green-100); --chart-2:var(--green-300); --chart-3:var(--green-700); --chart-4:var(--green-900); --chart-edge:var(--green-700);
   --border-notify-success:var(--green-700); --border-notify-warning:var(--ochre-500); --border-notify-error:var(--terracotta-500);
 }
 
@@ -1764,13 +1764,15 @@ textarea.input{min-height:calc(var(--size-control) * 2);resize:vertical}
 .bar:nth-child(2) .bar__fill{animation-delay:100ms}.bar:nth-child(3) .bar__fill{animation-delay:200ms}.bar:nth-child(4) .bar__fill{animation-delay:300ms}
 @keyframes bar-up{from{transform:scaleY(0)}to{transform:none}}
 .bar__val{font:var(--type-label)}
-.bar__fill{background:var(--chart-low)}          /* QA round 8: under 5 items = gold */
-.bar__fill--high{background:var(--chart-high)}   /* 5 or more = Pantry Green */
+.bar__fill{background:var(--chart-1);box-shadow:inset 0 0 0 1px var(--chart-edge)}   /* QA round 9: green density ramp */
+.bar__fill--2{background:var(--chart-2)} .bar__fill--3{background:var(--chart-3)} .bar__fill--4{background:var(--chart-4)}
 .bar--none .bar__val{color:var(--text-tertiary)} /* a week with nothing passed on: no bar */
 .bars__legend{display:flex;flex-wrap:wrap;gap:var(--space-16);margin-top:var(--space-12);font:var(--type-caption);color:var(--text-secondary)}
 .bars__legend span{display:inline-flex;align-items:center;gap:var(--space-8)}
-.bars__key{display:inline-block;width:var(--space-12);height:var(--space-12);border-radius:var(--radius-xs);background:var(--chart-low)}
-.bars__key--high{background:var(--chart-high)}
+.bars__key{display:inline-block;width:var(--space-12);height:var(--space-12);border-radius:var(--radius-xs);background:var(--chart-1);box-shadow:inset 0 0 0 1px var(--chart-edge)}
+.bars__key--2{background:var(--chart-2)} .bars__key--3{background:var(--chart-3)} .bars__key--4{background:var(--chart-4)}
+.bars__legend{align-items:center}
+.bars__ramp{display:inline-flex;gap:var(--space-4)}
 /* G11 month picker: a chip that looks like a dropdown; the native month input sits on top of it, invisible */
 .monthpick{position:relative;display:inline-flex}
 .monthpick__chip{gap:var(--space-8);padding-right:var(--space-12);cursor:pointer}
@@ -1847,6 +1849,15 @@ a.bonus{display:block;text-decoration:none;color:inherit}
 .pick__foot{display:flex;justify-content:flex-end;margin-top:calc(var(--space-8) * -1)}
 .pick__foot .btn--link{font:var(--type-label)}
 .pick.is-missing{background:var(--surface-subtle);opacity:.7}
+.footnote{display:flex;gap:var(--space-8);align-items:center;margin-top:var(--space-16)}
+.attn{display:flex;align-items:center;gap:var(--space-12);text-decoration:none;color:inherit;border-left:var(--space-4) solid var(--icon-problem)}
+.repitem{display:flex;flex-direction:column;gap:var(--space-12)}
+.repitem__note{background:var(--surface-canvas);border-radius:var(--radius-sm);padding:var(--space-8) var(--space-12);margin-top:var(--space-8);color:var(--text-primary)}
+.repitem__ask{color:var(--text-secondary)}
+.repitem__acts{display:flex;flex-direction:column;gap:var(--space-8)}
+.log__row.is-new .log__title{font-weight:500}
+.dot{width:var(--space-8);height:var(--space-8);border-radius:var(--radius-full);background:var(--icon-primary);flex:none}
+.banner--link{text-decoration:none;color:inherit;align-items:center}
 .reportcard{display:flex;flex-direction:column;gap:var(--space-12)}
 .reportcard__list{display:flex;flex-direction:column;gap:var(--space-8);padding-left:calc(var(--size-tap-min) + var(--space-12))}
 .reportcard__list li{display:flex;flex-direction:column}
@@ -2890,7 +2901,7 @@ const START = (persona = 'brenda') => {
     bonuses: [],
     impact: { passed: 11, saved: 8, weeks: [4, 0, 2, 5],
       // QA round 8: earlier months for the G11 month picker (index 0 = last month). Demo values.
-      history: [{ passed: 12, saved: 9, weeks: [3, 6, 0, 3] }, { passed: 7, saved: 5, weeks: [2, 0, 4, 1] }, { passed: 5, saved: 4, weeks: [0, 5, 0, 0] }] },
+      history: [{ passed: 12, saved: 9, weeks: [3, 6, 0, 3] }, { passed: 10, saved: 7, weeks: [1, 0, 8, 1] }, { passed: 5, saved: 4, weeks: [0, 5, 0, 0] }] },
     city: 'tallinn',             // v0.7 test city for the real map (moderator menu); Reset demo goes back to Tallinn
     alert: null,                 // food alert, e.g. { food: 'Pasta', km: 1 }
     draft: null,                 // drop-off in progress
@@ -2902,6 +2913,7 @@ const START = (persona = 'brenda') => {
     host: {
       status: 'none',            // none · applied · verified · live
       venue: 1, owner: 'Anna', staff: ['Anna', 'Brenda'], reminder: '09:00',
+      push: true, notifSeen: 0,   // QA round 9: host notification centre (push is simulated)
       form: { name: 'Café Daisy', addr: 'Aia 8, Tallinn', reg: '', capacity: '10', reminder: '09:00' },
       kit: { sign: false, nfc: false, qr: false, window: false },
       checkDue: true, missed: false, nextBy: 'Anna',
@@ -2932,7 +2944,7 @@ const Store = {
   log(type, data = {}) { const ev = this.state.events; ev.push({ t: new Date().toISOString(), type, ...data }); if (ev.length > 600) ev.splice(0, ev.length - 600); this.save(); }
 };
 /* Host activity log (H06) */
-const hostLog = (kind, text) => { Store.state.log.unshift({ kind, text, time: nowHM() }); };
+const hostLog = (kind, text) => { Store.state.log.unshift({ kind, text, time: nowHM(), t: Date.now() }); };   // t: unread in the host notification centre (QA round 9)
 /* Task timing (hand-off §6): A drop-off, B pickup, C daily check. Never shown to participants. */
 const Task = {
   start(task) { Store.state.tasks[task] = Date.now(); Store.log('task_start', { task }); },
@@ -4791,13 +4803,15 @@ Object.assign(UI, {
   },
   /* QA round 8: H06 "Reported by visitors" card. Receivers' "Not here?" and Report a problem land here,
      on the Check tab badge and as flagged rows in H08, until the next shelf check resolves them. */
+  /* QA round 9: H06 callout. Stays until every report is answered; a short summary only, the details are on H11. */
   reportCard(list) {
     if (!list.length) return '';
-    const rows = list.slice(0, 3).map(r => `<li><span class="t-body">${esc(r.name)}</span><span class="t-small c-secondary">${esc(r.reason === 'Not here' || r.reason === 'Missing' ? 'Reported missing' : r.reason)} · ${esc(r.time || '')}</span></li>`).join('');
-    return `<section class="card card--shadow reportcard" aria-labelledby="h06-rep">
-      <div class="row"><span class="tile tile--oat">${icon('needs-attention', 'icon--problem')}</span><div class="grow"><h2 class="t-title" id="h06-rep">${list.length === 1 ? '1 report from a visitor' : `${list.length} reports from visitors`}</h2><p class="t-small c-secondary">Check the shelf, then keep or remove ${list.length === 1 ? 'the item' : 'the items'}.</p></div></div>
-      <ul class="reportcard__list">${rows}</ul>${list.length > 3 ? `<p class="t-small c-secondary">and ${list.length - 3} more</p>` : ''}
-      <div class="row" style="justify-content:flex-end">${UI.button({ label: 'Check the shelf', icon: 'shelf-check', attrs: 'data-startcheck' })}</div></section>`;
+    const one = list.length === 1, r = list[0], miss = x => x.reason === 'Not here' || x.reason === 'Missing';
+    const line = one ? `A visitor reported ${r.item ? shortName(r.name) : 'the shelf'} ${miss(r) ? 'missing' : `(${r.reason.toLowerCase()})`}` : `Visitors reported ${list.length} things on your shelf`;
+    return `<a class="card card--shadow card--tap attn" href="#/host/reports" aria-label="Needs your attention. ${esc(line)}. Open reported items">
+      <span class="tile tile--oat">${icon('needs-attention', 'icon--problem')}</span>
+      <span class="grow"><span class="t-title" style="display:block">Needs your attention</span><span class="t-small c-secondary">${esc(line)}</span></span>
+      ${icon('chevron-right')}</a>`;
   },
   hostCard() {
     const host = Store.state.mode === 'host';
@@ -4877,8 +4891,26 @@ const Ops = {
     if (item) { item.flag = reason; item.flagAt = nowHM(); }
     // QA round 8: open reports reach the host (H06 card, Check tab badge, H08 rows) until a shelf check resolves them
     s.reports.push({ venue: venueId, item: itemId, name: item ? item.name : 'The whole shelf', reason, note, t: Date.now(), time: nowHM(), resolved: false });
-    hostLog('report', `Report · ${item ? shortName(item.name) : 'shelf'} · ${reason}`);
+    hostLog('report', `Reported by a visitor · ${item ? shortName(item.name) : 'shelf'} · ${reason === 'Not here' ? 'missing' : reason.toLowerCase()}`);
     Store.save();
+  },
+  /* QA round 9: the host answers a visitor's report (H09). outcome: ok (it's there) · missing (it's gone) · removed (taken off the shelf).
+     Returns an undo function. */
+  resolveReport(idx, outcome) {
+    const s = Store.state, h = s.host, r = s.reports[idx]; if (!r || r.resolved) return () => {};
+    const sh = shelfOf(r.venue), item = sh.items.find(i => i.id === r.item), before = item ? { ...item } : null, pos = item ? sh.items.indexOf(item) : -1;
+    if (item) { if (outcome === 'ok') { item.flag = null; item.missing = false; } else item.qty = 0; }
+    sh.items = sh.items.filter(i => i.qty > 0);
+    Object.assign(r, { resolved: true, outcome, by: h.staff[0], at: nowHM() });
+    const word = { ok: 'all OK', missing: 'marked missing', removed: 'removed' }[outcome];
+    hostLog('resolve', `Report answered · ${shortName(r.name)} · ${word}`);
+    Store.save();
+    return () => {
+      if (before) { const cur = sh.items.find(i => i.id === before.id); if (cur) Object.assign(cur, before); else sh.items.splice(Math.max(0, pos), 0, before); }
+      Object.assign(r, { resolved: false, outcome: null, by: null, at: null });
+      const k = s.log.findIndex(l => l.kind === 'resolve'); if (k >= 0) s.log.splice(k, 1);
+      Store.save();
+    };
   },
   pause(venueId, reason, until) { shelfOf(venueId).paused = { reason, until }; hostLog('pause', `Shelf paused · ${reason}`); Store.save(); },
   resume(venueId) { shelfOf(venueId).paused = null; hostLog('pause', 'Shelf open again'); Store.save(); },
@@ -4966,6 +4998,9 @@ const SCREENS = [
     ['H08', 'Daily shelf check', '#/host/check', 'H08-daily-shelf-check', 'frame', 'Q54'],
     ['H08b', 'Check done', '#/host/check/done', 'H08b-check-done', 'frame', ''],
     ['H08c', 'Missed check (banner on H06)', '#/host/dashboard?sim=missed', 'H08c-missed-check', 'frame', ''],
+    ['H11', 'Reported items (from the H06 callout)', '#/host/reports', '', 'noframe', 'Q102'],
+    ['H06c', 'Needs your attention callout on H06', '#/host/dashboard?sim=report', '', 'noframe', 'Q102'],
+    ['H12', 'Notifications (host Me)', '#/host/notifications', '', 'noframe', 'Q102'],
     ['H09', 'Shelf tab', '', '', 'not', 'P3, not in CLAUDE.md'],
     ['H10', 'Settings', '', '', 'not', 'P3, not in CLAUDE.md (pause, reminder, stewards covered elsewhere)']]],
   ['No-app', [
@@ -4989,11 +5024,12 @@ const Jump = {
     if (path === '/take/done' && !s.lastPickup) { const sh = shelfOf(1); Pick.commit([{ id: sh.items[0].id, qty: 1 }]); }
     if (path.startsWith('/host/')) {
       const order = ['none', 'applied', 'verified', 'live'];
-      const need = /dashboard|pause|redeem|check/.test(path) ? 'live' : /verify|kit|activate|live/.test(path) ? 'verified' : /review/.test(path) ? 'applied' : 'none';
+      const need = /dashboard|pause|redeem|check|reports|notifications/.test(path) ? 'live' : /verify|kit|activate|live/.test(path) ? 'verified' : /review/.test(path) ? 'applied' : 'none';
       if (order.indexOf(s.host.status) < order.indexOf(need)) s.host.status = need;
       if (need === 'live') s.mode = 'host';
     }
     if (path === '/host/check/done' && !s.host.lastCheck) Check.fake();
+    if ((path === '/host/reports' || q.sim === 'report') && !openReports().length) { const i = shelfOf(s.host.venue).items.find(x => !x.missing && x.qty > 0); if (i) Ops.report(s.host.venue, i.id, 'Not here'); }
     if (q.sim === 'expired') { const c = s.coupons.find(x => x.code === q.code); if (c) c.state = 'expired'; }
     if (q.sim === 'missed') { s.host.missed = true; s.host.checkDue = true; }
     Store.save();
@@ -5215,6 +5251,7 @@ Views.me = {
     return `<h1 class="t-h1 screen-title">Me</h1>
       <div class="stack">
         ${UI.profileRow(s.user).replace('class="card profile"', 'class="card profile" data-action="profile"')}
+        ${s.mode === 'host' ? `<div class="settings">${UI.settingsRow({ ic: 'notification', title: 'Notifications', sub: (n => n ? `${n} new` : 'Drop-offs, pickups, reports')(unreadNotes().length), href: '#/host/notifications' })}</div>` : ''}
         ${s.persona === 'brenda' ? UI.impact({ passed: s.impact.passed, saved: s.impact.saved, tap: true }) : ''}
         <div class="settings">
           ${UI.settingsRow({ ic: 'sealed-food', title: 'My items', sub: onShelf ? `${onShelf} on shelves` : 'Nothing on shelves yet', href: '#/bonus' })}
@@ -5242,7 +5279,9 @@ Views.me = {
    QA round 8: serif title like the other detail screens; "Your November" is now a month picker chip
    (native month / year picker on iOS and Android; a sheet of months where the browser has none);
    bars under 5 items are gold, 5 or more green, a week with nothing passed on has no bar. */
-const IMPACT_HIGH = 5;
+/* QA round 9: bar colour = how many items that week, on one green ramp (1–2 · 3–4 · 5–7 · 8+) */
+const IMPACT_STEPS = [[1, 2], [3, 4], [5, 7], [8, Infinity]];
+const impactStep = n => IMPACT_STEPS.findIndex(([a, b]) => n >= a && n <= b) + 1;
 const monthKey = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
 const monthsBack = k => { const d = new Date(); d.setDate(1); d.setMonth(d.getMonth() - k); return d; };
 const monthLabel = d => d.toLocaleString('en-GB', { month: 'long', year: 'numeric' });
@@ -5262,9 +5301,9 @@ Views.impact = {
         <section class="impact"><div class="impact__head"><span class="row c-brand" style="gap:var(--space-8)">${icon('saved-food', 'icon--sm')}<span class="t-label">${cur ? 'This month' : esc(mname)}</span></span></div>
           <div class="impact__nums"><div><p class="impact__num">${d.passed}</p><p class="impact__cap">items passed on</p></div><div><p class="impact__num">${d.saved}</p><p class="impact__cap">saved by neighbours</p></div></div></section>
         <section class="card" aria-labelledby="g11-chart"><h3 class="t-small c-secondary" id="g11-chart" style="margin-bottom:var(--space-16)">By week</h3>
-          <div class="bars" style="--n:${w.length}" role="img" aria-label="Items passed on by week: ${w.map((n, i) => `week ${i + 1}, ${n}`).join('; ')}">${w.map(n => `<div class="bar${n ? '' : ' bar--none'}"><span class="bar__val">${n}</span>${n ? `<span class="bar__fill${n >= IMPACT_HIGH ? ' bar__fill--high' : ''}" style="--h:${Math.round(n / max * 80)}%"></span>` : ''}</div>`).join('')}</div>
+          <div class="bars" style="--n:${w.length}" role="img" aria-label="Items passed on by week: ${w.map((n, i) => `week ${i + 1}, ${n}`).join('; ')}">${w.map(n => `<div class="bar${n ? '' : ' bar--none'}"><span class="bar__val">${n}</span>${n ? `<span class="bar__fill${impactStep(n) > 1 ? ' bar__fill--' + impactStep(n) : ''}" style="--h:${Math.round(n / max * 80)}%"></span>` : ''}</div>`).join('')}</div>
           <div class="bars__labels" style="--n:${w.length}" aria-hidden="true">${w.map((_, i) => `<span>Week ${i + 1}</span>`).join('')}</div>
-          <div class="bars__legend" aria-hidden="true"><span><i class="bars__key"></i>Under ${IMPACT_HIGH} items</span><span><i class="bars__key bars__key--high"></i>${IMPACT_HIGH} or more</span></div></section>
+          <div class="bars__legend" aria-hidden="true"><span>Fewer</span><span class="bars__ramp">${IMPACT_STEPS.map((st, k) => `<i class="bars__key${k ? ' bars__key--' + (k + 1) : ''}" title="${st[1] === Infinity ? st[0] + '+' : st[0] + '–' + st[1]} items"></i>`).join('')}</span><span>More items</span></div></section>
         ${cur ? UI.note('<strong>A tip for next month</strong>You passed on crackers three times. A smaller pack might suit your week better.') : ''}
       </div>`;
   },
@@ -5775,7 +5814,7 @@ Views.hostLive = {
 };
 
 /* ---------- H06 Host dashboard (title Home, never "Today") · H08c missed-check banner ---------- */
-const LOG_ICON = { dropoff: 'sealed-food', pickup: 'pickup-bag', redeem: 'coupon', check: 'shelf-check', report: 'needs-attention', pause: 'pause' };
+const LOG_ICON = { dropoff: 'sealed-food', pickup: 'pickup-bag', redeem: 'coupon', check: 'shelf-check', report: 'needs-attention', resolve: 'done', pause: 'pause' };
 /* QA round 6: activity rows = title + item-count chip + optional detail; no donor references. Works for old saved entries too. */
 const logParts = r => {
   const parts = String(r.text || '').split(' · '), title = parts[0] || 'Activity';
@@ -5831,6 +5870,69 @@ Views.hostDash = {
       if (e.target.closest('[data-startcheck]')) { e.preventDefault(); Task.start('check'); Router.go('#/host/check'); }
       if (e.target.closest('[data-resume]')) { Ops.resume(Store.state.host.venue); toast('success', 'Shelf open again', { ms: 2500 }); Router.render('none'); }
       const lg = e.target.closest('[data-log]'); if (lg) logSheet(Store.state.log[+lg.dataset.log]);
+    });
+  }
+};
+
+/* ---------- H11 Reported items (QA round 9): what happened, who told us, what the host can do ---------- */
+const REPORT_OUTCOME = { ok: 'All OK, it’s on the shelf', missing: 'Marked missing', removed: 'Removed from the shelf' };
+Views.hostReports = {
+  html() {
+    const s = Store.state, h = s.host, all = s.reports.map((r, i) => ({ ...r, i })).filter(r => r.venue === h.venue);
+    const open = all.filter(r => !r.resolved), done = all.filter(r => r.resolved).slice(-5).reverse();
+    const miss = r => r.reason === 'Not here' || r.reason === 'Missing';
+    const card = r => `<article class="card repitem" data-rep="${r.i}">
+        <div class="row" style="align-items:flex-start"><span class="item__thumb">${icon(r.item ? 'sealed-food' : 'community-shelf')}</span>
+          <div class="grow"><h2 class="t-title">${esc(r.name)}</h2>
+            <p class="t-small c-secondary">${miss(r) ? 'Reported missing' : esc(r.reason)} · today ${esc(r.time || '')}</p>
+            <p class="t-small c-secondary">By a visitor, in the app. Visitors stay anonymous.</p>
+            ${r.note ? `<p class="repitem__note t-small">“${esc(r.note)}”</p>` : ''}</div></div>
+        <p class="t-label repitem__ask">${r.item ? 'What did you find?' : 'Is the shelf all right?'}</p>
+        <div class="repitem__acts">${UI.button({ label: r.item ? 'It’s there, all OK' : 'All OK', variant: 'secondary', icon: 'done', block: true, attrs: `data-resolve="ok"` })}
+          ${r.item ? UI.button({ label: 'It’s gone, mark missing', variant: 'secondary', icon: 'needs-attention', block: true, attrs: `data-resolve="missing"` }) + UI.button({ label: 'Remove it from the shelf', variant: 'secondary', icon: 'remove', block: true, attrs: `data-resolve="removed"` }) : ''}</div>
+      </article>`;
+    return `${UI.topBar({ title: 'Reported items', serif: true })}
+      <p class="t-body c-secondary" style="margin-bottom:var(--space-16)">A visitor told us something on your shelf may not be right. Have a look at the shelf, then tell us what you found. The map updates straight away.</p>
+      <div class="stack" id="h09-open">${open.length ? open.map(card).join('') : `<div class="card">${UI.empty({ art: 'all-fine', title: 'All sorted', line: 'There are no open reports for your shelf.' })}</div>`}</div>
+      ${done.length ? `<h2 class="t-section" style="margin:var(--space-24) 0 var(--space-8)">Answered</h2><ul class="log">${done.map(r => `<li class="log__row"><span class="tile tile--sm tile--canvas">${icon(r.outcome === 'ok' ? 'done' : r.outcome === 'removed' ? 'remove' : 'needs-attention', 'icon--sm')}</span><span class="grow log__main"><span class="log__title">${esc(r.name)}</span><span class="log__sub">${esc(REPORT_OUTCOME[r.outcome] || 'Answered')} · ${esc(r.by || '')} ${esc(r.at || '')}</span></span></li>`).join('')}</ul>` : ''}
+      <p class="t-small c-secondary footnote">${icon('shelf-check', 'icon--sm icon--secondary')}<span>Reported items also appear in the daily shelf check.</span></p>`;
+  },
+  mount(el) {
+    el.addEventListener('click', async e => {
+      const b = e.target.closest('[data-resolve]'); if (!b) return;
+      const card = b.closest('[data-rep]'), idx = +card.dataset.rep, outcome = b.dataset.resolve, r = Store.state.reports[idx];
+      await simulate(b, 400);
+      const undo = Ops.resolveReport(idx, outcome); buzz(); Store.log('report_resolve', { outcome });
+      Router.render('none');
+      toast('success', `<strong>${esc(shortName(r.name))}</strong>: ${esc(REPORT_OUTCOME[outcome].toLowerCase())}`, { action: 'Undo', onAction: () => { undo(); Router.render('none'); } });
+    });
+  }
+};
+
+/* ---------- H12 Notifications (QA round 9): host Me › Notifications. Activity as a list, new ones marked; push is simulated ---------- */
+function unreadNotes() { const s = Store.state; return s.log.filter(l => l.t && l.t > (s.host.notifSeen || 0)); }
+Views.hostNotes = {
+  html() {
+    const s = Store.state, h = s.host, unread = new Set(unreadNotes()), reps = openReports().length;
+    const row = (r, k) => { const e = logParts(r), isNew = unread.has(r);
+      return `<li><button type="button" class="log__row log__row--tap${isNew ? ' is-new' : ''}" data-note="${k}" data-kind="${esc(r.kind)}"><span class="tile tile--sm tile--canvas">${icon(LOG_ICON[r.kind] || 'activity', 'icon--sm' + (r.kind === 'report' ? ' icon--problem' : ''))}</span>
+        <span class="grow log__main"><span class="log__title">${esc(e.title)}</span>${e.n ? `<span class="pill">${pl(e.n, 'item')}</span>` : ''}<span class="log__sub">${esc(r.time)}${e.sub ? ' · ' + esc(e.sub) : ''}</span></span>${isNew ? '<span class="dot" aria-label="New"></span>' : ''}${icon('chevron-right', 'icon--sm')}</button></li>`; };
+    const list = s.log.slice(0, 20), news = list.filter(r => unread.has(r)), old = list.filter(r => !unread.has(r));
+    return `${UI.topBar({ title: 'Notifications', serif: true })}
+      <div class="settings" style="margin-bottom:var(--space-16)">${UI.settingsRow({ ic: 'notification', title: 'Push notifications', sub: h.push ? 'On for drop-offs, pickups and reports' : 'Off. You still see everything here.', toggle: { on: !!h.push, attrs: 'data-push-toggle' } })}</div>
+      ${reps ? `<a class="banner banner--problem banner--link" href="#/host/reports">${icon('needs-attention')}<span class="banner__text"><strong>${pl(reps, 'report')} need${reps === 1 ? 's' : ''} your answer</strong></span>${icon('chevron-right', 'icon--sm')}</a>` : ''}
+      ${news.length ? `<h2 class="t-section" style="margin:var(--space-16) 0 var(--space-8)">New</h2><ul class="log">${news.map(r => row(r, s.log.indexOf(r))).join('')}</ul>` : ''}
+      <h2 class="t-section" style="margin:var(--space-16) 0 var(--space-8)">${news.length ? 'Earlier' : 'All notifications'}</h2>
+      ${old.length ? `<ul class="log">${old.map(r => row(r, s.log.indexOf(r))).join('')}</ul>` : `<div class="card">${UI.empty({ ic: 'notification', title: 'Nothing new', line: 'Drop-offs, pickups and reports show up here.' })}</div>`}`;
+  },
+  mount(el) {
+    const h = Store.state.host;
+    setTimeout(() => { h.notifSeen = Date.now(); Store.save(); }, 0);   // opened = seen; the dots stay until you leave
+    el.addEventListener('toggle', e => { if (!e.target.closest('[data-push-toggle]')) return; h.push = e.detail.on; Store.save(); $('.settings__sub', e.target.closest('.settings__row')).textContent = h.push ? 'On for drop-offs, pickups and reports' : 'Off. You still see everything here.'; toast('success', h.push ? 'Push notifications on' : 'Push notifications off', { ic: 'notification' }); });
+    el.addEventListener('click', e => {
+      const n = e.target.closest('[data-note]'); if (!n) return;
+      if (n.dataset.kind === 'report' && openReports().length) { Router.go('#/host/reports'); return; }
+      logSheet(Store.state.log[+n.dataset.note]);
     });
   }
 };
@@ -5935,7 +6037,7 @@ const Check = {
     const t = Math.round(dur / 1000);
     h.lastCheck = { by: c.by, time: nowHM(), dur: `${Math.floor(t / 60)} min ${t % 60} s`, kept, removed, missing: c.missing.map(name) };
     h.checkDue = false; h.missed = false; h.check = null;
-    s.reports.forEach(r => { if (r.venue === h.venue && !r.resolved) { r.resolved = true; r.by = c.by; } });
+    s.reports.forEach(r => { if (r.venue === h.venue && !r.resolved) { const d = c.decide[r.item]; Object.assign(r, { resolved: true, by: c.by, at: nowHM(), outcome: d === 'remove' ? 'removed' : c.missing.includes(r.item) ? 'missing' : 'ok' }); } });
     hostLog('check', `Shelf check done · ${h.lastCheck.by} · ${h.lastCheck.dur}`);
     Store.save();
   },
@@ -5946,6 +6048,7 @@ Views.hostCheck = {
     const h = Store.state.host; if (!h.check) Check.fresh();
     const c = h.check, d = new Date();
     shelfOf(h.venue).items.filter(isFlagged).forEach(i => { if (!c.items.includes(i.id)) c.items.unshift(i.id); });   // reports that came in mid-check
+    c.items = c.items.filter(id => shelfOf(h.venue).items.some(i => i.id === id));   // answered on H11 meanwhile
     return `<header class="topbar topbar--center">${UI.iconButton('close', 'Close', 'data-action="back"')}<h1 class="topbar__title">Daily shelf check</h1><span class="icon-btn" aria-hidden="true"></span></header>
       <p class="t-overline c-secondary" style="margin-bottom:var(--space-8)">${d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }).replace(',', '')} · ${esc(h.reminder)}</p>
       <div class="card" id="h08-list">${[['tidy', 'Shelf tidy'], ['tag', 'Tag and QR sticker visible'], ['sign', 'Sign in place']].map(([k, l]) => UI.checkbox({ id: 'cl-' + k, label: l, checked: c.list[k], attrs: `data-cl="${k}"` })).join('')}</div>
@@ -6170,6 +6273,8 @@ Router.add('/host/kit', Views.hostKit, { title: 'Starter kit', code: 'H05', cls:
 Router.add('/host/activate', Views.hostActivate, { title: 'Go live', code: 'H05', cls: 'screen--brand with-actions', flow: 'host' });
 Router.add('/host/live', Views.hostLive, { title: 'Your shelf is live', code: 'H05', flow: 'host' });
 Router.add('/host/dashboard', Views.hostDash, { title: 'Home', code: 'H06', tabs: '#/host/dashboard', tabMode: 'host' });
+Router.add('/host/reports', Views.hostReports, { title: 'Reported items', code: 'H11', tabs: '#/host/dashboard', tabMode: 'host' });
+Router.add('/host/notifications', Views.hostNotes, { title: 'Notifications', code: 'H12', tabs: '#/me', tabMode: 'host' });
 Router.add('/host/pause', Views.hostPause, { title: 'Pause the shelf', code: 'H06b', cls: 'with-actions' });
 Router.add('/host/redeem', Views.hostRedeem, { title: 'Redeem a coupon', code: 'H07', tabs: '#/host/redeem', tabMode: 'host' });
 Router.add('/host/redeem/result', Views.hostRedeemResult, { title: 'Redeem a coupon', code: 'H07b', tabs: '#/host/redeem', tabMode: 'host', cls: 'with-actions' });
