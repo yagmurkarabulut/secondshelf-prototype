@@ -99,7 +99,7 @@ Codes follow the testing protocol. Exact names, order and states come from the F
 | G09 | Rescue push (lock screen) | — | not built (P3) |
 | G09b | Rescue banner in app | overlay (`#/home?sim=rescue`) | `frames/G09b-rescue-banner-in-app.png` · built from frame |
 | G10 | Rescue Bonus | `#/bonus` | `frames/G10-rescue-bonus.png` · built from frame |
-| G11 | Monthly impact | `#/impact` | `frames/G11-monthly-impact.png` · built from frame |
+| G11 | Monthly impact (month picker, QA round 8) | `#/impact`, `#/impact?m=YYYY-MM` | `frames/G11-monthly-impact.png` · built from frame |
 | R01b | No results (map sheet state) | `#/map?find=1&food=…` | `frames/R01b-no-results.png` · built from frame |
 | R02 | Search results (list view of the map) | `#/map?find=1&view=list` | `frames/R01b-find-food-list.png` · built |
 | R03 | Shelf listing / location expanded | `#/take/point/:id`, `#/map?find=1&shelf=:id&expand=1` | `frames/R03-shelf-listing.png`, `frames/R03-location-expanded.png` · built from frame |
@@ -115,6 +115,8 @@ Codes follow the testing protocol. Exact names, order and states come from the F
 | H06 / H06b | Host dashboard (titled Home) / Pause the shelf | `#/host/dashboard`, `#/host/pause` | `frames/H06-host-dashboard.png`, `frames/H06b-pause-the-shelf.png` · built from frame |
 | H07 / H07b / H07c | Redeem / Valid / Used, expired, not found | `#/host/redeem`, `#/host/redeem/result?code=…` | `frames/H07-redeem-coupon.png`, `frames/H07b-coupon-valid.png`, `frames/H07c-coupon-already-used-or-expired.png` · built from frame |
 | H08 / H08b / H08c | Daily check / Done / Missed (dashboard banner) | `#/host/check`, `#/host/check/done` | `frames/H08-daily-shelf-check.png`, `frames/H08b-check-done.png`, `frames/H08c-missed-check.png` · built from frame |
+| H06c / H11 | "Needs your attention" callout on H06 → Reported items (all OK · mark missing · remove) | `#/host/dashboard`, `#/host/reports` | no frame · built without frame (QA round 9, Q102) |
+| H12 | Notifications (host Me): drop-offs, pickups, reports, new / earlier, push toggle (simulated) | `#/host/notifications` | no frame · built without frame (QA round 9, Q102) |
 | X01 | "I took something" no-app web page (not in this spec; Q55) | `#/x/:shelf` | `frames/X01-i-took-something-web.png` · built, moderator menu only |
 | — | Screen index (team, hidden) | `#/screens` | — |
 | O05, O06, H09, H10 | Location / notification permission, Shelf tab, Settings | — | not built (P3, not in this spec) |
@@ -187,7 +189,7 @@ Codes follow the testing protocol. Exact names, order and states come from the F
 | NFC tap (G04, R04, H05) | Idle (pulsing phone-to-tag animation + "Hold your phone to the tag on the shelf") → Scanning 1.2 s → Found ✓ → auto-advance 600 ms | **Scan the QR code instead** (camera / sample QR) | Not found → retry, QR, **Type shelf code** |
 | Photo → AI list (G05–G06) | Camera / file input → Reading 1.5 s → list | **Use sample photo**; **Add items manually** | "Couldn't read the photo" → retake or manual |
 | Item list (G06) | Edit, stepper, remove with **Undo** toast (5 s) | Manual add sheet | Confirm disabled until the sealed check is ticked |
-| Pickup log (R05) | Checkboxes + stepper → Confirm | Report missing | Nothing ticked → button disabled with a hint |
+| Pickup log (R05) | Checkboxes + stepper → Confirm | "Not here?" → confirmation sheet ("You can’t undo this") → steward told (H06 card, Check tab badge, H08 row) | Nothing ticked → tapping the disabled button shows the hint as a notification and highlights the items (QA round 8) |
 | Daily check (H08) | Keep / Remove per row → Submit | Pause point | Unresolved rows highlighted on submit |
 
 ### Simulated in the prototype (front end only)
@@ -212,7 +214,8 @@ Open with the movable ··· button (team decision, 16 Nov: 40 × 40, 30% opacit
 - Say **"still good"**, **"saved"** and **"pass it on"**. Never say "food waste", "leftovers", "charity" or "free food for the needy".
 - Use the same words for the same action everywhere: **Leave food** (giver entry) / **Find food** (receiver entry) / **Tap shelf tag** / **Confirm** / **Report**. Inside the pickup flow the verb is "take" ("What are you taking", "Take what you can use").
 - Sentence case for item names and labels ("Canned soup", not "Canned Soup").
-- Fixed strings: "Thanks for sharing." · "Pickup logged." · "Full shelf" (availability chip, v0.5) · "Not here? Report missing stock" · "Care for the shelf, together." · "Every item you leave is welcome, even if the box is a little worn." · "Numbers identify shelves, not item counts."
+- Fixed strings: "Thanks for sharing." · "Pickup logged." · "Full shelf" (availability chip, v0.5) · "Report a problem" (R05 general link; was "Not here? Report missing stock", QA round 8) · "Care for the shelf, together." · "Numbers identify shelves, not item counts." ("Every item you leave is welcome…" removed from the rules, QA round 8, Q101)
+- R05 description (QA round 8): "Review and tick every item you are taking. Make sure not to tick more items than you are about to collect."
 - Unknown values show **To be agreed** (coupon value, expiry, monthly cap). Don't invent numbers.
 - Sample content (from the frames): user **Brenda Kowalska**; venues **Café Daisy** (200 m, closing 20:00, 4 spots), **Café Lumi** (1.2 km, closing 18:00, Full shelf), **Pizza Nonna** (2.1 km, 3 spots) [TBD per city]; items fusilli pasta 500 g (BB 2027-03), tomato soup ×2 (BB 2027-08), crackers (BB 2027-01), canned tuna, all-purpose flour; impact "11 items passed on · 8 saved by neighbours".
 - Coupon value and validity show **"to be agreed"**, even though the G08 frame shows "€2 off" and "22 Nov 2026". Rescue Bonus says "2 of 4 items picked up" (Q94), not "Only 2 more items to go!". **Designer QA (Q90, Q94) overrides "to be agreed" for coupons and the Rescue Bonus:** demo values €2 / €4 and a generated expiry date.
@@ -261,7 +264,7 @@ Recommendation: accounts for givers and hosts, optional for receivers. Decision 
 - Every colour, size, radius and shadow comes from `docs/design-system.md` tokens as CSS custom properties. No literal values in components.
 - Icons: only the SecondShelf icon library v2.0 (`assets/icons/sprite.svg`, 72 icons). Placement and colour rules: `docs/design-system.md` §7.
 - Fonts: Fraunces Bold (headings, 20px+) and Rubik 400/500 (everything else) from Google Fonts with `display=swap` and system fallbacks.
-- Colour roles (v0.5, airy; v0.7 Home): flat Cream `#F6F1E7` background (no gradients; Q82); light Paper cards; **Pantry Green** = screen titles, Fraunces headings and primary (pill) buttons; **Ink** = the Home Leave food card (v0.7), host-mode card, map markers and count pill; **Forest** = the Home Find food card (v0.7); **Ochre = rewards** (coupon band, Rescue Bonus fill, Ochre 800 reward/search icons; v0.7 light gold `ochre-300` icon on the Forest Find food card); **Terracotta 700 = the single closing action of a flow** and "Full shelf"; **Terracotta 500** = step progress; Slate = problems. No red anywhere.
+- Colour roles (v0.5, airy; v0.7 Home): flat Cream `#F6F1E7` background (no gradients; Q82); light Paper cards; **Pantry Green** = screen titles, Fraunces headings and primary (pill) buttons; **Ink** = the Home Leave food card (v0.7), host-mode card, map markers and count pill; **Forest** = the Home Find food card (v0.7); **Ochre = rewards** (coupon band, Rescue Bonus fill, Ochre 800 reward/search icons; v0.7 light gold `ochre-300` icon on the Forest Find food card); **Terracotta 700 = "Full shelf"** (no Terracotta buttons since QA round 8, Q101: closing actions are Primary green); **Terracotta 500** = step progress; Slate = problems. No red anywhere.
 - Accessibility: WCAG AA contrast, visible focus ring, labelled controls, `aria-live` for scanning / status changes.
 
 ## 11. How to work in this repo

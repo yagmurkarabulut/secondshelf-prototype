@@ -701,7 +701,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
    ===================================================================== */
 :root{
   /* primitives */
-  --green-950:#172E20; --green-900:#1F3D2B; --green-700:#3F5B3A; --green-100:#CFE3C8; --green-50:#E7F1E4; /* [NEW] Q97: half Leaf, half Paper */
+  --green-950:#172E20; --green-900:#1F3D2B; --green-700:#3F5B3A; --green-100:#CFE3C8; --green-50:#E7F1E4; /* [NEW] Q97: half Leaf, half Paper */ --green-300:#9FC096; /* [NEW] Q102: chart ramp step between Leaf and Forest */
   --terracotta-800:#89432D; --terracotta-700:#A14C33; --terracotta-500:#C2593A; --terracotta-100:#F0DFD2; --terracotta-50:#F8EFE8;
   --ochre-800:#876326; --ochre-500:#BF8B2E; --ochre-100:#EFE5D1; --ochre-50:#F7F2E8; --clay-500:#8A6F4A;
   --ink-900:#2B241E; --stone-700:#5C554C; --stone-600:#6E665C; --stone-500:#8C8477; --stone-300:#CFC6B6;
@@ -751,7 +751,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
   --shadow-sheet:0 -4px 24px rgba(43,36,30,.12);
   --shadow-focus:0 0 0 2px #FFFFFF,0 0 0 5px #2F6E8C;
   /* size and motion */
-  --size-tap-min:44px; --size-control:48px; --frame-max:430px; --size-avatar:48px; --size-tab-indicator:64px;
+  --size-tap-min:44px; --size-button:44px; /* [NEW] QA round 11 (Q104): every button, was 48 (+ border = 51) */ --size-control:48px; --frame-max:430px; --size-avatar:48px; --size-tab-indicator:64px;
   --motion-fast:150ms; --motion-base:250ms; --ease:cubic-bezier(.2,0,0,1);
   --motion-tab:200ms; --ease-in-out:cubic-bezier(.65,0,.35,1); /* [NEW] QA round 2: sliding tab indicator */
   /* [NEW] QA round 3: notifications (top toasts) */
@@ -769,7 +769,9 @@ svg.leaflet-image-layer.leaflet-interactive path {
   --icon-not-allowed:var(--terracotta-700);  /* "Not on the shelf" red flags */
   --icon-best-before:var(--info-600);        /* best-before date icon (G06) */
   --surface-sealed:var(--green-100); --icon-sealed:var(--success-700);  /* Sealed badge: Leaf pill, Ink text */
-  --type-rules-head:700 14px/20px var(--font-sans);
+  --type-rules-head:700 18px/24px var(--font-sans);   /* QA round 8: body-large size (18), was 14 */
+  /* [NEW] QA round 9 (Q102): G11 weekly bars, one green ramp, lighter = fewer items (no gold: Ochre stays for rewards) */
+  --chart-1:var(--green-100); --chart-2:var(--green-300); --chart-3:var(--green-700); --chart-4:var(--green-900); --chart-edge:var(--green-700);
   --border-notify-success:var(--green-700); --border-notify-warning:var(--ochre-500); --border-notify-error:var(--terracotta-500);
 }
 
@@ -950,7 +952,7 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{box-shadow:none}
 /* ---- Button: v0.5 pill ---- */
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:var(--space-8);
-  min-height:var(--size-control);padding:var(--space-12) var(--space-24);
+  min-height:var(--size-button);padding:var(--space-8) var(--space-24);   /* QA round 11: one button size everywhere, 44px */
   border-radius:var(--radius-full);border:var(--border-w) solid transparent;
   font:var(--type-button);text-align:center;text-decoration:none;
   transition:background-color var(--motion-fast) var(--ease),transform var(--motion-fast) var(--ease);
@@ -959,19 +961,19 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{box-shadow:none}
 .btn .icon{width:var(--size-icon-20);height:var(--size-icon-20);color:currentColor}
 .btn--block{display:flex;width:100%}
 .btn--primary{background:var(--action-primary);color:var(--text-on-primary)}
-.btn--accent{background:var(--action-accent);color:var(--text-on-accent)}
+.btn--accent{background:var(--action-primary);color:var(--text-on-primary)}   /* QA round 8 (Q101): no Terracotta buttons; kept as an alias of Primary */
 .btn--secondary{background:var(--surface-default);color:var(--text-brand);border-color:var(--border-brand)}
 .btn--link{min-height:var(--size-tap-min);padding:var(--space-8) var(--space-4);color:var(--text-link);text-decoration:underline;text-underline-offset:3px;border-radius:var(--radius-sm)}
 .btn--on-brand{background:var(--surface-default);color:var(--text-brand)}
 .btn--outline-on-brand{background:transparent;color:var(--text-on-primary);border-color:var(--text-on-primary)}
 @media (hover:hover){
-  .btn--primary:hover:not(:disabled){background:var(--action-primary-hover)}
-  .btn--secondary:hover:not(:disabled){background:var(--surface-canvas)}
+  .btn--primary:hover:not(:disabled):not([aria-disabled="true"]){background:var(--action-primary-hover)}
+  .btn--secondary:hover:not(:disabled):not([aria-disabled="true"]){background:var(--surface-canvas)}
 }
 .btn--primary.is-hover{background:var(--action-primary-hover)}
 .btn--secondary.is-hover{background:var(--surface-canvas)}
 .btn--primary:active:not(:disabled),.btn--primary.is-pressed{background:var(--action-primary-pressed)}
-.btn--accent:active:not(:disabled),.btn--accent.is-pressed{background:var(--action-accent-pressed)}
+.btn--accent:active:not(:disabled),.btn--accent.is-pressed{background:var(--action-primary-pressed)}
 .btn--secondary:active:not(:disabled),.btn--secondary.is-pressed{background:var(--surface-selected)}
 .btn--on-brand:active:not(:disabled),.btn--on-brand.is-pressed{background:var(--surface-selected)}
 .btn--outline-on-brand:active:not(:disabled),.btn--outline-on-brand.is-pressed{background:var(--tint-on-dark)}
@@ -1472,7 +1474,7 @@ button.settings__row:active{background:var(--surface-canvas)}
 .log__main{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-4) var(--space-8)}
 .log__title{font:var(--type-body-list);font-weight:500}
 .log__sub{flex-basis:100%;font:var(--type-body-small);color:var(--text-secondary)}
-.shelfstate .btn{flex:none;min-height:var(--size-tap-min);padding:var(--space-8) var(--space-16)}
+.shelfstate .btn{flex:none}
 .shelfstate__note{margin-top:var(--space-12)}
 .log__time{font:var(--type-body-small);color:var(--text-tertiary);white-space:nowrap}
 
@@ -1734,7 +1736,7 @@ button.settings__row:active{background:var(--surface-canvas)}
 .modfab .icon{color:var(--icon-primary)}
 .modfab.is-active,.modfab:focus-visible{opacity:1}
 .modfab.is-dragging{transition:opacity var(--motion-fast) var(--ease);cursor:grabbing}
-.mod .btn{min-height:var(--size-tap-min);padding:var(--space-8) var(--space-12);font:var(--type-label)}
+.mod .btn{padding-left:var(--space-12);padding-right:var(--space-12);font:var(--type-label)}
 .mod__grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-8)}
 .mod__sec{display:flex;flex-direction:column;gap:var(--space-8);padding-top:var(--space-16);margin-top:var(--space-16);border-top:1px solid var(--border-subtle)}
 .mod select{width:100%;min-height:var(--size-control);border-radius:var(--radius-md);border:var(--border-w) solid var(--border-strong);background:var(--surface-default);padding:0 var(--space-12);font:var(--type-body)}
@@ -1756,13 +1758,29 @@ textarea.input{min-height:calc(var(--size-control) * 2);resize:vertical}
 
 /* M02 / G11 */
 .impact--tap{display:block;width:100%;text-align:left;text-decoration:none;color:inherit}
-.bars{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-16);align-items:end;height:var(--size-chart);padding:0 var(--space-8);border-bottom:1px solid var(--border-subtle)}
+.bars{display:grid;grid-template-columns:repeat(var(--n,4),1fr);gap:var(--space-16);align-items:end;height:var(--size-chart);padding:0 var(--space-8);border-bottom:1px solid var(--border-subtle)}
 .bar{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:var(--space-4);height:100%}
 .bar__fill{width:100%;max-width:var(--space-48);background:var(--action-primary);border-radius:var(--radius-sm) var(--radius-sm) 0 0;height:var(--h);transform-origin:bottom;animation:bar-up var(--motion-slow) var(--ease) both}
 .bar:nth-child(2) .bar__fill{animation-delay:100ms}.bar:nth-child(3) .bar__fill{animation-delay:200ms}.bar:nth-child(4) .bar__fill{animation-delay:300ms}
 @keyframes bar-up{from{transform:scaleY(0)}to{transform:none}}
 .bar__val{font:var(--type-label)}
-.bars__labels{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-16);padding:var(--space-8) var(--space-8) 0;text-align:center;font:var(--type-caption);color:var(--text-secondary)}
+.bar__fill{background:var(--chart-1);box-shadow:inset 0 0 0 1px var(--chart-edge)}   /* QA round 9: green density ramp */
+.bar__fill--2{background:var(--chart-2)} .bar__fill--3{background:var(--chart-3)} .bar__fill--4{background:var(--chart-4)}
+.bar--none .bar__val{color:var(--text-tertiary)} /* a week with nothing passed on: no bar */
+.bars__legend{display:flex;flex-wrap:wrap;gap:var(--space-16);margin-top:var(--space-12);font:var(--type-caption);color:var(--text-secondary)}
+.bars__legend span{display:inline-flex;align-items:center;gap:var(--space-8)}
+.bars__key{display:inline-block;width:var(--space-12);height:var(--space-12);border-radius:var(--radius-xs);background:var(--chart-1);box-shadow:inset 0 0 0 1px var(--chart-edge)}
+.bars__key--2{background:var(--chart-2)} .bars__key--3{background:var(--chart-3)} .bars__key--4{background:var(--chart-4)}
+.bars__legend{align-items:center}
+.bars__ramp{display:inline-flex;gap:var(--space-4)}
+/* G11 month picker: a chip that looks like a dropdown; the native month input sits on top of it, invisible */
+.monthpick{position:relative;display:inline-flex}
+.monthpick__chip{gap:var(--space-8);padding-right:var(--space-12);cursor:pointer}
+.monthpick__chip .icon{color:var(--icon-primary)}
+.monthpick__input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font:var(--type-body);-webkit-appearance:none;appearance:none}
+.monthpick:focus-within .monthpick__chip{box-shadow:var(--shadow-focus)}
+.c-brand .icon{color:var(--icon-primary)}
+.bars__labels{display:grid;grid-template-columns:repeat(var(--n,4),1fr);gap:var(--space-16);padding:var(--space-8) var(--space-8) 0;text-align:center;font:var(--type-caption);color:var(--text-secondary)}
 .note{display:flex;gap:var(--space-12);align-items:flex-start;background:var(--surface-subtle);border-radius:var(--radius-md);padding:var(--space-12) var(--space-16);font:var(--type-body-small);color:var(--text-primary)}
 .note .icon{color:var(--icon-primary);width:var(--size-icon-20);height:var(--size-icon-20);flex:none}
 .note strong{font-weight:500;display:block;font-size:inherit}
@@ -1831,6 +1849,26 @@ a.bonus{display:block;text-decoration:none;color:inherit}
 .pick__foot{display:flex;justify-content:flex-end;margin-top:calc(var(--space-8) * -1)}
 .pick__foot .btn--link{font:var(--type-label)}
 .pick.is-missing{background:var(--surface-subtle);opacity:.7}
+.footnote{display:flex;gap:var(--space-8);align-items:center;margin-top:var(--space-16)}
+.attn{display:flex;align-items:center;gap:var(--space-12);text-decoration:none;color:inherit}
+.repitem{display:flex;flex-direction:column;gap:var(--space-12)}
+.repitem__note{background:var(--surface-canvas);border-radius:var(--radius-sm);padding:var(--space-8) var(--space-12);margin-top:var(--space-8);color:var(--text-primary)}
+.repitem__ask{color:var(--text-secondary)}
+.repitem__acts{display:flex;flex-direction:column;gap:var(--space-8)}
+.log__row.is-new .log__title{font-weight:500}
+.dot{width:var(--space-8);height:var(--space-8);border-radius:var(--radius-full);background:var(--icon-primary);flex:none}
+.banner--link{text-decoration:none;color:inherit;align-items:center}
+.reportcard{display:flex;flex-direction:column;gap:var(--space-12)}
+.reportcard__list{display:flex;flex-direction:column;gap:var(--space-8);padding-left:calc(var(--size-tap-min) + var(--space-12))}
+.reportcard__list li{display:flex;flex-direction:column}
+.tab__pill{position:relative}
+.tab__badge{position:absolute;top:calc(var(--space-4) * -1);right:var(--space-8);min-width:var(--space-20);height:var(--space-20);padding:0 var(--space-4);border-radius:var(--radius-full);background:var(--surface-inverse);color:var(--text-on-inverse);font:var(--type-caption);display:grid;place-items:center}
+.pick__meta{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-8);margin-top:var(--space-4)}
+/* QA round 8: "Not here?" confirmation sheet + illustration placeholder slot */
+.art-slot{display:grid;place-items:center;height:var(--size-illus-sm);border:var(--border-w) dashed var(--border-strong);border-radius:var(--radius-lg);background:var(--surface-canvas)}
+.art-slot .icon{width:var(--size-icon-32);height:var(--size-icon-32);color:var(--icon-tertiary)}
+.confirm-sheet__warn{display:flex;gap:var(--space-8);align-items:center;font:var(--type-body-small);color:var(--text-secondary)}
+.confirm-sheet__warn .icon{color:var(--icon-secondary)}
 .pick.is-missing .pick__main{cursor:default}
 .pick .item__taking{padding:0 0 var(--space-8) calc(var(--size-checkbox) + var(--space-12))}
 /* v0.7 type: item names and list rows use body-list (15/22, 400) */
@@ -2861,7 +2899,9 @@ const START = (persona = 'brenda') => {
     ] : [],
     couponsThisMonth: brenda ? 1 : 0,
     bonuses: [],
-    impact: { passed: 11, saved: 8, weeks: [2, 4, 1, 4] },
+    impact: { passed: 11, saved: 8, weeks: [4, 0, 2, 5],
+      // QA round 8: earlier months for the G11 month picker (index 0 = last month). Demo values.
+      history: [{ passed: 12, saved: 9, weeks: [3, 6, 0, 3] }, { passed: 10, saved: 7, weeks: [1, 0, 8, 1] }, { passed: 5, saved: 4, weeks: [0, 5, 0, 0] }] },
     city: 'tallinn',             // v0.7 test city for the real map (moderator menu); Reset demo goes back to Tallinn
     alert: null,                 // food alert, e.g. { food: 'Pasta', km: 1 }
     draft: null,                 // drop-off in progress
@@ -2873,6 +2913,7 @@ const START = (persona = 'brenda') => {
     host: {
       status: 'none',            // none · applied · verified · live
       venue: 1, owner: 'Anna', staff: ['Anna', 'Brenda'], reminder: '09:00',
+      push: true, notifSeen: 0,   // QA round 9: host notification centre (push is simulated)
       form: { name: 'Café Daisy', addr: 'Aia 8, Tallinn', reg: '', capacity: '10', reminder: '09:00' },
       kit: { sign: false, nfc: false, qr: false, window: false },
       checkDue: true, missed: false, nextBy: 'Anna',
@@ -2894,16 +2935,16 @@ const START = (persona = 'brenda') => {
 const Store = {
   state: null,
   load() {
-    try { const raw = localStorage.getItem(STORE_KEY); const st = raw ? JSON.parse(raw) : null; this.state = st && st.v === 3 ? st : Object.assign(START(), { v: 3 }); }
-    catch (e) { this.state = Object.assign(START(), { v: 3 }); }
+    try { const raw = localStorage.getItem(STORE_KEY); const st = raw ? JSON.parse(raw) : null; this.state = st && st.v === 4 ? st : Object.assign(START(), { v: 4 }); }
+    catch (e) { this.state = Object.assign(START(), { v: 4 }); }
     syncVenues();
   },
   save() { syncVenues(); try { localStorage.setItem(STORE_KEY, JSON.stringify(this.state)); } catch (e) {} },
-  reset(persona = 'brenda') { this.state = Object.assign(START(persona), { v: 3 }); this.save(); },
+  reset(persona = 'brenda') { this.state = Object.assign(START(persona), { v: 4 }); this.save(); },
   log(type, data = {}) { const ev = this.state.events; ev.push({ t: new Date().toISOString(), type, ...data }); if (ev.length > 600) ev.splice(0, ev.length - 600); this.save(); }
 };
 /* Host activity log (H06) */
-const hostLog = (kind, text) => { Store.state.log.unshift({ kind, text, time: nowHM() }); };
+const hostLog = (kind, text) => { Store.state.log.unshift({ kind, text, time: nowHM(), t: Date.now() }); };   // t: unread in the host notification centre (QA round 9)
 /* Task timing (hand-off §6): A drop-off, B pickup, C daily check. Never shown to participants. */
 const Task = {
   start(task) { Store.state.tasks[task] = Date.now(); Store.log('task_start', { task }); },
@@ -3063,7 +3104,7 @@ const UI = {
       <span class="item__thumb">${icon('sealed-food')}</span>
       <div class="item__main">
         <h3 class="item__name">${esc(name)}</h3>
-        <p class="item__meta"><span>${icon('best-before')}Best before ${esc(bb)}</span></p>
+        <p class="item__meta"><span>Best before ${esc(bb)}</span></p>
         <div class="item__qty">${UI.stepper({ id: 'q-' + id, value: qty, min: 1, max, label: `Quantity of ${name}` })}<span class="item__sealed">${icon('sealed-badge')}Sealed</span></div>
       </div>
       <div class="item__tools">${UI.iconButton('edit', `Edit ${name}`, `data-edit="${id}"`)}${UI.iconButton('remove', `Remove ${name}`, `data-remove="${id}"`, 'icon-btn--destructive')}</div>
@@ -3132,7 +3173,9 @@ const UI = {
       ? [['dashboard', 'Dashboard', '#/host/dashboard'], ['shelf-check', 'Check', '#/host/check'], ['redeem', 'Redeem', '#/host/redeem'], ['profile', 'Me', '#/me']]
       : [['home', 'Home', '#/home'], ['map', 'Map', '#/map'], ['coupon', 'Coupons', '#/coupons'], ['profile', 'Me', '#/me']];
     const i = tabs.findIndex(t => t[2] === current);
-    return `<span class="tabbar__ind" aria-hidden="true" data-i="${i}" style="--tab-i:${i}"></span>` + tabs.map(([ic, label, href]) => `<a class="tab" href="${href}" ${current === href ? 'aria-current="page"' : ''}><span class="tab__pill">${icon(ic)}</span><span>${label}</span></a>`).join('');
+    const rep = mode === 'host' ? openReports().length : 0;   // QA round 8: open reports on the Check tab
+    return `<span class="tabbar__ind" aria-hidden="true" data-i="${i}" style="--tab-i:${i}"></span>` + tabs.map(([ic, label, href]) => { const b = href === '#/host/check' && rep ? rep : 0;
+      return `<a class="tab" href="${href}" ${current === href ? 'aria-current="page"' : ''}><span class="tab__pill">${icon(ic)}${b ? `<span class="tab__badge" aria-hidden="true">${b}</span>` : ''}</span><span>${label}${b ? `<span class="vh">, ${pl(b, 'report')}</span>` : ''}</span></a>`; }).join('');
   },
   qr(seed = 'SS-4821') {
     // Schematic 21×21 QR-like pattern (not scannable), deterministic from the seed
@@ -3368,7 +3411,8 @@ document.addEventListener('click', e => {
   const sel = b.dataset.missing;
   if (sel) { const scope = b.closest('.screen, .sheet') || document; flash($$(sel, scope)); }
   const hint = b.parentElement && $('.gate__hint', b.parentElement);
-  if (hint) announce(hint.textContent);
+  if (hint) { if (hint.classList.contains('vh')) toast('info', esc(hint.textContent), { ic: 'info' }); else announce(hint.textContent); }
+  buzz();
 }, true);
 
 /* Long press (800 ms) on the wordmark / logo / greeting opens the moderator menu */
@@ -3627,9 +3671,8 @@ Views.components = {
         ${st('Sizes 16 · 20 · 24 · 32')}<div class="gal__wrap">${icon('saved-food', 'icon--xs')}${icon('saved-food', 'icon--sm')}${icon('saved-food')}${icon('saved-food', 'icon--lg')}</div>
         ${st('Colour tokens')}<div class="gal__wrap">${['', 'icon--secondary', 'icon--tertiary', 'icon--accent', 'icon--reward', 'icon--success', 'icon--warning', 'icon--problem', 'icon--info', 'icon--disabled'].map(c => icon('community-shelf', c)).join('')}</div>`)}
 
-      ${sec('button', 'Button', 'v0.5 pill, 48px, padding 12/24, optional 20px leading icon. Accent = one closing action per flow.',
+      ${sec('button', 'Button', 'v0.5 pill, 48px, padding 12/24, optional 20px leading icon. QA round 8: no Terracotta (accent) buttons; closing actions are Primary.',
         st('Primary') + `<div class="stack-8">${UI.button({ label: 'Take photo', icon: 'camera', block: true })}${UI.button({ label: 'Hover', block: true, state: 'is-hover' })}${UI.button({ label: 'Pressed', block: true, state: 'is-pressed' })}${UI.button({ label: 'Focus', block: true, state: 'is-focus' })}${UI.button({ label: 'Loading', block: true, loading: true })}${UI.button({ label: 'Disabled', block: true, disabled: true })}</div>` +
-        st('Accent (closing action)') + `<div class="stack-8">${UI.button({ label: 'Confirm drop-off', variant: 'accent', icon: 'done', block: true })}${UI.button({ label: 'Pressed', variant: 'accent', block: true, state: 'is-pressed' })}${UI.button({ label: 'Confirm drop-off', variant: 'accent', icon: 'done', block: true, disabled: true })}</div>` +
         st('Secondary') + `<div class="stack-8">${UI.button({ label: 'Use sample photo', variant: 'secondary', icon: 'photo', block: true })}${UI.button({ label: 'Hover', variant: 'secondary', block: true, state: 'is-hover' })}${UI.button({ label: 'Pressed', variant: 'secondary', block: true, state: 'is-pressed' })}${UI.button({ label: 'Disabled', variant: 'secondary', block: true, disabled: true })}</div>` +
         st('Text link') + `<div class="gal__wrap">${UI.button({ label: 'Add items manually', variant: 'link' })}${UI.button({ label: 'Pressed', variant: 'link', state: 'is-pressed' })}${UI.button({ label: 'Disabled', variant: 'link', disabled: true })}</div>` +
         st('On a task screen (surface-brand)') + `<div class="gal__brand on-brand stack-8">${UI.button({ label: 'Tap shelf tag', variant: 'on-brand', icon: 'tap-nfc', block: true })}${UI.button({ label: 'Type shelf code', variant: 'outline-on-brand', icon: 'shelf-code', block: true })}</div>`)}
@@ -4399,7 +4442,7 @@ Views.point = {
           <div class="row" style="justify-content:space-between;margin-top:var(--space-12)">${availChip(near)}${UI.button({ label: 'Go here', attrs: `data-href="#/map?shelf=${near.id}"` })}</div></div></section>` : ''}
       </div>
       <div class="actions">
-        ${UI.gated({ label: 'Leave food', icon: 'sealed-food', enabled: !blocked, hint: blocked ? hint : '', missing: '.note', attrs: `data-leave="${v.id}"` })}
+        ${UI.gated({ label: 'Leave food', icon: 'sealed-food', enabled: !blocked, hint: blocked ? hint : '', visible: true, missing: '.note', attrs: `data-leave="${v.id}"` })}
         ${UI.button({ label: 'Directions', variant: 'secondary', icon: 'location', block: true, attrs: 'data-directions' })}
       </div>`;
   },
@@ -4511,7 +4554,7 @@ function itemForm({ name = '', bb = '', qty = 1, submit }) {
     ${UI.input({ id: 'f-name', label: 'Item name', value: name, placeholder: 'e.g. Canned soup' })}
     ${UI.input({ id: 'f-bb', label: 'Best before', value: bb, placeholder: 'MM/YYYY', attrs: 'inputmode="numeric" autocomplete="off"' })}
     <div><span class="field__label">Quantity</span><div style="margin-top:var(--space-8)">${UI.stepper({ id: 'f-qty', value: qty, min: 1, max: 9 })}</div></div>
-    <div class="gate">${UI.button({ label: submit, icon: submit === 'Add item' ? 'plus' : 'done', block: true, attrs: 'type="submit" data-submit aria-disabled="true" data-missing="#item-form .field"' }).replace('type="button" ', '')}<p class="gate__hint">Add a name and a best-before date</p></div>
+    <div class="gate">${UI.button({ label: submit, icon: submit === 'Add item' ? 'plus' : 'done', block: true, attrs: 'type="submit" data-submit aria-disabled="true" data-missing="#item-form .field"' }).replace('type="button" ', '')}<p class="gate__hint vh">Add a name and a best-before date</p></div>
   </form>`;
 }
 Views.giveItems = {
@@ -4523,7 +4566,7 @@ Views.giveItems = {
       <div class="stack-8" id="items-list"></div>
       <div class="center" style="margin:var(--space-8) 0 var(--space-16)">${UI.button({ label: 'Add item manually', variant: 'link', icon: 'plus', attrs: 'data-add' })}</div>
       <div class="check-panel" id="sealed-panel">${UI.checkbox({ id: 'sealed', label: 'I acknowledge and confirm that all items are sealed and within their date.', checked: !!Flow.d.sealed })}</div>
-      <div class="actions actions--sticky">${UI.gated({ label: 'Confirm drop-off', variant: 'primary', icon: 'done', id: 'confirm', hint: 'Tick the box above to confirm', missing: '#sealed-panel' })}</div>`;
+      <div class="actions actions--sticky">${UI.gated({ label: 'Confirm drop-off', variant: 'primary', icon: 'done', id: 'confirm', hint: 'Tick the box to confirm all items are sealed and in date', missing: '#sealed-panel' })}</div>`;
   },
   mount(el, { query }) {
     const d = Flow.d; if (!d.items) d.items = AI_ITEMS();
@@ -4534,7 +4577,7 @@ Views.giveItems = {
       // shelf-fill: one drawn unit per item (0–6); only the attribute changes, so only new units drop in
       const shelf = $('#items-shelf svg', el);
       if (shelf) { shelf.setAttribute('data-mine', String(Math.max(0, Math.min(6, n)))); shelf.setAttribute('aria-label', `${n} of your items on the shelf`); }
-      hint.textContent = !d.items.length ? 'Add at least one item to confirm' : 'Tick the box above to confirm';
+      hint.textContent = !d.items.length ? 'Add at least one item to confirm' : 'Tick the box to confirm all items are sealed and in date';
       btn.dataset.missing = !d.items.length ? '[data-add]' : '#sealed-panel';
       gate(btn, !!(d.sealed && d.items.length));
       Store.save();
@@ -4714,8 +4757,11 @@ Object.assign(UI, {
       <div class="stephead__bar">${nav}<h1 class="stephead__title">${esc(title)}</h1><span class="t-overline stephead__step">Step ${step} of ${of}</span></div>${bar}</header>`;
   },
   /* closing action that can be disabled with a reason; see gate() */
-  gated({ label, variant = 'primary', icon: ic, attrs = '', enabled = false, hint = '', missing = '', id = '' }) {
-    return `<div class="gate">${UI.button({ label, variant, icon: ic, block: true, attrs: `${id ? `id="${id}"` : ''} aria-disabled="${!enabled}" ${missing ? `data-missing="${esc(missing)}"` : ''} ${attrs}` })}${hint ? `<p class="gate__hint" ${enabled ? 'hidden' : ''}>${esc(hint)}</p>` : ''}</div>`;
+  /* QA round 8: the hint is no longer printed under the button by default (it read as detached from what to tick).
+     It is said when someone taps the disabled button: notification + highlight on what is missing.
+     visible: true keeps a printed reason where there is nothing to tick (full shelf, waiting for a check). */
+  gated({ label, variant = 'primary', icon: ic, attrs = '', enabled = false, hint = '', missing = '', id = '', visible = false }) {
+    return `<div class="gate">${UI.button({ label, variant, icon: ic, block: true, attrs: `${id ? `id="${id}"` : ''} aria-disabled="${!enabled}" ${missing ? `data-missing="${esc(missing)}"` : ''} ${attrs}` })}${hint ? `<p class="gate__hint${visible ? '' : ' vh'}" ${enabled ? 'hidden' : ''}>${esc(hint)}</p>` : ''}</div>`;
   },
   tick(kind = 'done', ic) {
     return `<div class="tick${kind === 'problem' ? ' tick--problem' : kind === 'brand' ? ' tick--brand' : ''}" aria-hidden="true">${icon(ic || (kind === 'problem' ? 'needs-attention' : 'done'))}</div>`;
@@ -4754,6 +4800,18 @@ Object.assign(UI, {
       <div class="impact__nums"><div><p class="impact__num">${passed}</p><p class="impact__cap">items passed on</p></div>
       <div><p class="impact__num">${saved}</p><p class="impact__cap">saved by neighbours</p></div></div>`;
     return tap ? `<a class="impact impact--tap card--tap" href="#/impact" aria-label="My impact this month: ${passed} items passed on, ${saved} saved by neighbours. Open monthly impact">${inner}</a>` : `<section class="impact">${inner}</section>`;
+  },
+  /* QA round 8: H06 "Reported by visitors" card. Receivers' "Not here?" and Report a problem land here,
+     on the Check tab badge and as flagged rows in H08, until the next shelf check resolves them. */
+  /* QA round 9: H06 callout. Stays until every report is answered; a short summary only, the details are on H11. */
+  reportCard(list) {
+    if (!list.length) return '';
+    const one = list.length === 1, r = list[0], miss = x => x.reason === 'Not here' || x.reason === 'Missing';
+    const line = one ? `A visitor reported ${r.item ? shortName(r.name) : 'the shelf'} ${miss(r) ? 'missing' : `(${r.reason.toLowerCase()})`}` : `Visitors reported ${list.length} things on your shelf`;
+    return `<a class="card card--shadow card--tap attn" href="#/host/reports" aria-label="Needs your attention. ${esc(line)}. Open reported items">
+      <span class="tile tile--oat">${icon('needs-attention', 'icon--problem')}</span>
+      <span class="grow"><span class="t-title" style="display:block">Needs your attention</span><span class="t-small c-secondary">${esc(line)}</span></span>
+      ${icon('chevron-right')}</a>`;
   },
   hostCard() {
     const host = Store.state.mode === 'host';
@@ -4798,6 +4856,7 @@ const Ops = {
     if (!capped) { cid = 'c' + stamp; s.coupons.unshift({ id: cid, venue: venueId, state: 'active', code: 'SS-4821', value: couponValueFor(n), expires: couponExpiryFrom(Date.now()) }); s.couponsThisMonth++; }
     s.sim.cap = false;
     s.impact.passed += n;
+    { const wk = Math.min(Math.floor((new Date().getDate() - 1) / 7), s.impact.weeks.length - 1); s.impact.weeks[wk] += n; }   // G11 bars follow the drop-off
     s.lastDrop = { venue: venueId, count: n, coupon: cid, bonus: bid, capped };
     hostLog('dropoff', `Drop-off · ${pl(n, 'item')}`);
     Store.save();
@@ -4829,10 +4888,29 @@ const Ops = {
   report(venueId, itemId, reason, note = '') {
     const s = Store.state, sh = shelfOf(venueId), item = sh.items.find(i => i.id === itemId);
     if (item && (reason === 'Missing' || reason === 'Not here')) item.missing = true;
-    if (item) item.flag = reason;
-    s.reports.push({ venue: venueId, item: itemId, reason, note, t: Date.now() });
-    hostLog('report', `Report · ${item ? shortName(item.name) : 'shelf'} · ${reason}`);
+    if (item) { item.flag = reason; item.flagAt = nowHM(); }
+    // QA round 8: open reports reach the host (H06 card, Check tab badge, H08 rows) until a shelf check resolves them
+    s.reports.push({ venue: venueId, item: itemId, name: item ? item.name : 'The whole shelf', reason, note, t: Date.now(), time: nowHM(), resolved: false });
+    hostLog('report', `Reported by a visitor · ${item ? shortName(item.name) : 'shelf'} · ${reason === 'Not here' ? 'missing' : reason.toLowerCase()}`);
     Store.save();
+  },
+  /* QA round 9: the host answers a visitor's report (H09). outcome: ok (it's there) · missing (it's gone) · removed (taken off the shelf).
+     Returns an undo function. */
+  resolveReport(idx, outcome) {
+    const s = Store.state, h = s.host, r = s.reports[idx]; if (!r || r.resolved) return () => {};
+    const sh = shelfOf(r.venue), item = sh.items.find(i => i.id === r.item), before = item ? { ...item } : null, pos = item ? sh.items.indexOf(item) : -1;
+    if (item) { if (outcome === 'ok') { item.flag = null; item.missing = false; } else item.qty = 0; }
+    sh.items = sh.items.filter(i => i.qty > 0);
+    Object.assign(r, { resolved: true, outcome, by: h.staff[0], at: nowHM() });
+    const word = { ok: 'all OK', missing: 'marked missing', removed: 'removed' }[outcome];
+    hostLog('resolve', `Report answered · ${shortName(r.name)} · ${word}`);
+    Store.save();
+    return () => {
+      if (before) { const cur = sh.items.find(i => i.id === before.id); if (cur) Object.assign(cur, before); else sh.items.splice(Math.max(0, pos), 0, before); }
+      Object.assign(r, { resolved: false, outcome: null, by: null, at: null });
+      const k = s.log.findIndex(l => l.kind === 'resolve'); if (k >= 0) s.log.splice(k, 1);
+      Store.save();
+    };
   },
   pause(venueId, reason, until) { shelfOf(venueId).paused = { reason, until }; hostLog('pause', `Shelf paused · ${reason}`); Store.save(); },
   resume(venueId) { shelfOf(venueId).paused = null; hostLog('pause', 'Shelf open again'); Store.save(); },
@@ -4920,6 +4998,9 @@ const SCREENS = [
     ['H08', 'Daily shelf check', '#/host/check', 'H08-daily-shelf-check', 'frame', 'Q54'],
     ['H08b', 'Check done', '#/host/check/done', 'H08b-check-done', 'frame', ''],
     ['H08c', 'Missed check (banner on H06)', '#/host/dashboard?sim=missed', 'H08c-missed-check', 'frame', ''],
+    ['H11', 'Reported items (from the H06 callout)', '#/host/reports', '', 'noframe', 'Q102'],
+    ['H06c', 'Needs your attention callout on H06', '#/host/dashboard?sim=report', '', 'noframe', 'Q102'],
+    ['H12', 'Notifications (host Me)', '#/host/notifications', '', 'noframe', 'Q102'],
     ['H09', 'Shelf tab', '', '', 'not', 'P3, not in CLAUDE.md'],
     ['H10', 'Settings', '', '', 'not', 'P3, not in CLAUDE.md (pause, reminder, stewards covered elsewhere)']]],
   ['No-app', [
@@ -4943,11 +5024,12 @@ const Jump = {
     if (path === '/take/done' && !s.lastPickup) { const sh = shelfOf(1); Pick.commit([{ id: sh.items[0].id, qty: 1 }]); }
     if (path.startsWith('/host/')) {
       const order = ['none', 'applied', 'verified', 'live'];
-      const need = /dashboard|pause|redeem|check/.test(path) ? 'live' : /verify|kit|activate|live/.test(path) ? 'verified' : /review/.test(path) ? 'applied' : 'none';
+      const need = /dashboard|pause|redeem|check|reports|notifications/.test(path) ? 'live' : /verify|kit|activate|live/.test(path) ? 'verified' : /review/.test(path) ? 'applied' : 'none';
       if (order.indexOf(s.host.status) < order.indexOf(need)) s.host.status = need;
       if (need === 'live') s.mode = 'host';
     }
     if (path === '/host/check/done' && !s.host.lastCheck) Check.fake();
+    if ((path === '/host/reports' || q.sim === 'report') && !openReports().length) { const i = shelfOf(s.host.venue).items.find(x => !x.missing && x.qty > 0); if (i) Ops.report(s.host.venue, i.id, 'Not here'); }
     if (q.sim === 'expired') { const c = s.coupons.find(x => x.code === q.code); if (c) c.state = 'expired'; }
     if (q.sim === 'missed') { s.host.missed = true; s.host.checkDue = true; }
     Store.save();
@@ -4990,7 +5072,7 @@ const Mod = {
     const fmt = ms => { const t = Math.round(ms / 1000); return `${Math.floor(t / 60)} min ${t % 60} s`; };
     const last = task => { const x = s.timings.find(t => t.task === task); return x ? fmt(x.ms) : '—'; };
     const sims = [['tagFail', 'Tag not found'], ['photoFail', 'Photo unreadable'], ['pickup2', 'Receiver picked up 2 items'], ['travel', 'Travel prompt'], ['alert', 'Alert match'], ['cap', 'Monthly cap reached'],
-      ['used', 'Coupon already used'], ['expired', 'Coupon expired'], ['withdrawn', 'Coupon withdrawn'], ['missed', 'Missed check'], ['paused', 'Shelf paused'], ['full', 'Shelf full']];
+      ['used', 'Coupon already used'], ['expired', 'Coupon expired'], ['withdrawn', 'Coupon withdrawn'], ['missed', 'Missed check'], ['report', 'Missing-item report (host)'], ['paused', 'Shelf paused'], ['full', 'Shelf full']];
     const opts = SCREENS.map(([g, rows]) => `<optgroup label="${esc(g)}">${rows.filter(r => r[2]).map(r => `<option value="${esc(r[2])}">${esc(r[0] + ' · ' + r[1])}</option>`).join('')}</optgroup>`).join('');
     openSheet('Moderator menu', `<div class="mod">
       <p class="t-small c-secondary">For the test team only. Participants never see this menu.</p>
@@ -5037,6 +5119,13 @@ const Mod = {
     if (k === 'expired') { const c = s.coupons.find(x => x.state === 'active'); if (!c) { note('No active coupon to expire.'); return; } c.state = 'expired'; Store.save(); note(`${c.code} is now expired (Coupons › Used; H07c if checked).`); if (location.hash.startsWith('#/coupons')) Router.render('none'); }
     if (k === 'withdrawn') { const c = s.coupons.find(x => x.state === 'active'); if (!c) { note('No active coupon to withdraw.'); return; } c.state = 'withdrawn'; Store.save(); couponTab = 1; Router.go('#/coupons'); if (location.hash === '#/coupons') Router.render('none'); }
     if (k === 'missed') { s.host.missed = true; s.host.checkDue = true; s.host.lastCheck = null; s.host.status = 'live'; s.mode = 'host'; Store.save(); Router.go('#/host/dashboard'); if (location.hash === '#/host/dashboard') Router.render('none'); }
+    if (k === 'report') {
+      const sh = shelfOf(s.host.venue), i = sh.items.find(x => !x.missing && x.qty > 0);
+      if (!i) { note('No items on the host shelf to report.'); return; }
+      Ops.report(s.host.venue, i.id, 'Not here'); s.host.status = 'live'; s.mode = 'host'; Store.save();
+      Router.go('#/host/dashboard'); if (location.hash === '#/host/dashboard') Router.render('none');
+      toast('info', `A visitor reported <strong>${esc(shortName(i.name))}</strong> missing`, { ic: 'needs-attention' });
+    }
     if (k === 'paused') { Ops.pause(1, 'Café closed', 'Tomorrow at opening'); note('Café Daisy is paused.'); Router.render('none'); }
     if (k === 'full') { const sh = shelfOf(1), free = sh.capacity - shelfCount(sh); if (free > 0) sh.items.push(it('fill' + Date.now(), 'Biscuits, 300 g', 'Biscuits', '04/2027', free, 0)); Store.save(); note('Café Daisy is now a full shelf.'); Router.render('none'); }
   },
@@ -5134,8 +5223,7 @@ Views.rules = {
     const yes = ['Sealed packs, cans and jars', 'Shelf-stable: pasta, rice, cans, crackers', 'Within the best-before date'];
     const no = ['Opened packs', 'Chilled food, even sealed milk or juice', 'Cooked or homemade food', 'Anything past its date'];
     const lists = `<ul class="rules" aria-label="Yes, please"><li class="rules__head">Yes, please</li>${yes.map(t => `<li>${icon('sealed-food', 'icon--success')}<span>${t}</span></li>`).join('')}</ul>
-      <ul class="rules" aria-label="Not on the shelf" style="margin-top:var(--space-12)"><li class="rules__head">Not on the shelf</li>${no.map(t => `<li>${icon('needs-attention', 'icon--not-allowed')}<span>${t}</span></li>`).join('')}</ul>
-      <div style="margin-top:var(--space-12)">${UI.banner('info', '<strong>Every item you leave is welcome, even if the box is a little worn.</strong>', { ic: 'community-care' })}</div>`;
+      <ul class="rules" aria-label="Not on the shelf" style="margin-top:var(--space-12)"><li class="rules__head">Not on the shelf</li>${no.map(t => `<li>${icon('needs-attention', 'icon--not-allowed')}<span>${t}</span></li>`).join('')}</ul>`;   /* QA round 8: the "Every item you leave is welcome" notice is removed */
     if (view) return `${UI.topBar({ title: 'Sharing rules', serif: true })}${lists}<div class="spacer"></div><div class="actions">${UI.button({ label: 'Done', icon: 'done', block: true, attrs: 'data-action="back"' })}</div>`;
     return `${UI.stepHeader({ step: 3, layout: 'stack', h1: 'Sharing rules' })}${lists}
       <div class="spacer"></div>
@@ -5163,6 +5251,7 @@ Views.me = {
     return `<h1 class="t-h1 screen-title">Me</h1>
       <div class="stack">
         ${UI.profileRow(s.user).replace('class="card profile"', 'class="card profile" data-action="profile"')}
+        ${s.mode === 'host' ? `<div class="settings">${UI.settingsRow({ ic: 'notification', title: 'Notifications', sub: (n => n ? `${n} new` : 'Drop-offs, pickups, reports')(unreadNotes().length), href: '#/host/notifications' })}</div>` : ''}
         ${s.persona === 'brenda' ? UI.impact({ passed: s.impact.passed, saved: s.impact.saved, tap: true }) : ''}
         <div class="settings">
           ${UI.settingsRow({ ic: 'sealed-food', title: 'My items', sub: onShelf ? `${onShelf} on shelves` : 'Nothing on shelves yet', href: '#/bonus' })}
@@ -5186,20 +5275,59 @@ Views.me = {
   }
 };
 
-/* ---------- G11 Monthly impact ---------- */
+/* ---------- G11 Monthly impact ----------
+   QA round 8: serif title like the other detail screens; "Your November" is now a month picker chip
+   (native month / year picker on iOS and Android; a sheet of months where the browser has none);
+   bars under 5 items are gold, 5 or more green, a week with nothing passed on has no bar. */
+/* QA round 9: bar colour = how many items that week, on one green ramp (1–2 · 3–4 · 5–7 · 8+) */
+const IMPACT_STEPS = [[1, 2], [3, 4], [5, 7], [8, Infinity]];
+const impactStep = n => IMPACT_STEPS.findIndex(([a, b]) => n >= a && n <= b) + 1;
+const monthKey = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+const monthsBack = k => { const d = new Date(); d.setDate(1); d.setMonth(d.getMonth() - k); return d; };
+const monthLabel = d => d.toLocaleString('en-GB', { month: 'long', year: 'numeric' });
 Views.impact = {
-  html() {
-    const s = Store.state, w = s.impact.weeks, max = Math.max(...w, 1);
-    return `${UI.topBar({ title: 'Monthly impact' })}
-      <h2 class="t-h1" style="margin-bottom:var(--space-16)">Your ${esc(monthName())}</h2>
+  html({ query }) {
+    const s = Store.state, hist = s.impact.history || [], oldest = hist.length;
+    const keys = Array.from({ length: oldest + 1 }, (_, k) => monthKey(monthsBack(k)));
+    let k = Math.max(0, keys.indexOf(query.m || keys[0]));
+    const cur = k === 0, d = cur ? s.impact : hist[k - 1], w = d.weeks, max = Math.max(...w, 1), when = monthsBack(k);
+    const mname = when.toLocaleString('en-GB', { month: 'long' });
+    return `${UI.topBar({ title: 'Monthly impact', serif: true })}
+      <div class="monthpick" style="margin-bottom:var(--space-16)">
+        <label class="chip monthpick__chip" for="g11-month"><span>${esc(monthLabel(when))}</span>${icon('chevron-down')}</label>
+        <input type="month" id="g11-month" class="monthpick__input" value="${keys[k]}" min="${keys[oldest]}" max="${keys[0]}" aria-label="Choose a month, now ${esc(monthLabel(when))}">
+      </div>
       <div class="stack">
-        <section class="impact"><div class="impact__head"><span class="row" style="gap:var(--space-8)">${icon('saved-food', 'icon--sm')}<span class="t-label">This month</span></span></div>
-          <div class="impact__nums"><div><p class="impact__num">${s.impact.passed}</p><p class="impact__cap">items passed on</p></div><div><p class="impact__num">${s.impact.saved}</p><p class="impact__cap">saved by neighbours</p></div></div></section>
-        <section class="card" aria-labelledby="g11-chart"><h3 class="t-label c-secondary" id="g11-chart" style="margin-bottom:var(--space-16)">Items passed on by week</h3>
-          <div class="bars" role="img" aria-label="Items passed on by week: ${w.map((n, i) => `week ${i + 1}, ${n}`).join('; ')}">${w.map(n => `<div class="bar"><span class="bar__val">${n}</span><span class="bar__fill" style="--h:${Math.round(n / max * 80)}%"></span></div>`).join('')}</div>
-          <div class="bars__labels" aria-hidden="true">${w.map((_, i) => `<span>Week ${i + 1}</span>`).join('')}</div></section>
-        ${UI.note('<strong>A tip for next month</strong>You passed on crackers three times. A smaller pack might suit your week better.')}
+        <section class="impact"><div class="impact__head"><span class="row c-brand" style="gap:var(--space-8)">${icon('saved-food', 'icon--sm')}<span class="t-label">${cur ? 'This month' : esc(mname)}</span></span></div>
+          <div class="impact__nums"><div><p class="impact__num">${d.passed}</p><p class="impact__cap">items passed on</p></div><div><p class="impact__num">${d.saved}</p><p class="impact__cap">saved by neighbours</p></div></div></section>
+        <section class="card" aria-labelledby="g11-chart"><h3 class="t-small c-secondary" id="g11-chart" style="margin-bottom:var(--space-16)">By week</h3>
+          <div class="bars" style="--n:${w.length}" role="img" aria-label="Items passed on by week: ${w.map((n, i) => `week ${i + 1}, ${n}`).join('; ')}">${w.map(n => `<div class="bar${n ? '' : ' bar--none'}"><span class="bar__val">${n}</span>${n ? `<span class="bar__fill${impactStep(n) > 1 ? ' bar__fill--' + impactStep(n) : ''}" style="--h:${Math.round(n / max * 80)}%"></span>` : ''}</div>`).join('')}</div>
+          <div class="bars__labels" style="--n:${w.length}" aria-hidden="true">${w.map((_, i) => `<span>Week ${i + 1}</span>`).join('')}</div>
+          <div class="bars__legend" aria-hidden="true"><span>Fewer</span><span class="bars__ramp">${IMPACT_STEPS.map((st, k) => `<i class="bars__key${k ? ' bars__key--' + (k + 1) : ''}" title="${st[1] === Infinity ? st[0] + '+' : st[0] + '–' + st[1]} items"></i>`).join('')}</span><span>More items</span></div></section>
+        ${cur ? UI.note('<strong>A tip for next month</strong>You passed on crackers three times. A smaller pack might suit your week better.') : ''}
       </div>`;
+  },
+  mount(el, { query }) {
+    const input = $('#g11-month', el), chip = $('.monthpick__chip', el);
+    const hist = Store.state.impact.history || [];
+    const keys = Array.from({ length: hist.length + 1 }, (_, k) => monthKey(monthsBack(k)));
+    const go = key => {
+      if (!key) return;
+      if (!keys.includes(key)) { toast('info', key > keys[0] ? 'That month hasn’t happened yet' : `Your impact starts in ${esc(monthLabel(monthsBack(hist.length)))}`); input.value = query.m || keys[0]; return; }
+      Store.log('impact_month', { m: key });
+      Router._fade = true; Router.replace(key === keys[0] ? '#/impact' : `#/impact?m=${key}`);
+    };
+    input.addEventListener('change', () => go(input.value));
+    // browsers without a native month picker (e.g. desktop Firefox): a sheet with one row per month
+    const native = input.type === 'month';
+    const open = e => {
+      if (native) { try { if (input.showPicker) { e.preventDefault(); input.showPicker(); } } catch (err) { /* iOS opens its wheel on tap */ } return; }
+      e.preventDefault();
+      openSheet('Choose a month', `<div class="radios" role="radiogroup" aria-label="Month">${keys.map((key, k) => UI.radioRow({ name: 'month', value: key, label: monthLabel(monthsBack(k)), checked: key === (query.m || keys[0]) })).join('')}</div>`);
+      $('#sheet .sheet__body').addEventListener('radio', ev => { closeSheet(); go(ev.detail.value); });
+    };
+    input.addEventListener('click', open);
+    if (!native) { input.hidden = true; chip.setAttribute('role', 'button'); chip.tabIndex = 0; chip.addEventListener('click', open); chip.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') open(e); }); }
   }
 };
 
@@ -5219,6 +5347,32 @@ Views.screens = {
    ===================================================================== */
 const REASONS = ['Missing', 'Opened or damaged', 'Past its date', 'Other'];
 /* R07 Report a problem (sheet over R03–R06) → R07b Report sent */
+/* QA round 8: "Not here?" asks first. A report can't be undone (the steward is told straight away),
+   so a bottom sheet names the item, says who is told and that it is final. The art slot is a placeholder
+   for an illustration the team will draw (data-art-slot="report-missing"). */
+function confirmMissing(venueId, itemId, { onDone, onOther } = {}) {
+  const item = shelfOf(venueId).items.find(i => i.id === itemId); if (!item) return;
+  const v = venue(venueId);
+  Store.log('not_here_open', { item: itemId });
+  openSheet('Report as missing?', `<div class="stack confirm-sheet">
+      <div class="art-slot" data-art-slot="report-missing" aria-hidden="true">${icon('needs-attention')}</div>
+      <p class="t-body"><strong>${esc(item.name)}</strong> will be marked as missing at ${esc(v.name)}. The shelf steward will be told so they can check the shelf.</p>
+      <p class="confirm-sheet__warn">${icon('info', 'icon--sm')}<span>You can’t undo this.</span></p>
+      <div class="stack-8">${UI.button({ label: 'Yes, report missing', icon: 'needs-attention', block: true, attrs: 'data-cm-yes' })}
+      ${UI.button({ label: 'Cancel', variant: 'secondary', block: true, attrs: 'data-sheet-close' })}</div>
+      <div class="center">${UI.button({ label: 'Damaged or past its date? Report a problem', variant: 'link', attrs: 'data-cm-other' })}</div>
+    </div>`);
+  const body = $('#sheet .sheet__body');
+  body.addEventListener('click', async e => {
+    if (e.target.closest('[data-cm-other]')) { closeSheet(); setTimeout(() => onOther && onOther(itemId), 260); return; }
+    const yes = e.target.closest('[data-cm-yes]'); if (!yes) return;
+    await simulate(yes, 500);
+    Ops.report(venueId, itemId, 'Not here'); Store.log('not_here', { item: itemId }); buzz();
+    closeSheet();
+    onDone && onDone(itemId);
+    toast('info', `<strong>${esc(shortName(item.name))}</strong> reported missing. The shelf steward will be told.`, { ic: 'needs-attention' });
+  });
+}
 function openReport(venueId, { itemId = '', onSent } = {}) {
   const v = venue(venueId), items = shelfOf(venueId).items.filter(i => i.qty > 0 || i.missing);
   const st = { reason: '', item: itemId };
@@ -5361,10 +5515,10 @@ Views.takeItems = {
     return `${UI.stepHeader({ title: 'Pick up', step: 2, of: 2 })}
       ${UI.banner('success', `<strong>Tag found</strong> · ${esc(v.name)}${v.shelf ? ', ' + esc(v.shelf) : ''}`)}
       <h2 class="t-h1" style="margin:var(--space-16) 0 var(--space-4)">What are you taking</h2>
-      <p class="t-body c-secondary" style="margin-bottom:var(--space-12)">Tick each item you take. Take what you can use.</p>
+      <p class="t-body c-secondary" style="margin-bottom:var(--space-12)">Review and tick every item you are taking. Make sure not to tick more items than you are about to collect.</p>
       <div class="stack-8" id="pick-list" role="group" aria-label="Items on this shelf"></div>
-      <div class="center" style="margin-top:var(--space-12)">${UI.button({ label: 'Not here? Report missing stock', variant: 'link', icon: 'needs-attention', attrs: 'data-report' })}</div>
-      <div class="actions actions--sticky">${UI.gated({ label: 'Confirm pickup', variant: 'accent', icon: 'done', id: 'pick-confirm', hint: 'Tick at least one item you are taking', missing: '.pick' })}</div>`;
+      <div class="center" style="margin-top:var(--space-12)">${UI.button({ label: 'Report a problem', variant: 'link', icon: 'needs-attention', attrs: 'data-report' })}</div>
+      <div class="actions actions--sticky">${UI.gated({ label: 'Confirm pickup', variant: 'primary', icon: 'done', id: 'pick-confirm', hint: 'Tick at least one item you are taking', missing: '.pick' })}</div>`;
   },
   mount(el) {
     const d = Pick.d, sel = d.sel;
@@ -5374,7 +5528,7 @@ Views.takeItems = {
       return `<article class="pick${on ? ' is-checked' : ''}${i.missing ? ' is-missing' : ''}" data-pick="${i.id}">
         <label class="pick__main" for="pk-${i.id}">
           <input type="checkbox" id="pk-${i.id}" ${on ? 'checked' : ''} ${i.missing ? 'disabled' : ''} data-pick-box="${i.id}"><span class="check__box">${icon('done')}</span>
-          <span class="grow"><span class="t-title" style="display:block">${esc(i.name)}</span><span class="t-small c-secondary">${i.missing ? 'Reported missing' : `<span class="nowrap">${icon('sealed-badge', 'icon--xs icon--secondary')}Sealed</span> · BB ${esc(i.bb)}${i.qty > 1 ? ` · ${i.qty} on shelf` : ''}`}</span></span></label>
+          <span class="grow"><span class="t-title" style="display:block">${esc(i.name)}</span>${i.missing ? '<span class="t-small c-secondary">Reported missing</span>' : `<span class="pick__meta"><span class="item__sealed">${icon('sealed-badge')}Sealed</span><span class="t-small c-secondary">BB ${esc(i.bb)}${i.qty > 1 ? ` · ${i.qty} on shelf` : ''}</span></span>`}</span></label>
         ${on && i.qty > 1 ? `<div class="item__taking"><span>Taking</span>${UI.stepper({ id: 'take-' + i.id, value: q, min: 1, max: i.qty, label: `How many ${i.name}` })}</div>` : ''}
         ${i.missing ? '' : `<div class="pick__foot">${UI.button({ label: 'Not here?', variant: 'link', icon: 'needs-attention', attrs: `data-nothere="${i.id}"` })}</div>`}
       </article>`;
@@ -5397,7 +5551,7 @@ Views.takeItems = {
     el.addEventListener('stepper', e => { const id = e.detail.id.replace(/^take-/, ''); if (sel[id]) { sel[id] = e.detail.value; sync(); } });
     el.addEventListener('click', e => {
       const nh = e.target.closest('[data-nothere]');
-      if (nh) { const id = nh.dataset.nothere; delete sel[id]; Ops.report(d.shelf, id, 'Not here'); Store.log('not_here', { item: id }); draw(); toast('info', 'The shelf steward will be told', { ms: 3500, ic: 'needs-attention' }); return; }
+      if (nh) { confirmMissing(d.shelf, nh.dataset.nothere, { onDone: id => { delete sel[id]; draw(); }, onOther: id => openReport(d.shelf, { itemId: id, onSent: draw }) }); return; }
       if (e.target.closest('[data-report]')) { openReport(d.shelf, { onSent: draw }); return; }
       const c = e.target.closest('#pick-confirm'); if (c) Views.takeItems.confirm(c);
     });
@@ -5572,7 +5726,7 @@ Views.hostVerify = {
       <div class="card" style="margin-top:var(--space-12)" id="h04-tl"></div>
       <p class="t-small c-secondary" style="margin-top:var(--space-12)">This screen shows progress only. It is not a verification guarantee.</p>
       <div class="spacer"></div>
-      <div class="actions">${UI.gated({ label: 'Continue', icon: 'continue', id: 'h04-next', hint: 'Waiting for the registration check', enabled: Store.state.host.status === 'verified' || Store.state.host.status === 'live', missing: '#h04-card', attrs: 'data-href="#/host/kit"' })}</div>`;
+      <div class="actions">${UI.gated({ label: 'Continue', icon: 'continue', id: 'h04-next', hint: 'Waiting for the registration check', visible: true, enabled: Store.state.host.status === 'verified' || Store.state.host.status === 'live', missing: '#h04-card', attrs: 'data-href="#/host/kit"' })}</div>`;
   },
   mount(el) {
     const h = Store.state.host;
@@ -5660,7 +5814,7 @@ Views.hostLive = {
 };
 
 /* ---------- H06 Host dashboard (title Home, never "Today") · H08c missed-check banner ---------- */
-const LOG_ICON = { dropoff: 'sealed-food', pickup: 'pickup-bag', redeem: 'coupon', check: 'shelf-check', report: 'needs-attention', pause: 'pause' };
+const LOG_ICON = { dropoff: 'sealed-food', pickup: 'pickup-bag', redeem: 'coupon', check: 'shelf-check', report: 'needs-attention', resolve: 'done', pause: 'pause' };
 /* QA round 6: activity rows = title + item-count chip + optional detail; no donor references. Works for old saved entries too. */
 const logParts = r => {
   const parts = String(r.text || '').split(' · '), title = parts[0] || 'Activity';
@@ -5690,6 +5844,7 @@ Views.hostDash = {
       <p class="t-small c-secondary" style="margin-bottom:var(--space-16)">Host · ${esc(h.owner)} (owner)</p>
       <div class="stack">
         ${h.missed ? `<section class="banner banner--problem" role="alert">${icon('needs-attention')}<div class="banner__text"><strong>Yesterday’s shelf check was missed</strong><br><span class="t-small">Do it now; it takes about 2 minutes. Old items may still be on the shelf.</span></div><a class="btn btn--link banner__action" href="#/host/check" data-startcheck>Start</a></section>` : ''}
+        ${UI.reportCard(openReports())}
         <div class="stats">
           <div class="stat"><p class="stat__num" aria-live="polite">${v.count}</p><p class="stat__cap">items on shelf · ${pl(v.spots, 'spot')} left</p></div>
           <div class="stat"><p class="stat__num">${h.stats.pickups}</p><p class="stat__cap">pickups this week</p></div>
@@ -5697,10 +5852,10 @@ Views.hostDash = {
         </div>
         <p class="t-small c-secondary">Coupon cap this month: To be agreed</p>
         <section class="card shelfstate${paused ? ' is-paused' : ''}" aria-labelledby="h06-state">
-          <div class="row"><span class="tile tile--sm ${paused ? 'tile--oat' : ''}">${icon(paused ? 'pause' : 'done', 'icon--sm ' + (paused ? 'icon--waiting' : 'icon--success'))}</span>
-            <div class="grow"><h2 class="t-title" id="h06-state">${paused ? 'Shelf paused' : 'Shelf open'}</h2><p class="t-small c-secondary">${paused ? `${esc(v.paused.reason)} · until ${esc(v.paused.until)}` : 'People can leave and find food'}</p></div>
-            ${paused ? UI.button({ label: 'Resume', icon: 'retry', attrs: 'data-resume' }) : UI.button({ label: 'Pause', variant: 'secondary', icon: 'pause', attrs: 'data-href="#/host/pause"' })}</div>
-          ${paused ? '<p class="t-small c-secondary shelfstate__note">People see “Paused” on the map. Pickups are still allowed.</p>' : ''}</section>
+          <div class="row"><span class="tile ${paused ? 'tile--oat' : ''}">${icon(paused ? 'pause' : 'done', paused ? 'icon--waiting' : 'icon--success')}</span>
+            <div class="grow"><h2 class="t-title" id="h06-state">${paused ? 'Shelf paused' : 'Shelf open'}</h2><p class="t-small c-secondary">${paused ? `${esc(v.paused.reason)} · until ${esc(v.paused.until)}` : 'People can leave and find food'}</p></div></div>
+          ${paused ? '<p class="t-small c-secondary shelfstate__note">People see “Paused” on the map. Pickups are still allowed.</p>' : ''}
+          <div class="row" style="justify-content:flex-end;margin-top:var(--space-8)">${paused ? UI.button({ label: 'Resume', icon: 'retry', attrs: 'data-resume' }) : UI.button({ label: 'Pause', variant: 'secondary', icon: 'pause', attrs: 'data-href="#/host/pause"' })}</div></section>
         ${h.checkDue ? `<section class="card card--shadow duecard"><div class="row"><span class="tile tile--accent">${icon('shelf-check', 'icon--accent')}</span><div class="grow"><h2 class="t-title">Shelf check due at ${esc(h.reminder)}</h2><p class="t-small c-secondary">About 2 minutes</p></div></div>
             <div class="row" style="justify-content:flex-end;margin-top:var(--space-8)">${UI.button({ label: 'Start', attrs: 'data-startcheck' })}</div></section>`
           : `<section class="banner banner--success" role="status">${icon('done')}<div class="banner__text"><strong>Shelf checked</strong> · Next check tomorrow ${esc(h.reminder)}</div></section>`}
@@ -5715,6 +5870,69 @@ Views.hostDash = {
       if (e.target.closest('[data-startcheck]')) { e.preventDefault(); Task.start('check'); Router.go('#/host/check'); }
       if (e.target.closest('[data-resume]')) { Ops.resume(Store.state.host.venue); toast('success', 'Shelf open again', { ms: 2500 }); Router.render('none'); }
       const lg = e.target.closest('[data-log]'); if (lg) logSheet(Store.state.log[+lg.dataset.log]);
+    });
+  }
+};
+
+/* ---------- H11 Reported items (QA round 9): what happened, who told us, what the host can do ---------- */
+const REPORT_OUTCOME = { ok: 'All OK, it’s on the shelf', missing: 'Marked missing', removed: 'Removed from the shelf' };
+Views.hostReports = {
+  html() {
+    const s = Store.state, h = s.host, all = s.reports.map((r, i) => ({ ...r, i })).filter(r => r.venue === h.venue);
+    const open = all.filter(r => !r.resolved), done = all.filter(r => r.resolved).slice(-5).reverse();
+    const miss = r => r.reason === 'Not here' || r.reason === 'Missing';
+    const card = r => `<article class="card repitem" data-rep="${r.i}">
+        <div class="row" style="align-items:flex-start"><span class="item__thumb">${icon(r.item ? 'sealed-food' : 'community-shelf')}</span>
+          <div class="grow"><h2 class="t-title">${esc(r.name)}</h2>
+            <p class="t-small c-secondary">${miss(r) ? 'Reported missing' : esc(r.reason)} · today ${esc(r.time || '')}</p>
+            <p class="t-small c-secondary">By a visitor, in the app. Visitors stay anonymous.</p>
+            ${r.note ? `<p class="repitem__note t-small">“${esc(r.note)}”</p>` : ''}</div></div>
+        <p class="t-label repitem__ask">${r.item ? 'What did you find?' : 'Is the shelf all right?'}</p>
+        <div class="repitem__acts">${UI.button({ label: r.item ? 'It’s there, all OK' : 'All OK', variant: 'secondary', icon: 'done', block: true, attrs: `data-resolve="ok"` })}
+          ${r.item ? UI.button({ label: 'It’s gone, mark missing', variant: 'secondary', icon: 'needs-attention', block: true, attrs: `data-resolve="missing"` }) + UI.button({ label: 'Remove it from the shelf', variant: 'secondary', icon: 'remove', block: true, attrs: `data-resolve="removed"` }) : ''}</div>
+      </article>`;
+    return `${UI.topBar({ title: 'Reported items', serif: true })}
+      <p class="t-body c-secondary" style="margin-bottom:var(--space-16)">A visitor told us something on your shelf may not be right. Have a look at the shelf, then tell us what you found. The map updates straight away.</p>
+      <div class="stack" id="h09-open">${open.length ? open.map(card).join('') : `<div class="card">${UI.empty({ art: 'all-fine', title: 'All sorted', line: 'There are no open reports for your shelf.' })}</div>`}</div>
+      ${done.length ? `<h2 class="t-section" style="margin:var(--space-24) 0 var(--space-8)">Answered</h2><ul class="log">${done.map(r => `<li class="log__row"><span class="tile tile--sm tile--canvas">${icon(r.outcome === 'ok' ? 'done' : r.outcome === 'removed' ? 'remove' : 'needs-attention', 'icon--sm')}</span><span class="grow log__main"><span class="log__title">${esc(r.name)}</span><span class="log__sub">${esc(REPORT_OUTCOME[r.outcome] || 'Answered')} · ${esc(r.by || '')} ${esc(r.at || '')}</span></span></li>`).join('')}</ul>` : ''}
+      <p class="t-small c-secondary footnote">${icon('shelf-check', 'icon--sm icon--secondary')}<span>Reported items also appear in the daily shelf check.</span></p>`;
+  },
+  mount(el) {
+    el.addEventListener('click', async e => {
+      const b = e.target.closest('[data-resolve]'); if (!b) return;
+      const card = b.closest('[data-rep]'), idx = +card.dataset.rep, outcome = b.dataset.resolve, r = Store.state.reports[idx];
+      await simulate(b, 400);
+      const undo = Ops.resolveReport(idx, outcome); buzz(); Store.log('report_resolve', { outcome });
+      Router.render('none');
+      toast('success', `<strong>${esc(shortName(r.name))}</strong>: ${esc(REPORT_OUTCOME[outcome].toLowerCase())}`, { action: 'Undo', onAction: () => { undo(); Router.render('none'); } });
+    });
+  }
+};
+
+/* ---------- H12 Notifications (QA round 9): host Me › Notifications. Activity as a list, new ones marked; push is simulated ---------- */
+function unreadNotes() { const s = Store.state; return s.log.filter(l => l.t && l.t > (s.host.notifSeen || 0)); }
+Views.hostNotes = {
+  html() {
+    const s = Store.state, h = s.host, unread = new Set(unreadNotes()), reps = openReports().length;
+    const row = (r, k) => { const e = logParts(r), isNew = unread.has(r);
+      return `<li><button type="button" class="log__row log__row--tap${isNew ? ' is-new' : ''}" data-note="${k}" data-kind="${esc(r.kind)}"><span class="tile tile--sm tile--canvas">${icon(LOG_ICON[r.kind] || 'activity', 'icon--sm' + (r.kind === 'report' ? ' icon--problem' : ''))}</span>
+        <span class="grow log__main"><span class="log__title">${esc(e.title)}</span>${e.n ? `<span class="pill">${pl(e.n, 'item')}</span>` : ''}<span class="log__sub">${esc(r.time)}${e.sub ? ' · ' + esc(e.sub) : ''}</span></span>${isNew ? '<span class="dot" aria-label="New"></span>' : ''}${icon('chevron-right', 'icon--sm')}</button></li>`; };
+    const list = s.log.slice(0, 20), news = list.filter(r => unread.has(r)), old = list.filter(r => !unread.has(r));
+    return `${UI.topBar({ title: 'Notifications', serif: true })}
+      <div class="settings" style="margin-bottom:var(--space-16)">${UI.settingsRow({ ic: 'notification', title: 'Push notifications', sub: h.push ? 'On for drop-offs, pickups and reports' : 'Off. You still see everything here.', toggle: { on: !!h.push, attrs: 'data-push-toggle' } })}</div>
+      ${reps ? `<a class="banner banner--problem banner--link" href="#/host/reports">${icon('needs-attention')}<span class="banner__text"><strong>${pl(reps, 'report')} need${reps === 1 ? 's' : ''} your answer</strong></span>${icon('chevron-right', 'icon--sm')}</a>` : ''}
+      ${news.length ? `<h2 class="t-section" style="margin:var(--space-16) 0 var(--space-8)">New</h2><ul class="log">${news.map(r => row(r, s.log.indexOf(r))).join('')}</ul>` : ''}
+      <h2 class="t-section" style="margin:var(--space-16) 0 var(--space-8)">${news.length ? 'Earlier' : 'All notifications'}</h2>
+      ${old.length ? `<ul class="log">${old.map(r => row(r, s.log.indexOf(r))).join('')}</ul>` : `<div class="card">${UI.empty({ ic: 'notification', title: 'Nothing new', line: 'Drop-offs, pickups and reports show up here.' })}</div>`}`;
+  },
+  mount(el) {
+    const h = Store.state.host;
+    setTimeout(() => { h.notifSeen = Date.now(); Store.save(); }, 0);   // opened = seen; the dots stay until you leave
+    el.addEventListener('toggle', e => { if (!e.target.closest('[data-push-toggle]')) return; h.push = e.detail.on; Store.save(); $('.settings__sub', e.target.closest('.settings__row')).textContent = h.push ? 'On for drop-offs, pickups and reports' : 'Off. You still see everything here.'; toast('success', h.push ? 'Push notifications on' : 'Push notifications off', { ic: 'notification' }); });
+    el.addEventListener('click', e => {
+      const n = e.target.closest('[data-note]'); if (!n) return;
+      if (n.dataset.kind === 'report' && openReports().length) { Router.go('#/host/reports'); return; }
+      logSheet(Store.state.log[+n.dataset.note]);
     });
   }
 };
@@ -5785,7 +6003,7 @@ Views.hostRedeemResult = {
           <p class="t-small c-secondary">From a drop-off at ${esc(v.name)} · valid until ${couponExpiry(r.c)}</p></div></article>
         ${UI.note('Give the discount, then mark it as redeemed so it can’t be used twice.')}</div>
         <div class="spacer"></div>
-        <div class="actions">${UI.button({ label: 'Mark as redeemed', variant: 'accent', icon: 'redeem', block: true, attrs: 'data-markredeemed' })}${UI.button({ label: 'Cancel', variant: 'secondary', block: true, attrs: 'data-action="back"' })}</div>`;
+        <div class="actions">${UI.button({ label: 'Mark as redeemed', variant: 'primary', icon: 'redeem', block: true, attrs: 'data-markredeemed' })}${UI.button({ label: 'Cancel', variant: 'secondary', block: true, attrs: 'data-action="back"' })}</div>`;
     const m = { used: ['Already used', `${esc(code)} was redeemed at ${esc(v.name)} ${esc(r.when || '')}.`], expired: ['Expired', 'The coupon’s validity ended. Value and validity are to be agreed.'], notfound: ['Not found', `We couldn’t find ${esc(code || 'that code')}. Check the code and try again, or scan it.`] }[r.k];
     return `${head}<div class="stagger center">${UI.tick('problem', r.k === 'expired' ? 'calendar' : 'needs-attention')}<h2 class="t-display">${m[0]}</h2><p class="t-body c-secondary">${m[1]}</p>
         ${UI.note(r.k === 'notfound' ? 'Codes look like SS-0000. They are on the guest’s Coupons screen.' : 'Don’t give the discount for this code. The guest can check their Coupons screen.')}</div>
@@ -5805,7 +6023,8 @@ Views.hostRedeemResult = {
 };
 
 /* ---------- H08 Daily shelf check · H08b check done ---------- */
-const flagReason = i => i.flag ? `Reported: ${i.flag.toLowerCase()}` : bbPast(i.bb) ? `Past its date (${i.bb})` : `On the shelf ${i.days} days · still in date`;
+const flagReason = i => i.flag ? (i.flag === 'Not here' || i.flag === 'Missing' ? `Reported missing by a visitor${i.flagAt ? ' · ' + i.flagAt : ''}` : `Reported by a visitor: ${i.flag.toLowerCase()}${i.flagAt ? ' · ' + i.flagAt : ''}`) : bbPast(i.bb) ? `Past its date (${i.bb})` : `On the shelf ${i.days} days · still in date`;
+function openReports() { const s = Store.state; return (s.reports || []).filter(r => r.venue === s.host.venue && !r.resolved); }
 const isFlagged = i => i.days >= 7 || bbPast(i.bb) || !!i.flag;
 const Check = {
   fresh() { const h = Store.state.host, sh = shelfOf(h.venue); h.check = { started: Date.now(), list: { tidy: false, tag: false, sign: false }, decide: {}, missing: [], by: h.staff[0], items: sh.items.filter(isFlagged).map(i => i.id) }; Store.save(); },
@@ -5818,6 +6037,7 @@ const Check = {
     const t = Math.round(dur / 1000);
     h.lastCheck = { by: c.by, time: nowHM(), dur: `${Math.floor(t / 60)} min ${t % 60} s`, kept, removed, missing: c.missing.map(name) };
     h.checkDue = false; h.missed = false; h.check = null;
+    s.reports.forEach(r => { if (r.venue === h.venue && !r.resolved) { const d = c.decide[r.item]; Object.assign(r, { resolved: true, by: c.by, at: nowHM(), outcome: d === 'remove' ? 'removed' : c.missing.includes(r.item) ? 'missing' : 'ok' }); } });
     hostLog('check', `Shelf check done · ${h.lastCheck.by} · ${h.lastCheck.dur}`);
     Store.save();
   },
@@ -5827,6 +6047,8 @@ Views.hostCheck = {
   html() {
     const h = Store.state.host; if (!h.check) Check.fresh();
     const c = h.check, d = new Date();
+    shelfOf(h.venue).items.filter(isFlagged).forEach(i => { if (!c.items.includes(i.id)) c.items.unshift(i.id); });   // reports that came in mid-check
+    c.items = c.items.filter(id => shelfOf(h.venue).items.some(i => i.id === id));   // answered on H11 meanwhile
     return `<header class="topbar topbar--center">${UI.iconButton('close', 'Close', 'data-action="back"')}<h1 class="topbar__title">Daily shelf check</h1><span class="icon-btn" aria-hidden="true"></span></header>
       <p class="t-overline c-secondary" style="margin-bottom:var(--space-8)">${d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }).replace(',', '')} · ${esc(h.reminder)}</p>
       <div class="card" id="h08-list">${[['tidy', 'Shelf tidy'], ['tag', 'Tag and QR sticker visible'], ['sign', 'Sign in place']].map(([k, l]) => UI.checkbox({ id: 'cl-' + k, label: l, checked: c.list[k], attrs: `data-cl="${k}"` })).join('')}</div>
@@ -5925,7 +6147,7 @@ Views.x01 = {
       <p class="t-label c-secondary" style="margin-bottom:var(--space-8)">${esc(v.name)} · shelf ${esc(v.code)}</p>
       <div class="stack-8" id="x01-list">${liveItems(shelfOf(v.id)).filter(i => !i.missing).map(i => `<label class="pick x01__row" for="x-${i.id}"><span class="pick__main"><input type="checkbox" id="x-${i.id}" data-x="${i.id}"><span class="check__box">${icon('done')}</span><span class="grow"><span class="t-title" style="display:block">${esc(i.name)}</span><span class="t-small c-secondary">Best before ${esc(i.bb)}${i.qty > 1 ? ` · ${i.qty} on shelf` : ''}</span></span></span></label>`).join('')}</div>
       <div style="margin-top:var(--space-12)">${UI.banner('info', '<strong>Anyone can take food, with or without the app.</strong>', { ic: 'community-care' })}</div>
-      <div class="actions">${UI.gated({ label: 'Confirm', variant: 'accent', icon: 'done', id: 'x01-confirm', hint: 'Tick what you took', missing: '.x01__row' })}
+      <div class="actions">${UI.gated({ label: 'Confirm', variant: 'primary', icon: 'done', id: 'x01-confirm', hint: 'Tick what you took', missing: '.x01__row' })}
         <p class="center t-small c-secondary">Want alerts for food nearby? ${UI.button({ label: 'Get the app', variant: 'link', attrs: 'data-getapp' })}</p></div></div>`;
   },
   mount(el, { params }) {
@@ -6051,6 +6273,8 @@ Router.add('/host/kit', Views.hostKit, { title: 'Starter kit', code: 'H05', cls:
 Router.add('/host/activate', Views.hostActivate, { title: 'Go live', code: 'H05', cls: 'screen--brand with-actions', flow: 'host' });
 Router.add('/host/live', Views.hostLive, { title: 'Your shelf is live', code: 'H05', flow: 'host' });
 Router.add('/host/dashboard', Views.hostDash, { title: 'Home', code: 'H06', tabs: '#/host/dashboard', tabMode: 'host' });
+Router.add('/host/reports', Views.hostReports, { title: 'Reported items', code: 'H11', tabs: '#/host/dashboard', tabMode: 'host' });
+Router.add('/host/notifications', Views.hostNotes, { title: 'Notifications', code: 'H12', tabs: '#/me', tabMode: 'host' });
 Router.add('/host/pause', Views.hostPause, { title: 'Pause the shelf', code: 'H06b', cls: 'with-actions' });
 Router.add('/host/redeem', Views.hostRedeem, { title: 'Redeem a coupon', code: 'H07', tabs: '#/host/redeem', tabMode: 'host' });
 Router.add('/host/redeem/result', Views.hostRedeemResult, { title: 'Redeem a coupon', code: 'H07b', tabs: '#/host/redeem', tabMode: 'host', cls: 'with-actions' });

@@ -115,7 +115,7 @@ Proportions: about **60% Cream and Paper · 30% Pantry Green and Ink · 10% Ochr
 | `border-brand` | green-900 | Secondary button outline, selected card |
 | `border-focus` | info-600 | Focus ring on light surfaces |
 | `action-primary` / `-hover` / `-pressed` | green-900 / green-700 / green-950 | Primary buttons |
-| `action-accent` / `-pressed` | terracotta-700 / terracotta-800 | **One closing action per flow**: Confirm pickup, Go live (Confirm drop-off is Primary green since Q94). Never Clay. |
+| `action-accent` / `-pressed` | terracotta-700 / terracotta-800 | **Not used for buttons since QA round 8 (Q101):** Confirm pickup, Mark as redeemed and X01 Confirm are Primary green. `.btn--accent` is kept as an alias of Primary. Never Clay. |
 | `action-disabled` | oat-200 | Disabled button fill (with `text-disabled`) |
 | `action-leave` / `-pressed` | ink-900 / ink-950 | **v0.7 [NEW]** Leave food card fill (Home) |
 | `action-find` / `-pressed` | green-700 / green-900 | **v0.7 [NEW]** Find food card fill (Home) |
@@ -124,6 +124,7 @@ Proportions: about **60% Cream and Paper · 30% Pantry Green and Ink · 10% Ochr
 
 ### 2.5 Colour rules
 - **Ochre means "you earned something".** Use it only for coupons, the Rescue Bonus and thank-you moments.
+- **QA round 9 (Q102): Terracotta is never a button fill.** It can colour the *icon* of an icon button for a destructive action, e.g. the G06 trash icon (`icon-btn--destructive`: Terracotta 700 icon, no fill, 44px target, labelled "Remove …"). Closing actions such as Confirm pickup are Primary green.
 - **Terracotta = unavailable, wrong or destructive (updated 15 Nov, Q94; was "never an error or a warning").** Use it for availability limits ("Full shelf"), error notifications, things that are not allowed (the "Not on the shelf" flags) and destructive actions (delete). Always Terracotta 700 for icons and text on light surfaces, always with words or a clear icon, never colour alone. Calm problem *messages* inside a screen (an unreadable photo, a missing item report) can stay Slate. Still **no red anywhere**: Terracotta is the warm stand-in. Warnings use the gold tint (Q92).
 - **Terracotta marks availability limits** (**v0.5** label "Full shelf") as a `surface-unavailable` chip: Terracotta **700** + Paper text (5.84:1) + the `shelf-full` icon. White on Terracotta 500 is 4.39:1 and fails AA, so 500 is never used behind normal-size text.
 - **Gold icons** appear on Ink (`icon-on-inverse`, `icon-on-leave`) and, on light surfaces, as `icon-reward` (Ochre 800) for search and rewards. **v0.7** On Forest, gold icons use light gold **`ochre-300`** (`icon-on-find`, 4.0:1), never Ochre 500 (2.5:1); other icons on Forest stay Leaf.
@@ -160,7 +161,7 @@ Fraunces Bold brings warmth; Rubik keeps instructions clear. Two families only (
 
 - Load: `https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&family=Rubik:wght@400;500;700&display=swap`
 - Stacks: `--font-serif: Fraunces, Georgia, serif` · `--font-sans: Rubik, system-ui, -apple-system, sans-serif` · (v0.7 DM Sans comparison removed 15 Nov; Rubik is the only sans, Q83 decided)
-- **v0.7 weights:** 500 only for section titles, card titles and buttons (plus the existing `label` / `overline` tokens, unchanged). Everything else is 400. **QA round 4 (Q93):** Rubik 700 only for the Sharing rules list headings (`--type-rules-head`).
+- **v0.7 weights:** 500 only for section titles, card titles and buttons (plus the existing `label` / `overline` tokens, unchanged). Everything else is 400. **QA round 4 (Q93):** Rubik 700 only for the Sharing rules list headings (`--type-rules-head`; **QA round 8:** 18/24, the `body-large` size, was 14/20).
 - **v0.5** Screen titles (Fraunces `display`/`heading-1`) are **Pantry Green** (`text-brand`, 10.6:1 on Cream), as in the airy mocks. Fraunces headings on Paper cards are `text-brand` too. Section titles ("Your food on shelves", "Points near you") use **`section`**: Rubik 500 18/24 (**v0.7**), Ink. **v0.7** The Home greeting is Ink, not Pantry Green (`M01-home-v3`). Sentence case everywhere (item names too: "Canned soup").
 - Fraunces is never used under 20px, on buttons or in labels.
 - Inputs are 16px (no iOS zoom). 12px is the floor, and never for instructions. Text reflows at 200%; labels are never truncated.
@@ -202,7 +203,7 @@ Nested rule: inner radius = outer radius − padding. In practice, items inside 
 - `shadow-sheet`: `0 -4px 24px rgba(43,36,30,.12)`. For bottom sheets and fixed action bars.
 - `shadow-focus`: `0 0 0 2px #FFFFFF, 0 0 0 5px #2F6E8C`. On dark fills, use a Paper ring instead.
 - Sizes:
-  - `size-tap-min` 44 · `size-control` 48 (buttons, inputs)
+  - `size-tap-min` 44 · `size-button` 44 **[NEW] Q104** (every button) · `size-control` 48 (inputs)
   - icons `16 / 20 / 24 / 32` (stroke 1.5 at 16, otherwise 2)
   - frame 390 × 844, layout max-width 430
   - **v0.4** avatar 48 · tab indicator pill 64 × 32 · toggle 52 × 32
@@ -317,7 +318,7 @@ Every component uses semantic tokens only and is built with all its states.
 
 | Component | Recipe | States |
 |---|---|---|
-| **Button** | **v0.5 pill**: 48px, `radius-full`, padding 12/24, `button` type, optional 20px leading icon (gap 8) | Primary (`action-primary`) · Accent (`action-accent`, max one per flow) · Secondary (Paper + 1.5px `border-brand`) · Text link · (v0.4 Dark button removed) · default / hover / pressed / focus / loading / disabled |
+| **Button** | **v0.5 pill**: **44px** (`--size-button`, QA round 11, Q104: one size for every button; was 48 + border), `radius-full`, padding 8/24, `button` type, optional 20px leading icon (gap 8) | Primary (`action-primary`) · ~~Accent~~ (removed QA round 8, Q101) · Secondary (Paper + 1.5px `border-brand`) · Text link · (v0.4 Dark button removed) · default / hover / pressed / focus / loading / disabled |
 | **Input** | Label above (`label`, `text-secondary`, gap 8); field 48px, `radius-md`, 1.5px `border-strong`, Paper, 16px text, placeholder `text-tertiary` | default · focus (`border-brand` + `shadow-focus`) · filled · error (`text-problem` border + flag icon + message under the field) · disabled |
 | **Search field** | Pill (`radius-full`), 48px, Paper, **v0.5 flat: 1.5px `border-strong`, no shadow**, gold `search` icon (`icon-reward`), placeholder `text-tertiary`; separate 48px round filter button; suggestions list below (Paper, `radius-md`) | empty · typing with suggestions · results |
 | **Filter chip** | `radius-full`, min 44px, `label` type, 16px side padding, gap 8 | default (Paper + `border-strong`) · selected (**Q96:** Ink `--surface-toggle-on` fill + gold tick `--icon-on-toggle` + Paper text, same as the Map / List switch) |
@@ -458,7 +459,7 @@ Added while building `index.html` (phase 1). Listed in `docs/open-questions.md` 
 | Component | Recipe | States |
 |---|---|---|
 | Overlay banner | Slides down from the top (`--motion-base`), swipe up / Close dismisses, never over the tab bar; a Paper `notice` card (G01) or a Leaf / Oat banner (G09b, food alert) | shown · leaving · auto-hide 8 s (G09b) |
-| Gated button | Closing action with `aria-disabled` + a one-line `body-small` `text-secondary` hint under it; tapping it while disabled scrolls to and highlights what is missing (`shadow-focus` pulse) | enabled · disabled + hint · loading |
+| Gated button | Closing action with `aria-disabled`. **QA round 8:** the hint is not printed under the button (screen readers still get it); tapping it while disabled shows the hint as an info notification and scrolls to and highlights what is missing (`shadow-focus` pulse). `visible: true` keeps a printed reason where there is nothing to tick (G03 full shelf, H04 waiting) | enabled · disabled (hint on tap) · loading |
 | Step header, stacked | Back / Close, centred overline "Step n of N", bar, then a Fraunces title (O02–O04, R04c, H05b frames) | step 1…N |
 | Role card | Paper card, `border-strong`; selected = `surface-selected` + 2px `border-brand` + filled radio + "Selected" label | default · selected · pressed |
 | Radio row | 48px row in a Paper list, 24px radio | default · selected |
@@ -467,6 +468,12 @@ Added while building `index.html` (phase 1). Listed in `docs/open-questions.md` 
 | Steward check row (v2) | Item + reason + Keep / Remove 44px; decided = Leaf (kept) or Oat (removed) with a status label and Undo | to check · kept · removed |
 | Timeline | 24px dots joined by a 2px line; done = Pantry Green dot + tick, now = ring + dot, next = outline | done · now · next |
 | Stat tile | Paper, `radius-lg`, number in `heading-2` `text-brand`, caption | — |
+| **Month picker chip** (QA round 8, G11) | Filter-chip styling (Paper, `border-strong`, `radius-full`, 44px) + `chevron-down`; an invisible native `<input type="month">` on top opens the phone's month / year wheel; browsers without one get a bottom sheet of radio rows | default · focus |
+| **Weekly bars** (G11, QA round 9, Q102) | One green density ramp, lighter = fewer items: `--chart-1` Leaf (1–2) · `--chart-2` `green-300` [NEW] (3–4) · `--chart-3` Forest (5–7) · `--chart-4` Pantry Green (8+); every bar has a 1px `--chart-edge` (Forest) inset outline so the light steps read on Paper; legend "Fewer ▢▢▢▢ More items". **No Ochre:** gold stays for rewards. A week with 0 has no bar, only a `text-tertiary` "0"; the number above each bar carries the value | 1–2 · 3–4 · 5–7 · 8+ · none |
+| **Confirm sheet** (QA round 8, R05 "Not here?") | Bottom sheet: 120px art slot (dashed `border-strong` placeholder until the illustration exists), item named in bold, who is told, "You can’t undo this.", Primary yes + Secondary Cancel, a link to Report a problem | — |
+| **Attention callout** (QA round 9, H06) | Tappable Paper card with shadow (no coloured edge, QA round 10): 44px Oat tile + Slate `needs-attention`, "Needs your attention" `title` + one summary line, chevron → H11. Stays until every report is answered; the host Check tab carries an Ink count badge meanwhile | shown · hidden |
+| **Report item card** (QA round 9, H11) | Paper card: item thumb, name, "Reported missing · today 14:32", "By a visitor, in the app. Visitors stay anonymous.", optional quoted note, "What did you find?" and three full-width Secondary buttons: **It’s there, all OK** · **It’s gone, mark missing** · **Remove it from the shelf**; answering shows a success notification with Undo and moves the item to "Answered" | open · answered |
+| **Notification centre row** (QA round 9, H12) | Activity row (`log__row`) + an 8px Pantry Green dot and 500 title while new; grouped New / Earlier; push toggle on top (simulated) | new · read |
 | **Notification** (QA round 3, Q92) | Top of the screen, 16px side gutter, newest on top, 8px gap; `radius-md`, `shadow-card`, icon + Ink text + optional action + 44px Close (X); drops in over `--motion-notify` (600 ms), auto-hides after 5 s; fade only under reduced motion | success (Leaf, Forest outline) · info (Paper + `border-subtle`) · warning (Ochre tint, Ochre 800 icon, Ochre 500 outline) · error (Terracotta tint, Terracotta 700 icon, Terracotta 500 outline). Warning and error colours are an exception to §2.5 under review |
 | Result icon | 80px round tile: Leaf + success tick (valid, sent), Oat + Slate flag (problem), Forest on dark screens | done · problem · brand |
 
