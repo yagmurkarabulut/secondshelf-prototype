@@ -432,7 +432,6 @@ Added while building `index.html` (phase 1). Listed in `docs/open-questions.md` 
 | Timeline | 24px dots joined by a 2px line; done = Pantry Green dot + tick, now = ring + dot, next = outline | done · now · next |
 | Stat tile | Paper, `radius-lg`, number in `heading-2` `text-brand`, caption | — |
 | **Notification** (QA round 3, Q92) | Top of the screen, 16px side gutter, newest on top, 8px gap; `radius-md`, `shadow-card`, icon + Ink text + optional action + 44px Close (X); drops in over `--motion-notify` (600 ms), auto-hides after 5 s; fade only under reduced motion | success (Leaf, Forest outline) · info (Paper + `border-subtle`) · warning (Ochre tint, Ochre 800 icon, Ochre 500 outline) · error (Terracotta tint, Terracotta 700 icon, Terracotta 500 outline). Warning and error colours are an exception to §2.5 under review |
-| **Spots meter** (Q98) | Chip (`radius-full`, 32px, Paper + 1px `border-subtle`, `label` type): one 6 × 12px segment per shelf spot, filled Forest (`--cap-taken`) = taken by an item, Paper with a `border-strong` inset = free, then "n of N spots available". Full: the Terracotta 700 "Full shelf" chip with Paper segments and the `shelf-full` icon. The words carry the meaning; the meter is a quick visual. Used in the map / list location rows (replaces the "n items on the shelf" line) | available · full |
 | Result icon | 80px round tile: Leaf + success tick (valid, sent), Oat + Slate flag (problem), Forest on dark screens | done · problem · brand |
 
 **v0.7 photo tokens [NEW]** (Q88):
