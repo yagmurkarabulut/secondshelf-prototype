@@ -802,6 +802,11 @@ svg.leaflet-image-layer.leaflet-interactive path {
   --tint-on-dark:rgba(255,255,255,.12);  /* subtle fill on surface-brand (G04 illustration panel) */
   --scrim:rgba(43,36,30,.4);             /* behind bottom sheets */
   --tint-me:rgba(47,110,140,.2);          /* halo around the "you are here" dot (info-600 at 20%) */
+  /* [NEW] Part 2 photos (Q88) */
+  --shimmer:linear-gradient(90deg,transparent 25%,rgba(255,255,255,.45) 50%,transparent 75%);
+  --motion-shimmer:1200ms;
+  --scrim-photo-top:linear-gradient(180deg,rgba(43,36,30,.55) 0%,rgba(43,36,30,0) 100%); /* R03: keeps Back and the status bar readable */
+  --size-scrim:96px;
 }
 
 /* moderator font comparison (Q83): swaps the sans family everywhere */
@@ -1294,6 +1299,17 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{box-shadow:none}
 .shelf.is-closed .shelf__photo{opacity:.6}
 .placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--space-4);color:var(--text-secondary);font:var(--type-caption)}
 .placeholder .icon{color:var(--icon-tertiary)}
+/* Part 2 venue photos (Q88): cover the placeholder once loaded; soft shimmer on surface-subtle while loading */
+.has-photo{position:relative;background:var(--surface-subtle)}
+.has-photo::before{content:"";position:absolute;inset:0;border-radius:inherit;z-index:1;pointer-events:none;background:var(--shimmer);background-size:200% 100%;animation:shimmer var(--motion-shimmer) linear infinite}
+.has-photo.is-loaded::before{display:none}
+.photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:inherit;z-index:1;opacity:0;transition:opacity var(--motion-base) var(--ease)}
+.is-loaded > .photo{opacity:1}
+.shelf__photo .marker,.r03__back{z-index:3}
+.r03__photo.is-loaded::after{content:"";position:absolute;inset:0 0 auto;height:var(--size-scrim);z-index:2;pointer-events:none;background:var(--scrim-photo-top)}
+.avatar.has-photo{overflow:hidden}
+@keyframes shimmer{from{background-position:100% 0}to{background-position:-100% 0}}
+@media (prefers-reduced-motion:reduce){.has-photo::before{animation:none;background:none}}
 
 /* ---- Settings list ---- */
 .settings{background:var(--surface-default);border-radius:var(--radius-lg);padding:0 var(--space-16)}
@@ -2051,6 +2067,21 @@ function placeVenues() {
     if (v.home !== 'main') { v.metres = Math.round(haversine(me, [v.lat, v.lng])); v.dist = fmtDist(v.metres); }
   });
 }
+/* Part 2 (Q88): real venue and community photos. Paste one images.unsplash.com URL per slot, in the form
+   https://images.unsplash.com/photo-<id>?w=800&q=70&auto=format&fit=crop  (or a file in assets/photos/),
+   and credit it in assets/photos/CREDITS.md. An empty slot keeps the labelled placeholder.
+   Each venue always gets the same slot (by type, cafés spread over three slots by id), so it looks the same everywhere. */
+const PHOTOS = {
+  cafe: '', cafe2: '', cafe3: '',         // café interiors / counters (Café Daisy = cafe, Café Lumi = cafe2)
+  bistro: '', restaurant: '', pizzeria: '', // Pizza Nonna = pizzeria
+  bakery: '', grocery: '', deli: '', tearoom: '', canteen: '',
+  community: '',                          // O01 welcome "Community photo"
+  hostShelf: '',                          // H01 "Café with a community shelf"
+  avatar: ''                              // Brenda (Home greeting, Me profile row)
+};
+const PHOTO_SLOT = { 'Café': id => ['cafe', 'cafe2', 'cafe3'][(id - 1) % 3], 'Bistro': () => 'bistro', 'Restaurant': () => 'restaurant',
+  'Pizzeria': () => 'pizzeria', 'Bakery': () => 'bakery', 'Grocery': () => 'grocery', 'Deli': () => 'deli', 'Tea room': () => 'tearoom', 'Canteen': () => 'canteen' };
+const venuePhoto = v => { const f = PHOTO_SLOT[v.type]; const slot = f ? f(v.id) : 'cafe'; return PHOTOS[slot] || PHOTOS.cafe || ''; };
 const shelfOf = id => Store.state.shelves[id];
 const liveItems = sh => sh.items.filter(i => i.qty > 0);
 const shelfCount = sh => liveItems(sh).filter(i => !i.missing).reduce((n, i) => n + i.qty, 0);
@@ -2339,9 +2370,14 @@ const UI = {
     if (kind === 'closed') return `<span class="avail avail--closed">${icon('paused')}<span>${esc(label || 'Closed')}</span></span>`;
     return `<span class="avail avail--space">${esc(label)}</span>`;
   },
+  /* photo layer over a placeholder: lazy, async, shimmer while loading, placeholder stays if it fails */
+  photo(url, alt) {
+    return url ? `<img class="photo" src="${esc(url)}" alt="${esc(alt)}" loading="lazy" decoding="async" onload="this.parentNode.classList.add('is-loaded')" onerror="this.parentNode.classList.remove('has-photo');this.remove()">` : '';
+  },
   shelfCard({ n, dist, venue, hours, kind, spots }) {
+    const v = VENUES.find(x => x.id === +n), url = v ? venuePhoto(v) : '';
     return `<a class="shelf${kind === 'closed' ? ' is-closed' : ''}" href="#/point/${n}">
-      <div class="shelf__photo"><span class="placeholder">${icon('photo')}<span>Photo placeholder</span></span>${UI.marker(n)}</div>
+      <div class="shelf__photo${url ? ' has-photo' : ''}">${UI.photo(url, `${venue} interior`)}<span class="placeholder">${icon('photo')}<span>Photo placeholder</span></span>${UI.marker(n)}</div>
       <div class="shelf__body"><span class="shelf__dist">${esc(dist)}</span><span class="shelf__venue">${esc(venue)}</span>${hours ? `<span class="shelf__hours">${esc(hours)}</span>` : ''}${UI.avail(kind, spots)}</div></a>`;
   },
   resultRow({ n, venue, meta, kind, spots, selected = false, chip = '' }) {
@@ -2358,7 +2394,7 @@ const UI = {
     return `<span class="toggle-wrap"><button type="button" class="toggle" role="switch" aria-checked="${on}" aria-label="${esc(label)}" ${disabled ? 'disabled' : ''}></button></span>`;
   },
   profileRow(u) {
-    return `<button type="button" class="card profile"><span class="avatar" aria-hidden="true">${esc(u.initials)}</span>
+    return `<button type="button" class="card profile"><span class="avatar${PHOTOS.avatar ? ' has-photo' : ''}" aria-hidden="true">${esc(u.initials)}${UI.photo(PHOTOS.avatar, '')}</span>
       <span class="grow"><span class="t-title" style="display:block">${esc(u.name)}</span><span class="t-small c-secondary">${esc(u.email)}</span></span>${icon('chevron-right')}</button>`;
   },
   impact({ month = 'November', passed = 11, saved = 8 } = {}) {
@@ -2371,7 +2407,7 @@ const UI = {
       <span class="grow"><span class="t-title" style="display:block">Switch to host mode</span><span class="settings__sub">Run a community shelf at your café</span></span>${icon('chevron-right', 'chev')}</button>`;
   },
   greeting(u) {
-    return `<header class="greet"><h1 class="t-h1">Hi ${esc(u.first)}</h1><a href="#/me" class="avatar" aria-label="Me">${esc(u.initials)}</a></header>`;
+    return `<header class="greet"><h1 class="t-h1">Hi ${esc(u.first)}</h1><a href="#/me" class="avatar${PHOTOS.avatar ? ' has-photo' : ''}" aria-label="Me">${esc(u.initials)}${UI.photo(PHOTOS.avatar, '')}</a></header>`;
   },
   tabBar(mode, current) {
     const tabs = mode === 'host'
@@ -3213,7 +3249,7 @@ Views.map = {
       const why = k === 'full' ? 'Leave food is off while the shelf is full' : k === 'paused' ? 'Leave food is off while the shelf is paused' : 'Closed now. Try again in opening hours';
       return `<div class="details" data-details="${v.id}">
         <button type="button" class="details__back" data-details-back>${icon('chevron-left', 'icon--sm')}<span>${MapUI.food || find() ? 'Back to results' : 'Back to locations'}</span></button>
-        <div class="details__photo placeholder">${icon('photo')}<strong>Venue photo</strong><span>${esc(v.name)}</span></div>
+        <div class="details__photo placeholder${venuePhoto(v) ? ' has-photo' : ''}">${UI.photo(venuePhoto(v), `${v.name} interior`)}${icon('photo')}<strong>Venue photo</strong><span>${esc(v.name)}</span></div>
         <div class="details__title"><h2 class="t-h2" id="det-title">${esc(v.name)}</h2><span class="t-label c-brand">${esc(v.dist)}</span></div>
         <p class="t-small c-secondary">${esc(v.addr || v.type)}${v.addr ? ' · ' + esc(v.type) : ''}</p>
         ${Loc.chips(v)}
@@ -3554,7 +3590,7 @@ Views.point = {
       closed: ['Closed now', 'Try again during opening hours.'] }[k];
     const hint = { full: 'Leave food is off while the shelf is full', paused: 'Leave food is off while the shelf is paused', closed: 'Leave food is off while the café is closed' }[k];
     return `<header class="topbar topbar--center">${UI.iconButton('back', 'Back', 'data-action="back"')}<p class="topbar__title">${esc(v.name)}</p><span class="icon-btn" aria-hidden="true"></span></header>
-      <div class="hero" style="height:var(--size-illus);margin-bottom:var(--space-16)"><span class="placeholder">${icon('photo')}<strong>Shelf photo</strong><span>${esc(v.name)}</span></span></div>
+      <div class="hero${venuePhoto(v) ? ' has-photo' : ''}" style="height:var(--size-illus);margin-bottom:var(--space-16)">${UI.photo(venuePhoto(v), `${v.name} interior`)}<span class="placeholder">${icon('photo')}<strong>Shelf photo</strong><span>${esc(v.name)}</span></span></div>
       <h1 class="t-h1">${esc(v.name)}</h1>
       <div class="stack" style="margin-top:var(--space-8)">
         <div>${availChip(v)}</div>
@@ -3888,7 +3924,7 @@ Object.assign(UI, {
     return `<button type="button" role="radio" class="radiorow${checked ? ' is-on' : ''}" aria-checked="${checked}" data-radio="${esc(name)}" data-value="${esc(value)}"><span class="radio" aria-hidden="true"></span><span class="grow">${esc(label)}${sub ? `<span class="t-small c-secondary" style="display:block">${esc(sub)}</span>` : ''}</span></button>`;
   },
   greeting(u) {
-    return `<header class="greet"><h1 class="t-h1" data-logo>Hi ${esc(u.first)}</h1><a href="#/me" class="avatar" aria-label="Me">${esc(u.initials)}</a></header>`;
+    return `<header class="greet"><h1 class="t-h1" data-logo>Hi ${esc(u.first)}</h1><a href="#/me" class="avatar${PHOTOS.avatar ? ' has-photo' : ''}" aria-label="Me">${esc(u.initials)}${UI.photo(PHOTOS.avatar, '')}</a></header>`;
   },
   actionCard(kind, state = '') {
     const k = kind === 'leave'
@@ -4238,7 +4274,7 @@ const Banners = {
 Views.welcome = {
   html() {
     return `<span class="wordmark" data-logo>SecondShelf</span>
-      <div class="hero"><span class="placeholder">${icon('photo', 'icon--lg')}<strong>Community photo</strong><span>From the guideline stock set</span></span></div>
+      <div class="hero${PHOTOS.community ? ' has-photo' : ''}">${UI.photo(PHOTOS.community, 'Neighbours at a café with a community shelf')}<span class="placeholder">${icon('photo', 'icon--lg')}<strong>Community photo</strong><span>From the guideline stock set</span></span></div>
       <h1 class="t-display">Food that’s still good, passed on.</h1>
       <p class="t-body-large c-secondary" style="margin-top:var(--space-12)">Leave sealed food you won’t eat on a café shelf near you, or find something you can use.</p>
       <div class="spacer"></div>
@@ -4415,7 +4451,7 @@ function openReport(venueId, { itemId = '', onSent } = {}) {
 Views.takePoint = {
   html({ params }) {
     const v = venue(params.id), k = availKind(v);
-    return `<div class="r03__photo">${UI.iconButton('back', 'Back', 'data-action="back"', 'r03__back')}<span class="placeholder">${icon('photo')}<span>Café interior</span></span></div>
+    return `<div class="r03__photo${venuePhoto(v) ? ' has-photo' : ''}">${UI.photo(venuePhoto(v), `${v.name} interior`)}${UI.iconButton('back', 'Back', 'data-action="back"', 'r03__back')}<span class="placeholder">${icon('photo')}<span>Café interior</span></span></div>
       <div class="r03__sheet">
         <p class="t-overline c-secondary">${esc((v.shelf || 'shelf 1').toUpperCase())} · ${esc(v.dist.toUpperCase())}</p>
         <h1 class="t-h1">${esc(v.name)}</h1>
@@ -4627,7 +4663,7 @@ Views.host = {
   html() {
     const rows = [['community-care', 'A neighbourly welcome', 'Givers and receivers visit your café'], ['paused', 'About 2 minutes a day', 'No fridge, no power. A short shelf check, with a reminder'], ['starter-kit', 'A free starter kit', 'Shelf, sign, NFC plate, QR and window sticker']];
     return `${hostHead('Host a shelf', 1, true)}
-      <div class="hero" style="height:var(--size-illus)"><span class="placeholder">${icon('photo')}<span>Café with a community shelf</span></span></div>
+      <div class="hero${PHOTOS.hostShelf ? ' has-photo' : ''}" style="height:var(--size-illus)">${UI.photo(PHOTOS.hostShelf, 'Café with a community shelf')}<span class="placeholder">${icon('photo')}<span>Café with a community shelf</span></span></div>
       <h2 class="t-display" style="margin-bottom:var(--space-16)">A shelf for everyone, at your café.</h2>
       <ul class="benefits">${rows.map(r => `<li class="benefit"><span class="tile">${icon(r[0])}</span><div><p class="t-title">${r[1]}</p><p class="t-small c-secondary">${r[2]}</p></div></li>`).join('')}</ul>
       <section class="card" style="margin-top:var(--space-16)" aria-labelledby="h01-fund"><p class="t-label" id="h01-fund">Who pays for the thank-you coupons?</p>

@@ -432,6 +432,14 @@ Added while building `index.html` (phase 1). Listed in `docs/open-questions.md` 
 | Stat tile | Paper, `radius-lg`, number in `heading-2` `text-brand`, caption | — |
 | Result icon | 80px round tile: Leaf + success tick (valid, sent), Oat + Slate flag (problem), Forest on dark screens | done · problem · brand |
 
+**v0.7 photo tokens [NEW]** (Q88):
+| Token | Value | Use |
+|---|---|---|
+| `--shimmer` | `linear-gradient(90deg, transparent 25%, rgba(255,255,255,.45) 50%, transparent 75%)` | Loading shimmer over `surface-subtle` (off under reduced motion) |
+| `--motion-shimmer` | `1200ms` | One shimmer sweep |
+| `--scrim-photo-top` | `linear-gradient(180deg, rgba(43,36,30,.55), rgba(43,36,30,0))` | R03 photo header: keeps Back and the status bar readable |
+| `--size-scrim` | `96px` | Height of that scrim |
+
 **Map cluster [NEW]** (from the interactive map): Paper pill, 2px `border-brand`, `community-shelf` 16px icon + count in `label` type, `text-brand`, `shadow-card`; only on the map. Kept visually different from the numbered Ink markers because numbers identify shelves (Q38).
 
 Recipe sizes from §3, §6 and §8 (type shorthands, icon sizes, 1.5px border, 32px marker, 6px band and step bar, 8px bonus bar, 72px item row, 64px settings row, 52 × 32 toggle) are also written as custom properties in `index.html` (block 1b), so components never hold literal values.
@@ -440,4 +448,4 @@ Recipe sizes from §3, §6 and §8 (type shorthands, icon sizes, 1.5px border, 3
 Put PNG exports at 2x in `frames/`, named by screen code (`frames/G04-tap-the-tag.png`). Frames in the repo: `M01-home`, `G02-map` (also used for R01), `G08-coupons`, `M02-me`, plus the **v0.5 hi-fi mocks** (G04, G05, G06, G07, G08-coupons-v2, G08d, R01b, R03, R04, R05, R06, H01–H07, M01-home-v2, M02-me-v2). The mocks set **layout and the airy feel**; colours follow this file (see `docs/open-questions.md`, "Mocks vs kit"). When a frame and this file disagree on styling, **this file wins**; v0.4 already resolves the known differences (grey text, gold icons on Forest, coupon values, unnumbered markers, terracotta chip contrast, help icon). Note the difference in `docs/open-questions.md`.
 
 ## 12. Still open
-Coupon value and funding · logo and master identity (use the Fraunces Bold text wordmark for now) · dark mode (not planned) · photo style (use labelled warm placeholders on `surface-subtle`).
+Coupon value and funding · logo and master identity (use the Fraunces Bold text wordmark for now) · dark mode (not planned) · ~~photo style (use labelled warm placeholders on `surface-subtle`)~~ **v0.7:** Unsplash venue photos, see `assets/photos/CREDITS.md` (one fixed photo per venue by type and id; `object-fit: cover`, the container's radius, lazy, `surface-subtle` shimmer while loading, none under reduced motion; dark top scrim on R03). Until the URLs are pasted in, the slots show the labelled placeholders (Q88). Illustration, animation, camera and QR placeholders stay.
