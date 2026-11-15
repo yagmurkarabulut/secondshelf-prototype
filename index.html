@@ -1662,6 +1662,7 @@ textarea.input{min-height:calc(var(--size-control) * 2);resize:vertical}
 .chiprow{display:flex;flex-wrap:wrap;gap:var(--space-8)}
 .chiprow .pill,.chiprow .avail{min-height:var(--size-chip)}
 .chiprow .pill{background:var(--surface-default);border:1px solid var(--border-subtle)}
+.chiprow .pill--leaf{background:var(--surface-selected);border-color:transparent}
 .shelfitems{background:var(--surface-default);border-radius:var(--radius-lg);padding:0 var(--space-12)}
 .shelfitem{display:flex;gap:var(--space-12);align-items:center;min-height:var(--size-row-min);padding:var(--space-8) 0}
 .shelfitem + .shelfitem{border-top:1px solid var(--border-subtle)}
@@ -1683,6 +1684,32 @@ textarea.input{min-height:calc(var(--size-control) * 2);resize:vertical}
 a.bonus{display:block;text-decoration:none;color:inherit}
 .bonus--hero{padding:0;overflow:hidden;box-shadow:var(--shadow-card)}
 .bonus__inner{padding:var(--space-16)}
+
+/* Scenario B: R03 listing, R04 check card, R04c, R05 pick rows, R07 chips */
+.screen.r03{padding-top:0;background:var(--surface-subtle)}
+.r03__photo{position:relative;height:var(--size-illus);display:flex;align-items:center;justify-content:center}
+.r03__back{position:absolute;left:var(--space-16);top:max(env(safe-area-inset-top),var(--space-16));background:var(--surface-default);box-shadow:var(--shadow-card)}
+.r03__sheet{background:var(--surface-canvas);border-radius:var(--radius-xl) var(--radius-xl) 0 0;padding:var(--space-24) var(--space-20) var(--space-32);min-height:calc(100% - var(--size-illus))}
+.r04__checks{display:flex;flex-direction:column;gap:var(--space-12)}
+.r04__checks li{display:flex;align-items:center;gap:var(--space-12);min-height:var(--size-control);padding:var(--space-12) var(--space-16);border-radius:var(--radius-md);background:var(--tint-on-dark);font:var(--type-body);color:var(--text-on-primary)}
+.r04c__icon{margin:var(--space-32) 0}
+.screen--brand .t-h1{color:var(--text-on-primary)}
+.screen--brand .t-body-large{color:var(--text-on-primary)}
+.pick{background:var(--surface-default);border-radius:var(--radius-lg);border:var(--border-w) solid transparent;padding:var(--space-8) var(--space-12) var(--space-4);transition:border-color var(--motion-fast) var(--ease),background-color var(--motion-fast) var(--ease)}
+.pick.is-checked{border-color:var(--border-brand)}
+.pick__main{display:flex;gap:var(--space-12);align-items:flex-start;min-height:var(--size-tap-min);padding:var(--space-8) 0;cursor:pointer}
+.pick__main input{position:absolute;opacity:0;width:1px;height:1px}
+.pick__main .check__box{margin-top:var(--space-4)}
+.pick__main input:checked + .check__box{background:var(--action-primary);border-color:var(--action-primary)}
+.pick__main input:checked + .check__box .icon{opacity:1}
+.pick__main input:focus-visible + .check__box{box-shadow:var(--shadow-focus)}
+.pick__foot{display:flex;justify-content:flex-end;margin-top:calc(var(--space-8) * -1)}
+.pick__foot .btn--link{font:var(--type-label)}
+.pick.is-missing{background:var(--surface-subtle);opacity:.7}
+.pick.is-missing .pick__main{cursor:default}
+.pick .item__taking{padding:0 0 var(--space-8) calc(var(--size-checkbox) + var(--space-12))}
+.chip[role="radio"][aria-checked="true"]{background:var(--action-primary);color:var(--text-on-primary);border-color:var(--action-primary)}
+.countdown{display:inline-block;min-width:1ch}
 
 /* =====================================================================
    5. COMPONENT GALLERY (#/components only)
@@ -3076,7 +3103,7 @@ Views.map = {
     const placeCtl = () => { $('#mapctl', el).style.top = ($('#maptop', el).offsetHeight + 8) + 'px'; };
     /* centre a marker in the part of the map the sheet leaves visible */
     const centreOn = id => {
-      const m = markers.get(id), z = Math.max(map.getZoom(), 0), g = Sheet.geo();
+      const m = markers.get(id), z = Math.max(map.getZoom(), 1), g = Sheet.geo();
       const top = $('#maptop', el).offsetHeight, bottom = g.H - Sheet.visible(MapUI.sheet, g);
       const d = g.H / 2 - (top + Math.max(top + 40, bottom)) / 2;
       const target = map.unproject(map.project(m.getLatLng(), z).add([0, d]), z);
@@ -3267,7 +3294,7 @@ Views.map = {
       if (kind === 'place') {
         const v = venue(x); renderSearch(v.name, null);
         if (!passes(v)) { MapUI.filters.clear(); MapUI.food = ''; drawChips(); applyFilters(); }
-        cluster.zoomToShowLayer(markers.get(v.id), () => select(v.id, { from: 'search' }));
+        select(v.id, { from: 'search' });
         Store.log('search', { place: v.id });
       }
     };
@@ -3299,12 +3326,12 @@ Views.map = {
       const z = t.closest('[data-zoom]'); if (z && !z.disabled) { z.dataset.zoom === 'in' ? map.zoomIn() : map.zoomOut(); return; }
       if (t.closest('.search__filter') || t.closest('[data-sortchip]')) { openFilters(); return; }
       if (t.closest('[data-locate]')) { if (sel) deselect(); rm ? map.setView(ll(ME.x, ME.y), -1.25, { animate: false }) : map.flyTo(ll(ME.x, ME.y), -1.25, { duration: .5 }); return; }
-      const row = t.closest('[data-select]'); if (row) { const id = +row.dataset.select; cluster.zoomToShowLayer(markers.get(id), () => select(id, { from: 'list' })); return; }
+      const row = t.closest('[data-select]'); if (row) { select(+row.dataset.select, { from: 'list' }); return; }
       if (t.closest('[data-details-back]')) { deselect(); return; }
       if (t.closest('[data-expand]')) { toggleExpand(); return; }
       if (t.closest('[data-rules]')) { Loc.rulesSheet(); return; }
       if (t.closest('[data-directions]')) { Loc.directions(venue(sel)); return; }
-      const go = t.closest('[data-goto]'); if (go) { const id = +go.dataset.goto; if (!passes(venue(id))) { MapUI.filters.clear(); MapUI.food = ''; drawChips(); applyFilters(); } cluster.zoomToShowLayer(markers.get(id), () => select(id, { from: 'go-here' })); return; }
+      const go = t.closest('[data-goto]'); if (go) { const id = +go.dataset.goto; if (!passes(venue(id))) { MapUI.filters.clear(); MapUI.food = ''; drawChips(); applyFilters(); } select(id, { from: 'go-here' }); return; }
       if (t.closest('[data-there]')) { const v = venue(sel); Store.log('im_there', { venue: v.id, mode: MapUI.mode }); Router.go(find() ? `#/take/tap?shelf=${v.id}` : `#/give/tap?shelf=${v.id}`); return; }
       if (t.closest('[data-notify]')) { Store.state.alert = { food: MapUI.food, km: 1 }; Store.save(); Store.log('food_alert', { on: true, food: MapUI.food, from: 'R01b' }); toast('success', `Food alert saved: ${esc(MapUI.food)} within 1 km`, { ms: 3500, ic: 'notification' }); return; }
       if (t.closest('[data-clearfilters]')) { MapUI.filters.clear(); MapUI.food = ''; renderSearch('', null); drawChips(); applyFilters(); placeCtl(); Sheet.set('half', { from: 'clear' }); return; }
@@ -3334,7 +3361,7 @@ Views.map = {
     sheetEl.classList.add('is-dragging');
     if (sel && MapUI.expand) { Sheet.chips(false, false); Sheet.set('full', { from: 'open' }); } else Sheet.set(sel ? 'half' : MapUI.sheet, { from: 'open' });
     requestAnimationFrame(() => sheetEl.classList.remove('is-dragging'));
-    if (sel) setTimeout(() => cluster.zoomToShowLayer(markers.get(sel), () => { markers.get(sel).setIcon(pinIcon(venue(sel))); drawList(); centreOn(sel); }), 50);
+    if (sel) setTimeout(() => { markers.get(sel).setIcon(pinIcon(venue(sel))); drawList(); centreOn(sel); }, 50);
     else if (MapUI.food && query.food !== undefined && visible().length) setTimeout(() => fitTo(visible()), 60);
     setTimeout(() => { map.invalidateSize(); placeCtl(); Sheet.apply(); drawList(); }, rm ? 0 : 280);
     if (query.find && !query.shelf && !query.food) setTimeout(() => $('#mapsearch', el).focus(), rm ? 0 : 300);
@@ -4162,6 +4189,235 @@ Views.screens = {
   mount(el) { el.addEventListener('click', e => { const j = e.target.closest('[data-jump]'); if (j) Jump.go(j.dataset.jump); }); }
 };
 
+/* =====================================================================
+   SCENARIO B · receiver (Jonas): R03 → R04 / R04c → R05 → R06, R07 / R07b report sheet
+   ===================================================================== */
+const REASONS = ['Missing', 'Opened or damaged', 'Past its date', 'Other'];
+/* R07 Report a problem (sheet over R03–R06) → R07b Report sent */
+function openReport(venueId, { itemId = '', onSent } = {}) {
+  const v = venue(venueId), items = shelfOf(venueId).items.filter(i => i.qty > 0 || i.missing);
+  const st = { reason: '', item: itemId };
+  const chips = () => REASONS.map(r => `<button type="button" role="radio" class="chip" aria-checked="${st.reason === r}" data-radio="reason" data-value="${esc(r)}">${st.reason === r ? icon('done') : ''}<span>${esc(r)}</span></button>`).join('');
+  openSheet('Report a problem', `<form id="r07" class="stack" novalidate>
+      <div><p class="field__label" id="r07-why">What’s wrong?</p><div class="chips" style="flex-wrap:wrap;margin-top:var(--space-8)" role="radiogroup" aria-labelledby="r07-why" id="r07-reasons">${chips()}</div></div>
+      <div class="field" id="r07-item-f"><label class="field__label" for="r07-item">Which item?</label>
+        <select class="select" id="r07-item"><option value="">Choose an item</option>${items.map(i => `<option value="${esc(i.id)}" ${i.id === itemId ? 'selected' : ''}>${esc(i.name)}</option>`).join('')}<option value="shelf">The whole shelf</option></select></div>
+      <div class="field"><label class="field__label" for="r07-note">Note (optional)</label><textarea class="input" id="r07-note" placeholder="e.g. only one can left"></textarea></div>
+      <div class="center">${UI.button({ label: 'Add a photo (optional)', variant: 'link', icon: 'camera', attrs: 'data-r07-photo' })}</div>
+      ${UI.gated({ label: 'Send report', id: 'r07-send', hint: 'Choose what’s wrong and which item', missing: '#r07-reasons, #r07-item-f', attrs: 'type="submit"' }).replace('type="button" ', '')}
+    </form>`);
+  const form = $('#r07'), btn = $('#r07-send'), sel = $('#r07-item');
+  const sync = () => gate(btn, !!(st.reason && st.item));
+  form.addEventListener('radio', e => { st.reason = e.detail.value; $('#r07-reasons').innerHTML = chips(); $(`#r07-reasons [data-value="${CSS.escape(st.reason)}"]`).focus(); sync(); });
+  sel.addEventListener('change', () => { st.item = sel.value; sync(); });
+  form.addEventListener('click', e => { if (e.target.closest('[data-r07-photo]')) { e.preventDefault(); const b = e.target.closest('[data-r07-photo]'); b.querySelector('span').textContent = 'Photo added (placeholder)'; } });
+  form.addEventListener('submit', async e => {
+    e.preventDefault(); if (btn.getAttribute('aria-disabled') === 'true') return;
+    await simulate(btn, 700);
+    Ops.report(venueId, st.item === 'shelf' ? '' : st.item, st.reason, $('#r07-note').value);
+    Store.log('report', { venue: venueId, reason: st.reason }); buzz();
+    const missing = st.reason === 'Missing';
+    $('#sheet .sheet__body').innerHTML = `<div class="stack center stagger" role="status">${UI.tick()}<h2 class="t-h2">Thanks for telling us</h2>
+      <p class="t-body c-secondary">The café’s shelf steward will check the shelf.${missing ? ' The listing now shows the item as missing.' : ''}</p>
+      ${UI.button({ label: 'Done', block: true, attrs: 'data-sheet-close' })}</div>`;
+    $('#sheet .sheet__head h2').textContent = 'Report sent';
+    $('#sheet [data-sheet-close].btn').focus();
+    onSent && onSent();
+  });
+  sync();
+}
+
+/* ---------- R03 Shelf listing ---------- */
+Views.takePoint = {
+  html({ params }) {
+    const v = venue(params.id), k = availKind(v);
+    return `<div class="r03__photo">${UI.iconButton('back', 'Back', 'data-action="back"', 'r03__back')}<span class="placeholder">${icon('photo')}<span>Café interior</span></span></div>
+      <div class="r03__sheet">
+        <p class="t-overline c-secondary">${esc((v.shelf || 'shelf 1').toUpperCase())} · ${esc(v.dist.toUpperCase())}</p>
+        <h1 class="t-h1">${esc(v.name)}</h1>
+        <p class="t-small c-secondary">${esc(v.addr || v.type)}${v.hours ? ' · ' + esc(v.hours) : ''}</p>
+        <div class="chiprow" style="margin-top:var(--space-12)">${k === 'closed' ? UI.avail('closed', 'Closed') : k === 'paused' ? UI.avail('closed', 'Paused') : `<span class="pill pill--leaf">${icon('paused')}Open now</span>`}${availChip(v).includes('Full shelf') ? availChip(v) : `<span class="pill">${pl(v.spots, 'space')}</span>`}<span class="pill">${icon('tap-nfc')}NFC tag and QR code</span></div>
+        ${k === 'paused' ? `<div style="margin-top:var(--space-12)">${UI.note(`<strong>Paused · ${esc(v.paused.reason)}</strong>Pickups are still allowed. Reopens: ${esc(v.paused.until)}.`, 'pause')}</div>` : ''}
+        <div class="sechead" style="margin-top:var(--space-16)"><h2 class="t-section">On this shelf now</h2><span class="t-small c-secondary">Stock may change</span></div>
+        <div id="r03-items">${Loc.items(v)}</div>
+        <div class="stack-8" style="margin-top:var(--space-16)">
+          ${UI.button({ label: 'Report a problem', variant: 'secondary', icon: 'needs-attention', block: true, attrs: 'data-report' })}
+        </div>
+        <div class="details__actions" style="margin-top:var(--space-24)">
+          ${UI.button({ label: 'Directions', variant: 'secondary', icon: 'location', attrs: 'data-directions' })}
+          ${UI.button({ label: 'I’m there', icon: 'tap-nfc', attrs: `data-href="#/take/tap?shelf=${v.id}"` })}
+        </div>
+      </div>`;
+  },
+  mount(el, { params, query }) {
+    const v = venue(params.id);
+    const redraw = () => { $('#r03-items', el).innerHTML = Loc.items(venue(v.id)); };
+    el.addEventListener('click', e => {
+      if (e.target.closest('[data-report]')) openReport(v.id, { onSent: redraw });
+      if (e.target.closest('[data-directions]')) Loc.directions(v);
+    });
+    if (query.report) setTimeout(() => {
+      openReport(v.id, { onSent: redraw });
+      if (query.report === 'sent') { $('#r07 [data-value="Missing"]').click(); const s = $('#r07-item'); s.value = (v.items[0] || {}).id || 'shelf'; s.dispatchEvent(new Event('change')); $('#r07').requestSubmit(); }
+    }, reduceMotion() ? 0 : 300);
+  }
+};
+
+/* ---------- R04 Check and tap (check card first) · R04c Tag not found ---------- */
+const PICK_OPTS = { idleText: '', note: 'Look for the arrow on the SecondShelf sign.' };
+Views.takeTap = {
+  html({ query }) {
+    return `<div id="r04">${Views.takeTap.check()}</div>`;
+  },
+  check() {
+    return `${UI.stepHeader({ title: 'Pick up', step: 1, of: 2, first: true })}
+      <h2 class="t-display tap-title">Check, then tap</h2>
+      <p class="tap-sub">Inspect the real pack. If something is wrong, leave it and report it.</p>
+      <ul class="r04__checks"><li>${icon('sealed-food', 'icon--on-primary')}The seal is unbroken</li><li>${icon('best-before', 'icon--on-primary')}The date is fine</li></ul>
+      <div class="spacer"></div>
+      <div class="actions">${UI.button({ label: 'Continue', variant: 'on-brand', icon: 'continue', block: true, attrs: 'data-r04-continue' })}</div>`;
+  },
+  tap() {
+    return `${UI.stepHeader({ title: 'Pick up', step: 1, of: 2, first: true })}
+      <h2 class="t-display tap-title">Tap the tag</h2>
+      <p class="tap-sub">Hold your phone to the tag on the shelf</p>
+      <div id="nfc-slot">${UI.nfc({ state: 'idle', id: 'r04', ...PICK_OPTS })}</div>`;
+  },
+  notFound() {
+    return `${UI.stepHeader({ step: 1, of: 2, first: true, layout: 'stack', h1: 'Tag not found' })}
+      <p class="t-body" style="color:var(--text-on-inverse-secondary)">Nothing was taken or logged yet.</p>
+      <div class="r04c__icon">${UI.tick('brand', 'needs-attention')}</div>
+      <p class="t-body-large">Hold the top of your phone flat against the tag on the shelf for a second.</p>
+      <p class="t-body" style="color:var(--text-on-inverse-secondary);margin-top:var(--space-12)">The tag sits next to the arrow on the SecondShelf sign.</p>
+      <div class="spacer"></div>
+      <div class="actions">
+        ${UI.button({ label: 'Try again', variant: 'on-brand', icon: 'retry', block: true, attrs: 'data-r04-retry' })}
+        ${UI.button({ label: 'Scan the QR code instead', variant: 'outline-on-brand', icon: 'qr-code', block: true, attrs: 'data-r04-qr' })}
+        ${UI.button({ label: 'Type shelf code', variant: 'outline-on-brand', icon: 'shelf-code', block: true, attrs: 'data-action="shelf-code"' })}
+      </div>`;
+  },
+  mount(el, { query }) {
+    const shelf = +query.shelf || (Pick.d && Pick.d.shelf) || 1;
+    if (!Pick.d || Pick.d.shelf !== shelf) Pick.start(shelf);
+    if (!Store.state.tasks.pickup) Task.start('pickup');
+    const root = $('#r04', el);
+    const next = () => Router.go('#/take/items');
+    let failNext = query.fail === '1';
+    const showTap = (state = 'idle') => {
+      root.innerHTML = Views.takeTap.tap();
+      if (state === 'qr') NFC.qr($('[data-nfc]', root), PICK_OPTS);
+      $('h1', root).setAttribute('tabindex', '-1'); $('h1', root).focus({ preventScroll: true });
+    };
+    const opts = { ...PICK_OPTS, onFail: () => setTimeout(() => { root.innerHTML = Views.takeTap.notFound(); el.classList.add('is-r04c'); const t = $('h1', root); t.setAttribute('tabindex', '-1'); t.focus({ preventScroll: true }); Store.log('view', { code: 'R04c' }); }, 700) };
+    el.addEventListener('click', e => {
+      if (e.target.closest('[data-r04-continue]')) { Store.log('r04_checked'); showTap(); }
+      if (e.target.closest('[data-r04-retry]')) { el.classList.remove('is-r04c'); showTap(); }
+      if (e.target.closest('[data-r04-qr]')) { el.classList.remove('is-r04c'); showTap('qr'); }
+      const sec = $('[data-nfc]', el); if (!sec) return;
+      if (e.target.closest('[data-nfc-tap]')) {
+        const f = Store.state.sim.tagFail || failNext; failNext = false;
+        if (Store.state.sim.tagFail) { Store.state.sim.tagFail = false; Store.save(); }
+        Store.log('nfc_tap', { screen: 'R04', result: f ? 'not_found' : 'found' });
+        NFC.tap(sec, { fail: f, onFound: next, opts });
+      }
+      if (e.target.closest('[data-nfc-qr]')) NFC.qr(sec, PICK_OPTS);
+      if (e.target.closest('[data-nfc-sampleqr]')) NFC.found(sec, { onFound: next, opts: PICK_OPTS });
+    });
+    const onCode = () => { const sec = $('[data-nfc]', el); if (sec) NFC.found(sec, { onFound: next, opts: PICK_OPTS }); else next(); };
+    document.addEventListener('shelfcode', onCode);
+    el._cleanup = () => document.removeEventListener('shelfcode', onCode);
+  }
+};
+
+/* ---------- R05 What are you taking ---------- */
+Views.takeItems = {
+  html() {
+    const d = Pick.d, v = venue(d.shelf);
+    return `${UI.stepHeader({ title: 'Pick up', step: 2, of: 2 })}
+      ${UI.banner('success', `<strong>Tag found</strong> · ${esc(v.name)}${v.shelf ? ', ' + esc(v.shelf) : ''}`)}
+      <h2 class="t-h1" style="margin:var(--space-16) 0 var(--space-4)">What are you taking</h2>
+      <p class="t-body c-secondary" style="margin-bottom:var(--space-12)">Tick each item you take. Take what you can use.</p>
+      <div class="stack-8" id="pick-list" role="group" aria-label="Items on this shelf"></div>
+      <div class="center" style="margin-top:var(--space-12)">${UI.button({ label: 'Not here? Report missing stock', variant: 'link', icon: 'needs-attention', attrs: 'data-report' })}</div>
+      <div class="actions actions--sticky">${UI.gated({ label: 'Confirm pickup', variant: 'accent', icon: 'done', id: 'pick-confirm', hint: 'Tick at least one item you are taking', missing: '.pick' })}</div>`;
+  },
+  mount(el) {
+    const d = Pick.d, sel = d.sel;
+    const items = () => shelfOf(d.shelf).items.filter(i => i.qty > 0);
+    const row = i => {
+      const on = !!sel[i.id] && !i.missing, q = sel[i.id] || 1;
+      return `<article class="pick${on ? ' is-checked' : ''}${i.missing ? ' is-missing' : ''}" data-pick="${i.id}">
+        <label class="pick__main" for="pk-${i.id}">
+          <input type="checkbox" id="pk-${i.id}" ${on ? 'checked' : ''} ${i.missing ? 'disabled' : ''} data-pick-box="${i.id}"><span class="check__box">${icon('done')}</span>
+          <span class="grow"><span class="t-title" style="display:block">${esc(i.name)}</span><span class="t-small c-secondary">${i.missing ? 'Reported missing' : `<span class="nowrap">${icon('sealed-badge', 'icon--xs icon--secondary')}Sealed</span> · BB ${esc(i.bb)}${i.qty > 1 ? ` · ${i.qty} on shelf` : ''}`}</span></span></label>
+        ${on && i.qty > 1 ? `<div class="item__taking"><span>Taking</span>${UI.stepper({ id: 'take-' + i.id, value: q, min: 1, max: i.qty, label: `How many ${i.name}` })}</div>` : ''}
+        ${i.missing ? '' : `<div class="pick__foot">${UI.button({ label: 'Not here?', variant: 'link', icon: 'needs-attention', attrs: `data-nothere="${i.id}"` })}</div>`}
+      </article>`;
+    };
+    const count = () => Object.entries(sel).reduce((n, [id, q]) => n + (items().some(i => i.id === id && !i.missing) ? q : 0), 0);
+    const sync = () => {
+      const n = count(), btn = $('#pick-confirm', el);
+      const lbl = $('span:last-child', btn); const txt = n ? `Confirm pickup · ${pl(n, 'item')}` : 'Confirm pickup';
+      if (lbl.textContent !== txt) { lbl.textContent = txt; lbl.classList.remove('num-fade'); void lbl.offsetWidth; lbl.classList.add('num-fade'); }
+      gate(btn, n > 0); Store.save();
+    };
+    const draw = () => { $('#pick-list', el).innerHTML = items().map(row).join(''); sync(); };
+    draw();
+    el.addEventListener('change', e => {
+      const id = e.target.dataset.pickBox; if (!id) return;
+      if (e.target.checked) sel[id] = sel[id] || 1; else delete sel[id];
+      const r = $(`[data-pick="${id}"]`, el); r.outerHTML = row(items().find(i => i.id === id)); $(`#pk-${CSS.escape(id)}`, el).focus();
+      sync();
+    });
+    el.addEventListener('stepper', e => { const id = e.detail.id.replace(/^take-/, ''); if (sel[id]) { sel[id] = e.detail.value; sync(); } });
+    el.addEventListener('click', e => {
+      const nh = e.target.closest('[data-nothere]');
+      if (nh) { const id = nh.dataset.nothere; delete sel[id]; Ops.report(d.shelf, id, 'Not here'); Store.log('not_here', { item: id }); draw(); toast('info', 'The shelf steward will be told', { ms: 3500, ic: 'needs-attention' }); return; }
+      if (e.target.closest('[data-report]')) { openReport(d.shelf, { onSent: draw }); return; }
+      const c = e.target.closest('#pick-confirm'); if (c) Views.takeItems.confirm(c);
+    });
+  },
+  async confirm(btn) {
+    await simulate(btn, 700);
+    const d = Pick.d; if (!d) return;
+    const picks = Object.entries(d.sel).map(([id, qty]) => ({ id, qty }));
+    const n = Pick.commit(picks);
+    Store.log('pickup', { items: n }); buzz();
+    Router.replace('#/take/done');
+  }
+};
+
+/* ---------- R06 Pickup logged: the shelf count counts down (e.g. 6 → 4) ---------- */
+Views.takeDone = {
+  html() {
+    const p = Store.state.lastPickup, v = venue(p.venue);
+    return `<div class="closebar">${UI.iconButton('close', 'Close', 'data-done')}</div>
+      <div class="stagger">
+        ${UI.illus('Bag fills with food')}
+        <div><h1 class="t-display">Pickup logged.</h1>
+          <p class="t-body-large" style="margin-top:var(--space-8)">Enjoy your food. You saved ${pl(p.count, 'item')} that ${p.count === 1 ? 'is' : 'are'} still good.</p></div>
+        <section class="card"><p class="t-overline c-secondary">You took</p>
+          <ul>${p.items.map(i => `<li class="row" style="min-height:var(--size-control)"><span class="tile tile--sm">${icon('sealed-food', 'icon--sm')}</span><span class="grow">${esc(i.name)}</span><span class="t-label">×${i.qty}</span></li>`).join('')}</ul></section>
+        <div class="banner banner--plain" role="status">${icon('done', 'icon--success')}<div class="banner__text">Map updated · ${esc(v.name)} now shows <strong class="countdown" id="r06-count" data-from="${p.before}" data-to="${p.after}">${p.before}</strong> item${p.after === 1 ? '' : 's'}</div></div>
+        <p class="t-small c-secondary">Recorded pickups may not include app-free pickups.</p>
+        <div class="actions">
+          ${UI.button({ label: 'Done', icon: 'done', block: true, attrs: 'data-done' })}
+          ${UI.button({ label: 'Something wrong? Report it', variant: 'secondary', icon: 'needs-attention', block: true, attrs: 'data-report' })}
+        </div>
+      </div>`;
+  },
+  mount(el) {
+    Task.done('pickup');
+    const p = Store.state.lastPickup, c = $('#r06-count', el), from = p.before, to = p.after;
+    if (reduceMotion() || from === to) c.textContent = to;
+    else { const steps = from - to, per = 600 / steps; for (let k = 1; k <= steps; k++) setTimeout(() => { c.textContent = from - k; c.classList.remove('num-fade'); void c.offsetWidth; c.classList.add('num-fade'); }, 700 + per * k); }
+    el.addEventListener('click', e => {
+      if (e.target.closest('[data-done]')) Router.finish('#/home');
+      if (e.target.closest('[data-report]')) openReport(p.venue);
+    });
+  }
+};
+
 /* ---------- shared named actions (data-action) ---------- */
 Object.assign(Actions, {
   /* M01 Leave food: browse mode asks to finish onboarding first; starts the Scenario A timer */
@@ -4251,6 +4507,10 @@ Router.add('/coupons', Views.coupons, { title: 'Coupons', code: 'G08', tabs: '#/
 Router.add('/coupons/code/:id', Views.couponCode, { title: 'Your coupon', code: 'G08d', cls: 'with-actions' });
 Router.add('/impact', Views.impact, { title: 'Monthly impact', code: 'G11', tabs: '#/me' });
 Router.add('/bonus', Views.bonus, { title: 'Rescue Bonus', code: 'G10', tabs: '#/coupons' });
+Router.add('/take/point/:id', Views.takePoint, { title: 'Shelf listing', code: 'R03', tabs: '#/map', cls: 'screen--flush r03' });
+Router.add('/take/tap', Views.takeTap, { title: 'Check and tap', code: 'R04', cls: 'screen--brand with-actions', flow: 'take' });
+Router.add('/take/items', Views.takeItems, { title: 'What are you taking', code: 'R05', guard: () => !!Store.state.pickup, flow: 'take', actionbar: true });
+Router.add('/take/done', Views.takeDone, { title: 'Pickup logged', code: 'R06', guard: () => !!Store.state.lastPickup, flow: 'take' });
 
 /* =====================================================================
    BOOT
