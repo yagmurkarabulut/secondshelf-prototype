@@ -3214,8 +3214,8 @@ const UI = {
     if (label != null) svg = svg.replace(/<title>[^<]*<\/title>/, `<title>${esc(label)}</title>`);
     return `<div class="art art--${name}${cls ? ' ' + cls : ''}">${svg}</div>`;
   },
-  empty({ ic, title, line, action = '' }) {
-    return `<div class="empty">${icon(ic, 'icon--lg icon--tertiary')}<h2 class="t-h3">${esc(title)}</h2><p class="t-body c-secondary">${esc(line)}</p>${action}</div>`;
+  empty({ ic, art, title, line, action = '' }) {
+    return `<div class="empty">${art ? UI.art(art, { cls: 'art--sm' }) : icon(ic, 'icon--lg icon--tertiary')}<h2 class="t-h3">${esc(title)}</h2><p class="t-body c-secondary">${esc(line)}</p>${action}</div>`;
   }
 };
 function highlight(text, q) {
@@ -4072,7 +4072,7 @@ Views.map = {
     };
     const noResults = () => {
       const f = MapUI.food;
-      return `<div class="empty" style="padding:var(--space-16) 0">${icon('search', 'icon--lg icon--reward')}<h3 class="t-h3">${f ? `No ${esc(f.toLowerCase())} nearby right now` : 'No shelves match your filters'}</h3>
+      return `<div class="empty" style="padding:var(--space-16) 0">${UI.art('empty-search', { cls: 'art--sm' })}<h3 class="t-h3">${f ? `No ${esc(f.toLowerCase())} nearby right now` : 'No shelves match your filters'}</h3>
         <p class="t-body c-secondary">${f ? 'We can let you know when someone leaves some on a shelf within 1 km.' : 'Clear the filters to see every shelf.'}</p>
         <div class="stack-8" style="width:100%;margin-top:var(--space-8)">${f ? UI.button({ label: 'Notify me', icon: 'notification', block: true, attrs: 'data-notify' }) : ''}${UI.button({ label: 'Clear filters', variant: 'secondary', block: true, attrs: 'data-clearfilters' })}</div></div>`;
     };
@@ -4083,7 +4083,7 @@ Views.map = {
       el.classList.toggle('no-results', !all.length);
       list.innerHTML = !all.length ? noResults()
         : vs.length ? `<div class="stack-8">${vs.map(rowHTML).join('')}</div>`
-        : UI.empty({ ic: 'map', title: 'No shelves here', line: 'Zoom out or change the filters.' });
+        : UI.empty({ art: 'empty-search', title: 'No shelves here', line: 'Zoom out or change the filters.' });
       if (!all.length) Store.log('no_results', { food: MapUI.food });
     };
     const syncZoomBtns = () => { $('[data-zoom="in"]', el).disabled = map.getZoom() >= map.getMaxZoom(); $('[data-zoom="out"]', el).disabled = map.getZoom() <= map.getMinZoom(); };
@@ -4630,11 +4630,11 @@ Views.coupons = {
         const card = x => UI.coupon({ id: x.id, state: 'active', venue: venue(x.venue).name, value: x.value, expires: x.expires });
         const bonuses = s.bonuses.map(b => UI.rescueBonus({ picked: b.picked, total: b.total, venue: venue(b.venue).name, from: bonusFrom(b), link: true, note: 'Pickups made without the app may not be counted.' })).join('');
         p.innerHTML = (act.length ? card(act[0]) + bonuses + act.slice(1).map(card).join('')
-          : `<div class="card">${UI.empty({ ic: 'coupon', title: 'No coupons yet', line: 'Leave food at a shelf to get a thank-you coupon.', action: `<a class="btn btn--primary" href="#/map" data-action="leave">${icon('sealed-food')}<span>Leave food</span></a>` })}</div>` + bonuses)
+          : `<div class="card">${UI.empty({ art: 'empty-coupons', title: 'No coupons yet', line: 'Leave food at a shelf to get a thank-you coupon.', action: `<a class="btn btn--primary" href="#/map" data-action="leave">${icon('sealed-food')}<span>Leave food</span></a>` })}</div>` + bonuses)
           + UI.banner('info', 'Coupon value, expiry and monthly cap are still being agreed.');
       } else {
         const used = s.coupons.filter(x => x.state !== 'active');
-        p.innerHTML = used.length ? used.map(x => UI.coupon({ id: x.id, state: x.state, venue: venue(x.venue).name, value: x.value, expires: x.expires })).join('') : `<div class="card">${UI.empty({ ic: 'coupon', title: 'Nothing here yet', line: 'Used and expired coupons show up here.' })}</div>`;
+        p.innerHTML = used.length ? used.map(x => UI.coupon({ id: x.id, state: x.state, venue: venue(x.venue).name, value: x.value, expires: x.expires })).join('') : `<div class="card">${UI.empty({ art: 'empty-coupons', title: 'Nothing here yet', line: 'Used and expired coupons show up here.' })}</div>`;
       }
     };
     draw();
@@ -4646,7 +4646,7 @@ Views.coupons = {
 Views.couponCode = {
   html({ params }) {
     const c = Store.state.coupons.find(x => x.id === params.id) || Store.state.coupons[0];
-    if (!c) return `${UI.topBar({ title: 'Your coupon', serif: true })}${UI.empty({ ic: 'coupon', title: 'No coupons yet', line: 'Leave food at a shelf to get a thank-you coupon.' })}`;
+    if (!c) return `${UI.topBar({ title: 'Your coupon', serif: true })}${UI.empty({ art: 'empty-coupons', title: 'No coupons yet', line: 'Leave food at a shelf to get a thank-you coupon.' })}`;
     const v = venue(c.venue);
     return `${UI.topBar({ title: 'Your coupon', serif: true })}
       <div class="stack">
@@ -4673,7 +4673,7 @@ Views.bonus = {
             <p class="bonus__status" aria-live="polite">${Math.min(b.picked, b.total)} of ${b.total} items picked up</p></div></article>
           <p class="t-body c-secondary">You will unlock a Rescue Bonus when the items you dropped off are picked up by other people.</p>` : ''}
         <section><h2 class="t-section" style="margin-bottom:var(--space-8)">Your items</h2>
-          ${rows.length ? `<ul class="statuslist">${rows.map(itemRow).join('')}</ul>` : `<div class="card">${UI.empty({ ic: 'sealed-food', title: 'Nothing on shelves yet', line: 'Food you leave on a shelf shows up here.', action: `<a class="btn btn--secondary" href="#/map" data-action="leave">${icon('sealed-food')}<span>Leave food</span></a>` })}</div>`}</section>
+          ${rows.length ? `<ul class="statuslist">${rows.map(itemRow).join('')}</ul>` : `<div class="card">${UI.empty({ art: 'empty-shelf', title: 'Nothing on shelves yet', line: 'Food you leave on a shelf shows up here.', action: `<a class="btn btn--secondary" href="#/map" data-action="leave">${icon('sealed-food')}<span>Leave food</span></a>` })}</div>`}</section>
         ${UI.note('<strong>Pickups made without the app may not be counted.</strong>')}
       </div>`;
   }
@@ -5848,7 +5848,7 @@ Views.hostCheck = {
       $('#h08-count', el).textContent = c.items.length ? `${pl(c.items.length, 'item')} to check${open ? ` · ${open} open` : ''}` : 'Nothing flagged today';
       gate($('#h08-submit', el), open === 0); Store.save();
     };
-    const draw = () => { $('#h08-rows', el).innerHTML = c.items.length ? c.items.map(row).join('') : `<div class="card">${UI.empty({ ic: 'shelf-check', title: 'All items look fine', line: 'Nothing has been on the shelf 7 days or is past its date.' })}</div>`; sync(); };
+    const draw = () => { $('#h08-rows', el).innerHTML = c.items.length ? c.items.map(row).join('') : `<div class="card">${UI.empty({ art: 'all-fine', title: 'All items look fine', line: 'Nothing has been on the shelf 7 days or is past its date.' })}</div>`; sync(); };
     draw();
     el.addEventListener('change', e => {
       if (e.target.dataset.cl) { c.list[e.target.dataset.cl] = e.target.checked; Store.save(); }
@@ -5985,7 +5985,7 @@ Views.home = {
     const s = Store.state;
     const mine = s.shelfItems.length ? UI.statusList(s.shelfItems)
       : `<section class="statuslist" aria-labelledby="yf-title"><div class="statuslist__head"><h2 class="t-section" id="yf-title">Your food on shelves</h2></div>
-          ${UI.empty({ ic: 'sealed-food', title: 'Nothing on shelves yet', line: 'Food you leave on a shelf shows up here.', action: `<a class="btn btn--secondary" href="#/map" data-action="leave">${icon('sealed-food')}<span>Leave food</span></a>` }).replace('class="empty"', 'class="empty" style="padding:var(--space-16) 0 var(--space-8)"')}</section>`;
+          ${UI.empty({ art: 'empty-shelf', title: 'Nothing on shelves yet', line: 'Food you leave on a shelf shows up here.', action: `<a class="btn btn--secondary" href="#/map" data-action="leave">${icon('sealed-food')}<span>Leave food</span></a>` }).replace('class="empty"', 'class="empty" style="padding:var(--space-16) 0 var(--space-8)"')}</section>`;
     return `${UI.greeting(s.user)}
     <div class="stack">
       <div class="action-cards">${UI.actionCard('leave')}${UI.actionCard('find')}</div>
