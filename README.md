@@ -15,7 +15,7 @@ Interaction Design Project · MID programme · Tallinn University · Kateřina F
 
 - **Test link (GitHub Pages):** https://yagmurkarabulut.github.io/secondshelf-prototype/
 - **Screen index (team only):** https://yagmurkarabulut.github.io/secondshelf-prototype/#/screens
-- **Moderator menu:** tap the round profile icon (initials) at the top right of Home. Participants reach their Me page from the **Me** tab in the bottom bar. A long press (0.8 s) on the greeting or the Welcome wordmark also opens it.
+- **Moderator menu:** the round **···** button (40 × 40, 30% see-through at rest). Tap it to open the menu; drag it anywhere inside the app. It snaps to an 8 px grid and moves itself off any button it would cover. A long press (0.8 s) on the greeting or the Welcome wordmark also opens the menu.
 - Component gallery (team only): `#/components`
 
 ### Scenario start points
@@ -25,7 +25,7 @@ Open the moderator menu › **Choose scenario**. Each one resets the demo and sk
 - **C · host** → Become a host. Task: set up the shelf, then do the daily check (H01 → … → shelf is live → Home → Start check → Submit).
 
 ### Facilitator guide (5 lines)
-1. Before each participant: tap the profile icon on Home › Reset demo or Choose scenario, then hand over the phone on Home (or Welcome for onboarding).
+1. Before each participant: tap the ··· button › Reset demo or Choose scenario, then hand over the phone on Home (or Welcome for onboarding).
 2. Read the scenario task aloud; don’t name buttons. Timers start on Leave food / Find food / Start check and stop on the confirmation screen.
 3. Trigger "the other person" from the moderator menu › Simulate (receiver picked up 2 items, travel prompt, alert match, tag not found, missed check, …).
 4. If someone gets stuck, use Jump to screen; every screen also has Back, Close or Home.

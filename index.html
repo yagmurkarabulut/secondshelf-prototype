@@ -1502,6 +1502,8 @@ button.settings__row:active{background:var(--surface-canvas)}
   --size-radio:24px;
   --size-chart:160px;                     /* G11 bar chart height */
   --size-photo-sm:80px;                   /* venue photo in the map sheet details */
+  --size-modfab:40px;                     /* movable moderator button (team request; below the 44px tap minimum) */
+  --opacity-idle:.3;                      /* moderator button at rest */
 }
 /* pressed states (§3.2): buttons scale .98 (in .btn), cards .99 with a stronger shadow */
 .card--tap:active,.shelf:active,.result:active,.rolecard:active,.action-card:active{transform:scale(.99);box-shadow:var(--shadow-card-pressed)}
@@ -1609,6 +1611,13 @@ button.settings__row:active{background:var(--surface-canvas)}
 .radiorow .radio{position:static;flex:none}
 
 /* moderator menu (test only) */
+/* moderator button: movable, 40 × 40, rests at 30% opacity */
+.modfab{position:absolute;left:0;top:0;z-index:44;width:var(--size-modfab);height:var(--size-modfab);border-radius:var(--radius-full);display:flex;align-items:center;justify-content:center;
+  background:var(--surface-default);border:2px solid var(--border-brand);box-shadow:var(--shadow-card);opacity:var(--opacity-idle);touch-action:none;cursor:grab;
+  transition:opacity var(--motion-fast) var(--ease),left var(--motion-base) var(--ease),top var(--motion-base) var(--ease)}
+.modfab .icon{color:var(--icon-primary)}
+.modfab.is-active,.modfab:focus-visible{opacity:1}
+.modfab.is-dragging{transition:opacity var(--motion-fast) var(--ease);cursor:grabbing}
 .mod .btn{min-height:var(--size-tap-min);padding:var(--space-8) var(--space-12);font:var(--type-label)}
 .mod__grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-8)}
 .mod__sec{display:flex;flex-direction:column;gap:var(--space-8);padding-top:var(--space-16);margin-top:var(--space-16);border-top:1px solid var(--border-subtle)}
@@ -3198,7 +3207,7 @@ Views.map = {
         const up = ord.indexOf(this.next()) > ord.indexOf(h);
         grab.setAttribute('aria-label', up ? 'Show more of the list' : 'Show less of the list');
         $$('#mapswitch .segmented__seg', el).forEach((s, i) => s.setAttribute('aria-selected', (h === 'full') === (i === 1)));
-        drawBottom();
+        drawBottom(); ModFab.later(350);
         if (prev !== h) Store.log('sheet', { h, from });
       },
       next() { const h = MapUI.sheet; return h === 'peek' ? 'half' : h === 'full' ? 'half' : (this.dir > 0 ? 'full' : 'peek'); },
@@ -3345,7 +3354,7 @@ Views.map = {
 
     // events
     map.on('click', () => { if ($('.suggest', box)) renderSearch($('#mapsearch', box).value, null); if (sel) deselect(); });
-    map.on('moveend', () => { MapUI.center = map.getCenter(); MapUI.zoom = map.getZoom(); if (!sel) { drawBottom(); drawList(); } });
+    map.on('moveend', () => { MapUI.center = map.getCenter(); MapUI.zoom = map.getZoom(); if (!sel) { drawBottom(); drawList(); } ModFab.later(250); });
     map.on('zoomend', syncZoomBtns);
     el.addEventListener('click', e => {
       const t = e.target;
@@ -3740,8 +3749,7 @@ Object.assign(UI, {
     return `<button type="button" role="radio" class="radiorow${checked ? ' is-on' : ''}" aria-checked="${checked}" data-radio="${esc(name)}" data-value="${esc(value)}"><span class="radio" aria-hidden="true"></span><span class="grow">${esc(label)}${sub ? `<span class="t-small c-secondary" style="display:block">${esc(sub)}</span>` : ''}</span></button>`;
   },
   greeting(u) {
-    /* the top-right profile icon opens the moderator menu (test team); Me is reached from the tab bar */
-    return `<header class="greet"><h1 class="t-h1" data-logo>Hi ${esc(u.first)}</h1><button type="button" class="avatar" data-action="mod" aria-label="Moderator menu" aria-haspopup="dialog">${esc(u.initials)}</button></header>`;
+    return `<header class="greet"><h1 class="t-h1" data-logo>Hi ${esc(u.first)}</h1><a href="#/me" class="avatar" aria-label="Me">${esc(u.initials)}</a></header>`;
   },
   actionCard(kind, state = '') {
     const k = kind === 'leave'
@@ -3967,7 +3975,7 @@ const Jump = {
 };
 
 /* =====================================================================
-   MODERATOR MENU (test only): tap the top-right profile icon on Home, or long-press (800 ms) the wordmark / greeting
+   MODERATOR MENU (test only): the movable ··· button, or a long press (800 ms) on the wordmark / greeting
    Labels here may say "Simulate"; participants never see them (Q4).
    ===================================================================== */
 const Mod = {
@@ -5021,9 +5029,106 @@ Router.add('/host/check/done', Views.hostCheckDone, { title: 'Shelf checked', co
 Router.add('/x/:id', Views.x01, { title: 'I took something', code: 'X01' });
 
 /* =====================================================================
+   MODERATOR BUTTON: tap = moderator menu; drag = move it anywhere inside the app.
+   On release it snaps to the 8 px grid, then moves to the nearest free spot so it never
+   covers a button, link or field. Rests at 30% opacity; full opacity while touched.
+   Its position is a per-device convenience (localStorage, try/catch).
+   ===================================================================== */
+const ModFab = {
+  el: null, pos: null, KEY: 'secondshelf-modfab',
+  GRID: 8, GAP: 4,
+  TARGETS: 'button, a[href], input, select, textarea, label, [role="button"], [role="radio"], [role="switch"], [role="tab"], [role="option"], [tabindex]:not([tabindex="-1"]), .leaflet-marker-icon',
+  init() {
+    const app = $('#app');
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'modfab'; b.setAttribute('aria-label', 'Moderator menu (drag to move)'); b.setAttribute('aria-haspopup', 'dialog');
+    b.innerHTML = icon('more');
+    app.appendChild(b); this.el = b;
+    try { this.pos = JSON.parse(localStorage.getItem(this.KEY)); } catch (e) { this.pos = null; }
+    if (!this.pos) this.pos = { x: 4, y: Math.round(app.clientHeight / 2) };
+    this.place(this.pos, false);
+    this.bind();
+    document.addEventListener('routed', () => { this.later(320); setTimeout(() => this.later(0), 1100); });
+    window.addEventListener('resize', () => this.later(200));
+    $('#stage').addEventListener('scroll', () => this.later(250), true);
+    this.later(400);
+  },
+  size() { return this.el.offsetWidth; },
+  bounds() { const a = $('#app'); return { w: a.clientWidth, h: a.clientHeight }; },
+  clamp(p) { const { w, h } = this.bounds(), s = this.size(); return { x: Math.min(Math.max(0, p.x), w - s), y: Math.min(Math.max(0, p.y), h - s) }; },
+  snap(p) { const g = this.GRID; return this.clamp({ x: Math.round(p.x / g) * g, y: Math.round(p.y / g) * g }); },
+  place(p, save = true) {
+    this.pos = this.clamp(p);
+    this.el.style.left = this.pos.x + 'px'; this.el.style.top = this.pos.y + 'px';
+    if (save) { try { localStorage.setItem(this.KEY, JSON.stringify(this.pos)); } catch (e) {} }
+  },
+  /* rectangles of everything tappable that is visible inside the app (relative to the app) */
+  obstacles() {
+    const app = $('#app'), ar = app.getBoundingClientRect(), out = [];
+    $$(this.TARGETS, app).forEach(n => {
+      if (n === this.el || this.el.contains(n) || n.closest('.sheet-host:not(.is-open)') || n.closest('[hidden]') || n.matches('.leaflet-container')) return;
+      const r = n.getBoundingClientRect();
+      if (r.width * r.height > ar.width * ar.height * 0.5) return;   // screen-sized containers (the map surface) aren't buttons
+      if (!r.width || !r.height || r.bottom <= ar.top || r.top >= ar.bottom || r.right <= ar.left || r.left >= ar.right) return;
+      const cs = getComputedStyle(n); if (cs.visibility === 'hidden' || cs.pointerEvents === 'none' && !n.matches('button, a')) return;
+      out.push({ x: r.left - ar.left, y: r.top - ar.top, w: r.width, h: r.height });
+    });
+    return out;
+  },
+  free(p, obs) {
+    const s = this.size(), m = this.GAP;
+    return !obs.some(o => p.x < o.x + o.w + m && p.x + s + m > o.x && p.y < o.y + o.h + m && p.y + s + m > o.y);
+  },
+  /* nearest grid position (by distance) that covers nothing tappable */
+  avoid(save = true) {
+    if (!this.el || this.dragging || $('#sheet').classList.contains('is-open')) return;
+    const obs = this.obstacles(), start = this.snap(this.pos);
+    if (this.free(start, obs)) { if (start.x !== this.pos.x || start.y !== this.pos.y) this.place(start, save); return; }
+    const { w, h } = this.bounds(), s = this.size(), g = this.GRID, c = [];
+    for (let x = 0; x <= w - s; x += g) for (let y = 0; y <= h - s; y += g) c.push({ x, y, d: (x - start.x) ** 2 + (y - start.y) ** 2 });
+    c.sort((a, b) => a.d - b.d);
+    const hit = c.find(p => this.free(p, obs));
+    if (hit) this.place(hit, save);
+  },
+  later(ms) { clearTimeout(this._t); this._t = setTimeout(() => this.avoid(), ms); },
+  wake() { clearTimeout(this._idle); this.el.classList.add('is-active'); },
+  rest(ms = 1200) { clearTimeout(this._idle); this._idle = setTimeout(() => this.el.classList.remove('is-active'), ms); },
+  bind() {
+    const b = this.el; let d = null;
+    b.addEventListener('pointerdown', e => {
+      if (e.button !== 0) return;
+      this.wake();
+      d = { id: e.pointerId, x0: e.clientX, y0: e.clientY, p0: { ...this.pos }, moved: false };
+      b.setPointerCapture(e.pointerId);
+    });
+    b.addEventListener('pointermove', e => {
+      if (!d || e.pointerId !== d.id) return;
+      const dx = e.clientX - d.x0, dy = e.clientY - d.y0;
+      if (!d.moved && Math.hypot(dx, dy) < 6) return;
+      if (!d.moved) { d.moved = true; this.dragging = true; b.classList.add('is-dragging'); }
+      this.place({ x: d.p0.x + dx, y: d.p0.y + dy }, false);
+    });
+    const end = e => {
+      if (!d || e.pointerId !== d.id) return;
+      const moved = d.moved; d = null; this.dragging = false; b.classList.remove('is-dragging');
+      if (moved) { this.place(this.snap(this.pos)); this.avoid(); b._justDragged = performance.now(); Store.log('modfab_move', this.pos); }
+      this.rest();
+    };
+    b.addEventListener('pointerup', end); b.addEventListener('pointercancel', end);
+    b.addEventListener('click', e => { if (b._justDragged && performance.now() - b._justDragged < 300) return; Mod.open(); });
+    // keyboard: arrows move it one grid step, Enter / Space open the menu (native button)
+    b.addEventListener('keydown', e => {
+      const k = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[e.key]; if (!k) return;
+      e.preventDefault(); this.place({ x: this.pos.x + k[0] * this.GRID, y: this.pos.y + k[1] * this.GRID }); this.later(800);
+    });
+  }
+};
+
+/* =====================================================================
    BOOT
    ===================================================================== */
 Store.load();
+ModFab.init();
 window.addEventListener('hashchange', () => Router.render());
 document.addEventListener('keydown', e => { if (e.key !== 'Escape') return; if ($('#sheet')._close) closeSheet(); else if (Overlay.current) Overlay.hide(); else { const sc = $('#stage .screen'); if (sc && sc._esc) sc._esc(); } });
 if (!location.hash || location.hash === '#' || location.hash === '#/') history.replaceState(null, '', location.pathname + location.search + defaultRoute());
