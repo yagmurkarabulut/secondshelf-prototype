@@ -1642,6 +1642,7 @@ textarea.input{min-height:calc(var(--size-control) * 2);resize:vertical}
 .note{display:flex;gap:var(--space-12);align-items:flex-start;background:var(--surface-subtle);border-radius:var(--radius-md);padding:var(--space-12) var(--space-16);font:var(--type-body-small);color:var(--text-primary)}
 .note .icon{color:var(--icon-info);width:var(--size-icon-20);height:var(--size-icon-20);flex:none}
 .note strong{font-weight:500;display:block;font-size:inherit}
+.center .note,.center .banner{text-align:left}
 .faq dt{font:var(--type-title);margin-top:var(--space-12)}
 .faq dd{margin:var(--space-4) 0 0;font:var(--type-body-small);color:var(--text-secondary)}
 
@@ -1710,6 +1711,33 @@ a.bonus{display:block;text-decoration:none;color:inherit}
 .pick .item__taking{padding:0 0 var(--space-8) calc(var(--size-checkbox) + var(--space-12))}
 .chip[role="radio"][aria-checked="true"]{background:var(--action-primary);color:var(--text-on-primary);border-color:var(--action-primary)}
 .countdown{display:inline-block;min-width:1ch}
+
+/* Scenario C: host */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-12);align-items:end}
+.timeline{display:flex;flex-direction:column;margin-top:var(--space-16)}
+.tl{position:relative;display:flex;gap:var(--space-16);padding-bottom:var(--space-20)}
+.tl:not(:last-child)::before{content:"";position:absolute;left:calc(var(--size-radio) / 2 - 1px);top:var(--size-radio);bottom:0;width:2px;background:var(--border-subtle)}
+.tl--done:not(:last-child)::before{background:var(--action-primary)}
+.tl__dot{width:var(--size-radio);height:var(--size-radio);border-radius:var(--radius-full);flex:none;border:2px solid var(--border-strong);background:var(--surface-default);display:flex;align-items:center;justify-content:center;margin-top:var(--space-4)}
+.tl--done .tl__dot{background:var(--action-primary);border-color:var(--action-primary)}
+.tl--done .tl__dot .icon{color:var(--icon-on-primary);stroke-width:2.5}
+.tl--now .tl__dot{border-color:var(--border-brand)}
+.tl--now .tl__dot::after{content:"";width:var(--space-12);height:var(--space-12);border-radius:var(--radius-full);background:var(--action-primary)}
+.tl--next .t-title{color:var(--text-secondary)}
+.card .timeline{margin-top:0}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-8)}
+.stat{background:var(--surface-default);border-radius:var(--radius-lg);padding:var(--space-12)}
+.stat__num{font:var(--type-heading-2);color:var(--text-brand)}
+.stat__cap{font:var(--type-caption);color:var(--text-secondary);margin-top:var(--space-4)}
+.scanbox{position:relative;height:var(--size-hero);border-radius:var(--radius-lg);background:var(--surface-subtle);display:flex;align-items:flex-end;justify-content:center;padding:var(--space-16)}
+.scanbox__frame{position:absolute;left:50%;top:var(--space-24);width:var(--size-illus);height:var(--size-illus);transform:translateX(-50%);border:2px dashed var(--border-strong);border-radius:var(--radius-md)}
+.scanbox .placeholder{position:relative;font:var(--type-body-small);text-align:center}
+.checkrow__done{display:flex;align-items:center;justify-content:space-between;min-height:var(--size-tap-min);padding:0 var(--space-8);border-radius:var(--radius-full);background:var(--surface-default)}
+.checkrow.is-removed .item__thumb{background:var(--surface-default)}
+.x01__bar{margin:calc(var(--space-8) * -1) calc(var(--space-20) * -1) var(--space-16);padding:var(--space-8) var(--space-20);background:var(--surface-subtle)}
+.x01__bar span{display:block;text-align:center;background:var(--surface-default);border-radius:var(--radius-full);padding:var(--space-8);font:var(--type-body-small);color:var(--text-secondary)}
+.x01__row{display:block}
+.shelf--wide{width:100%}
 
 /* =====================================================================
    5. COMPONENT GALLERY (#/components only)
@@ -3931,7 +3959,7 @@ const Jump = {
     }
     if (path === '/host/check/done' && !s.host.lastCheck) Check.fake();
     if (q.sim === 'expired') { const c = s.coupons.find(x => x.code === q.code); if (c) c.state = 'expired'; }
-    if (q.sim === 'missed') s.host.missed = true;
+    if (q.sim === 'missed') { s.host.missed = true; s.host.checkDue = true; }
     Store.save();
     const clean = '#' + path + (qs ? '?' + qs.split('&').filter(x => !/^(as|sim)=/.test(x) || /^sim=(travel|rescue)/.test(x)).join('&') : '');
     Router.go(clean.replace(/\?$/, ''));
@@ -4011,7 +4039,7 @@ const Mod = {
     if (k === 'used') { Store.state.mode = 'host'; if (Store.state.host.status !== 'live') Store.state.host.status = 'live'; Store.save(); Router.go('#/host/redeem/result?code=SS-4790'); }
     if (k === 'expired') { const c = s.coupons.find(x => x.state === 'active'); if (!c) { note('No active coupon to expire.'); return; } c.state = 'expired'; Store.save(); note(`${c.code} is now expired (Coupons › Used; H07c if checked).`); if (location.hash.startsWith('#/coupons')) Router.render('none'); }
     if (k === 'withdrawn') { const c = s.coupons.find(x => x.state === 'active'); if (!c) { note('No active coupon to withdraw.'); return; } c.state = 'withdrawn'; Store.save(); couponTab = 1; Router.go('#/coupons'); if (location.hash === '#/coupons') Router.render('none'); }
-    if (k === 'missed') { s.host.missed = true; s.host.status = 'live'; s.mode = 'host'; Store.save(); Router.go('#/host/dashboard'); if (location.hash === '#/host/dashboard') Router.render('none'); }
+    if (k === 'missed') { s.host.missed = true; s.host.checkDue = true; s.host.lastCheck = null; s.host.status = 'live'; s.mode = 'host'; Store.save(); Router.go('#/host/dashboard'); if (location.hash === '#/host/dashboard') Router.render('none'); }
     if (k === 'paused') { Ops.pause(1, 'Café closed', 'Tomorrow at opening'); note('Café Daisy is paused.'); Router.render('none'); }
     if (k === 'full') { const sh = shelfOf(1), free = sh.capacity - shelfCount(sh); if (free > 0) sh.items.push(it('fill' + Date.now(), 'Biscuits, 300 g', 'Biscuits', '04/2027', free, 0)); Store.save(); note('Café Daisy is now a full shelf.'); Router.render('none'); }
   },
@@ -4418,6 +4446,481 @@ Views.takeDone = {
   }
 };
 
+/* =====================================================================
+   SCENARIO C · host: H01–H05 onboarding (Step n of 6, frames), H06 dashboard, H06b pause,
+   H07 redeem, H08 daily check, X01 no-app page
+   ===================================================================== */
+const HOST_STEPS = 6;
+const hostHead = (title, step, first = false) => UI.stepHeader({ title, step, of: HOST_STEPS, first });
+/* shared: add a steward (H02, H03) */
+function addStaff(onAdd) {
+  openSheet('Add staff', `<form id="staff-form" class="stack" novalidate>${UI.input({ id: 'staff-name', label: 'First name', placeholder: 'e.g. a colleague’s first name', attrs: 'autocomplete="off"' })}
+    <p class="t-small c-secondary">They get their own steward name for the daily check. No account needed in this test.</p>
+    ${UI.gated({ label: 'Add staff', icon: 'plus', id: 'staff-add', hint: 'Type a name', missing: '#staff-form .field', attrs: 'type="submit"' }).replace('type="button" ', '')}</form>`);
+  const f = $('#staff-form'), inp = $('#staff-name'), b = $('#staff-add');
+  inp.addEventListener('input', () => gate(b, !!inp.value.trim()));
+  f.addEventListener('submit', e => { e.preventDefault(); const n = inp.value.trim(); if (!n) return; const st = Store.state.host.staff; if (!st.includes(n)) st.push(n); Store.save(); Store.log('staff_add'); closeSheet(); toast('success', `${esc(n)} added as a steward`, { ms: 2500, ic: 'staff' }); onAdd && onAdd(); });
+}
+const staffChips = () => `<div class="chips" style="flex-wrap:wrap">${Store.state.host.staff.map(n => `<span class="pill pill--leaf">${icon('staff')}${esc(n)}${n === Store.state.host.owner ? ' (owner)' : ''}</span>`).join('')}<button type="button" class="chip" data-addstaff>${icon('plus')}<span>Add staff</span></button></div>`;
+const hostFaq = () => openSheet('Host FAQ', `<dl class="faq"><dt>Who funds the coupons?</dt><dd>Still open: three funding options are being compared (Q1). [To be agreed]</dd>
+  <dt>Who is liable for the food?</dt><dd>[To be agreed with the operator and local rules]</dd><dt>What if the shelf is full?</dt><dd>Pause it from the dashboard. Pickups are still allowed.</dd></dl>
+  <div class="actions">${UI.button({ label: 'Done', block: true, attrs: 'data-sheet-close' })}</div>`);
+
+/* ---------- H01 Become a host ---------- */
+Views.host = {
+  html() {
+    const rows = [['community-care', 'A neighbourly welcome', 'Givers and receivers visit your café'], ['paused', 'About 2 minutes a day', 'No fridge, no power. A short shelf check, with a reminder'], ['starter-kit', 'A free starter kit', 'Shelf, sign, NFC plate, QR and window sticker']];
+    return `${hostHead('Host a shelf', 1, true)}
+      <div class="hero" style="height:var(--size-illus)"><span class="placeholder">${icon('photo')}<span>Café with a community shelf</span></span></div>
+      <h2 class="t-display" style="margin-bottom:var(--space-16)">A shelf for everyone, at your café.</h2>
+      <ul class="benefits">${rows.map(r => `<li class="benefit"><span class="tile">${icon(r[0])}</span><div><p class="t-title">${r[1]}</p><p class="t-small c-secondary">${r[2]}</p></div></li>`).join('')}</ul>
+      <section class="card" style="margin-top:var(--space-16)" aria-labelledby="h01-fund"><p class="t-label" id="h01-fund">Who pays for the thank-you coupons?</p>
+        <p class="t-small c-secondary" style="margin:var(--space-4) 0 var(--space-8)">Three options are still open. Nothing is decided yet.</p>
+        <ul class="stack-8">${['Option 1', 'Option 2', 'Option 3'].map(o => `<li class="row" style="gap:var(--space-8)"><span class="pill pill--oat">${o}</span><span class="t-small">[To be agreed]</span></li>`).join('')}</ul></section>
+      <div style="margin-top:var(--space-12)">${UI.note('Funding and liability are still being decided.')}</div>
+      <div class="actions">
+        ${UI.button({ label: 'Become a host', icon: 'continue', block: true, attrs: 'data-href="#/host/venue"' })}
+        ${UI.button({ label: 'Not now', variant: 'secondary', block: true, attrs: 'data-action="back"' })}
+      </div>`;
+  },
+  mount() { Store.log('host_start'); }
+};
+
+/* ---------- H02 Venue details ---------- */
+Views.hostVenue = {
+  html() {
+    const f = Store.state.host.form;
+    return `${hostHead('Venue details', 2)}
+      <form id="h02" class="stack" novalidate>
+        ${UI.input({ id: 'h-name', label: 'Venue name', value: f.name })}
+        ${UI.input({ id: 'h-addr', label: 'Address', value: f.addr })}
+        <div id="h-reg-wrap">${UI.input({ id: 'h-reg', label: 'Food-business registration', value: f.reg, placeholder: 'Enter registration details' })}</div>
+        <div><p class="t-small c-secondary">Use the café’s registration details. Local rules depend on the operator.</p>${UI.button({ label: 'Where do I find this?', variant: 'link', icon: 'help', attrs: 'data-reghelp' })}</div>
+        <div class="grid2">${UI.input({ id: 'h-cap', label: 'Shelf capacity (items)', value: f.capacity, type: 'number', attrs: 'inputmode="numeric" min="1" max="40"' })}
+          ${UI.input({ id: 'h-rem', label: 'Daily reminder time', value: f.reminder, type: 'time' })}</div>
+        <p class="t-small c-secondary" style="margin-top:calc(var(--space-8) * -1)">The reminder defaults to opening time. You can change it later.</p>
+        <div><p class="field__label" style="margin-bottom:var(--space-8)">Extra stewards</p><div id="h-staff">${staffChips()}</div></div>
+      </form>
+      <div class="actions">${UI.button({ label: 'Continue', icon: 'continue', block: true, attrs: 'data-h02-next' })}</div>`;
+  },
+  mount(el) {
+    const f = Store.state.host.form;
+    el.addEventListener('input', e => { const m = { 'h-name': 'name', 'h-addr': 'addr', 'h-reg': 'reg', 'h-cap': 'capacity', 'h-rem': 'reminder' }[e.target.id]; if (m) { f[m] = e.target.value; Store.save(); } });
+    el.addEventListener('click', e => {
+      if (e.target.closest('[data-reghelp]')) openSheet('Where do I find this?', `<p class="t-body">It is the number on your food-business registration with the local food-safety authority. It is often on the registration letter or certificate.</p>
+        <div style="margin-top:var(--space-12)">${UI.note('Which number is needed in each country is still [To be agreed] with the operator.')}</div><div class="actions">${UI.button({ label: 'Done', block: true, attrs: 'data-sheet-close' })}</div>`);
+      if (e.target.closest('[data-addstaff]')) addStaff(() => { $('#h-staff', el).innerHTML = staffChips(); });
+      if (e.target.closest('[data-h02-next]')) {
+        const errs = [];
+        const check = (id, ok, msg, label, opts = {}) => { const w = $('#' + id, el).closest('.field'); const v = $('#' + id, el).value; w.outerHTML = UI.input({ id, label, value: v, error: ok ? '' : msg, ...opts }); if (!ok) errs.push(id); };
+        check('h-name', !!f.name.trim(), 'Enter the venue name', 'Venue name');
+        check('h-addr', !!f.addr.trim(), 'Enter the address', 'Address');
+        check('h-reg', !!f.reg.trim(), 'Enter the registration number', 'Food-business registration', { placeholder: 'Enter registration details' });
+        if (errs.length) { $('#' + errs[0], el).focus(); announce('Check the highlighted fields'); Store.log('h02_error', { fields: errs }); return; }
+        Store.state.host.reminder = f.reminder || '09:00';
+        Router.go('#/host/agreement');
+      }
+    });
+  }
+};
+
+/* ---------- H03 Host agreement → H03c under review ---------- */
+const DUTIES = ['Accept sealed, shelf-stable, within-date food only', 'Check the community shelf daily (about 2 minutes)', 'Keep, donate or remove old items'];
+Views.hostAgreement = {
+  html() {
+    return `${hostHead('Agreement', 3)}
+      <h2 class="t-display" style="margin-bottom:var(--space-16)">Care for the shelf, together.</h2>
+      <div class="card" id="duties">${DUTIES.map((d, i) => UI.checkbox({ id: 'duty' + i, label: d, attrs: 'data-duty' })).join('')}</div>
+      <div class="stack-8" style="margin-top:var(--space-12)">
+        ${UI.banner('success', 'Operator verification comes before food arrives. The operator checks the café’s registration.', { ic: 'continue' })}
+        ${UI.note('<strong>Liability</strong>[Liability and local rules: to be agreed with the operator before you sign]', 'needs-attention')}
+        <div class="row" style="justify-content:space-between">${UI.button({ label: 'Host FAQ', variant: 'link', icon: 'help', attrs: 'data-hostfaq' })}</div>
+        <div><p class="field__label" style="margin-bottom:var(--space-8)">Stewards</p><div id="h03-staff">${staffChips()}</div></div>
+      </div>
+      <div class="actions">${UI.gated({ label: 'Agree and continue', id: 'h03-agree', hint: 'Tick all three duties to continue', missing: '#duties .check:has(input:not(:checked))' })}</div>`;
+  },
+  mount(el) {
+    const btn = $('#h03-agree', el);
+    el.addEventListener('change', () => gate(btn, $$('[data-duty]', el).every(c => c.checked)));
+    el.addEventListener('click', async e => {
+      if (e.target.closest('[data-hostfaq]')) hostFaq();
+      if (e.target.closest('[data-addstaff]')) addStaff(() => { $('#h03-staff', el).innerHTML = staffChips(); });
+      const b = e.target.closest('#h03-agree');
+      if (b) { await simulate(b, 700); const h = Store.state.host; h.status = 'applied'; h.appliedAt = nowHM(); Store.save(); Store.log('host_agreed'); buzz(); Router.replace('#/host/review'); }
+    });
+  }
+};
+const timeline = (steps) => `<ol class="timeline">${steps.map(([state, title, sub]) => `<li class="tl tl--${state}"><span class="tl__dot" aria-hidden="true">${state === 'done' ? icon('done', 'icon--xs') : ''}</span><div><p class="t-title">${esc(title)}</p><p class="t-small c-secondary">${esc(sub)}</p></div><span class="vh">${state === 'done' ? 'done' : state === 'now' ? 'in progress' : 'not started'}</span></li>`).join('')}</ol>`;
+Views.hostReview = {
+  html() {
+    const h = Store.state.host;
+    return `<header class="topbar topbar--center">${UI.iconButton('close', 'Close', 'data-h03c-done')}<p class="topbar__title">Become a host</p><span class="icon-btn" aria-hidden="true"></span></header>
+      <h1 class="t-h1">Application sent</h1>
+      <p class="t-body c-secondary" style="margin:var(--space-8) 0 var(--space-16)">We’re checking your details. You can close the app; we’ll let you know at each step.</p>
+      <div class="verify">${icon('paused', 'icon--warning')}<div><p class="verify__label">Under review</p><p class="verify__line">Reply within [To be agreed] days</p></div></div>
+      ${timeline([['done', 'Application sent', `Today, ${h.appliedAt || nowHM()}`], ['now', 'Details verified', 'In progress'], ['next', 'Starter kit posted', 'Sign, NFC plate, QR sticker, window sticker'], ['next', 'Set up and go live', 'Tap the plate to activate your shelf']])}
+      <div class="spacer"></div>
+      <div class="actions">${UI.button({ label: 'Continue', icon: 'continue', block: true, attrs: 'data-href="#/host/verify"' })}${UI.button({ label: 'Done', variant: 'secondary', block: true, attrs: 'data-h03c-done' })}</div>`;
+  },
+  mount(el) { el.addEventListener('click', e => { if (e.target.closest('[data-h03c-done]')) Router.finish('#/home'); }); }
+};
+
+/* ---------- H04 Operator verification (pending → verified after 1.5 s, simulated) ---------- */
+Views.hostVerify = {
+  html() {
+    return `${hostHead('Verification', 4)}
+      <h2 class="t-display" style="margin-bottom:var(--space-8)">We’re checking your café.</h2>
+      <p class="t-body c-secondary" style="margin-bottom:var(--space-16)">The operator checks your food-business registration before any food arrives.</p>
+      <div id="h04-card" aria-live="polite">${UI.verifyCard(Store.state.host.status === 'verified' || Store.state.host.status === 'live' ? 'verified' : 'pending')}</div>
+      <div class="card" style="margin-top:var(--space-12)" id="h04-tl"></div>
+      <p class="t-small c-secondary" style="margin-top:var(--space-12)">This screen shows progress only. It is not a verification guarantee.</p>
+      <div class="spacer"></div>
+      <div class="actions">${UI.gated({ label: 'Continue', icon: 'continue', id: 'h04-next', hint: 'Waiting for the registration check', enabled: Store.state.host.status === 'verified' || Store.state.host.status === 'live', missing: '#h04-card', attrs: 'data-href="#/host/kit"' })}</div>`;
+  },
+  mount(el) {
+    const h = Store.state.host;
+    const tl = v => { $('#h04-tl', el).innerHTML = timeline([['done', 'Application sent', 'Today'], [v ? 'done' : 'now', 'Registration check', v ? 'Verified' : 'In progress'], [v ? 'now' : 'next', 'Starter kit posted', 'Next'], ['next', 'Activate your shelf', 'Last step']]); };
+    const ok = h.status === 'verified' || h.status === 'live'; tl(ok);
+    if (!ok) setTimeout(() => { if (!el.isConnected) return; h.status = 'verified'; Store.save(); $('#h04-card', el).innerHTML = UI.verifyCard('verified'); tl(true); gate($('#h04-next', el), true); buzz(); Store.log('host_verified'); }, 1500);
+  }
+};
+
+/* ---------- H05 Starter kit → activation tap → shelf is live · H05b activation error ---------- */
+const KIT = [['sign', 'Sign at eye level above the shelf'], ['nfc', 'NFC plate on the shelf edge'], ['qr', 'QR sticker right below the plate'], ['window', 'Window sticker facing the street']];
+Views.hostKit = {
+  html() {
+    const k = Store.state.host.kit, all = KIT.every(([id]) => k[id]);
+    return `${hostHead('Starter kit', 5)}
+      <h2 class="t-display" style="margin-bottom:var(--space-16)">A shelf that explains itself.</h2>
+      <div class="card card--selected-fill"><p class="t-overline c-secondary">All five parts</p><div class="chips" style="flex-wrap:wrap;margin-top:var(--space-8)">${['Shelf', 'Sign', 'NFC plate', 'QR sticker', 'Window sticker'].map(p => `<span class="pill" style="background:var(--surface-default)">${p}</span>`).join('')}</div></div>
+      <div class="card" id="kit" style="margin-top:var(--space-12)">${KIT.map(([id, l]) => UI.checkbox({ id: 'kit-' + id, label: l, checked: k[id], attrs: `data-kit="${id}"` })).join('')}</div>
+      <div class="spacer"></div>
+      <div class="actions">${UI.gated({ label: 'Kit is in place', icon: 'continue', id: 'h05-next', hint: 'Tick each part to continue', enabled: all, missing: '#kit .check:has(input:not(:checked))', attrs: 'data-href="#/host/activate"' })}</div>`;
+  },
+  mount(el) {
+    el.addEventListener('change', e => { const id = e.target.dataset.kit; if (!id) return; Store.state.host.kit[id] = e.target.checked; Store.save(); gate($('#h05-next', el), KIT.every(([k]) => Store.state.host.kit[k])); });
+  }
+};
+const ACT_OPTS = { idleText: '', note: 'This tap links the plate to your shelf, so people can find it on the map.' };
+Views.hostActivate = {
+  html() { return `<div id="h05">${Views.hostActivate.tap()}</div>`; },
+  tap() {
+    return `${hostHead('Go live', 6)}
+      <h2 class="t-display tap-title">Tap to go live</h2>
+      <p class="tap-sub">Hold your phone on the NFC plate once. The shelf QR is the fallback.</p>
+      <div id="nfc-slot">${UI.nfc({ state: 'idle', id: 'h05', ...ACT_OPTS })}</div>`;
+  },
+  error() {
+    return `${UI.stepHeader({ step: 6, of: HOST_STEPS, layout: 'stack', h1: 'Couldn’t link the tag' })}
+      <p class="t-body" style="color:var(--text-on-inverse-secondary)">Your shelf isn’t live yet. Nothing else is lost.</p>
+      <div class="r04c__icon">${UI.tick('brand', 'needs-attention')}</div>
+      <p class="t-body-large">Check that the NFC plate is stuck flat on the shelf, then hold the top of your phone against it.</p>
+      <div class="spacer"></div>
+      <div class="actions">
+        ${UI.button({ label: 'Try again', variant: 'on-brand', icon: 'retry', block: true, attrs: 'data-h05-retry' })}
+        ${UI.button({ label: 'Type shelf code', variant: 'outline-on-brand', icon: 'shelf-code', block: true, attrs: 'data-action="shelf-code"' })}
+        <div class="center">${UI.button({ label: 'Still not working? Contact SecondShelf support', variant: 'link', attrs: 'data-support' })}</div>
+      </div>`;
+  },
+  mount(el, { query }) {
+    const root = $('#h05', el);
+    let failNext = query.fail === '1';
+    const live = () => { const h = Store.state.host; h.status = 'live'; Store.save(); Store.log('host_live'); Router.replace('#/host/live'); };
+    const opts = { ...ACT_OPTS, onFail: () => setTimeout(() => { root.innerHTML = Views.hostActivate.error(); const t = $('h1', root); t.setAttribute('tabindex', '-1'); t.focus({ preventScroll: true }); Store.log('view', { code: 'H05b' }); }, 700) };
+    el.addEventListener('click', e => {
+      if (e.target.closest('[data-h05-retry]')) { root.innerHTML = Views.hostActivate.tap(); return; }
+      if (e.target.closest('[data-support]')) { toast('info', 'Support contact: [To be agreed]', { ms: 3000 }); return; }
+      const sec = $('[data-nfc]', el); if (!sec) return;
+      if (e.target.closest('[data-nfc-tap]')) {
+        const f = Store.state.sim.tagFail || failNext; failNext = false;
+        if (Store.state.sim.tagFail) { Store.state.sim.tagFail = false; Store.save(); }
+        Store.log('nfc_tap', { screen: 'H05', result: f ? 'not_found' : 'found' });
+        NFC.tap(sec, { fail: f, onFound: live, opts });
+      }
+      if (e.target.closest('[data-nfc-qr]')) NFC.qr(sec, ACT_OPTS);
+      if (e.target.closest('[data-nfc-sampleqr]')) NFC.found(sec, { onFound: live, opts: ACT_OPTS });
+    });
+    const onCode = () => live();
+    document.addEventListener('shelfcode', onCode);
+    el._cleanup = () => document.removeEventListener('shelfcode', onCode);
+  }
+};
+Views.hostLive = {
+  html() {
+    const h = Store.state.host, v = venue(h.venue);
+    return `<div class="stagger">
+      ${UI.illus('Shelf appears on the map')}
+      <div><h1 class="t-display">${esc(v.name)} is live.</h1><p class="t-body-large" style="margin-top:var(--space-8)">People nearby can now find your community shelf.</p></div>
+      <section><p class="t-overline c-secondary" style="margin-bottom:var(--space-8)">How people see you</p>
+        ${UI.shelfCard({ n: v.id, dist: v.dist, venue: v.name, hours: v.hours, kind: availKind(v) === 'full' ? 'full' : 'space', spots: pl(v.spots, 'spot') }).replace('<a class="shelf', '<div class="shelf shelf--wide').replace('</a>', '</div>').replace(/href="[^"]*"/, '')}</section>
+      ${UI.banner('plain', `First shelf check: tomorrow at ${esc(h.reminder)}`, { ic: 'reminder' })}
+      <p class="t-small c-secondary">Reminders follow your opening hours. You can pause the shelf when it is full or closed.</p>
+      <div class="actions">${UI.button({ label: 'Go to Host Home', icon: 'home', block: true, attrs: 'data-golive' })}</div></div>`;
+  },
+  mount(el) { buzz(); el.addEventListener('click', e => { if (e.target.closest('[data-golive]')) { Store.state.mode = 'host'; Store.state.host.checkDue = true; Store.save(); Router.finish('#/host/dashboard'); } }); }
+};
+
+/* ---------- H06 Host dashboard (title Home, never "Today") · H08c missed-check banner ---------- */
+const LOG_ICON = { dropoff: 'sealed-food', pickup: 'pickup-bag', redeem: 'coupon', check: 'shelf-check', report: 'needs-attention', pause: 'pause' };
+Views.hostDash = {
+  html() {
+    const s = Store.state, h = s.host, v = venue(h.venue), paused = v.status === 'paused';
+    return `<p class="t-overline c-secondary">Home</p>
+      <header class="greet" style="margin-bottom:var(--space-4)"><h1 class="t-h1" data-logo>${esc(v.name)}</h1>${paused ? `<span class="pill pill--oat">${icon('pause')}Paused</span>` : `<span class="pill pill--leaf">${icon('done')}Shelf open</span>`}</header>
+      <p class="t-small c-secondary" style="margin-bottom:var(--space-16)">Host · ${esc(h.owner)} (owner)</p>
+      <div class="stack">
+        ${h.missed ? `<section class="banner banner--problem" role="alert">${icon('needs-attention')}<div class="banner__text"><strong>Yesterday’s shelf check was missed</strong><br><span class="t-small">Do it now; it takes about 2 minutes. Old items may still be on the shelf.</span></div><a class="btn btn--link banner__action" href="#/host/check" data-startcheck>Start</a></section>` : ''}
+        ${h.checkDue ? `<section class="card card--shadow duecard"><div class="row"><span class="tile tile--accent">${icon('shelf-check', 'icon--accent')}</span><div class="grow"><h2 class="t-title">Shelf check due at ${esc(h.reminder)}</h2><p class="t-small c-secondary">About 2 minutes</p></div></div>
+            <div class="row" style="justify-content:flex-end;margin-top:var(--space-8)">${UI.button({ label: 'Start', attrs: 'data-startcheck' })}</div></section>`
+          : `<section class="banner banner--success" role="status">${icon('done')}<div class="banner__text"><strong>Shelf checked</strong> · Next check tomorrow ${esc(h.reminder)}</div></section>`}
+        <div class="stats">
+          <div class="stat"><p class="stat__num" aria-live="polite">${v.count}</p><p class="stat__cap">items on shelf · ${pl(v.spots, 'spot')} left</p></div>
+          <div class="stat"><p class="stat__num">${h.stats.pickups}</p><p class="stat__cap">pickups this week</p></div>
+          <div class="stat"><p class="stat__num">${h.stats.redeemed}</p><p class="stat__cap">coupons redeemed</p></div>
+        </div>
+        <p class="t-small c-secondary">Coupon cap this month: To be agreed</p>
+        ${paused ? UI.note(`<strong>Paused · ${esc(v.paused.reason)}</strong>Until: ${esc(v.paused.until)}. People see “Paused” on the map. Pickups are still allowed.`, 'pause') + UI.button({ label: 'Resume the shelf', icon: 'retry', block: true, attrs: 'data-resume' })
+          : UI.button({ label: 'Pause the shelf', variant: 'secondary', icon: 'pause', block: true, attrs: 'data-href="#/host/pause"' })}
+        <section aria-labelledby="h06-act"><h2 class="t-section" id="h06-act" style="margin-bottom:var(--space-8)">Activity</h2>
+          <ul class="log">${s.log.slice(0, 8).map(r => `<li class="log__row"><span class="tile tile--sm tile--canvas">${icon(LOG_ICON[r.kind] || 'activity', 'icon--sm')}</span><p class="t-body grow">${esc(r.text)}</p><span class="log__time">${esc(r.time)}</span></li>`).join('')}</ul></section>
+      </div>`;
+  },
+  mount(el, { query }) {
+    if (query.sim === 'missed') { Store.state.host.missed = true; Store.state.host.checkDue = true; Store.save(); }
+    el.addEventListener('click', e => {
+      if (e.target.closest('[data-startcheck]')) { e.preventDefault(); Task.start('check'); Router.go('#/host/check'); }
+      if (e.target.closest('[data-resume]')) { Ops.resume(Store.state.host.venue); toast('success', 'Shelf open again', { ms: 2500 }); Router.render('none'); }
+    });
+  }
+};
+
+/* ---------- H06b Pause the shelf ---------- */
+Views.hostPause = {
+  html() {
+    return `${UI.topBar({ title: 'Pause the shelf' })}
+      <h2 class="t-h1">Pause the shelf</h2>
+      <p class="t-body c-secondary" style="margin:var(--space-8) 0 var(--space-16)">People see “Paused” on the map. Pickups are still allowed.</p>
+      <p class="field__label" id="h06b-why">Why?</p>
+      <div class="chips" style="flex-wrap:wrap;margin:var(--space-8) 0 var(--space-16)" role="radiogroup" aria-labelledby="h06b-why" id="h06b-reasons">${['Shelf full', 'Café closed', 'Cleaning', 'Other'].map((r, i) => `<button type="button" role="radio" class="chip" aria-checked="${i === 0}" data-radio="why" data-value="${r}">${i === 0 ? icon('done') : ''}<span>${r}</span></button>`).join('')}</div>
+      <p class="field__label" id="h06b-until" style="margin-bottom:var(--space-8)">Until when?</p>
+      <div class="radios" role="radiogroup" aria-labelledby="h06b-until">${[`Today, 14:00`, 'Tomorrow at opening', 'Until I resume'].map((u, i) => UI.radioRow({ name: 'until', value: u, label: u, checked: i === 0 })).join('')}</div>
+      <div class="spacer"></div>
+      <div class="actions">${UI.button({ label: 'Pause shelf', icon: 'pause', block: true, attrs: 'data-dopause' })}</div>`;
+  },
+  mount(el) {
+    const st = { why: 'Shelf full', until: 'Today, 14:00' };
+    el.addEventListener('radio', e => {
+      st[e.detail.name] = e.detail.value;
+      if (e.detail.name === 'why') $$('#h06b-reasons .chip', el).forEach(c => { const on = c.dataset.value === st.why; const ic = $('svg', c); if (on && !ic) c.insertAdjacentHTML('afterbegin', icon('done')); if (!on && ic) ic.remove(); });
+    });
+    el.addEventListener('click', async e => { const b = e.target.closest('[data-dopause]'); if (!b) return; await simulate(b, 600); Ops.pause(Store.state.host.venue, st.why, st.until); buzz(); toast('success', 'Shelf paused', { ms: 2500, ic: 'pause' }); Router.back(); });
+  }
+};
+
+/* ---------- H07 Redeem · H07b valid · H07c used / expired / not found ---------- */
+Views.hostRedeem = {
+  html() {
+    return `<h1 class="t-h1">Redeem a coupon</h1>
+      <p class="t-body c-secondary" style="margin:var(--space-8) 0 var(--space-16)">Scan the code on the guest’s phone, or type it.</p>
+      <div class="scanbox"><span class="scanbox__frame" aria-hidden="true"></span><span class="placeholder">${icon('camera')}<span>Camera placeholder · point the camera at the coupon QR</span></span></div>
+      <div class="center" style="margin:var(--space-8) 0">${UI.button({ label: 'Use sample code', variant: 'link', icon: 'qr-code', attrs: 'data-samplecode' })}</div>
+      <form id="h07" class="stack" novalidate>${UI.input({ id: 'h07-code', label: 'Or type the code', placeholder: 'SS-0000', attrs: 'autocapitalize="characters" autocomplete="off"' })}
+        ${UI.button({ label: 'Check code', block: true, attrs: 'type="submit" id="h07-check"' }).replace('type="button" ', '')}</form>`;
+  },
+  mount(el) {
+    const inp = $('#h07-code', el);
+    el.addEventListener('click', e => { if (e.target.closest('[data-samplecode]')) { const c = Store.state.coupons.find(x => x.state === 'active'); inp.value = c ? c.code : 'SS-4821'; inp.focus(); } });
+    $('#h07', el).addEventListener('submit', async e => {
+      e.preventDefault();
+      const code = inp.value.trim().toUpperCase();
+      if (!code) { const w = inp.closest('.field'); w.outerHTML = UI.input({ id: 'h07-code', label: 'Or type the code', placeholder: 'SS-0000', error: 'Type the code or scan it' }); $('#h07-code', el).focus(); return; }
+      await simulate($('#h07-check', el), 700);
+      Store.log('redeem_check', { code });
+      Router.go('#/host/redeem/result?code=' + encodeURIComponent(code));
+    });
+  }
+};
+Views.hostRedeemResult = {
+  state(code) {
+    const s = Store.state, c = s.coupons.find(x => x.code === code);
+    if (s.redeemed && s.redeemed[code] && (!c || c.state !== 'active')) return { k: 'used', c, when: s.redeemed[code] };
+    if (!c) return { k: 'notfound' };
+    if (c.state === 'active') return { k: 'valid', c };
+    if (c.state === 'expired') return { k: 'expired', c };
+    return { k: 'used', c, when: c.usedAt || 'earlier' };
+  },
+  html({ query }) {
+    const code = (query.code || '').toUpperCase(), r = Views.hostRedeemResult.state(code), v = r.c ? venue(r.c.venue) : venue(1);
+    const head = `${UI.topBar({ title: 'Redeem a coupon' })}`;
+    if (r.k === 'valid') return `${head}<div class="stagger center">${UI.tick()}<h2 class="t-display">Valid coupon</h2>
+        <article class="coupon" style="text-align:left"><div class="coupon__band"></div><div class="coupon__body">
+          <p class="coupon__kind">${icon('coupon', 'icon--reward')}<span class="t-label">Thank-you coupon</span></p>
+          <p class="t-h2" style="margin-top:var(--space-8)">To be agreed</p>
+          <p class="t-small c-secondary">Code ${esc(code)} · ${esc(Store.state.user.first)} ${esc((Store.state.user.name.split(' ')[1] || '').charAt(0))}${Store.state.user.name.includes(' ') ? '.' : ''}</p>
+          <p class="t-small c-secondary">From a drop-off at ${esc(v.name)} · valid until [To be agreed]</p></div></article>
+        ${UI.note('Give the discount, then mark it as redeemed so it can’t be used twice.')}</div>
+        <div class="spacer"></div>
+        <div class="actions">${UI.button({ label: 'Mark as redeemed', variant: 'accent', icon: 'redeem', block: true, attrs: 'data-markredeemed' })}${UI.button({ label: 'Cancel', variant: 'secondary', block: true, attrs: 'data-action="back"' })}</div>`;
+    const m = { used: ['Already used', `${esc(code)} was redeemed at ${esc(v.name)} ${esc(r.when || '')}.`], expired: ['Expired', 'The coupon’s validity ended. Value and validity are to be agreed.'], notfound: ['Not found', `We couldn’t find ${esc(code || 'that code')}. Check the code and try again, or scan it.`] }[r.k];
+    return `${head}<div class="stagger center">${UI.tick('problem', r.k === 'expired' ? 'calendar' : 'needs-attention')}<h2 class="t-display">${m[0]}</h2><p class="t-body c-secondary">${m[1]}</p>
+        ${UI.note(r.k === 'notfound' ? 'Codes look like SS-0000. They are on the guest’s Coupons screen.' : 'Don’t give the discount for this code. The guest can check their Coupons screen.')}</div>
+      <div class="spacer"></div>
+      <div class="actions">${UI.button({ label: 'Scan another code', icon: 'qr-code', block: true, attrs: 'data-href="#/host/redeem"' })}${r.k === 'notfound' ? UI.button({ label: 'Type it again', variant: 'secondary', block: true, attrs: 'data-action="back"' }) : ''}</div>`;
+  },
+  mount(el, { query }) {
+    const code = (query.code || '').toUpperCase();
+    Store.log('view', { code: Views.hostRedeemResult.state(code).k === 'valid' ? 'H07b' : 'H07c' });
+    el.addEventListener('click', async e => {
+      const b = e.target.closest('[data-markredeemed]'); if (!b) return;
+      await simulate(b, 700); Ops.redeem(code); buzz();
+      toast('success', `Coupon ${esc(code)} redeemed`, { ms: 3000, ic: 'redeem' });
+      Router.finish('#/host/redeem');
+    });
+  }
+};
+
+/* ---------- H08 Daily shelf check · H08b check done ---------- */
+const flagReason = i => i.flag ? `Reported: ${i.flag.toLowerCase()}` : bbPast(i.bb) ? `Past its date (${i.bb})` : `On the shelf ${i.days} days · still in date`;
+const isFlagged = i => i.days >= 7 || bbPast(i.bb) || !!i.flag;
+const Check = {
+  fresh() { const h = Store.state.host, sh = shelfOf(h.venue); h.check = { started: Date.now(), list: { tidy: false, tag: false, sign: false }, decide: {}, missing: [], by: h.staff[0], items: sh.items.filter(isFlagged).map(i => i.id) }; Store.save(); },
+  submit() {
+    const s = Store.state, h = s.host, c = h.check, sh = shelfOf(h.venue), dur = Date.now() - c.started;
+    const name = id => { const i = sh.items.find(x => x.id === id); return i ? shortName(i.name) : ''; };
+    const kept = c.items.filter(id => c.decide[id] === 'keep').map(name), removed = c.items.filter(id => c.decide[id] === 'remove').map(name);
+    sh.items.forEach(i => { if (c.decide[i.id] === 'remove' || c.missing.includes(i.id)) i.qty = 0; if (c.decide[i.id] === 'keep') { i.flag = null; i.missing = false; } });
+    sh.items = sh.items.filter(i => i.qty > 0);
+    const t = Math.round(dur / 1000);
+    h.lastCheck = { by: c.by, time: nowHM(), dur: `${Math.floor(t / 60)} min ${t % 60} s`, kept, removed, missing: c.missing.map(name) };
+    h.checkDue = false; h.missed = false; h.check = null;
+    hostLog('check', `Shelf check done · ${h.lastCheck.by} · ${h.lastCheck.dur}`);
+    Store.save();
+  },
+  fake() { this.fresh(); const c = Store.state.host.check; c.items.forEach((id, k) => c.decide[id] = k ? 'remove' : 'keep'); this.submit(); }
+};
+Views.hostCheck = {
+  html() {
+    const h = Store.state.host; if (!h.check) Check.fresh();
+    const c = h.check, d = new Date();
+    return `<header class="topbar topbar--center">${UI.iconButton('close', 'Close', 'data-action="back"')}<h1 class="topbar__title">Daily shelf check</h1><span class="icon-btn" aria-hidden="true"></span></header>
+      <p class="t-overline c-secondary" style="margin-bottom:var(--space-8)">${d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }).replace(',', '')} · ${esc(h.reminder)}</p>
+      <div class="card" id="h08-list">${[['tidy', 'Shelf tidy'], ['tag', 'Tag and QR sticker visible'], ['sign', 'Sign in place']].map(([k, l]) => UI.checkbox({ id: 'cl-' + k, label: l, checked: c.list[k], attrs: `data-cl="${k}"` })).join('')}</div>
+      <h2 class="t-section" style="margin:var(--space-16) 0 var(--space-8)" id="h08-count" aria-live="polite"></h2>
+      <div class="stack-8" id="h08-rows"></div>
+      <div class="center" style="margin-top:var(--space-8)">${UI.button({ label: 'Item missing? Mark it', variant: 'link', icon: 'needs-attention', attrs: 'data-markmissing' })}</div>
+      <div class="grid2" style="margin-top:var(--space-12)">
+        <div class="field"><label class="field__label" for="h08-by">Checked by</label><select class="select" id="h08-by">${h.staff.map(n => `<option ${n === c.by ? 'selected' : ''}>${esc(n)}</option>`).join('')}</select></div>
+        ${UI.input({ id: 'h08-rem', label: 'Daily reminder', value: h.reminder, type: 'time' })}</div>
+      <p class="t-small c-secondary" style="margin-top:var(--space-12)">${icon('agreement', 'icon--xs icon--secondary')} Saved for food-safety records.</p>
+      <div class="actions actions--sticky">${UI.gated({ label: 'Submit check', id: 'h08-submit', hint: 'Decide on every item to submit', missing: '.checkrow:not(.is-kept):not(.is-removed)' })}</div>`;
+  },
+  mount(el) {
+    const h = Store.state.host, c = h.check, sh = shelfOf(h.venue);
+    if (!Store.state.tasks.check) Task.start('check');
+    const row = id => {
+      const i = sh.items.find(x => x.id === id); if (!i) return '';
+      const dec = c.decide[id];
+      return `<article class="checkrow${dec === 'keep' ? ' is-kept' : dec === 'remove' ? ' is-removed' : ''}" data-check="${id}">
+        <div class="row"><span class="item__thumb">${icon('sealed-food')}</span><div class="grow"><p class="t-title">${esc(i.name)}</p><p class="t-small c-secondary">${esc(flagReason(i))}</p></div></div>
+        ${dec ? `<div class="checkrow__done"><span class="status">${icon(dec === 'keep' ? 'done' : 'remove', dec === 'keep' ? 'icon--success' : 'icon--secondary')}<span>${dec === 'keep' ? 'Kept' : 'Removed'}</span></span>${UI.button({ label: 'Undo', variant: 'link', icon: 'undo', attrs: `data-undo="${id}"` })}</div>`
+          : `<div class="checkrow__btns">${UI.button({ label: 'Keep', variant: 'secondary', icon: 'done', attrs: `data-decide="keep"` })}${UI.button({ label: 'Remove', variant: 'secondary', icon: 'remove', attrs: `data-decide="remove"` })}</div>`}
+      </article>`;
+    };
+    const sync = () => {
+      const open = c.items.filter(id => !c.decide[id]).length;
+      $('#h08-count', el).textContent = c.items.length ? `${pl(c.items.length, 'item')} to check${open ? ` · ${open} open` : ''}` : 'Nothing flagged today';
+      gate($('#h08-submit', el), open === 0); Store.save();
+    };
+    const draw = () => { $('#h08-rows', el).innerHTML = c.items.length ? c.items.map(row).join('') : `<div class="card">${UI.empty({ ic: 'shelf-check', title: 'All items look fine', line: 'Nothing has been on the shelf 7 days or is past its date.' })}</div>`; sync(); };
+    draw();
+    el.addEventListener('change', e => {
+      if (e.target.dataset.cl) { c.list[e.target.dataset.cl] = e.target.checked; Store.save(); }
+      if (e.target.id === 'h08-by') { c.by = e.target.value; Store.save(); }
+      if (e.target.id === 'h08-rem') { h.reminder = e.target.value || h.reminder; Store.save(); toast('success', `Reminder set for ${esc(h.reminder)}`, { ms: 2000, ic: 'reminder' }); }
+    });
+    el.addEventListener('click', async e => {
+      const dz = e.target.closest('[data-decide]');
+      if (dz) { const id = dz.closest('[data-check]').dataset.check; c.decide[id] = dz.dataset.decide; Store.log('check_decide', { item: id, d: dz.dataset.decide }); const r = $(`[data-check="${id}"]`, el); r.outerHTML = row(id); $(`[data-check="${id}"] [data-undo]`, el).focus(); sync(); return; }
+      const un = e.target.closest('[data-undo]');
+      if (un) { const id = un.dataset.undo; delete c.decide[id]; $(`[data-check="${id}"]`, el).outerHTML = row(id); $(`[data-check="${id}"] [data-decide]`, el).focus(); sync(); return; }
+      if (e.target.closest('[data-markmissing]')) {
+        const its = sh.items.filter(i => !c.missing.includes(i.id));
+        openSheet('Mark an item missing', `<p class="t-body c-secondary" style="margin-bottom:var(--space-12)">It leaves the shelf count, so the map stays right.</p><div class="radios" role="radiogroup" aria-label="Items">${its.map((i, k) => UI.radioRow({ name: 'miss', value: i.id, label: i.name + (i.qty > 1 ? ' ×' + i.qty : ''), checked: k === 0 })).join('')}</div>
+          <div class="actions">${UI.button({ label: 'Mark missing', block: true, attrs: 'data-domiss' })}</div>`);
+        const sheet = $('#sheet');
+        sheet.onclick = ev => { if (!ev.target.closest('[data-domiss]')) return; const on = $('[data-radio="miss"][aria-checked="true"]', sheet); if (!on) return; const id = on.dataset.value; c.missing.push(id); if (c.items.includes(id)) c.decide[id] = 'remove'; const i = sh.items.find(x => x.id === id); i.missing = true; Store.save(); closeSheet(); draw(); toast('info', `${esc(shortName(i.name))} marked missing`, { ms: 3000, action: 'Undo', onAction: () => { c.missing = c.missing.filter(x => x !== id); i.missing = false; delete c.decide[id]; Store.save(); draw(); } }); };
+        return;
+      }
+      const sb = e.target.closest('#h08-submit');
+      if (sb) { await simulate(sb, 700); Check.submit(); buzz(); Router.replace('#/host/check/done'); }
+    });
+  }
+};
+Views.hostCheckDone = {
+  html() {
+    const h = Store.state.host, L = h.lastCheck;
+    return `<div class="stagger">
+      ${UI.illus('Shelf tidies, tick')}
+      <div><h1 class="t-display">Shelf checked.</h1><p class="t-body-large" style="margin-top:var(--space-8)">Saved to the food-safety record.</p></div>
+      <dl class="card kv-lines">
+        <div class="kv"><dt class="c-secondary">Checked by</dt><dd>${esc(L.by)}</dd></div>
+        <div class="kv"><dt class="c-secondary">Time</dt><dd>${esc(L.time)} · took ${esc(L.dur)}</dd></div>
+        <div class="kv"><dt class="c-secondary">Kept</dt><dd>${pl(L.kept.length, 'item')}${L.kept.length ? ' · ' + esc(L.kept.join(', ')) : ''}</dd></div>
+        <div class="kv"><dt class="c-secondary">Removed</dt><dd>${pl(L.removed.length, 'item')}${L.removed.length ? ' · ' + esc(L.removed.join(', ')) : ''}</dd></div>
+        ${L.missing.length ? `<div class="kv"><dt class="c-secondary">Missing</dt><dd>${esc(L.missing.join(', '))}</dd></div>` : ''}
+      </dl>
+      ${UI.banner('info', `<strong>Next check: tomorrow at ${esc(h.reminder)}</strong> · ${esc(h.nextBy)}`, { ic: 'reminder' })}
+      <div>${UI.button({ label: 'Hand tomorrow’s check to another steward', variant: 'link', icon: 'staff', attrs: 'data-handover' })}</div>
+      <div class="actions">${UI.button({ label: 'Done', block: true, attrs: 'data-checkdone' })}</div></div>`;
+  },
+  mount(el) {
+    Task.done('check');
+    const h = Store.state.host;
+    el.addEventListener('click', e => {
+      if (e.target.closest('[data-checkdone]')) Router.finish('#/host/dashboard');
+      if (e.target.closest('[data-handover]')) {
+        openSheet('Tomorrow’s check', `<div class="radios" role="radiogroup" aria-label="Steward">${h.staff.map(n => UI.radioRow({ name: 'next', value: n, label: n, checked: n === h.nextBy })).join('')}</div>
+          <div class="actions">${UI.button({ label: 'Hand over', icon: 'staff', block: true, attrs: 'data-dohand' })}</div>`);
+        const sheet = $('#sheet');
+        sheet.onclick = ev => { if (!ev.target.closest('[data-dohand]')) return; const on = $('[data-radio="next"][aria-checked="true"]', sheet); h.nextBy = on.dataset.value; Store.save(); Store.log('handover', { to: h.nextBy }); closeSheet(); toast('success', `Tomorrow’s check: ${esc(h.nextBy)}`, { ms: 2500, ic: 'staff' }); Router.render('none'); };
+      }
+    });
+  }
+};
+
+/* ---------- X01 "I took something": no-app web page (no tab bar, no account) ---------- */
+Views.x01 = {
+  html({ params }) {
+    const v = venue(params.id);
+    return `<div class="x01__bar"><span>Shelf page · ${esc(v.name)}</span></div>
+      <div id="x01">
+      <span class="wordmark" data-logo>SecondShelf</span>
+      <h1 class="t-h1">What did you take?</h1>
+      <p class="t-body c-secondary" style="margin:var(--space-8) 0 var(--space-12)">No app or account needed. Ticking what you took keeps the shelf list right for everyone.</p>
+      <p class="t-label c-secondary" style="margin-bottom:var(--space-8)">${esc(v.name)} · shelf ${esc(v.code)}</p>
+      <div class="stack-8" id="x01-list">${liveItems(shelfOf(v.id)).filter(i => !i.missing).map(i => `<label class="pick x01__row" for="x-${i.id}"><span class="pick__main"><input type="checkbox" id="x-${i.id}" data-x="${i.id}"><span class="check__box">${icon('done')}</span><span class="grow"><span class="t-title" style="display:block">${esc(i.name)}</span><span class="t-small c-secondary">Best before ${esc(i.bb)}${i.qty > 1 ? ` · ${i.qty} on shelf` : ''}</span></span></span></label>`).join('')}</div>
+      <div style="margin-top:var(--space-12)">${UI.banner('info', '<strong>Anyone can take food, with or without the app.</strong>', { ic: 'community-care' })}</div>
+      <div class="actions">${UI.gated({ label: 'Confirm', variant: 'accent', icon: 'done', id: 'x01-confirm', hint: 'Tick what you took', missing: '.x01__row' })}
+        <p class="center t-small c-secondary">Want alerts for food nearby? ${UI.button({ label: 'Get the app', variant: 'link', attrs: 'data-getapp' })}</p></div></div>`;
+  },
+  mount(el, { params }) {
+    const v = venue(params.id), sel = new Set();
+    const sync = () => { const b = $('#x01-confirm', el), n = sel.size; $('span:last-child', b).textContent = n ? `Confirm · ${pl(n, 'item')}` : 'Confirm'; gate(b, n > 0); };
+    el.addEventListener('change', e => { const id = e.target.dataset.x; if (!id) return; e.target.checked ? sel.add(id) : sel.delete(id); e.target.closest('.pick').classList.toggle('is-checked', e.target.checked); sync(); });
+    el.addEventListener('click', async e => {
+      if (e.target.closest('[data-getapp]')) { toast('info', 'App store link: [To be agreed]', { ms: 2500 }); return; }
+      const b = e.target.closest('#x01-confirm'); if (!b) return;
+      await simulate(b, 700);
+      const n = Ops.pickup(v.id, [...sel].map(id => ({ id, qty: 1 })), { app: false, source: 'web' }); buzz();
+      Store.log('x01_pickup', { items: n });
+      $('#x01', el).innerHTML = `<div class="stagger center" role="status" style="padding-top:var(--space-40)">${UI.tick()}<h1 class="t-display">Thanks. Enjoy your food.</h1>
+        <p class="t-body c-secondary">The shelf list is up to date: ${esc(v.name)} now shows ${pl(venue(v.id).count, 'item')}.</p>
+        ${UI.banner('info', '<strong>Anyone can take food, with or without the app.</strong>', { ic: 'community-care' })}</div>`;
+    });
+    sync();
+  }
+};
+
 /* ---------- shared named actions (data-action) ---------- */
 Object.assign(Actions, {
   /* M01 Leave food: browse mode asks to finish onboarding first; starts the Scenario A timer */
@@ -4511,6 +5014,21 @@ Router.add('/take/point/:id', Views.takePoint, { title: 'Shelf listing', code: '
 Router.add('/take/tap', Views.takeTap, { title: 'Check and tap', code: 'R04', cls: 'screen--brand with-actions', flow: 'take' });
 Router.add('/take/items', Views.takeItems, { title: 'What are you taking', code: 'R05', guard: () => !!Store.state.pickup, flow: 'take', actionbar: true });
 Router.add('/take/done', Views.takeDone, { title: 'Pickup logged', code: 'R06', guard: () => !!Store.state.lastPickup, flow: 'take' });
+Router.add('/host', Views.host, { title: 'Become a host', code: 'H01', flow: 'host' });
+Router.add('/host/venue', Views.hostVenue, { title: 'Venue details', code: 'H02', cls: 'with-actions', flow: 'host' });
+Router.add('/host/agreement', Views.hostAgreement, { title: 'Host agreement', code: 'H03', cls: 'with-actions', flow: 'host' });
+Router.add('/host/review', Views.hostReview, { title: 'Application under review', code: 'H03c', cls: 'with-actions', flow: 'host' });
+Router.add('/host/verify', Views.hostVerify, { title: 'Operator verification', code: 'H04', cls: 'with-actions', flow: 'host' });
+Router.add('/host/kit', Views.hostKit, { title: 'Starter kit', code: 'H05', cls: 'with-actions', flow: 'host' });
+Router.add('/host/activate', Views.hostActivate, { title: 'Go live', code: 'H05', cls: 'screen--brand with-actions', flow: 'host' });
+Router.add('/host/live', Views.hostLive, { title: 'Your shelf is live', code: 'H05', flow: 'host' });
+Router.add('/host/dashboard', Views.hostDash, { title: 'Home', code: 'H06', tabs: '#/host/dashboard', tabMode: 'host' });
+Router.add('/host/pause', Views.hostPause, { title: 'Pause the shelf', code: 'H06b', cls: 'with-actions' });
+Router.add('/host/redeem', Views.hostRedeem, { title: 'Redeem a coupon', code: 'H07', tabs: '#/host/redeem', tabMode: 'host' });
+Router.add('/host/redeem/result', Views.hostRedeemResult, { title: 'Redeem a coupon', code: 'H07b', tabs: '#/host/redeem', tabMode: 'host', cls: 'with-actions' });
+Router.add('/host/check', Views.hostCheck, { title: 'Daily shelf check', code: 'H08', flow: 'check', actionbar: true });
+Router.add('/host/check/done', Views.hostCheckDone, { title: 'Shelf checked', code: 'H08b', flow: 'check', guard: () => !!Store.state.host.lastCheck });
+Router.add('/x/:id', Views.x01, { title: 'I took something', code: 'X01' });
 
 /* =====================================================================
    BOOT
