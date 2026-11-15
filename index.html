@@ -751,7 +751,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
   --shadow-sheet:0 -4px 24px rgba(43,36,30,.12);
   --shadow-focus:0 0 0 2px #FFFFFF,0 0 0 5px #2F6E8C;
   /* size and motion */
-  --size-tap-min:44px; --size-control:48px; --frame-max:430px; --size-avatar:48px; --size-tab-indicator:64px;
+  --size-tap-min:44px; --size-button:44px; /* [NEW] QA round 11 (Q104): every button, was 48 (+ border = 51) */ --size-control:48px; --frame-max:430px; --size-avatar:48px; --size-tab-indicator:64px;
   --motion-fast:150ms; --motion-base:250ms; --ease:cubic-bezier(.2,0,0,1);
   --motion-tab:200ms; --ease-in-out:cubic-bezier(.65,0,.35,1); /* [NEW] QA round 2: sliding tab indicator */
   /* [NEW] QA round 3: notifications (top toasts) */
@@ -952,7 +952,7 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{box-shadow:none}
 /* ---- Button: v0.5 pill ---- */
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:var(--space-8);
-  min-height:var(--size-control);padding:var(--space-12) var(--space-24);
+  min-height:var(--size-button);padding:var(--space-8) var(--space-24);   /* QA round 11: one button size everywhere, 44px */
   border-radius:var(--radius-full);border:var(--border-w) solid transparent;
   font:var(--type-button);text-align:center;text-decoration:none;
   transition:background-color var(--motion-fast) var(--ease),transform var(--motion-fast) var(--ease);
@@ -1474,7 +1474,7 @@ button.settings__row:active{background:var(--surface-canvas)}
 .log__main{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-4) var(--space-8)}
 .log__title{font:var(--type-body-list);font-weight:500}
 .log__sub{flex-basis:100%;font:var(--type-body-small);color:var(--text-secondary)}
-.shelfstate .btn{flex:none;min-height:var(--size-tap-min);padding:var(--space-8) var(--space-16)}
+.shelfstate .btn{flex:none}
 .shelfstate__note{margin-top:var(--space-12)}
 .log__time{font:var(--type-body-small);color:var(--text-tertiary);white-space:nowrap}
 
@@ -1736,7 +1736,7 @@ button.settings__row:active{background:var(--surface-canvas)}
 .modfab .icon{color:var(--icon-primary)}
 .modfab.is-active,.modfab:focus-visible{opacity:1}
 .modfab.is-dragging{transition:opacity var(--motion-fast) var(--ease);cursor:grabbing}
-.mod .btn{min-height:var(--size-tap-min);padding:var(--space-8) var(--space-12);font:var(--type-label)}
+.mod .btn{padding-left:var(--space-12);padding-right:var(--space-12);font:var(--type-label)}
 .mod__grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-8)}
 .mod__sec{display:flex;flex-direction:column;gap:var(--space-8);padding-top:var(--space-16);margin-top:var(--space-16);border-top:1px solid var(--border-subtle)}
 .mod select{width:100%;min-height:var(--size-control);border-radius:var(--radius-md);border:var(--border-w) solid var(--border-strong);background:var(--surface-default);padding:0 var(--space-12);font:var(--type-body)}
@@ -5853,9 +5853,9 @@ Views.hostDash = {
         <p class="t-small c-secondary">Coupon cap this month: To be agreed</p>
         <section class="card shelfstate${paused ? ' is-paused' : ''}" aria-labelledby="h06-state">
           <div class="row"><span class="tile ${paused ? 'tile--oat' : ''}">${icon(paused ? 'pause' : 'done', paused ? 'icon--waiting' : 'icon--success')}</span>
-            <div class="grow"><h2 class="t-title" id="h06-state">${paused ? 'Shelf paused' : 'Shelf open'}</h2><p class="t-small c-secondary">${paused ? `${esc(v.paused.reason)} · until ${esc(v.paused.until)}` : 'People can leave and find food'}</p></div>
-            ${paused ? UI.button({ label: 'Resume', icon: 'retry', attrs: 'data-resume' }) : UI.button({ label: 'Pause', variant: 'secondary', icon: 'pause', attrs: 'data-href="#/host/pause"' })}</div>
-          ${paused ? '<p class="t-small c-secondary shelfstate__note">People see “Paused” on the map. Pickups are still allowed.</p>' : ''}</section>
+            <div class="grow"><h2 class="t-title" id="h06-state">${paused ? 'Shelf paused' : 'Shelf open'}</h2><p class="t-small c-secondary">${paused ? `${esc(v.paused.reason)} · until ${esc(v.paused.until)}` : 'People can leave and find food'}</p></div></div>
+          ${paused ? '<p class="t-small c-secondary shelfstate__note">People see “Paused” on the map. Pickups are still allowed.</p>' : ''}
+          <div class="row" style="justify-content:flex-end;margin-top:var(--space-8)">${paused ? UI.button({ label: 'Resume', icon: 'retry', attrs: 'data-resume' }) : UI.button({ label: 'Pause', variant: 'secondary', icon: 'pause', attrs: 'data-href="#/host/pause"' })}</div></section>
         ${h.checkDue ? `<section class="card card--shadow duecard"><div class="row"><span class="tile tile--accent">${icon('shelf-check', 'icon--accent')}</span><div class="grow"><h2 class="t-title">Shelf check due at ${esc(h.reminder)}</h2><p class="t-small c-secondary">About 2 minutes</p></div></div>
             <div class="row" style="justify-content:flex-end;margin-top:var(--space-8)">${UI.button({ label: 'Start', attrs: 'data-startcheck' })}</div></section>`
           : `<section class="banner banner--success" role="status">${icon('done')}<div class="banner__text"><strong>Shelf checked</strong> · Next check tomorrow ${esc(h.reminder)}</div></section>`}

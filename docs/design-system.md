@@ -203,7 +203,7 @@ Nested rule: inner radius = outer radius − padding. In practice, items inside 
 - `shadow-sheet`: `0 -4px 24px rgba(43,36,30,.12)`. For bottom sheets and fixed action bars.
 - `shadow-focus`: `0 0 0 2px #FFFFFF, 0 0 0 5px #2F6E8C`. On dark fills, use a Paper ring instead.
 - Sizes:
-  - `size-tap-min` 44 · `size-control` 48 (buttons, inputs)
+  - `size-tap-min` 44 · `size-button` 44 **[NEW] Q104** (every button) · `size-control` 48 (inputs)
   - icons `16 / 20 / 24 / 32` (stroke 1.5 at 16, otherwise 2)
   - frame 390 × 844, layout max-width 430
   - **v0.4** avatar 48 · tab indicator pill 64 × 32 · toggle 52 × 32
@@ -318,7 +318,7 @@ Every component uses semantic tokens only and is built with all its states.
 
 | Component | Recipe | States |
 |---|---|---|
-| **Button** | **v0.5 pill**: 48px, `radius-full`, padding 12/24, `button` type, optional 20px leading icon (gap 8) | Primary (`action-primary`) · ~~Accent~~ (removed QA round 8, Q101) · Secondary (Paper + 1.5px `border-brand`) · Text link · (v0.4 Dark button removed) · default / hover / pressed / focus / loading / disabled |
+| **Button** | **v0.5 pill**: **44px** (`--size-button`, QA round 11, Q104: one size for every button; was 48 + border), `radius-full`, padding 8/24, `button` type, optional 20px leading icon (gap 8) | Primary (`action-primary`) · ~~Accent~~ (removed QA round 8, Q101) · Secondary (Paper + 1.5px `border-brand`) · Text link · (v0.4 Dark button removed) · default / hover / pressed / focus / loading / disabled |
 | **Input** | Label above (`label`, `text-secondary`, gap 8); field 48px, `radius-md`, 1.5px `border-strong`, Paper, 16px text, placeholder `text-tertiary` | default · focus (`border-brand` + `shadow-focus`) · filled · error (`text-problem` border + flag icon + message under the field) · disabled |
 | **Search field** | Pill (`radius-full`), 48px, Paper, **v0.5 flat: 1.5px `border-strong`, no shadow**, gold `search` icon (`icon-reward`), placeholder `text-tertiary`; separate 48px round filter button; suggestions list below (Paper, `radius-md`) | empty · typing with suggestions · results |
 | **Filter chip** | `radius-full`, min 44px, `label` type, 16px side padding, gap 8 | default (Paper + `border-strong`) · selected (**Q96:** Ink `--surface-toggle-on` fill + gold tick `--icon-on-toggle` + Paper text, same as the Map / List switch) |
