@@ -1609,8 +1609,6 @@ button.settings__row:active{background:var(--surface-canvas)}
 .radiorow .radio{position:static;flex:none}
 
 /* moderator menu (test only) */
-.modfab{position:absolute;top:50%;left:var(--space-4);z-index:44;background:var(--surface-default);border:2px solid var(--border-brand);box-shadow:var(--shadow-card)}
-.modfab .icon{color:var(--icon-primary)}
 .mod .btn{min-height:var(--size-tap-min);padding:var(--space-8) var(--space-12);font:var(--type-label)}
 .mod__grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-8)}
 .mod__sec{display:flex;flex-direction:column;gap:var(--space-8);padding-top:var(--space-16);margin-top:var(--space-16);border-top:1px solid var(--border-subtle)}
@@ -3742,7 +3740,8 @@ Object.assign(UI, {
     return `<button type="button" role="radio" class="radiorow${checked ? ' is-on' : ''}" aria-checked="${checked}" data-radio="${esc(name)}" data-value="${esc(value)}"><span class="radio" aria-hidden="true"></span><span class="grow">${esc(label)}${sub ? `<span class="t-small c-secondary" style="display:block">${esc(sub)}</span>` : ''}</span></button>`;
   },
   greeting(u) {
-    return `<header class="greet"><h1 class="t-h1" data-logo>Hi ${esc(u.first)}</h1><a href="#/me" class="avatar" aria-label="Me">${esc(u.initials)}</a></header>`;
+    /* the top-right profile icon opens the moderator menu (test team); Me is reached from the tab bar */
+    return `<header class="greet"><h1 class="t-h1" data-logo>Hi ${esc(u.first)}</h1><button type="button" class="avatar" data-action="mod" aria-label="Moderator menu" aria-haspopup="dialog">${esc(u.initials)}</button></header>`;
   },
   actionCard(kind, state = '') {
     const k = kind === 'leave'
@@ -3968,20 +3967,10 @@ const Jump = {
 };
 
 /* =====================================================================
-   MODERATOR MENU (test only): ?mod=1 or an 800 ms long press on the wordmark / greeting
+   MODERATOR MENU (test only): tap the top-right profile icon on Home, or long-press (800 ms) the wordmark / greeting
    Labels here may say "Simulate"; participants never see them (Q4).
    ===================================================================== */
 const Mod = {
-  on: false,
-  init() {
-    const q = location.search + location.hash;
-    try { if (/[?&]mod=1/.test(q)) sessionStorage.setItem('ss-mod', '1'); this.on = sessionStorage.getItem('ss-mod') === '1'; } catch (e) { this.on = /[?&]mod=1/.test(q); }
-    if (this.on) {
-      const b = document.createElement('div');
-      b.innerHTML = UI.iconButton('more', 'Moderator menu', 'data-action="mod"', 'modfab');
-      $('#app').appendChild(b.firstElementChild);
-    }
-  },
   scenario(which, go = true) {
     const persona = which === 'B' ? 'jonas' : 'brenda';
     Store.reset(persona);
@@ -5035,7 +5024,6 @@ Router.add('/x/:id', Views.x01, { title: 'I took something', code: 'X01' });
    BOOT
    ===================================================================== */
 Store.load();
-Mod.init();
 window.addEventListener('hashchange', () => Router.render());
 document.addEventListener('keydown', e => { if (e.key !== 'Escape') return; if ($('#sheet')._close) closeSheet(); else if (Overlay.current) Overlay.hide(); else { const sc = $('#stage .screen'); if (sc && sc._esc) sc._esc(); } });
 if (!location.hash || location.hash === '#' || location.hash === '#/') history.replaceState(null, '', location.pathname + location.search + defaultRoute());

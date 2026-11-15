@@ -1,7 +1,7 @@
 # Review status: SecondShelf hi-fi prototype (16 Nov build)
 
 Branch `claude/hifi-fill-gaps` (from `claude/map-sheet-v06`). Test day: Tuesday 17 Nov.
-Open any screen from the hidden index `#/screens` (it prepares the demo state first). Moderator menu: add `?mod=1` to the link, or long-press (800 ms) the greeting / wordmark / venue title.
+Open any screen from the hidden index `#/screens` (it prepares the demo state first). Moderator menu: tap the profile icon (initials) at the top right of Home, or long-press (800 ms) the greeting / wordmark / venue title. Me is reached from the tab bar.
 Screenshots: `docs/screenshots/` (390 × 844, one per screen and state, plus four contact sheets `contact-*.png`).
 
 ## A. Screen coverage
@@ -266,7 +266,7 @@ Every open question in `docs/open-questions.md`, grouped by topic. The last two 
 - Generated venues use catalogue names ("Fusilli 500 g") while the spec venues use the frame format ("Fusilli pasta, 500 g").
 - Pill chips in the details chip row are Paper with a subtle border; the frame uses Oat chips.
 - G03 / R03 photos, G07 / R06 / H05 / H08b illustrations and the H07 camera are dashed placeholders.
-- The moderator button (only with `?mod=1`) sits half off the left edge, middle of the screen.
+- The top-right profile icon on Home opens the moderator menu, so a participant who taps it sees test controls (Q80).
 - Toasts on screens without a sticky action bar (M02, R06) can sit over the last row for 3–5 s.
 
 **Animations that are rough**
