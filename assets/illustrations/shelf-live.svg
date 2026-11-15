@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="ss-ill ssi-live" viewBox="0 0 320 200" role="img" aria-label="Your shelf appears as a new pin on the map">
+<title>Your shelf appears as a new pin on the map</title>
+<defs>
+<filter id="ssi-live-ink" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="2" seed="7"></feTurbulence><feDisplacementMap in="SourceGraphic" scale="1.8" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter>
+<clipPath id="ssi-live-clip"><rect x="0" y="0" width="320" height="200" rx="16"></rect></clipPath>
+</defs>
+<style>
+.ssi-live .k{fill:none;stroke:var(--green-900,#1F3D2B);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.ssi-live .k2{fill:none;stroke:var(--green-900,#1F3D2B);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ssi-live .kp{fill:none;stroke:var(--paper-0,#FFFFFF);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ssi-live .ka{fill:none;stroke:var(--terracotta-500,#C2593A);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.ssi-live .kd{fill:none;stroke:var(--stone-500,#8C8477);stroke-width:2;stroke-linecap:round;stroke-dasharray:4 5}
+.ssi-live .kc{fill:none;stroke:var(--clay-500,#8A6F4A);stroke-width:2;stroke-linecap:round;stroke-dasharray:3 4}
+.ssi-live .bg{fill:var(--cream-100,#F6F1E7)}
+.ssi-live .fp{fill:var(--paper-0,#FFFFFF)} .ssi-live .fo{fill:var(--oat-200,#E9DFCC)} .ssi-live .fs{fill:var(--sand-200,#E8D7B9)}
+.ssi-live .fl{fill:var(--green-100,#CFE3C8)} .ssi-live .ft{fill:var(--terracotta-100,#F0DFD2)} .ssi-live .fT{fill:var(--terracotta-500,#C2593A)}
+.ssi-live .fy{fill:var(--ochre-500,#BF8B2E)} .ssi-live .fg{fill:var(--green-900,#1F3D2B)} .ssi-live .fc{fill:var(--clay-500,#8A6F4A)}
+.ssi-live .fi{fill:var(--ink-900,#2B241E)} .ssi-live .fsl{fill:var(--slate-600,#51666D)} .ssi-live .fr{fill:var(--stone-300,#CFC6B6)}
+.ssi-live .tb{transform-box:fill-box;transform-origin:center}
+.ssi-live .tbb{transform-box:fill-box;transform-origin:50% 100%}
+@keyframes ssi-live-pin{0%{transform:translateY(-80px);opacity:0}60%{transform:translateY(4px) scaleY(.92);opacity:1}80%{transform:translateY(-3px)}100%{transform:none;opacity:1}}
+@keyframes ssi-live-rg{0%{transform:scale(.4);opacity:.9}100%{transform:scale(2.6);opacity:0}}
+.ssi-live .pin{animation:ssi-live-pin .6s cubic-bezier(.2,0,0,1) .1s both}
+.ssi-live .rg{opacity:0;animation:ssi-live-rg 1s cubic-bezier(.2,0,0,1) .6s 2 both} .ssi-live .r2{animation-delay:.9s}
+@media (prefers-reduced-motion: reduce){.ssi-live *{animation:none !important}}
+</style>
+<g clip-path="url(#ssi-live-clip)"><rect class="bg" x="0" y="0" width="320" height="200" rx="16"></rect><g filter="url(#ssi-live-ink)">
+
+<rect x="20" y="16" width="280" height="168" rx="14" class="k fp"></rect>
+<path class="fl" d="M40 140 C70 120 100 150 130 136 L130 184 L40 184 Z" opacity=".8"></path>
+<g style="stroke:var(--stone-300,#CFC6B6);stroke-width:7;fill:none;stroke-linecap:round"><path d="M20 70 C90 80 180 60 300 88"></path><path d="M120 16 C130 80 150 120 170 184"></path><path d="M210 16 L240 184"></path></g>
+<g style="stroke:var(--stone-300,#CFC6B6);stroke-width:3;fill:none;stroke-linecap:round"><path d="M20 120 C80 110 120 106 300 140"></path><path d="M60 16 L80 184"></path></g>
+<circle cx="78" cy="58" r="12" class="fi"></circle><circle cx="250" cy="130" r="12" class="fi"></circle>
+<g class="pulse"><circle cx="160" cy="98" r="22" class="k tb rg" style="stroke:var(--green-700,#3F5B3A)"></circle><circle cx="160" cy="98" r="22" class="k tb rg r2" style="stroke:var(--green-700,#3F5B3A)"></circle></g>
+<g class="pin tbb"><path class="fi" d="M160 106 C146 92 140 84 140 74 a20 20 0 0 1 40 0 C180 84 174 92 160 106 Z"></path>
+<g class="kp" style="stroke-width:1.8"><rect x="150" y="66" width="20" height="17" rx="2"></rect><path d="M150 74.5 h20"></path></g></g>
+
+</g></g>
+</svg>

@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="ss-ill ssi-pickup" viewBox="0 0 320 200" role="img" aria-label="Two items lift off the shelf into a bag; their spots are left free">
+<title>Two items lift off the shelf into a bag; their spots are left free</title>
+<defs>
+<filter id="ssi-pickup-ink" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="2" seed="7"></feTurbulence><feDisplacementMap in="SourceGraphic" scale="1.8" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter>
+<clipPath id="ssi-pickup-clip"><rect x="0" y="0" width="320" height="200" rx="16"></rect></clipPath>
+</defs>
+<style>
+.ssi-pickup .k{fill:none;stroke:var(--green-900,#1F3D2B);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.ssi-pickup .k2{fill:none;stroke:var(--green-900,#1F3D2B);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ssi-pickup .kp{fill:none;stroke:var(--paper-0,#FFFFFF);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ssi-pickup .ka{fill:none;stroke:var(--terracotta-500,#C2593A);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.ssi-pickup .kd{fill:none;stroke:var(--stone-500,#8C8477);stroke-width:2;stroke-linecap:round;stroke-dasharray:4 5}
+.ssi-pickup .kc{fill:none;stroke:var(--clay-500,#8A6F4A);stroke-width:2;stroke-linecap:round;stroke-dasharray:3 4}
+.ssi-pickup .bg{fill:var(--cream-100,#F6F1E7)}
+.ssi-pickup .fp{fill:var(--paper-0,#FFFFFF)} .ssi-pickup .fo{fill:var(--oat-200,#E9DFCC)} .ssi-pickup .fs{fill:var(--sand-200,#E8D7B9)}
+.ssi-pickup .fl{fill:var(--green-100,#CFE3C8)} .ssi-pickup .ft{fill:var(--terracotta-100,#F0DFD2)} .ssi-pickup .fT{fill:var(--terracotta-500,#C2593A)}
+.ssi-pickup .fy{fill:var(--ochre-500,#BF8B2E)} .ssi-pickup .fg{fill:var(--green-900,#1F3D2B)} .ssi-pickup .fc{fill:var(--clay-500,#8A6F4A)}
+.ssi-pickup .fi{fill:var(--ink-900,#2B241E)} .ssi-pickup .fsl{fill:var(--slate-600,#51666D)} .ssi-pickup .fr{fill:var(--stone-300,#CFC6B6)}
+.ssi-pickup .tb{transform-box:fill-box;transform-origin:center}
+.ssi-pickup .tbb{transform-box:fill-box;transform-origin:50% 100%}
+@keyframes ssi-pickup-a{0%{transform:translate(0,0)}45%{transform:translate(80px,-56px)}85%{transform:translate(160px,34px)}100%{transform:translate(160px,44px)}}
+@keyframes ssi-pickup-b{0%{transform:translate(0,0)}45%{transform:translate(70px,-60px)}85%{transform:translate(146px,30px)}100%{transform:translate(146px,40px)}}
+@keyframes ssi-pickup-gh{from{opacity:0}to{opacity:1}}
+.ssi-pickup .mv1{transform:translate(160px,44px);animation:ssi-pickup-a .8s cubic-bezier(.2,0,0,1) .2s both}
+.ssi-pickup .mv2{transform:translate(146px,40px);animation:ssi-pickup-b .8s cubic-bezier(.2,0,0,1) .45s both}
+.ssi-pickup .gh{animation:ssi-pickup-gh .25s ease .9s both}
+@media (prefers-reduced-motion: reduce){.ssi-pickup *{animation:none !important}}
+</style>
+<g clip-path="url(#ssi-pickup-clip)"><rect class="bg" x="0" y="0" width="320" height="200" rx="16"></rect><g filter="url(#ssi-pickup-ink)">
+
+<rect x="24" y="24" width="156" height="152" class="fo"></rect>
+<g transform="translate(-2 2)" class="fs"><rect x="20" y="18" width="164" height="7" rx="2"></rect><rect x="20" y="88" width="164" height="12" rx="2"></rect><rect x="20" y="176" width="164" height="8" rx="2"></rect></g>
+<g class="k"><rect x="20" y="18" width="164" height="7" rx="2"></rect><path d="M24 25 V176 M180 25 V176"></path><rect x="20" y="88" width="164" height="12" rx="2"></rect><rect x="20" y="176" width="164" height="8" rx="2"></rect><path d="M30 184 v6 M174 184 v6"></path></g>
+<rect x="30" y="90" width="73.8" height="8" rx="2" class="fl"></rect><path class="k2" style="stroke-width:1.4" d="M36 94 h7 M50 94 h7 M64 94 h7 M78 94 h7"></path>
+<g transform="translate(30.5 48.9) scale(1.15)"><g transform="translate(-1.5 1.5)" class="fs"><rect x="0" y="0" width="20" height="34" rx="2"></rect></g><g class="k2"><rect x="0" y="0" width="20" height="34" rx="2"></rect><path d="M0 6 H20"></path><rect x="4" y="13" width="12" height="10" rx="2"></rect></g></g><g transform="translate(147.65 60.4) scale(1.15)"><g transform="translate(-1.5 1.5)" class="fp"><rect x="1" y="5" width="16" height="19" rx="4"></rect></g><g class="k2"><rect x="3" y="0" width="12" height="5" rx="1.5"></rect><rect x="1" y="5" width="16" height="19" rx="4"></rect><rect x="4" y="11" width="10" height="7" rx="1.5"></rect></g></g>
+<g class="gh"><rect class="kd" x="68.5" y="53.5" width="23" height="34.5" rx="3"></rect><rect class="kd" x="100.5" y="60.4" width="23" height="27.6" rx="3"></rect></g>
+<g transform="translate(32.5 148.4) scale(1.15)"><g transform="translate(-1.5 1.5)" class="fp"><rect x="0" y="0" width="20" height="24" rx="3"></rect></g><rect x="0" y="8" width="20" height="8" class="fc" opacity="0.55"></rect><g class="k2"><rect x="0" y="0" width="20" height="24" rx="3"></rect><path d="M0 8 H20 M0 16 H20"></path></g></g><g transform="translate(64.45 159.9) scale(1.15)"><g transform="translate(-1.5 1.5)" class="fs"><rect x="0" y="0" width="34" height="14" rx="2"></rect></g><g class="k2"><rect x="0" y="0" width="34" height="14" rx="2"></rect></g><path class="k2" d="M6 7 H22"></path></g>
+<g transform="translate(142 146) scale(0.7)">
+<g transform="translate(-1.5 1.5)"><rect x="-22" y="-22" width="44" height="44" rx="9" class="fp"></rect></g>
+<rect x="-22" y="-22" width="44" height="44" rx="9" class="k fp"></rect>
+<circle r="16" class="kc "></circle>
+<circle r="10.5" class="fg core"></circle>
+<path class="kp" style="stroke-width:1.6" d="M-3.5 -3 c1.2 1.8 1.2 4.2 0 6 M0 -5 c2 2.8 2 7.2 0 10 M3.5 -7 c2.8 3.8 2.8 10.2 0 14"></path>
+</g>
+<!-- bag back + handles -->
+<path class="k" d="M226 110 C226 78 276 78 276 110"></path>
+<g transform="translate(-2 2)" class="fo"><path d="M210 108 H292 L286 186 H216 Z"></path></g>
+<path class="k fo" d="M210 108 H292 L286 186 H216 Z"></path>
+<!-- items travel into the bag -->
+<g class="mv1"><g transform="translate(68.5 53.5) scale(1.15)"><g transform="translate(-1.5 1.5)" class="fp"><path d="M3 2 H17 L19 28 Q10 30 1 28 Z"></path></g><g class="k2"><path d="M3 2 H17 L19 28 Q10 30 1 28 Z"></path><path d="M3 6 H17"></path><rect x="5" y="11" width="10" height="11" rx="3"></rect><path d="M7 15 q1.5 -2.4 3 0 t3 0 M7 19 q1.5 -2.4 3 0 t3 0" stroke-width="1.5"></path></g></g></g>
+<g class="mv2"><g transform="translate(100.5 60.4) scale(1.15)"><g transform="translate(-1.5 1.5)" class="fp"><rect x="0" y="0" width="20" height="24" rx="3"></rect></g><rect x="0" y="8" width="20" height="8" class="fc" opacity="0.55"></rect><g class="k2"><rect x="0" y="0" width="20" height="24" rx="3"></rect><path d="M0 8 H20 M0 16 H20"></path></g></g></g>
+<!-- bag front -->
+<g transform="translate(-2 2)" class="fp"><path d="M206 118 H296 L288 190 H214 Z"></path></g>
+<path class="k fp" d="M206 118 H296 L288 190 H214 Z"></path>
+<path class="k2" d="M232 140 c6 6 30 6 36 0"></path>
+
+</g></g>
+</svg>

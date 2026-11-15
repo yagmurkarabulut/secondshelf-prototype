@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="ss-ill ssi-fill" viewBox="0 0 320 124" role="img" aria-label="Shelf with free spots that fill as you add items" data-mine="0">
+<title>Shelf with free spots that fill as you add items</title>
+<defs>
+<filter id="ssi-fill-ink" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="2" seed="7"></feTurbulence><feDisplacementMap in="SourceGraphic" scale="1.8" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter>
+<clipPath id="ssi-fill-clip"><rect x="0" y="0" width="320" height="124" rx="16"></rect></clipPath>
+</defs>
+<style>
+.ssi-fill .k{fill:none;stroke:var(--green-900,#1F3D2B);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.ssi-fill .k2{fill:none;stroke:var(--green-900,#1F3D2B);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ssi-fill .kp{fill:none;stroke:var(--paper-0,#FFFFFF);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ssi-fill .ka{fill:none;stroke:var(--terracotta-500,#C2593A);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.ssi-fill .kd{fill:none;stroke:var(--stone-500,#8C8477);stroke-width:2;stroke-linecap:round;stroke-dasharray:4 5}
+.ssi-fill .kc{fill:none;stroke:var(--clay-500,#8A6F4A);stroke-width:2;stroke-linecap:round;stroke-dasharray:3 4}
+.ssi-fill .bg{fill:var(--cream-100,#F6F1E7)}
+.ssi-fill .fp{fill:var(--paper-0,#FFFFFF)} .ssi-fill .fo{fill:var(--oat-200,#E9DFCC)} .ssi-fill .fs{fill:var(--sand-200,#E8D7B9)}
+.ssi-fill .fl{fill:var(--green-100,#CFE3C8)} .ssi-fill .ft{fill:var(--terracotta-100,#F0DFD2)} .ssi-fill .fT{fill:var(--terracotta-500,#C2593A)}
+.ssi-fill .fy{fill:var(--ochre-500,#BF8B2E)} .ssi-fill .fg{fill:var(--green-900,#1F3D2B)} .ssi-fill .fc{fill:var(--clay-500,#8A6F4A)}
+.ssi-fill .fi{fill:var(--ink-900,#2B241E)} .ssi-fill .fsl{fill:var(--slate-600,#51666D)} .ssi-fill .fr{fill:var(--stone-300,#CFC6B6)}
+.ssi-fill .tb{transform-box:fill-box;transform-origin:center}
+.ssi-fill .tbb{transform-box:fill-box;transform-origin:50% 100%}
+.ssi-fill [class^="m"]{display:none}
+@keyframes ssi-fill-drop{0%{transform:translateY(-48px);opacity:0}55%{transform:translateY(2px) scaleY(.94);opacity:1}78%{transform:translateY(-2px)}100%{transform:none;opacity:1}}
+.ssi-fill .drop{animation:ssi-fill-drop .45s cubic-bezier(.2,0,0,1) both}
+.ssi-fill[data-mine="1"] .m1,.ssi-fill[data-mine="2"] .m1,.ssi-fill[data-mine="3"] .m1,.ssi-fill[data-mine="4"] .m1,.ssi-fill[data-mine="5"] .m1,.ssi-fill[data-mine="6"] .m1{display:inline}
+.ssi-fill[data-mine="1"] .g1,.ssi-fill[data-mine="2"] .g1,.ssi-fill[data-mine="3"] .g1,.ssi-fill[data-mine="4"] .g1,.ssi-fill[data-mine="5"] .g1,.ssi-fill[data-mine="6"] .g1{display:none}
+.ssi-fill[data-mine="2"] .m2,.ssi-fill[data-mine="3"] .m2,.ssi-fill[data-mine="4"] .m2,.ssi-fill[data-mine="5"] .m2,.ssi-fill[data-mine="6"] .m2{display:inline}
+.ssi-fill[data-mine="2"] .g2,.ssi-fill[data-mine="3"] .g2,.ssi-fill[data-mine="4"] .g2,.ssi-fill[data-mine="5"] .g2,.ssi-fill[data-mine="6"] .g2{display:none}
+.ssi-fill[data-mine="3"] .m3,.ssi-fill[data-mine="4"] .m3,.ssi-fill[data-mine="5"] .m3,.ssi-fill[data-mine="6"] .m3{display:inline}
+.ssi-fill[data-mine="3"] .g3,.ssi-fill[data-mine="4"] .g3,.ssi-fill[data-mine="5"] .g3,.ssi-fill[data-mine="6"] .g3{display:none}
+.ssi-fill[data-mine="4"] .m4,.ssi-fill[data-mine="5"] .m4,.ssi-fill[data-mine="6"] .m4{display:inline}
+.ssi-fill[data-mine="4"] .g4,.ssi-fill[data-mine="5"] .g4,.ssi-fill[data-mine="6"] .g4{display:none}
+.ssi-fill[data-mine="5"] .m5,.ssi-fill[data-mine="6"] .m5{display:inline}
+.ssi-fill[data-mine="5"] .g5,.ssi-fill[data-mine="6"] .g5{display:none}
+.ssi-fill[data-mine="6"] .m6{display:inline}
+.ssi-fill[data-mine="6"] .g6{display:none}
+
+@media (prefers-reduced-motion: reduce){.ssi-fill *{animation:none !important}}
+</style>
+<g clip-path="url(#ssi-fill-clip)"><rect class="bg" x="0" y="0" width="320" height="124" rx="16"></rect><g filter="url(#ssi-fill-ink)">
+
+<rect x="16" y="30" width="288" height="66" class="fo"></rect>
+<g transform="translate(-2 2)" class="fs"><rect x="12" y="24" width="296" height="7" rx="2"></rect><rect x="12" y="96" width="296" height="12" rx="2"></rect></g>
+<g class="k"><rect x="12" y="24" width="296" height="7" rx="2"></rect><path d="M16 31 V96 M304 31 V96"></path><rect x="12" y="96" width="296" height="12" rx="2"></rect></g>
+<rect x="22" y="98" width="120" height="8" rx="2" class="fl"></rect><path class="k2" style="stroke-width:1.4" d="M28 102 h7 M42 102 h7 M56 102 h7 M70 102 h7 M84 102 h7 M98 102 h7 M112 102 h7"></path>
+<g transform="translate(26 62) scale(1)"><g transform="translate(-1.5 1.5)" class="fs"><rect x="0" y="0" width="20" height="34" rx="2"></rect></g><g class="k2"><rect x="0" y="0" width="20" height="34" rx="2"></rect><path d="M0 6 H20"></path><rect x="4" y="13" width="12" height="10" rx="2"></rect></g></g><g transform="translate(52 72) scale(1)"><g transform="translate(-1.5 1.5)" class="fp"><rect x="0" y="0" width="20" height="24" rx="3"></rect></g><rect x="0" y="8" width="20" height="8" class="fc" opacity="0.55"></rect><g class="k2"><rect x="0" y="0" width="20" height="24" rx="3"></rect><path d="M0 8 H20 M0 16 H20"></path></g></g><g transform="translate(79 72) scale(1)"><g transform="translate(-1.5 1.5)" class="fp"><rect x="1" y="5" width="16" height="19" rx="4"></rect></g><g class="k2"><rect x="3" y="0" width="12" height="5" rx="1.5"></rect><rect x="1" y="5" width="16" height="19" rx="4"></rect><rect x="4" y="11" width="10" height="7" rx="1.5"></rect></g></g><g class="g1"><rect class="kd" x="112" y="66" width="20" height="30" rx="3"></rect></g><g class="m1"><g class="drop tbb"><g transform="translate(112 66) scale(1)"><g transform="translate(-1.5 1.5)" class="ft"><path d="M3 2 H17 L19 28 Q10 30 1 28 Z"></path></g><g class="k2"><path d="M3 2 H17 L19 28 Q10 30 1 28 Z"></path><path d="M3 6 H17"></path><rect x="5" y="11" width="10" height="11" rx="3"></rect><path d="M7 15 q1.5 -2.4 3 0 t3 0 M7 19 q1.5 -2.4 3 0 t3 0" stroke-width="1.5"></path></g></g></g></g><g class="g2"><rect class="kd" x="140" y="72" width="20" height="24" rx="3"></rect></g><g class="m2"><g class="drop tbb"><g transform="translate(140 72) scale(1)"><g transform="translate(-1.5 1.5)" class="ft"><rect x="0" y="0" width="20" height="24" rx="3"></rect></g><rect x="0" y="8" width="20" height="8" class="fT" opacity="1"></rect><g class="k2"><rect x="0" y="0" width="20" height="24" rx="3"></rect><path d="M0 8 H20 M0 16 H20"></path></g></g></g></g><g class="g3"><rect class="kd" x="164" y="72" width="20" height="24" rx="3"></rect></g><g class="m3"><g class="drop tbb"><g transform="translate(164 72) scale(1)"><g transform="translate(-1.5 1.5)" class="ft"><rect x="0" y="0" width="20" height="24" rx="3"></rect></g><rect x="0" y="8" width="20" height="8" class="fT" opacity="1"></rect><g class="k2"><rect x="0" y="0" width="20" height="24" rx="3"></rect><path d="M0 8 H20 M0 16 H20"></path></g></g></g></g><g class="g4"><rect class="kd" x="191" y="82" width="34" height="14" rx="3"></rect></g><g class="m4"><g class="drop tbb"><g transform="translate(191 82) scale(1)"><g transform="translate(-1.5 1.5)" class="ft"><rect x="0" y="0" width="34" height="14" rx="2"></rect></g><g class="k2"><rect x="0" y="0" width="34" height="14" rx="2"></rect></g><path class="ka" style="stroke-width:2" d="M6 7 H22"></path></g></g></g><g class="g5"><rect class="kd" x="231" y="72" width="18" height="24" rx="3"></rect></g><g class="m5"><g class="drop tbb"><g transform="translate(231 72) scale(1)"><g transform="translate(-1.5 1.5)" class="ft"><rect x="1" y="5" width="16" height="19" rx="4"></rect></g><g class="k2"><rect x="3" y="0" width="12" height="5" rx="1.5"></rect><rect x="1" y="5" width="16" height="19" rx="4"></rect><rect x="4" y="11" width="10" height="7" rx="1.5"></rect></g></g></g></g><g class="g6"><rect class="kd" x="256" y="62" width="20" height="34" rx="3"></rect></g><g class="m6"><g class="drop tbb"><g transform="translate(256 62) scale(1)"><g transform="translate(-1.5 1.5)" class="ft"><rect x="0" y="0" width="20" height="34" rx="2"></rect></g><g class="k2"><rect x="0" y="0" width="20" height="34" rx="2"></rect><path d="M0 6 H20"></path><rect x="4" y="13" width="12" height="10" rx="2"></rect></g></g></g></g>
+<g transform="translate(288 62) scale(0.55)">
+<g transform="translate(-1.5 1.5)"><rect x="-22" y="-22" width="44" height="44" rx="9" class="fp"></rect></g>
+<rect x="-22" y="-22" width="44" height="44" rx="9" class="k fp"></rect>
+<circle r="16" class="kc "></circle>
+<circle r="10.5" class="fg core"></circle>
+<path class="kp" style="stroke-width:1.6" d="M-3.5 -3 c1.2 1.8 1.2 4.2 0 6 M0 -5 c2 2.8 2 7.2 0 10 M3.5 -7 c2.8 3.8 2.8 10.2 0 14"></path>
+</g>
+
+</g></g>
+</svg>

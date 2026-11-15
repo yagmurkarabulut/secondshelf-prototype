@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="ss-ill ssi-host" viewBox="0 0 320 210" role="img" aria-label="A café window sticker, an A5 sign, a shelf with dates facing out, the NFC plate and a QR sticker">
+<title>A café window sticker, an A5 sign, a shelf with dates facing out, the NFC plate and a QR sticker</title>
+<defs>
+<filter id="ssi-host-ink" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="2" seed="7"></feTurbulence><feDisplacementMap in="SourceGraphic" scale="1.8" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter>
+<clipPath id="ssi-host-clip"><rect x="0" y="0" width="320" height="210" rx="16"></rect></clipPath>
+</defs>
+<style>
+.ssi-host .k{fill:none;stroke:var(--green-900,#1F3D2B);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.ssi-host .k2{fill:none;stroke:var(--green-900,#1F3D2B);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ssi-host .kp{fill:none;stroke:var(--paper-0,#FFFFFF);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ssi-host .ka{fill:none;stroke:var(--terracotta-500,#C2593A);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.ssi-host .kd{fill:none;stroke:var(--stone-500,#8C8477);stroke-width:2;stroke-linecap:round;stroke-dasharray:4 5}
+.ssi-host .kc{fill:none;stroke:var(--clay-500,#8A6F4A);stroke-width:2;stroke-linecap:round;stroke-dasharray:3 4}
+.ssi-host .bg{fill:var(--cream-100,#F6F1E7)}
+.ssi-host .fp{fill:var(--paper-0,#FFFFFF)} .ssi-host .fo{fill:var(--oat-200,#E9DFCC)} .ssi-host .fs{fill:var(--sand-200,#E8D7B9)}
+.ssi-host .fl{fill:var(--green-100,#CFE3C8)} .ssi-host .ft{fill:var(--terracotta-100,#F0DFD2)} .ssi-host .fT{fill:var(--terracotta-500,#C2593A)}
+.ssi-host .fy{fill:var(--ochre-500,#BF8B2E)} .ssi-host .fg{fill:var(--green-900,#1F3D2B)} .ssi-host .fc{fill:var(--clay-500,#8A6F4A)}
+.ssi-host .fi{fill:var(--ink-900,#2B241E)} .ssi-host .fsl{fill:var(--slate-600,#51666D)} .ssi-host .fr{fill:var(--stone-300,#CFC6B6)}
+.ssi-host .tb{transform-box:fill-box;transform-origin:center}
+.ssi-host .tbb{transform-box:fill-box;transform-origin:50% 100%}
+
+@media (prefers-reduced-motion: reduce){.ssi-host *{animation:none !important}}
+</style>
+<g clip-path="url(#ssi-host-clip)"><rect class="bg" x="0" y="0" width="320" height="210" rx="16"></rect><g filter="url(#ssi-host-ink)">
+
+<!-- café window with the round window sticker -->
+<rect x="18" y="20" width="96" height="140" rx="6" class="k fp"></rect>
+<path class="k2" d="M66 20 V160 M18 92 H114"></path>
+<path class="fl" d="M26 150 C40 130 56 146 62 136 L62 156 L26 156 Z" opacity=".7"></path>
+<g><circle cx="42" cy="56" r="19" class="fg"></circle><circle cx="42" cy="56" r="15" class="kp" style="stroke-width:1.2;stroke-dasharray:2 3"></circle>
+<path class="kp" style="stroke-width:1.5" d="M35 44 h14"></path>
+<path class="kp" style="stroke-width:3.5" d="M32 54 h20 M35 62 h14"></path></g>
+<!-- A5 sign on the wall, then the shelf -->
+<g>
+<rect x="176" y="6" width="44" height="58" rx="5" class="fg"></rect>
+<path class="kp" style="stroke-width:1.6" d="M184 16 h14"></path>
+<path class="kp" style="stroke-width:3.5" d="M184 26 h26 M184 34 h18"></path>
+<rect x="183" y="42" width="30" height="10" rx="3" class="fl"></rect>
+<g class=""><path class="kp" d="M198.0 57 v11 m-4.5 -4.5 l4.5 4.5 l4.5 -4.5"></path></g>
+</g>
+<rect x="140" y="76" width="156" height="110" class="fo"></rect>
+<g transform="translate(-2 2)" class="fs"><rect x="136" y="70" width="164" height="7" rx="2"></rect><rect x="136" y="118" width="164" height="12" rx="2"></rect><rect x="136" y="186" width="164" height="8" rx="2"></rect></g>
+<g class="k"><rect x="136" y="70" width="164" height="7" rx="2"></rect><path d="M140 77 V186 M296 77 V186"></path><rect x="136" y="118" width="164" height="12" rx="2"></rect><rect x="136" y="186" width="164" height="8" rx="2"></rect><path d="M146 194 v6 M290 194 v6"></path></g>
+<rect x="146" y="120" width="73.8" height="8" rx="2" class="fl"></rect><path class="k2" style="stroke-width:1.4" d="M152 124 h7 M166 124 h7 M180 124 h7 M194 124 h7"></path>
+<g transform="translate(150 84) scale(1)"><g transform="translate(-1.5 1.5)" class="fs"><rect x="0" y="0" width="20" height="34" rx="2"></rect></g><g class="k2"><rect x="0" y="0" width="20" height="34" rx="2"></rect><path d="M0 6 H20"></path><rect x="4" y="13" width="12" height="10" rx="2"></rect></g></g><g transform="translate(174 94) scale(1)"><g transform="translate(-1.5 1.5)" class="fp"><rect x="0" y="0" width="20" height="24" rx="3"></rect></g><rect x="0" y="8" width="20" height="8" class="fc" opacity="0.55"></rect><g class="k2"><rect x="0" y="0" width="20" height="24" rx="3"></rect><path d="M0 8 H20 M0 16 H20"></path></g></g><g transform="translate(196 94) scale(1)"><g transform="translate(-1.5 1.5)" class="fp"><rect x="0" y="0" width="20" height="24" rx="3"></rect></g><rect x="0" y="8" width="20" height="8" class="fc" opacity="0.55"></rect><g class="k2"><rect x="0" y="0" width="20" height="24" rx="3"></rect><path d="M0 8 H20 M0 16 H20"></path></g></g><g transform="translate(220 88) scale(1)"><g transform="translate(-1.5 1.5)" class="fp"><path d="M3 2 H17 L19 28 Q10 30 1 28 Z"></path></g><g class="k2"><path d="M3 2 H17 L19 28 Q10 30 1 28 Z"></path><path d="M3 6 H17"></path><rect x="5" y="11" width="10" height="11" rx="3"></rect><path d="M7 15 q1.5 -2.4 3 0 t3 0 M7 19 q1.5 -2.4 3 0 t3 0" stroke-width="1.5"></path></g></g><g transform="translate(253 104) scale(1)"><g transform="translate(-1.5 1.5)" class="fs"><rect x="0" y="0" width="34" height="14" rx="2"></rect></g><g class="k2"><rect x="0" y="0" width="34" height="14" rx="2"></rect></g><path class="k2" d="M6 7 H22"></path></g>
+<g transform="translate(149 172) scale(1)"><g transform="translate(-1.5 1.5)" class="fs"><rect x="0" y="0" width="34" height="14" rx="2"></rect></g><g class="k2"><rect x="0" y="0" width="34" height="14" rx="2"></rect></g><path class="k2" d="M6 7 H22"></path></g><g transform="translate(187 162) scale(1)"><g transform="translate(-1.5 1.5)" class="fp"><rect x="1" y="5" width="16" height="19" rx="4"></rect></g><g class="k2"><rect x="3" y="0" width="12" height="5" rx="1.5"></rect><rect x="1" y="5" width="16" height="19" rx="4"></rect><rect x="4" y="11" width="10" height="7" rx="1.5"></rect></g></g>
+<g transform="translate(246 156) scale(0.72)">
+<g transform="translate(-1.5 1.5)"><rect x="-22" y="-22" width="44" height="44" rx="9" class="fp"></rect></g>
+<rect x="-22" y="-22" width="44" height="44" rx="9" class="k fp"></rect>
+<circle r="16" class="kc "></circle>
+<circle r="10.5" class="fg core"></circle>
+<path class="kp" style="stroke-width:1.6" d="M-3.5 -3 c1.2 1.8 1.2 4.2 0 6 M0 -5 c2 2.8 2 7.2 0 10 M3.5 -7 c2.8 3.8 2.8 10.2 0 14"></path>
+</g><g transform="translate(266 142) scale(0.8)">
+<rect x="0" y="0" width="24" height="30" rx="4" class="k2 fp"></rect>
+<rect x="4" y="4" width="16" height="16" rx="2" class="k2"></rect>
+<rect x="7" y="7" width="4" height="4" class="fg"></rect><rect x="13" y="13" width="4" height="4" class="fg"></rect><rect x="13" y="7" width="2" height="2" class="fg"></rect><rect x="7" y="14" width="2" height="2" class="fg"></rect>
+<path class="k2" style="stroke-width:1.5" d="M6 25 H18"></path>
+</g>
+<path class="k" d="M10 194 H310"></path>
+
+</g></g>
+</svg>

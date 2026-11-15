@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="ss-ill ssi-tap" viewBox="0 0 320 260" role="img" aria-label="A hand holds a phone to the NFC plate under the SecondShelf sign" data-state="idle">
+<title>A hand holds a phone to the NFC plate under the SecondShelf sign</title>
+<defs>
+<filter id="ssi-tap-ink" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="2" seed="7"></feTurbulence><feDisplacementMap in="SourceGraphic" scale="1.8" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter>
+<clipPath id="ssi-tap-clip"><rect x="0" y="0" width="320" height="260" rx="16"></rect></clipPath>
+</defs>
+<style>
+.ssi-tap .k{fill:none;stroke:var(--green-900,#1F3D2B);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.ssi-tap .k2{fill:none;stroke:var(--green-900,#1F3D2B);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ssi-tap .kp{fill:none;stroke:var(--paper-0,#FFFFFF);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ssi-tap .ka{fill:none;stroke:var(--terracotta-500,#C2593A);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.ssi-tap .kd{fill:none;stroke:var(--stone-500,#8C8477);stroke-width:2;stroke-linecap:round;stroke-dasharray:4 5}
+.ssi-tap .kc{fill:none;stroke:var(--clay-500,#8A6F4A);stroke-width:2;stroke-linecap:round;stroke-dasharray:3 4}
+.ssi-tap .bg{fill:var(--cream-100,#F6F1E7)}
+.ssi-tap .fp{fill:var(--paper-0,#FFFFFF)} .ssi-tap .fo{fill:var(--oat-200,#E9DFCC)} .ssi-tap .fs{fill:var(--sand-200,#E8D7B9)}
+.ssi-tap .fl{fill:var(--green-100,#CFE3C8)} .ssi-tap .ft{fill:var(--terracotta-100,#F0DFD2)} .ssi-tap .fT{fill:var(--terracotta-500,#C2593A)}
+.ssi-tap .fy{fill:var(--ochre-500,#BF8B2E)} .ssi-tap .fg{fill:var(--green-900,#1F3D2B)} .ssi-tap .fc{fill:var(--clay-500,#8A6F4A)}
+.ssi-tap .fi{fill:var(--ink-900,#2B241E)} .ssi-tap .fsl{fill:var(--slate-600,#51666D)} .ssi-tap .fr{fill:var(--stone-300,#CFC6B6)}
+.ssi-tap .tb{transform-box:fill-box;transform-origin:center}
+.ssi-tap .tbb{transform-box:fill-box;transform-origin:50% 100%}
+
+.ssi-tap .s-wave,.ssi-tap .s-chk,.ssi-tap .s-err,.ssi-tap .s-qr{opacity:0}
+.ssi-tap .rp,.ssi-tap .aim{opacity:0}
+.ssi-tap .ring{transform-box:fill-box;transform-origin:center}
+@keyframes ssi-tap-ph{0%{transform:translate(96px,150px)}26%{transform:translate(0,0)}74%{transform:translate(0,0)}96%,100%{transform:translate(96px,150px)}}
+@keyframes ssi-tap-rp{0%,30%{transform:scale(.6);opacity:0}34%{opacity:.9}62%,100%{transform:scale(2.2);opacity:0}}
+@keyframes ssi-tap-rpf{0%{transform:scale(.6);opacity:.9}100%{transform:scale(2.2);opacity:0}}
+@keyframes ssi-tap-arrow{0%,100%{transform:translateY(-2px)}50%{transform:translateY(3px)}}
+@keyframes ssi-tap-spin{to{transform:rotate(360deg)}}
+@keyframes ssi-tap-pop{0%{opacity:0;transform:scale(.4)}60%{opacity:1;transform:scale(1.15)}100%{opacity:1;transform:scale(1)}}
+@keyframes ssi-tap-shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-2px)}40%,80%{transform:translateX(2px)}}
+@keyframes ssi-tap-blink{0%,100%{opacity:.25}50%{opacity:1}}
+/* idle: the teaching loop (4 s). Still frame = phone on the plate, ripples drawn. */
+.ssi-tap[data-state="idle"] .ph{animation:ssi-tap-ph 4s cubic-bezier(.2,0,0,1) infinite}
+.ssi-tap[data-state="idle"] .rp{animation:ssi-tap-rp 4s cubic-bezier(.2,0,0,1) infinite}
+.ssi-tap[data-state="idle"] .rp2{animation-delay:.25s} .ssi-tap[data-state="idle"] .rp3{animation-delay:.5s}
+.ssi-tap[data-state="idle"] .arrow{animation:ssi-tap-arrow 1.2s ease-in-out infinite}
+.ssi-tap[data-state="idle"] .ring{animation:ssi-tap-spin 10s linear infinite}
+.ssi-tap[data-state="idle"] .s-wave{opacity:1}
+/* scanning: phone held on the plate, ripples every 1.2 s */
+.ssi-tap[data-state="scanning"] .rp{animation:ssi-tap-rpf 1.2s cubic-bezier(.2,0,0,1) infinite}
+.ssi-tap[data-state="scanning"] .rp2{animation-delay:.4s} .ssi-tap[data-state="scanning"] .rp3{animation-delay:.8s}
+.ssi-tap[data-state="scanning"] .s-wave{opacity:1;animation:ssi-tap-blink 1.2s ease-in-out infinite}
+/* found: tick pops, phone buzzes once, plate core turns Leaf */
+.ssi-tap[data-state="found"] .s-chk{opacity:1;transform-box:fill-box;transform-origin:center;animation:ssi-tap-pop .3s cubic-bezier(.2,0,0,1) both}
+.ssi-tap[data-state="found"] .shake{animation:ssi-tap-shake .3s linear 1}
+.ssi-tap[data-state="found"] .core{fill:var(--green-100,#CFE3C8)}
+/* notfound: phone just off the plate, dashed target shows where to aim */
+.ssi-tap[data-state="notfound"] .ph{transform:translate(30px,22px)}
+.ssi-tap[data-state="notfound"] .s-err{opacity:1}
+.ssi-tap[data-state="notfound"] .aim{opacity:1;animation:ssi-tap-blink 1.2s ease-in-out infinite}
+/* qr: phone over the QR sticker, camera corners on screen */
+.ssi-tap[data-state="qr"] .ph{transform:translate(39px,0px)}
+.ssi-tap[data-state="qr"] .s-qr{opacity:1}
+@media (prefers-reduced-motion: reduce){
+.ssi-tap[data-state="idle"] .rp,.ssi-tap[data-state="scanning"] .rp{opacity:.5}
+.ssi-tap[data-state="idle"] .rp1,.ssi-tap[data-state="scanning"] .rp1{transform:scale(1.2)}
+.ssi-tap[data-state="idle"] .rp2,.ssi-tap[data-state="scanning"] .rp2{transform:scale(1.6)}
+.ssi-tap[data-state="idle"] .rp3,.ssi-tap[data-state="scanning"] .rp3{opacity:0}
+.ssi-tap[data-state="notfound"] .aim{opacity:1}
+}
+@media (prefers-reduced-motion: reduce){.ssi-tap *{animation:none !important}}
+</style>
+<g clip-path="url(#ssi-tap-clip)"><rect class="bg" x="0" y="0" width="320" height="260" rx="16"></rect><g filter="url(#ssi-tap-ink)">
+
+<!-- wall + A5 sign above the shelf, arrow points at the plate -->
+<g>
+<rect x="128" y="4" width="52" height="70" rx="5" class="fg"></rect>
+<path class="kp" style="stroke-width:1.6" d="M136 14 h14"></path>
+<path class="kp" style="stroke-width:3.5" d="M136 24 h34 M136 32 h26"></path>
+<rect x="135" y="40" width="38" height="10" rx="3" class="fl"></rect>
+<g class="arrow"><path class="kp" d="M154.0 55 v11 m-4.5 -4.5 l4.5 4.5 l4.5 -4.5"></path></g>
+</g>
+<rect x="16" y="82" width="288" height="154" class="fo"></rect>
+<g transform="translate(-2 2)" class="fs"><rect x="12" y="76" width="296" height="7" rx="2"></rect><rect x="12" y="124" width="296" height="12" rx="2"></rect><rect x="12" y="236" width="296" height="8" rx="2"></rect></g>
+<g class="k"><rect x="12" y="76" width="296" height="7" rx="2"></rect><path d="M16 83 V236 M304 83 V236"></path><rect x="12" y="124" width="296" height="12" rx="2"></rect><rect x="12" y="236" width="296" height="8" rx="2"></rect><path d="M22 244 v6 M298 244 v6"></path></g>
+
+<rect x="24" y="128" width="92" height="8" rx="2" class="fl"></rect><path class="k2" style="stroke-width:1.4" d="M30 132 h7 M44 132 h7 M58 132 h7 M72 132 h7 M86 132 h7"></path>
+<!-- top tier -->
+<g transform="translate(28 90) scale(1)"><g transform="translate(-1.5 1.5)" class="fs"><rect x="0" y="0" width="20" height="34" rx="2"></rect></g><g class="k2"><rect x="0" y="0" width="20" height="34" rx="2"></rect><path d="M0 6 H20"></path><rect x="4" y="13" width="12" height="10" rx="2"></rect></g></g><g transform="translate(52 100) scale(1)"><g transform="translate(-1.5 1.5)" class="fp"><rect x="0" y="0" width="20" height="24" rx="3"></rect></g><rect x="0" y="8" width="20" height="8" class="fc" opacity="0.55"></rect><g class="k2"><rect x="0" y="0" width="20" height="24" rx="3"></rect><path d="M0 8 H20 M0 16 H20"></path></g></g><g transform="translate(74 100) scale(1)"><g transform="translate(-1.5 1.5)" class="fp"><rect x="0" y="0" width="20" height="24" rx="3"></rect></g><rect x="0" y="8" width="20" height="8" class="fc" opacity="0.55"></rect><g class="k2"><rect x="0" y="0" width="20" height="24" rx="3"></rect><path d="M0 8 H20 M0 16 H20"></path></g></g><g transform="translate(98 94) scale(1)"><g transform="translate(-1.5 1.5)" class="fp"><path d="M3 2 H17 L19 28 Q10 30 1 28 Z"></path></g><g class="k2"><path d="M3 2 H17 L19 28 Q10 30 1 28 Z"></path><path d="M3 6 H17"></path><rect x="5" y="11" width="10" height="11" rx="3"></rect><path d="M7 15 q1.5 -2.4 3 0 t3 0 M7 19 q1.5 -2.4 3 0 t3 0" stroke-width="1.5"></path></g></g>
+<g transform="translate(209 110) scale(1)"><g transform="translate(-1.5 1.5)" class="fs"><rect x="0" y="0" width="34" height="14" rx="2"></rect></g><g class="k2"><rect x="0" y="0" width="34" height="14" rx="2"></rect></g><path class="k2" d="M6 7 H22"></path></g><g transform="translate(247 100) scale(1)"><g transform="translate(-1.5 1.5)" class="fp"><rect x="1" y="5" width="16" height="19" rx="4"></rect></g><g class="k2"><rect x="3" y="0" width="12" height="5" rx="1.5"></rect><rect x="1" y="5" width="16" height="19" rx="4"></rect><rect x="4" y="11" width="10" height="7" rx="1.5"></rect></g></g><g transform="translate(272 100) scale(1)"><g transform="translate(-1.5 1.5)" class="fp"><rect x="0" y="0" width="20" height="24" rx="3"></rect></g><rect x="0" y="8" width="20" height="8" class="fc" opacity="0.55"></rect><g class="k2"><rect x="0" y="0" width="20" height="24" rx="3"></rect><path d="M0 8 H20 M0 16 H20"></path></g></g>
+<!-- lower tier -->
+<g transform="translate(30 202) scale(1)"><g transform="translate(-1.5 1.5)" class="fs"><rect x="0" y="0" width="20" height="34" rx="2"></rect></g><g class="k2"><rect x="0" y="0" width="20" height="34" rx="2"></rect><path d="M0 6 H20"></path><rect x="4" y="13" width="12" height="10" rx="2"></rect></g></g><g transform="translate(61 222) scale(1)"><g transform="translate(-1.5 1.5)" class="fs"><rect x="0" y="0" width="34" height="14" rx="2"></rect></g><g class="k2"><rect x="0" y="0" width="34" height="14" rx="2"></rect></g><path class="k2" d="M6 7 H22"></path></g><g transform="translate(226 212) scale(1)"><g transform="translate(-1.5 1.5)" class="fp"><rect x="0" y="0" width="20" height="24" rx="3"></rect></g><rect x="0" y="8" width="20" height="8" class="fc" opacity="0.55"></rect><g class="k2"><rect x="0" y="0" width="20" height="24" rx="3"></rect><path d="M0 8 H20 M0 16 H20"></path></g></g><g transform="translate(252 206) scale(1)"><g transform="translate(-1.5 1.5)" class="fp"><path d="M3 2 H17 L19 28 Q10 30 1 28 Z"></path></g><g class="k2"><path d="M3 2 H17 L19 28 Q10 30 1 28 Z"></path><path d="M3 6 H17"></path><rect x="5" y="11" width="10" height="11" rx="3"></rect><path d="M7 15 q1.5 -2.4 3 0 t3 0 M7 19 q1.5 -2.4 3 0 t3 0" stroke-width="1.5"></path></g></g><g transform="translate(277 212) scale(1)"><g transform="translate(-1.5 1.5)" class="fp"><rect x="1" y="5" width="16" height="19" rx="4"></rect></g><g class="k2"><rect x="3" y="0" width="12" height="5" rx="1.5"></rect><rect x="1" y="5" width="16" height="19" rx="4"></rect><rect x="4" y="11" width="10" height="7" rx="1.5"></rect></g></g>
+<!-- NFC plate + QR sticker -->
+<g class="aim"><circle cx="154" cy="138" r="30" class="ka" style="stroke-dasharray:5 6"></circle></g>
+<g transform="translate(154 138) scale(1)">
+<g transform="translate(-1.5 1.5)"><rect x="-22" y="-22" width="44" height="44" rx="9" class="fp"></rect></g>
+<rect x="-22" y="-22" width="44" height="44" rx="9" class="k fp"></rect>
+<circle r="16" class="kc ring"></circle>
+<circle r="10.5" class="fg core"></circle>
+<path class="kp" style="stroke-width:1.6" d="M-3.5 -3 c1.2 1.8 1.2 4.2 0 6 M0 -5 c2 2.8 2 7.2 0 10 M3.5 -7 c2.8 3.8 2.8 10.2 0 14"></path>
+</g>
+<g transform="translate(181 123) scale(1)">
+<rect x="0" y="0" width="24" height="30" rx="4" class="k2 fp"></rect>
+<rect x="4" y="4" width="16" height="16" rx="2" class="k2"></rect>
+<rect x="7" y="7" width="4" height="4" class="fg"></rect><rect x="13" y="13" width="4" height="4" class="fg"></rect><rect x="13" y="7" width="2" height="2" class="fg"></rect><rect x="7" y="14" width="2" height="2" class="fg"></rect>
+<path class="k2" style="stroke-width:1.5" d="M6 25 H18"></path>
+</g>
+<!-- ripples -->
+<g class="rips"><circle cx="154" cy="132" r="26" class="ka rp rp1 tb"></circle><circle cx="154" cy="132" r="26" class="ka rp rp2 tb"></circle><circle cx="154" cy="132" r="26" class="ka rp rp3 tb"></circle></g>
+<!-- phone in hand -->
+<g class="ph"><g class="shake"><g transform="translate(154 138) rotate(-8)"><g class="hand">
+<g transform="translate(-2 2)" class="fs"><path d="M-36 4 C-42 30 -38 58 -22 74 L-18 130 L38 130 L40 70 C46 46 44 18 34 4 Z"></path></g>
+<path class="k fs" d="M-36 4 C-42 30 -38 58 -22 74 L-18 130 L38 130 L40 70 C46 46 44 18 34 4 Z"></path>
+<g transform="translate(-2 2)" class="fl"><rect x="-26" y="100" width="70" height="60" rx="10"></rect></g>
+<rect x="-26" y="100" width="70" height="60" rx="10" class="k"></rect><path class="k2" d="M-26 112 H44"></path>
+<rect x="-30" y="-56" width="60" height="112" rx="11" class="k fp"></rect>
+<rect x="-23" y="-45" width="46" height="88" rx="5" class="k2" style="stroke-width:1.6"></rect>
+<path class="k2" d="M-6 -50.5 H6"></path>
+<g class="s-wave"><path class="k2" d="M-6 -6 c1.6 2.4 1.6 5.6 0 8 M-1 -9 c2.6 3.6 2.6 9.6 0 13 M4 -12 c3.6 4.8 3.6 13.2 0 18"></path></g>
+<g class="s-chk"><circle r="14" cy="-1" class="fl"></circle><path class="k" d="M-6 -1 l4 4.5 l8 -9"></path></g>
+<g class="s-err"><circle r="14" cy="-1" class="fo"></circle><path class="k2" style="stroke:var(--slate-600,#51666D);stroke-width:2.5" d="M0 -8 V0 M0 6 v.01"></path></g>
+<g class="s-qr"><path class="k2" d="M-14 -14 h-5 v5 M14 -14 h5 v5 M-14 12 h-5 v-5 M14 12 h5 v-5"></path><rect x="-8" y="-8" width="16" height="16" rx="2" class="k2" style="stroke-width:1.5"></rect></g>
+<rect x="22" y="-12" width="19" height="13" rx="6.5" class="k fs"></rect>
+<rect x="22" y="2" width="20" height="13" rx="6.5" class="k fs"></rect>
+<rect x="22" y="16" width="19" height="13" rx="6.5" class="k fs"></rect>
+<rect x="21" y="30" width="17" height="13" rx="6.5" class="k fs"></rect>
+<rect x="-44" y="10" width="17" height="34" rx="8.5" transform="rotate(26 -35.5 27)" class="k fs"></rect>
+</g></g></g></g>
+
+</g></g>
+</svg>

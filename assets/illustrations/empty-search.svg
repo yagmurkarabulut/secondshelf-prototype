@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="ss-ill ssi-nosearch" viewBox="0 0 240 160" role="img" aria-label="A magnifier over a shelf with empty spots">
+<title>A magnifier over a shelf with empty spots</title>
+<defs>
+<filter id="ssi-nosearch-ink" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="2" seed="7"></feTurbulence><feDisplacementMap in="SourceGraphic" scale="1.8" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter>
+<clipPath id="ssi-nosearch-clip"><rect x="0" y="0" width="240" height="160" rx="16"></rect></clipPath>
+</defs>
+<style>
+.ssi-nosearch .k{fill:none;stroke:var(--green-900,#1F3D2B);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.ssi-nosearch .k2{fill:none;stroke:var(--green-900,#1F3D2B);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ssi-nosearch .kp{fill:none;stroke:var(--paper-0,#FFFFFF);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ssi-nosearch .ka{fill:none;stroke:var(--terracotta-500,#C2593A);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.ssi-nosearch .kd{fill:none;stroke:var(--stone-500,#8C8477);stroke-width:2;stroke-linecap:round;stroke-dasharray:4 5}
+.ssi-nosearch .kc{fill:none;stroke:var(--clay-500,#8A6F4A);stroke-width:2;stroke-linecap:round;stroke-dasharray:3 4}
+.ssi-nosearch .bg{fill:var(--cream-100,#F6F1E7)}
+.ssi-nosearch .fp{fill:var(--paper-0,#FFFFFF)} .ssi-nosearch .fo{fill:var(--oat-200,#E9DFCC)} .ssi-nosearch .fs{fill:var(--sand-200,#E8D7B9)}
+.ssi-nosearch .fl{fill:var(--green-100,#CFE3C8)} .ssi-nosearch .ft{fill:var(--terracotta-100,#F0DFD2)} .ssi-nosearch .fT{fill:var(--terracotta-500,#C2593A)}
+.ssi-nosearch .fy{fill:var(--ochre-500,#BF8B2E)} .ssi-nosearch .fg{fill:var(--green-900,#1F3D2B)} .ssi-nosearch .fc{fill:var(--clay-500,#8A6F4A)}
+.ssi-nosearch .fi{fill:var(--ink-900,#2B241E)} .ssi-nosearch .fsl{fill:var(--slate-600,#51666D)} .ssi-nosearch .fr{fill:var(--stone-300,#CFC6B6)}
+.ssi-nosearch .tb{transform-box:fill-box;transform-origin:center}
+.ssi-nosearch .tbb{transform-box:fill-box;transform-origin:50% 100%}
+@keyframes ssi-nosearch-lens{0%{transform:translate(-30px,-6px)}50%{transform:translate(6px,4px)}100%{transform:none}}
+.ssi-nosearch .lens{animation:ssi-nosearch-lens 1.6s cubic-bezier(.2,0,0,1) .2s both}
+@media (prefers-reduced-motion: reduce){.ssi-nosearch *{animation:none !important}}
+</style>
+<g clip-path="url(#ssi-nosearch-clip)"><rect class="bg" x="0" y="0" width="240" height="160" rx="16"></rect><g filter="url(#ssi-nosearch-ink)">
+<rect x="34" y="30" width="132" height="54" class="fo"></rect>
+<g transform="translate(-2 2)" class="fs"><rect x="30" y="24" width="140" height="7" rx="2"></rect><rect x="30" y="84" width="140" height="10" rx="2"></rect></g>
+<g class="k"><rect x="30" y="24" width="140" height="7" rx="2"></rect><path d="M34 31 V84 M166 31 V84"></path><rect x="30" y="84" width="140" height="10" rx="2"></rect></g>
+<rect class="kd" x="50" y="48" width="24" height="36" rx="3"></rect><rect class="kd" x="84" y="55.2" width="24" height="28.8" rx="3"></rect><rect class="kd" x="119.2" y="55.2" width="21.6" height="28.8" rx="3"></rect>
+<g class="lens tb"><circle cx="170" cy="98" r="26" class="k fp" style="fill-opacity:.6"></circle><path class="k" style="stroke-width:5" d="M189 117 L210 138"></path></g>
+</g></g>
+</svg>
