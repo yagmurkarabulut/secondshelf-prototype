@@ -702,14 +702,16 @@ svg.leaflet-image-layer.leaflet-interactive path {
 :root{
   /* primitives */
   --green-950:#172E20; --green-900:#1F3D2B; --green-700:#3F5B3A; --green-100:#CFE3C8; --green-50:#E7F1E4; /* [NEW] Q97: half Leaf, half Paper */
-  --terracotta-800:#89432D; --terracotta-700:#A14C33; --terracotta-500:#C2593A; --terracotta-100:#F0DFD2;
-  --ochre-800:#876326; --ochre-500:#BF8B2E; --ochre-100:#EFE5D1; --clay-500:#8A6F4A;
+  --terracotta-800:#89432D; --terracotta-700:#A14C33; --terracotta-500:#C2593A; --terracotta-100:#F0DFD2; --terracotta-50:#F8EFE8;
+  --ochre-800:#876326; --ochre-500:#BF8B2E; --ochre-100:#EFE5D1; --ochre-50:#F7F2E8; --clay-500:#8A6F4A;
   --ink-900:#2B241E; --stone-700:#5C554C; --stone-600:#6E665C; --stone-500:#8C8477; --stone-300:#CFC6B6;
   --oat-200:#E9DFCC; --cream-100:#F6F1E7; --paper-0:#FFFFFF;
   --sand-200:#E8D7B9; --stone-200:#E6DED0;
   --ochre-300:#E3B65A; --ink-950:#1F1A16; /* [NEW] M01-home-v3 */
   --map-land:#FFFFFF; --map-road:#D9DED8; --map-road-main:#798C75; --map-water:#85D5EB;
   --success-700:#2C6E46; --warning-600:#A86A12; --slate-600:#51666D; --info-600:#2F6E8C;
+  /* [NEW] Q98 tint scale: 100 = about 15% of the colour on Paper, 50 = half of the 100 tint (or about 7%) */
+  --slate-100:#E5E8E9; --slate-50:#F3F4F5; --info-100:#E0E9EE; --info-50:#F0F5F7;
   /* text */
   --text-primary:var(--ink-900); --text-secondary:var(--stone-700); --text-tertiary:var(--stone-600); --text-disabled:var(--stone-500);
   --text-brand:var(--green-900); --text-accent:var(--terracotta-700); --text-reward:var(--ochre-800); --text-link:var(--green-900);
@@ -758,6 +760,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
   --surface-notify-info:var(--paper-0);      --icon-notify-info:var(--green-900);
   --surface-notify-warning:var(--ochre-100); --icon-notify-warning:var(--ochre-800);   /* gold: 4.4:1 icon on tint */
   --surface-notify-error:var(--terracotta-100); --icon-notify-error:var(--terracotta-700); /* 4.6:1 icon on tint */
+  /* [NEW] Q98 spots meter */
+  --cap-taken:var(--green-700); --cap-free:var(--paper-0); --cap-free-border:var(--border-strong); --size-cap-seg:6px; --size-cap-h:12px;
   /* [NEW] QA round 8 */
   --surface-result:var(--green-50); --surface-result-pressed:var(--oat-200); --border-result:var(--green-700);  /* map / list location rows */
   /* [NEW] QA round 7 */
@@ -1459,6 +1463,13 @@ button.settings__row:active{background:var(--surface-canvas)}
 .result.is-selected{background:var(--surface-selected)}
 .result__main{flex:1;min-width:0;display:flex;flex-direction:column;gap:var(--space-4);align-items:flex-start}
 .result__meta{font:var(--type-body-small);color:var(--text-secondary)}
+.cap{display:inline-flex;align-items:center;gap:var(--space-8);min-height:var(--size-chip);padding:0 var(--space-12);border-radius:var(--radius-full);font:var(--type-label);white-space:nowrap;background:var(--surface-default);border:1px solid var(--border-subtle);color:var(--text-primary)}
+.cap__bar{display:inline-flex;gap:2px}
+.cap__seg{width:var(--size-cap-seg);height:var(--size-cap-h);border-radius:2px;background:var(--cap-free);box-shadow:inset 0 0 0 1px var(--cap-free-border)}
+.cap__seg.is-taken{background:var(--cap-taken);box-shadow:none}
+.cap--full{background:var(--surface-unavailable);color:var(--text-on-unavailable);border-color:var(--surface-unavailable)}
+.cap--full .cap__seg.is-taken{background:var(--text-on-unavailable)}
+.cap .icon{width:var(--size-icon-16);height:var(--size-icon-16);stroke-width:1.5;color:currentColor}
 
 /* ---- Verification status card / timeline ---- */
 .verify{display:flex;gap:var(--space-12);align-items:flex-start;background:var(--surface-default);border-radius:var(--radius-lg);padding:var(--space-16)}
@@ -2467,6 +2478,13 @@ const UI = {
       <div class="shelf__photo${url ? ' has-photo' : ''}">${UI.photo(url, `${venue} interior`)}<span class="placeholder">${icon('photo')}<span>Photo placeholder</span></span>${marker ? UI.marker(n) : ''}</div>
       <div class="shelf__body"><span class="shelf__dist">${esc(dist)}</span><span class="shelf__venue">${esc(venue)}</span>${hours ? `<span class="shelf__hours">${esc(hours)}</span>` : ''}${UI.avail(kind, spots)}</div></a>`;
   },
+  /* Q98 spots meter: one segment per shelf spot; filled = taken by an item, outlined = free. The words carry the meaning. */
+  capacity(v) {
+    const cap = Math.max(1, v.capacity || 0), free = Math.max(0, Math.min(cap, v.spots || 0)), taken = cap - free;
+    const label = free ? `${free} of ${cap} spots available` : 'Full shelf';
+    const segs = Array.from({ length: cap }, (_, i) => `<span class="cap__seg${i < taken ? ' is-taken' : ''}"></span>`).join('');
+    return `<span class="cap${free ? '' : ' cap--full'}" role="img" aria-label="${label}"><span class="cap__bar" aria-hidden="true">${segs}</span>${free ? '' : icon('shelf-full')}<span>${label}</span></span>`;
+  },
   resultRow({ n, venue, meta, kind, spots, selected = false, chip = '' }) {
     return `<a class="result${selected ? ' is-selected' : ''}" href="#/take/point/${n}">${UI.marker(n, selected ? 'selected' : kind === 'full' ? 'full' : kind === 'closed' ? 'closed' : 'default')}
       <span class="result__main"><span class="t-title">${esc(venue)}</span><span class="result__meta">${esc(meta)}</span>${chip || UI.avail(kind, spots)}</span>${icon('chevron-right')}</a>`;
@@ -3407,13 +3425,13 @@ Views.map = {
       </div>`;
     };
     const rowHTML = v => {
-      const k = availKind(v), chip = availChip(v);
+      const k = availKind(v), chip = (k === 'space' || k === 'full') ? UI.capacity(v) : availChip(v);
       if (find()) {
         const mi = MapUI.food ? matchItem(v, MapUI.food) : null;
-        const l1 = mi ? `${esc(mi.name)}${mi.qty > 1 ? ' ×' + mi.qty : ''}` : `${pl(v.count, 'item')} on the shelf`;
+        const l1 = mi ? `${esc(mi.name)}${mi.qty > 1 ? ' ×' + mi.qty : ''}` : '';
         const l2 = mi ? `<span class="nowrap">${icon('sealed-badge', 'icon--xs icon--secondary')}Sealed</span> · BB ${esc(mi.bb)} · ${addedText(mi.days)}` : '';
         return `<button type="button" class="result" data-select="${v.id}">${UI.marker(v.id, k === 'space' ? 'default' : k)}
-          <span class="result__main"><span class="t-title">${esc(v.name)}</span><span class="result__meta">${l1}</span>${l2 ? `<span class="result__meta">${l2}</span>` : ''}<span class="result__meta">${esc(v.dist)}${v.hours ? ' · ' + esc(v.hours) : ''}</span>${chip}</span>${icon('chevron-right')}</button>`;
+          <span class="result__main"><span class="t-title">${esc(v.name)}</span>${l1 ? `<span class="result__meta">${l1}</span>` : ''}${l2 ? `<span class="result__meta">${l2}</span>` : ''}<span class="result__meta">${esc(v.dist)}${v.hours ? ' · ' + esc(v.hours) : ''}</span>${chip}</span>${icon('chevron-right')}</button>`;
       }
       return `<button type="button" class="result" data-select="${v.id}">${UI.marker(v.id, k === 'space' ? 'default' : k)}
         <span class="result__main"><span class="t-title">${esc(v.name)}</span><span class="result__meta">${esc(v.dist)}${v.hours ? ' · ' + esc(v.hours) : ''}</span>${chip}</span>${icon('chevron-right')}</button>`;

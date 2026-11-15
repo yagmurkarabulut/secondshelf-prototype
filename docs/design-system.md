@@ -26,10 +26,12 @@ Proportions: about **60% Cream and Paper · 30% Pantry Green and Ink · 10% Ochr
 | `terracotta-700` | `#A14C33` | Terracotta for text and buttons (Paper on it 5.8:1) |
 | `terracotta-500` | `#C2593A` | Terracotta: fills, icons, text 24px+ only |
 | `terracotta-100` | `#F0DFD2` | Terracotta tint |
+| `terracotta-50` | `#F8EFE8` | **[NEW] Q98** Soft terracotta tint (half of 100): quiet backgrounds, e.g. an error section inside a card |
 | `ochre-800` | `#876326` | Ochre for text and icons on Cream and Paper |
 | `ochre-500` | `#BF8B2E` | **Ochre / gold**: reward fills, Ink text on it |
 | `ochre-300` | `#E3B65A` | **v0.7 [NEW]** Light gold: icons on Forest (4.0:1). Ochre 500 on Forest is 2.5:1 and fails |
 | `ochre-100` | `#EFE5D1` | Ochre tint |
+| `ochre-50` | `#F7F2E8` | **[NEW] Q98** Soft ochre tint (half of 100): quiet reward backgrounds |
 | `sand-200` | `#E8D7B9` | **v0.4** Sand: icon tile on the Ink host-mode card |
 | `clay-500` | `#8A6F4A` | Clay: tertiary and decorative icons only |
 | `ink-900` | `#2B241E` | Ink (warm) |
@@ -46,6 +48,8 @@ Proportions: about **60% Cream and Paper · 30% Pantry Green and Ink · 10% Ochr
 | `warning-600` | `#A86A12` | Warning (icons only) |
 | `slate-600` | `#51666D` | Slate: problems. **No red anywhere.** |
 | `info-600` | `#2F6E8C` | Info, focus ring |
+| `slate-100` · `slate-50` | `#E5E8E9` · `#F3F4F5` | **[NEW] Q98** Slate tints (about 15% / 7% on Paper): calm problem backgrounds. Ink 12.4:1 on 100 |
+| `info-100` · `info-50` | `#E0E9EE` · `#F0F5F7` | **[NEW] Q98** Info tints (about 15% / 7% on Paper). Ink 12.4:1 on 100 |
 | `map-land` · `map-road` · `map-road-main` · `map-water` | `#FFFFFF` · `#D9DED8` · `#798C75` · `#85D5EB` | **v0.4** Map illustration only, never UI (**v0.7**: only the offline SVG map uses them) |
 
 ### 2.2 Text
@@ -428,6 +432,7 @@ Added while building `index.html` (phase 1). Listed in `docs/open-questions.md` 
 | Timeline | 24px dots joined by a 2px line; done = Pantry Green dot + tick, now = ring + dot, next = outline | done · now · next |
 | Stat tile | Paper, `radius-lg`, number in `heading-2` `text-brand`, caption | — |
 | **Notification** (QA round 3, Q92) | Top of the screen, 16px side gutter, newest on top, 8px gap; `radius-md`, `shadow-card`, icon + Ink text + optional action + 44px Close (X); drops in over `--motion-notify` (600 ms), auto-hides after 5 s; fade only under reduced motion | success (Leaf, Forest outline) · info (Paper + `border-subtle`) · warning (Ochre tint, Ochre 800 icon, Ochre 500 outline) · error (Terracotta tint, Terracotta 700 icon, Terracotta 500 outline). Warning and error colours are an exception to §2.5 under review |
+| **Spots meter** (Q98) | Chip (`radius-full`, 32px, Paper + 1px `border-subtle`, `label` type): one 6 × 12px segment per shelf spot, filled Forest (`--cap-taken`) = taken by an item, Paper with a `border-strong` inset = free, then "n of N spots available". Full: the Terracotta 700 "Full shelf" chip with Paper segments and the `shelf-full` icon. The words carry the meaning; the meter is a quick visual. Used in the map / list location rows (replaces the "n items on the shelf" line) | available · full |
 | Result icon | 80px round tile: Leaf + success tick (valid, sent), Oat + Slate flag (problem), Forest on dark screens | done · problem · brand |
 
 **v0.7 photo tokens [NEW]** (Q88):
