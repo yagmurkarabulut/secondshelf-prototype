@@ -1053,7 +1053,8 @@ h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{box-shadow:none}
   background:var(--surface-default);color:var(--text-primary);border:var(--border-w) solid var(--border-strong);
 }
 .chip .icon{width:var(--size-icon-20);height:var(--size-icon-20);color:currentColor}
-.chip[aria-pressed="true"]{background:var(--action-primary);color:var(--text-on-primary);border-color:var(--action-primary)}
+.chip[aria-pressed="true"]{background:var(--surface-toggle-on);color:var(--text-on-inverse);border-color:var(--surface-toggle-on)}  /* QA round 7: Ink like the Map / List switch */
+.chip[aria-pressed="true"] .icon{color:var(--icon-on-toggle)}
 .chip:active{transform:scale(.97)}
 
 /* ---- Checkbox row ---- */
