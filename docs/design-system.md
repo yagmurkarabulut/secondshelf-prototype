@@ -371,6 +371,46 @@ Every component uses semantic tokens only and is built with all its states.
 }
 ```
 
+### 10b. Tokens added by the prototype build **[NEW]**
+Added while building `index.html` (phase 1). Listed in `docs/open-questions.md` (Q15).
+| Token | Value | Use |
+|---|---|---|
+| `--tint-on-dark` | `rgba(255,255,255,.12)` | Lighter panel on `surface-brand` (the G04 illustration area), pressed outline button on task screens |
+| `--scrim` | `rgba(43,36,30,.4)` | Backdrop behind bottom sheets |
+| `--focus-on-dark` | `0 0 0 3px var(--paper-0)` | The "Paper ring" focus on dark fills that §6 describes |
+
+**16 Nov build [NEW]** (hi-fi fill-gaps build, listed in `docs/open-questions.md` Q70):
+| Token | Value | Use |
+|---|---|---|
+| `--motion-stagger` | `200ms` | Confirmation screens: headline, card and button stagger in (G07, R06, H05 live, H08b) |
+| `--motion-slow` | `600ms` | Count-down on R06, Rescue Bonus fill, G11 bars |
+| `--shadow-card-pressed` | `0 1px 2px rgba(43,36,30,.12), 0 10px 28px rgba(43,36,30,.14)` | Pressed tappable cards (scale .99 + this shadow) |
+| `--size-hero` | `240px` | Onboarding photo placeholder, H07 camera placeholder |
+| `--size-illus` | `160px` | Confirmation illustration placeholders, R03 photo header |
+| `--size-photo-sm` | `80px` | Venue photo in the map sheet details |
+| `--size-result-icon` | `80px` | Round result icon (H07b valid, H07c, R04c, H05b, R07b) |
+| `--size-radio` | `24px` | Radio dot (O03 role cards, radio rows, timeline dots) |
+| `--size-chart` | `160px` | G11 weekly bar chart |
+
+**16 Nov components [NEW]** (built once in `index.html`, reused):
+| Component | Recipe | States |
+|---|---|---|
+| Overlay banner | Slides down from the top (`--motion-base`), swipe up / Close dismisses, never over the tab bar; a Paper `notice` card (G01) or a Leaf / Oat banner (G09b, food alert) | shown · leaving · auto-hide 8 s (G09b) |
+| Gated button | Closing action with `aria-disabled` + a one-line `body-small` `text-secondary` hint under it; tapping it while disabled scrolls to and highlights what is missing (`shadow-focus` pulse) | enabled · disabled + hint · loading |
+| Step header, stacked | Back / Close, centred overline "Step n of N", bar, then a Fraunces title (O02–O04, R04c, H05b frames) | step 1…N |
+| Role card | Paper card, `border-strong`; selected = `surface-selected` + 2px `border-brand` + filled radio + "Selected" label | default · selected · pressed |
+| Radio row | 48px row in a Paper list, 24px radio | default · selected |
+| Location details (map sheet) | Back to locations / results, venue photo, title + distance, chip row, "On this shelf" expandable row, rules row, Directions + I'm there | collapsed · expanded (full height, chips hidden) · leave blocked (hint + nearest shelf) |
+| Pick row (R05, X01) | Paper card, 44px checkbox target, whole row tappable, selected = `border-brand`, stepper for multiples, "Not here?" link | default · checked · reported missing |
+| Steward check row (v2) | Item + reason + Keep / Remove 44px; decided = Leaf (kept) or Oat (removed) with a status label and Undo | to check · kept · removed |
+| Timeline | 24px dots joined by a 2px line; done = Pantry Green dot + tick, now = ring + dot, next = outline | done · now · next |
+| Stat tile | Paper, `radius-lg`, number in `heading-2` `text-brand`, caption | — |
+| Result icon | 80px round tile: Leaf + success tick (valid, sent), Oat + Slate flag (problem), Forest on dark screens | done · problem · brand |
+
+**Map cluster [NEW]** (from the interactive map): Paper pill, 2px `border-brand`, `community-shelf` 16px icon + count in `label` type, `text-brand`, `shadow-card`; only on the map. Kept visually different from the numbered Ink markers because numbers identify shelves (Q38).
+
+Recipe sizes from §3, §6 and §8 (type shorthands, icon sizes, 1.5px border, 32px marker, 6px band and step bar, 8px bonus bar, 72px item row, 64px settings row, 52 × 32 toggle) are also written as custom properties in `index.html` (block 1b), so components never hold literal values.
+
 ## 11. Frames
 Put PNG exports at 2x in `frames/`, named by screen code (`frames/G04-tap-the-tag.png`). Frames in the repo: `M01-home`, `G02-map` (also used for R01), `G08-coupons`, `M02-me`, plus the **v0.5 hi-fi mocks** (G04, G05, G06, G07, G08-coupons-v2, G08d, R01b, R03, R04, R05, R06, H01–H07, M01-home-v2, M02-me-v2). The mocks set **layout and the airy feel**; colours follow this file (see `docs/open-questions.md`, "Mocks vs kit"). When a frame and this file disagree on styling, **this file wins**; v0.4 already resolves the known differences (grey text, gold icons on Forest, coupon values, unnumbered markers, terracotta chip contrast, help icon). Note the difference in `docs/open-questions.md`.
 
