@@ -21,6 +21,7 @@ Proportions: about **60% Cream and Paper · 30% Pantry Green and Ink · 10% Ochr
 | `green-900` | `#1F3D2B` | **Pantry Green**, brand |
 | `green-700` | `#3F5B3A` | Forest, hover, illustration |
 | `green-100` | `#CFE3C8` | Leaf, selected surfaces |
+| `green-50` | `#E7F1E4` | **[NEW] Q97** Soft Leaf (half Leaf, half Paper): map / list location rows (`--surface-result`) |
 | `terracotta-800` | `#89432D` | Pressed terracotta |
 | `terracotta-700` | `#A14C33` | Terracotta for text and buttons (Paper on it 5.8:1) |
 | `terracotta-500` | `#C2593A` | Terracotta: fills, icons, text 24px+ only |
