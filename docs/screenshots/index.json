@@ -1,0 +1,555 @@
+[
+ {
+  "name": "O01-welcome",
+  "code": "O01",
+  "route": "#/welcome",
+  "hash": "#/welcome",
+  "errs": []
+ },
+ {
+  "name": "O02-how-it-works-step-1-of-3",
+  "code": "O02",
+  "route": "#/how",
+  "hash": "#/how",
+  "errs": []
+ },
+ {
+  "name": "O03-choose-how-you-use-it-step-2-of-3",
+  "code": "O03",
+  "route": "#/role",
+  "hash": "#/role",
+  "errs": []
+ },
+ {
+  "name": "O04-sharing-rules-step-3-of-3",
+  "code": "O04",
+  "route": "#/rules",
+  "hash": "#/rules",
+  "errs": []
+ },
+ {
+  "name": "O04-sharing-rules-read-only-from-me",
+  "code": "O04",
+  "route": "#/rules?view=1",
+  "hash": "#/rules?view=1",
+  "errs": []
+ },
+ {
+  "name": "M01-home-brenda-giver",
+  "code": "M01",
+  "route": "#/home",
+  "hash": "#/home",
+  "errs": []
+ },
+ {
+  "name": "M01-home-jonas-receiver-empty-state",
+  "code": "M01",
+  "route": "#/home?as=jonas",
+  "hash": "#/home",
+  "errs": []
+ },
+ {
+  "name": "M02-me",
+  "code": "M02",
+  "route": "#/me",
+  "hash": "#/me",
+  "errs": []
+ },
+ {
+  "name": "G01-travel-prompt-overlay-on-home",
+  "code": "G01",
+  "route": "#/home?sim=travel",
+  "hash": "#/home",
+  "errs": []
+ },
+ {
+  "name": "G02-map-leave-mode-sheet-at-half",
+  "code": "G02",
+  "route": "#/map",
+  "hash": "#/map",
+  "errs": []
+ },
+ {
+  "name": "G02-map-sheet-at-peek",
+  "code": "G02",
+  "route": "#/map?sheet=peek",
+  "hash": "#/map?sheet=peek",
+  "errs": []
+ },
+ {
+  "name": "G02-map-list-at-full-height",
+  "code": "G02",
+  "route": "#/map?view=list",
+  "hash": "#/map?view=list",
+  "errs": []
+ },
+ {
+  "name": "G03-location-details-in-the-sheet",
+  "code": "G03",
+  "route": "#/map?shelf=1",
+  "hash": "#/map?shelf=1",
+  "errs": []
+ },
+ {
+  "name": "G03-point-page-from-home",
+  "code": "G03",
+  "route": "#/point/1",
+  "hash": "#/point/1",
+  "errs": []
+ },
+ {
+  "name": "G03b-point-full",
+  "code": "G03b",
+  "route": "#/point/2",
+  "hash": "#/point/2",
+  "errs": []
+ },
+ {
+  "name": "G03b-point-paused-same-layout-reason-reopenin",
+  "code": "G03b",
+  "route": "#/point/10",
+  "hash": "#/point/10",
+  "errs": []
+ },
+ {
+  "name": "G04-tap-the-tag-idle-scanning-found",
+  "code": "G04",
+  "route": "#/give/tap?shelf=1",
+  "hash": "#/give/tap?shelf=1",
+  "errs": []
+ },
+ {
+  "name": "G04c-tag-not-found",
+  "code": "G04c",
+  "route": "#/give/tap?shelf=1&fail=1",
+  "hash": "#/give/tap?shelf=1&fail=1",
+  "errs": []
+ },
+ {
+  "name": "G05-photograph-your-items",
+  "code": "G05",
+  "route": "#/give/photo",
+  "hash": "#/give/photo",
+  "errs": []
+ },
+ {
+  "name": "G05-photo-unreadable",
+  "code": "G05",
+  "route": "#/give/photo?error=1",
+  "hash": "#/give/photo?error=1",
+  "errs": []
+ },
+ {
+  "name": "G06a-reading-your-photo",
+  "code": "G06a",
+  "route": "#/give/reading",
+  "hash": "#/give/reading",
+  "errs": []
+ },
+ {
+  "name": "G06-check-items",
+  "code": "G06",
+  "route": "#/give/items",
+  "hash": "#/give/items",
+  "errs": []
+ },
+ {
+  "name": "G06c-edit-or-add-item-sheet",
+  "code": "G06c",
+  "route": "#/give/items?add=1",
+  "hash": "#/give/items?add=1",
+  "errs": []
+ },
+ {
+  "name": "G07-thanks-for-sharing",
+  "code": "G07",
+  "route": "#/give/done",
+  "hash": "#/give/done",
+  "errs": []
+ },
+ {
+  "name": "G07b-monthly-coupon-limit-reached",
+  "code": "G07b",
+  "route": "#/give/done?cap=1",
+  "hash": "#/give/done?cap=1",
+  "errs": []
+ },
+ {
+  "name": "G08-coupons",
+  "code": "G08",
+  "route": "#/coupons",
+  "hash": "#/coupons",
+  "errs": []
+ },
+ {
+  "name": "G08-coupons-used-expired-withdrawn",
+  "code": "G08",
+  "route": "#/coupons?tab=used",
+  "hash": "#/coupons?tab=used",
+  "errs": []
+ },
+ {
+  "name": "G08d-show-at-the-counter",
+  "code": "G08d",
+  "route": "#/coupons/code/c1",
+  "hash": "#/coupons/code/c1",
+  "errs": []
+ },
+ {
+  "name": "G09b-rescue-banner-overlay-on-home",
+  "code": "G09b",
+  "route": "#/home?sim=rescue",
+  "hash": "#/home",
+  "errs": []
+ },
+ {
+  "name": "G10-rescue-bonus",
+  "code": "G10",
+  "route": "#/bonus",
+  "hash": "#/bonus",
+  "errs": []
+ },
+ {
+  "name": "G11-monthly-impact",
+  "code": "G11",
+  "route": "#/impact",
+  "hash": "#/impact",
+  "errs": []
+ },
+ {
+  "name": "R01-find-food-map-search-focused",
+  "code": "R01",
+  "route": "#/map?find=1",
+  "hash": "#/map?find=1",
+  "errs": []
+ },
+ {
+  "name": "R01b-no-results",
+  "code": "R01b",
+  "route": "#/map?find=1&food=Baby%20food",
+  "hash": "#/map?find=1&food=Baby%20food",
+  "errs": []
+ },
+ {
+  "name": "R02-search-results-list",
+  "code": "R02",
+  "route": "#/map?find=1&view=list&food=Pasta",
+  "hash": "#/map?find=1&view=list&food=Pasta",
+  "errs": []
+ },
+ {
+  "name": "R03-shelf-listing",
+  "code": "R03",
+  "route": "#/take/point/1",
+  "hash": "#/take/point/1",
+  "errs": []
+ },
+ {
+  "name": "R03-location-expanded-on-this-shelf",
+  "code": "R03",
+  "route": "#/map?find=1&shelf=1&expand=1",
+  "hash": "#/map?find=1&shelf=1&expand=1",
+  "errs": []
+ },
+ {
+  "name": "R04-check-and-tap",
+  "code": "R04",
+  "route": "#/take/tap?shelf=1",
+  "hash": "#/take/tap?shelf=1",
+  "errs": []
+ },
+ {
+  "name": "R04c-tag-not-found",
+  "code": "R04c",
+  "route": "#/take/tap?shelf=1&fail=1",
+  "hash": "#/take/tap?shelf=1&fail=1",
+  "errs": []
+ },
+ {
+  "name": "R05-what-are-you-taking",
+  "code": "R05",
+  "route": "#/take/items",
+  "hash": "#/take/items",
+  "errs": []
+ },
+ {
+  "name": "R06-pickup-logged",
+  "code": "R06",
+  "route": "#/take/done",
+  "hash": "#/take/done",
+  "errs": []
+ },
+ {
+  "name": "R07-report-a-problem-sheet",
+  "code": "R07",
+  "route": "#/take/point/1?report=1",
+  "hash": "#/take/point/1?report=1",
+  "errs": []
+ },
+ {
+  "name": "R07b-report-sent-sheet",
+  "code": "R07b",
+  "route": "#/take/point/1?report=sent",
+  "hash": "#/take/point/1?report=sent",
+  "errs": []
+ },
+ {
+  "name": "H01-become-a-host",
+  "code": "H01",
+  "route": "#/host",
+  "hash": "#/host",
+  "errs": []
+ },
+ {
+  "name": "H02-venue-details",
+  "code": "H02",
+  "route": "#/host/venue",
+  "hash": "#/host/venue",
+  "errs": []
+ },
+ {
+  "name": "H03-host-agreement",
+  "code": "H03",
+  "route": "#/host/agreement",
+  "hash": "#/host/agreement",
+  "errs": []
+ },
+ {
+  "name": "H03c-application-under-review",
+  "code": "H03c",
+  "route": "#/host/review",
+  "hash": "#/host/review",
+  "errs": []
+ },
+ {
+  "name": "H04-operator-verification",
+  "code": "H04",
+  "route": "#/host/verify",
+  "hash": "#/host/verify",
+  "errs": []
+ },
+ {
+  "name": "H05-starter-kit",
+  "code": "H05",
+  "route": "#/host/kit",
+  "hash": "#/host/kit",
+  "errs": []
+ },
+ {
+  "name": "H05-activation-tap",
+  "code": "H05",
+  "route": "#/host/activate",
+  "hash": "#/host/activate",
+  "errs": []
+ },
+ {
+  "name": "H05-shelf-is-live",
+  "code": "H05",
+  "route": "#/host/live",
+  "hash": "#/host/live",
+  "errs": []
+ },
+ {
+  "name": "H05b-activation-error",
+  "code": "H05b",
+  "route": "#/host/activate?fail=1",
+  "hash": "#/host/activate?fail=1",
+  "errs": []
+ },
+ {
+  "name": "H06-host-dashboard",
+  "code": "H06",
+  "route": "#/host/dashboard",
+  "hash": "#/host/dashboard",
+  "errs": []
+ },
+ {
+  "name": "H06b-pause-the-shelf",
+  "code": "H06b",
+  "route": "#/host/pause",
+  "hash": "#/host/pause",
+  "errs": []
+ },
+ {
+  "name": "H07-redeem-coupon",
+  "code": "H07",
+  "route": "#/host/redeem",
+  "hash": "#/host/redeem",
+  "errs": []
+ },
+ {
+  "name": "H07b-coupon-valid",
+  "code": "H07b",
+  "route": "#/host/redeem/result?code=SS-4817",
+  "hash": "#/host/redeem/result?code=SS-4817",
+  "errs": []
+ },
+ {
+  "name": "H07c-coupon-already-used",
+  "code": "H07c",
+  "route": "#/host/redeem/result?code=SS-4790",
+  "hash": "#/host/redeem/result?code=SS-4790",
+  "errs": []
+ },
+ {
+  "name": "H07c-coupon-expired",
+  "code": "H07c",
+  "route": "#/host/redeem/result?code=SS-4817&sim=expired",
+  "hash": "#/host/redeem/result?code=SS-4817",
+  "errs": []
+ },
+ {
+  "name": "H07c-coupon-not-found",
+  "code": "H07c",
+  "route": "#/host/redeem/result?code=SS-0000",
+  "hash": "#/host/redeem/result?code=SS-0000",
+  "errs": []
+ },
+ {
+  "name": "H08-daily-shelf-check",
+  "code": "H08",
+  "route": "#/host/check",
+  "hash": "#/host/check",
+  "errs": []
+ },
+ {
+  "name": "H08b-check-done",
+  "code": "H08b",
+  "route": "#/host/check/done",
+  "hash": "#/host/check/done",
+  "errs": []
+ },
+ {
+  "name": "H08c-missed-check-banner-on-h06",
+  "code": "H08c",
+  "route": "#/host/dashboard?sim=missed",
+  "hash": "#/host/dashboard",
+  "errs": []
+ },
+ {
+  "name": "X01-i-took-something-web-page",
+  "code": "X01",
+  "route": "#/x/1",
+  "hash": "#/x/1",
+  "errs": []
+ },
+ {
+  "name": "G04-scanning",
+  "code": "G04",
+  "route": "#/give/tap?shelf=1",
+  "hash": "#/give/tap?shelf=1",
+  "errs": []
+ },
+ {
+  "name": "G04b-tag-found",
+  "code": "G04",
+  "route": "#/give/tap?shelf=1",
+  "hash": "#/give/tap?shelf=1",
+  "errs": []
+ },
+ {
+  "name": "G04-qr-fallback",
+  "code": "G04",
+  "route": "#/give/tap?shelf=1",
+  "hash": "#/give/tap?shelf=1",
+  "errs": []
+ },
+ {
+  "name": "G04-shelf-code-fallback",
+  "code": "G04",
+  "route": "#/give/tap?shelf=1",
+  "hash": "#/give/tap?shelf=1",
+  "errs": []
+ },
+ {
+  "name": "G06-confirm-disabled-hint",
+  "code": "G06",
+  "route": "#/give/items",
+  "hash": "#/give/items",
+  "errs": []
+ },
+ {
+  "name": "G06-undo-toast",
+  "code": "G06",
+  "route": "#/give/items",
+  "hash": "#/give/items",
+  "errs": []
+ },
+ {
+  "name": "R05-confirm-disabled-hint",
+  "code": "R05",
+  "route": "#/take/items",
+  "hash": "#/take/items",
+  "errs": []
+ },
+ {
+  "name": "R05-not-here",
+  "code": "R05",
+  "route": "#/take/items",
+  "hash": "#/take/items",
+  "errs": []
+ },
+ {
+  "name": "R04-tap-the-tag",
+  "code": "R04",
+  "route": "#/take/tap?shelf=1",
+  "hash": "#/take/tap?shelf=1",
+  "errs": []
+ },
+ {
+  "name": "H08-submit-blocked",
+  "code": "H08",
+  "route": "#/host/check",
+  "hash": "#/host/check",
+  "errs": []
+ },
+ {
+  "name": "H08-item-missing",
+  "code": "H08",
+  "route": "#/host/check",
+  "hash": "#/host/check",
+  "errs": []
+ },
+ {
+  "name": "H08b-hand-over",
+  "code": "H08b",
+  "route": "#/host/check/done",
+  "hash": "#/host/check/done",
+  "errs": []
+ },
+ {
+  "name": "H07-typed-code",
+  "code": "H07",
+  "route": "#/host/redeem",
+  "hash": "#/host/redeem",
+  "errs": []
+ },
+ {
+  "name": "R07-ready-to-send",
+  "code": "R07",
+  "route": "#/take/point/1?report=1",
+  "hash": "#/take/point/1?report=1",
+  "errs": []
+ },
+ {
+  "name": "G10-after-pickup",
+  "code": "G10",
+  "route": "#/bonus",
+  "hash": "#/bonus",
+  "errs": []
+ },
+ {
+  "name": "G05-photo-unreadable",
+  "code": "G05",
+  "route": "#/give/photo?error=1",
+  "hash": "#/give/photo?error=1",
+  "errs": []
+ },
+ {
+  "name": "M02-moderator-menu",
+  "code": "M02",
+  "route": "#/me",
+  "hash": "#/me",
+  "errs": []
+ }
+]
