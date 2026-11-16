@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="ss-ill ssi-readA" viewBox="0 0 320 240" role="img" aria-label="Your items on a shelf in the camera frame; a line sweeps across and each item gets a box and a tick" data-photo="sample">
+<title>Your items on a shelf in the camera frame; a line sweeps across and each item gets a box and a tick</title>
+<defs>
+<filter id="ssi-readA-ink" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="2" seed="7"></feTurbulence><feDisplacementMap in="SourceGraphic" scale="1.8" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter>
+<clipPath id="ssi-readA-clip"><rect x="0" y="0" width="320" height="240" rx="16"></rect></clipPath>
+</defs>
+<style>
+.ssi-readA .k{fill:none;stroke:var(--green-900,#1F3D2B);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.ssi-readA .k2{fill:none;stroke:var(--green-900,#1F3D2B);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ssi-readA .kp{fill:none;stroke:var(--paper-0,#FFFFFF);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ssi-readA .ka{fill:none;stroke:var(--terracotta-500,#C2593A);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.ssi-readA .kd{fill:none;stroke:var(--stone-500,#8C8477);stroke-width:2;stroke-linecap:round;stroke-dasharray:4 5}
+.ssi-readA .kc{fill:none;stroke:var(--clay-500,#8A6F4A);stroke-width:2;stroke-linecap:round;stroke-dasharray:3 4}
+.ssi-readA .bg{fill:var(--cream-100,#F6F1E7)}
+.ssi-readA .fp{fill:var(--paper-0,#FFFFFF)} .ssi-readA .fo{fill:var(--oat-200,#E9DFCC)} .ssi-readA .fs{fill:var(--sand-200,#E8D7B9)}
+.ssi-readA .fl{fill:var(--green-100,#CFE3C8)} .ssi-readA .ft{fill:var(--terracotta-100,#F0DFD2)} .ssi-readA .fT{fill:var(--terracotta-500,#C2593A)}
+.ssi-readA .fy{fill:var(--ochre-500,#BF8B2E)} .ssi-readA .fg{fill:var(--green-900,#1F3D2B)} .ssi-readA .fc{fill:var(--clay-500,#8A6F4A)}
+.ssi-readA .ff{fill:var(--green-700,#3F5B3A)} .ssi-readA .fr{fill:var(--stone-300,#CFC6B6)} .ssi-readA .fyt{fill:var(--ochre-100,#EFE5D1)}
+.ssi-readA .tb{transform-box:fill-box;transform-origin:center}
+.ssi-readA .tbb{transform-box:fill-box;transform-origin:50% 100%}
+@keyframes ssi-readA-sweep{0.00%{transform:translateX(0);opacity:0}6.67%{transform:translateX(0);opacity:1}44.44%{transform:translateX(260px);opacity:1}50.00%{transform:translateX(260px);opacity:0}100.00%{transform:translateX(260px);opacity:0}}
+.ssi-readA .sweep{opacity:0;animation:ssi-readA-sweep 4.5s linear infinite}
+@keyframes ssi-readA-b0{0.00%{stroke-dashoffset:100;opacity:1}13.35%{stroke-dashoffset:100;opacity:1}21.13%{stroke-dashoffset:0;opacity:1}88.89%{stroke-dashoffset:0;opacity:1}96.67%{stroke-dashoffset:0;opacity:0}100.00%{stroke-dashoffset:100;opacity:0}}
+@keyframes ssi-readA-t0{0.00%{transform:scale(0)}20.02%{transform:scale(0)}24.46%{transform:scale(1.25)}27.79%{transform:scale(1)}88.89%{transform:scale(1)}95.56%{transform:scale(0)}100.00%{transform:scale(0)}}
+.ssi-readA .b0{animation:ssi-readA-b0 4.5s cubic-bezier(.2,0,0,1) infinite} .ssi-readA .t0{animation:ssi-readA-t0 4.5s cubic-bezier(.2,0,0,1) infinite}
+@keyframes ssi-readA-b1{0.00%{stroke-dashoffset:100;opacity:1}21.56%{stroke-dashoffset:100;opacity:1}29.34%{stroke-dashoffset:0;opacity:1}88.89%{stroke-dashoffset:0;opacity:1}96.67%{stroke-dashoffset:0;opacity:0}100.00%{stroke-dashoffset:100;opacity:0}}
+@keyframes ssi-readA-t1{0.00%{transform:scale(0)}28.23%{transform:scale(0)}32.67%{transform:scale(1.25)}36.00%{transform:scale(1)}88.89%{transform:scale(1)}95.56%{transform:scale(0)}100.00%{transform:scale(0)}}
+.ssi-readA .b1{animation:ssi-readA-b1 4.5s cubic-bezier(.2,0,0,1) infinite} .ssi-readA .t1{animation:ssi-readA-t1 4.5s cubic-bezier(.2,0,0,1) infinite}
+@keyframes ssi-readA-b2{0.00%{stroke-dashoffset:100;opacity:1}28.24%{stroke-dashoffset:100;opacity:1}36.02%{stroke-dashoffset:0;opacity:1}88.89%{stroke-dashoffset:0;opacity:1}96.67%{stroke-dashoffset:0;opacity:0}100.00%{stroke-dashoffset:100;opacity:0}}
+@keyframes ssi-readA-t2{0.00%{transform:scale(0)}34.91%{transform:scale(0)}39.35%{transform:scale(1.25)}42.69%{transform:scale(1)}88.89%{transform:scale(1)}95.56%{transform:scale(0)}100.00%{transform:scale(0)}}
+.ssi-readA .b2{animation:ssi-readA-b2 4.5s cubic-bezier(.2,0,0,1) infinite} .ssi-readA .t2{animation:ssi-readA-t2 4.5s cubic-bezier(.2,0,0,1) infinite}
+@keyframes ssi-readA-b3{0.00%{stroke-dashoffset:100;opacity:1}36.09%{stroke-dashoffset:100;opacity:1}43.87%{stroke-dashoffset:0;opacity:1}88.89%{stroke-dashoffset:0;opacity:1}96.67%{stroke-dashoffset:0;opacity:0}100.00%{stroke-dashoffset:100;opacity:0}}
+@keyframes ssi-readA-t3{0.00%{transform:scale(0)}42.76%{transform:scale(0)}47.20%{transform:scale(1.25)}50.53%{transform:scale(1)}88.89%{transform:scale(1)}95.56%{transform:scale(0)}100.00%{transform:scale(0)}}
+.ssi-readA .b3{animation:ssi-readA-b3 4.5s cubic-bezier(.2,0,0,1) infinite} .ssi-readA .t3{animation:ssi-readA-t3 4.5s cubic-bezier(.2,0,0,1) infinite}
+@media (prefers-reduced-motion: reduce){.ssi-readA *{animation:none !important}}
+.ssi-readA[data-photo="own"] .bg{fill:transparent} .ssi-readA[data-photo="own"] .scene,.ssi-readA[data-photo="own"] .hl{display:none} .ssi-readA[data-photo="own"] .vf{stroke:var(--paper-0,#FFFFFF)}
+</style>
+<g clip-path="url(#ssi-readA-clip)"><rect class="bg" x="0" y="0" width="320" height="240" rx="16"></rect><g filter="url(#ssi-readA-ink)">
+<rect x="16" y="16" width="288" height="208" rx="10" class="fo scene"></rect>
+<path class="kd scene" d="M40 60 H280"></path>
+<g class="scene"><g transform="translate(-2 2)" class="fs"><rect x="40" y="171" width="240" height="10" rx="2"></rect></g><rect x="40" y="171" width="240" height="10" rx="2" class="k fs"></rect><path class="k" d="M58 181 v18 M262 181 v18"></path></g>
+<g class="scene"><g transform="translate(60 121) scale(1.7)"><g transform="translate(-1.5 1.5)" class="fp"><path d="M3 2 H17 L19 28 Q10 30 1 28 Z"></path></g><g class="k2"><path d="M3 2 H17 L19 28 Q10 30 1 28 Z"></path><path d="M3 6 H17"></path><rect x="5" y="11" width="10" height="11" rx="3"></rect><path d="M7 15 q1.5 -2.4 3 0 t3 0 M7 19 q1.5 -2.4 3 0 t3 0" stroke-width="1.5"></path></g></g></g>
+<g class="scene"><g transform="translate(118 129) scale(1.7)"><g transform="translate(-1.5 1.5)" class="fp"><rect x="0" y="0" width="20" height="24" rx="3"></rect></g><rect x="0" y="8" width="20" height="8" class="fT" opacity="1"></rect><g class="k2"><rect x="0" y="0" width="20" height="24" rx="3"></rect><path d="M0 8 H20 M0 16 H20"></path></g></g></g>
+<g class="scene"><g transform="translate(164 129) scale(1.7)"><g transform="translate(-1.5 1.5)" class="fp"><rect x="0" y="0" width="20" height="24" rx="3"></rect></g><rect x="0" y="8" width="20" height="8" class="fT" opacity="1"></rect><g class="k2"><rect x="0" y="0" width="20" height="24" rx="3"></rect><path d="M0 8 H20 M0 16 H20"></path></g></g></g>
+<g class="scene"><g transform="translate(214 119) scale(1.7)"><g transform="translate(-1.5 1.5)" class="fp"><rect x="0" y="0" width="24" height="30" rx="2"></rect></g><g class="k2"><rect x="0" y="0" width="24" height="30" rx="2"></rect><path d="M0 7 H24"></path><rect x="5" y="12" width="14" height="12" rx="2"></rect></g><g class="fg"><circle cx="9" cy="16" r="1"></circle><circle cx="15" cy="16" r="1"></circle><circle cx="12" cy="20" r="1"></circle></g></g></g>
+<rect class="ka hl b0" pathLength="100" stroke-dasharray="100" x="55" y="116" width="42" height="57" rx="7"></rect>
+<g class="hl t0 tb"><g transform="translate(97 116)"><circle r="8" class="fl"></circle><circle r="8" class="k2" style="stroke-width:1.6"></circle><path class="k2" style="stroke-width:2" d="M-3.4 0 l2.4 2.6 l4.4 -5.0"></path></g></g>
+<rect class="ka hl b1" pathLength="100" stroke-dasharray="100" x="113" y="124" width="39" height="49" rx="7"></rect>
+<g class="hl t1 tb"><g transform="translate(152 124)"><circle r="8" class="fl"></circle><circle r="8" class="k2" style="stroke-width:1.6"></circle><path class="k2" style="stroke-width:2" d="M-3.4 0 l2.4 2.6 l4.4 -5.0"></path></g></g>
+<rect class="ka hl b2" pathLength="100" stroke-dasharray="100" x="159" y="124" width="39" height="49" rx="7"></rect>
+<g class="hl t2 tb"><g transform="translate(198 124)"><circle r="8" class="fl"></circle><circle r="8" class="k2" style="stroke-width:1.6"></circle><path class="k2" style="stroke-width:2" d="M-3.4 0 l2.4 2.6 l4.4 -5.0"></path></g></g>
+<rect class="ka hl b3" pathLength="100" stroke-dasharray="100" x="209" y="114" width="47" height="59" rx="7"></rect>
+<g class="hl t3 tb"><g transform="translate(256 114)"><circle r="8" class="fl"></circle><circle r="8" class="k2" style="stroke-width:1.6"></circle><path class="k2" style="stroke-width:2" d="M-3.4 0 l2.4 2.6 l4.4 -5.0"></path></g></g>
+<g class="sweep"><rect x="4" y="26" width="26" height="188" class="fl" opacity=".55"></rect><path class="k" d="M30 26 V214"></path></g>
+<path class="k vf" d="M28 46 V28 H46 M274 28 H292 V46 M292 194 V212 H274 M46 212 H28 V194"></path>
+</g></g>
+</svg>

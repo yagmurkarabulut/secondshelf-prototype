@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="ss-ill ssi-missing" viewBox="0 0 240 160" role="img" aria-label="A shelf with a gap where a pack should be, and a calm question mark above it">
+<title>A shelf with a gap where a pack should be, and a calm question mark above it</title>
+<defs>
+<filter id="ssi-missing-ink" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="2" seed="7"></feTurbulence><feDisplacementMap in="SourceGraphic" scale="1.8" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter>
+<clipPath id="ssi-missing-clip"><rect x="0" y="0" width="240" height="160" rx="16"></rect></clipPath>
+</defs>
+<style>
+.ssi-missing .k{fill:none;stroke:var(--green-900,#1F3D2B);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.ssi-missing .k2{fill:none;stroke:var(--green-900,#1F3D2B);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ssi-missing .kp{fill:none;stroke:var(--paper-0,#FFFFFF);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ssi-missing .ka{fill:none;stroke:var(--terracotta-500,#C2593A);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.ssi-missing .kd{fill:none;stroke:var(--stone-500,#8C8477);stroke-width:2;stroke-linecap:round;stroke-dasharray:4 5}
+.ssi-missing .kc{fill:none;stroke:var(--clay-500,#8A6F4A);stroke-width:2;stroke-linecap:round;stroke-dasharray:3 4}
+.ssi-missing .bg{fill:var(--cream-100,#F6F1E7)}
+.ssi-missing .fp{fill:var(--paper-0,#FFFFFF)} .ssi-missing .fo{fill:var(--oat-200,#E9DFCC)} .ssi-missing .fs{fill:var(--sand-200,#E8D7B9)}
+.ssi-missing .fl{fill:var(--green-100,#CFE3C8)} .ssi-missing .ft{fill:var(--terracotta-100,#F0DFD2)} .ssi-missing .fT{fill:var(--terracotta-500,#C2593A)}
+.ssi-missing .fy{fill:var(--ochre-500,#BF8B2E)} .ssi-missing .fg{fill:var(--green-900,#1F3D2B)} .ssi-missing .fc{fill:var(--clay-500,#8A6F4A)}
+.ssi-missing .ff{fill:var(--green-700,#3F5B3A)} .ssi-missing .fr{fill:var(--stone-300,#CFC6B6)} .ssi-missing .fyt{fill:var(--ochre-100,#EFE5D1)}
+.ssi-missing .tb{transform-box:fill-box;transform-origin:center}
+.ssi-missing .tbb{transform-box:fill-box;transform-origin:50% 100%}
+.ssi-missing .ksl{fill:none;stroke:var(--slate-600,#51666D);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round} .ssi-missing .fsl{fill:var(--slate-600,#51666D)}
+@keyframes ssi-missing-blink{0.00%{opacity:1}12.50%{opacity:.15}28.12%{opacity:1}43.75%{opacity:.15}59.37%{opacity:1}100.00%{opacity:1}}
+.ssi-missing .gap{animation:ssi-missing-blink 1.6s ease both}
+@keyframes ssi-missing-q{0.00%{transform:scale(0)}56.25%{transform:scale(0)}68.75%{transform:scale(1.25)}78.12%{transform:scale(1)}100.00%{transform:scale(1)}} .ssi-missing .q{animation:ssi-missing-q 1.6s cubic-bezier(.2,0,0,1) both}
+@media (prefers-reduced-motion: reduce){.ssi-missing *{animation:none !important;transition:none !important}}
+</style>
+<g clip-path="url(#ssi-missing-clip)"><rect class="bg" x="0" y="0" width="240" height="160" rx="16"></rect><g filter="url(#ssi-missing-ink)">
+<rect x="34" y="34" width="172" height="78" class="fo"></rect><g transform="translate(-2 2)" class="fs"><rect x="30" y="28" width="180" height="7" rx="2"></rect><rect x="30" y="112" width="180" height="10" rx="2"></rect></g><g class="k"><rect x="30" y="28" width="180" height="7" rx="2"></rect><rect x="30" y="112" width="180" height="10" rx="2"></rect><path d="M34 35 V112 M206 35 V112"></path><path d="M38 122 v8 M202 122 v8"></path></g>
+<g transform="translate(48 85) scale(1.15)"><g transform="translate(-1.5 1.5)" class="fp"><rect x="1" y="5" width="16" height="19" rx="4"></rect></g><g class="k2"><rect x="3" y="0" width="12" height="5" rx="1.5"></rect><rect x="1" y="5" width="16" height="19" rx="4"></rect><rect x="4" y="11" width="10" height="7" rx="1.5"></rect></g></g><g transform="translate(82 84.4) scale(1.15)"><g transform="translate(-1.5 1.5)" class="fp"><rect x="0" y="0" width="20" height="24" rx="3"></rect></g><rect x="0" y="8" width="20" height="8" class="fT" opacity="1"></rect><g class="k2"><rect x="0" y="0" width="20" height="24" rx="3"></rect><path d="M0 8 H20 M0 16 H20"></path></g></g><g transform="translate(156 96) scale(1.15)"><g transform="translate(-1.5 1.5)" class="fs"><rect x="0" y="0" width="34" height="14" rx="2"></rect></g><g class="k2"><rect x="0" y="0" width="34" height="14" rx="2"></rect><path d="M6 7 H22"></path></g></g>
+<rect class="kd gap" x="116" y="78" width="28" height="34" rx="3"></rect>
+<g class="q tb"><g transform="translate(130 52)"><g transform="translate(-2 2)" class="fo"><circle r="15"></circle></g><circle r="15" class="fp"></circle><circle r="15" class="ksl"></circle><path d="M0 15 l-4 8 l9 -7" class="ksl fp"></path><path class="ksl" d="M-4.5 -4 c0 -6.5 9 -6.5 9 -0.5 c0 3.5 -4.5 3.5 -4.5 7.5 M0 8 v.01"></path></g></g>
+</g></g>
+</svg>

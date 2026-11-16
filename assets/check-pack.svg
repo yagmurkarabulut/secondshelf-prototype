@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="ss-ill ssi-checkpack" viewBox="0 0 320 200" role="img" aria-label="A magnifier checks a jar: a tick on the sealed lid, then a tick on the date">
+<title>A magnifier checks a jar: a tick on the sealed lid, then a tick on the date</title>
+<defs>
+<filter id="ssi-checkpack-ink" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="2" seed="7"></feTurbulence><feDisplacementMap in="SourceGraphic" scale="1.8" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter>
+<clipPath id="ssi-checkpack-clip"><rect x="0" y="0" width="320" height="200" rx="16"></rect></clipPath>
+</defs>
+<style>
+.ssi-checkpack .k{fill:none;stroke:var(--green-900,#1F3D2B);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.ssi-checkpack .k2{fill:none;stroke:var(--green-900,#1F3D2B);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ssi-checkpack .kp{fill:none;stroke:var(--paper-0,#FFFFFF);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ssi-checkpack .ka{fill:none;stroke:var(--terracotta-500,#C2593A);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.ssi-checkpack .kd{fill:none;stroke:var(--stone-500,#8C8477);stroke-width:2;stroke-linecap:round;stroke-dasharray:4 5}
+.ssi-checkpack .kc{fill:none;stroke:var(--clay-500,#8A6F4A);stroke-width:2;stroke-linecap:round;stroke-dasharray:3 4}
+.ssi-checkpack .bg{fill:var(--cream-100,#F6F1E7)}
+.ssi-checkpack .fp{fill:var(--paper-0,#FFFFFF)} .ssi-checkpack .fo{fill:var(--oat-200,#E9DFCC)} .ssi-checkpack .fs{fill:var(--sand-200,#E8D7B9)}
+.ssi-checkpack .fl{fill:var(--green-100,#CFE3C8)} .ssi-checkpack .ft{fill:var(--terracotta-100,#F0DFD2)} .ssi-checkpack .fT{fill:var(--terracotta-500,#C2593A)}
+.ssi-checkpack .fy{fill:var(--ochre-500,#BF8B2E)} .ssi-checkpack .fg{fill:var(--green-900,#1F3D2B)} .ssi-checkpack .fc{fill:var(--clay-500,#8A6F4A)}
+.ssi-checkpack .ff{fill:var(--green-700,#3F5B3A)} .ssi-checkpack .fr{fill:var(--stone-300,#CFC6B6)} .ssi-checkpack .fyt{fill:var(--ochre-100,#EFE5D1)}
+.ssi-checkpack .tb{transform-box:fill-box;transform-origin:center}
+.ssi-checkpack .tbb{transform-box:fill-box;transform-origin:50% 100%}
+@keyframes ssi-checkpack-jar{0.00%{transform:rotate(0)}4.69%{transform:rotate(-4deg)}10.94%{transform:rotate(3deg)}15.62%{transform:rotate(0)}100.00%{transform:rotate(0)}}
+.ssi-checkpack .jar{transform-box:fill-box;transform-origin:50% 100%;animation:ssi-checkpack-jar 3.2s ease both}
+@keyframes ssi-checkpack-t1{0.00%{transform:scale(0)}32.81%{transform:scale(0)}39.06%{transform:scale(1.25)}43.75%{transform:scale(1)}100.00%{transform:scale(1)}}@keyframes ssi-checkpack-t2{0.00%{transform:scale(0)}64.06%{transform:scale(0)}70.31%{transform:scale(1.25)}75.00%{transform:scale(1)}100.00%{transform:scale(1)}}
+.ssi-checkpack .t1{animation:ssi-checkpack-t1 3.2s cubic-bezier(.2,0,0,1) both} .ssi-checkpack .t2{animation:ssi-checkpack-t2 3.2s cubic-bezier(.2,0,0,1) both}
+@keyframes ssi-checkpack-mg{0.00%{transform:translate(0px,0px)}15.62%{transform:translate(0px,0px)}29.69%{transform:translate(-102px,-56px)}45.31%{transform:translate(-102px,-56px)}59.37%{transform:translate(-114px,-10px)}76.56%{transform:translate(-114px,-10px)}92.19%{transform:translate(0px,0px)}100.00%{transform:translate(0px,0px)}}
+.ssi-checkpack .mg{animation:ssi-checkpack-mg 3.2s cubic-bezier(.45,0,.2,1) both}
+@media (prefers-reduced-motion: reduce){.ssi-checkpack *{animation:none !important;transition:none !important}}
+</style>
+<g clip-path="url(#ssi-checkpack-clip)"><rect class="bg" x="0" y="0" width="320" height="200" rx="16"></rect><g filter="url(#ssi-checkpack-ink)">
+<g transform="translate(-2 2)" class="fo"><rect x="40" y="168" width="240" height="14" rx="4"></rect></g><rect x="40" y="168" width="240" height="14" rx="4" class="k fo"></rect>
+<g class="jar"><g transform="translate(112 72)"><g transform="translate(-3 3)" class="fs"><rect x="4" y="20" width="64" height="76" rx="16"></rect></g><rect x="12" y="0" width="48" height="20" rx="6" class="k fp"></rect><path class="k2" d="M16 10 H56" style="stroke-dasharray:4 4"></path><rect x="4" y="20" width="64" height="76" rx="16" class="k fp"></rect><rect x="14" y="42" width="44" height="32" rx="5" class="k2 ft"></rect><g transform="translate(20 50)"><rect x="0" y="0" width="16" height="16" rx="3" class="k2 fp" style="stroke-width:1.6"></rect><path class="k2" style="stroke-width:1.6" d="M0 5 H16 M4 -2 v4 M12 -2 v4"></path></g><path class="k2" style="stroke-width:1.6" d="M42 54 H52 M42 62 H50"></path></g></g>
+<g class="t1 tb"><g transform="translate(186 82)"><circle r="10" class="fl"></circle><circle r="10" class="k2" style="stroke-width:1.6"></circle><path class="k2" style="stroke-width:2" d="M-4.2 0 l3.0 3.2 l5.5 -6.2"></path></g></g><g class="t2 tb"><g transform="translate(196 130)"><circle r="10" class="fl"></circle><circle r="10" class="k2" style="stroke-width:1.6"></circle><path class="k2" style="stroke-width:2" d="M-4.2 0 l3.0 3.2 l5.5 -6.2"></path></g></g>
+<g class="mg"><g transform="translate(250 140)"><circle r="20" class="fp" opacity=".4"></circle><circle r="20" class="k"></circle><path class="k" style="stroke-width:5" d="M14 14 L30 30"></path><path class="k fs" d="M24 24 l12 12"></path></g></g>
+</g></g>
+</svg>

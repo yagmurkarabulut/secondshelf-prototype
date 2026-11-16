@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="ss-ill ssi-appsent" viewBox="0 0 320 200" role="img" aria-label="An envelope travels to the café; the starter kit box waits beside it and a small clock shows it is being checked">
+<title>An envelope travels to the café; the starter kit box waits beside it and a small clock shows it is being checked</title>
+<defs>
+<filter id="ssi-appsent-ink" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="2" seed="7"></feTurbulence><feDisplacementMap in="SourceGraphic" scale="1.8" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter>
+<clipPath id="ssi-appsent-clip"><rect x="0" y="0" width="320" height="200" rx="16"></rect></clipPath>
+</defs>
+<style>
+.ssi-appsent .k{fill:none;stroke:var(--green-900,#1F3D2B);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.ssi-appsent .k2{fill:none;stroke:var(--green-900,#1F3D2B);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ssi-appsent .kp{fill:none;stroke:var(--paper-0,#FFFFFF);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ssi-appsent .ka{fill:none;stroke:var(--terracotta-500,#C2593A);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.ssi-appsent .kd{fill:none;stroke:var(--stone-500,#8C8477);stroke-width:2;stroke-linecap:round;stroke-dasharray:4 5}
+.ssi-appsent .kc{fill:none;stroke:var(--clay-500,#8A6F4A);stroke-width:2;stroke-linecap:round;stroke-dasharray:3 4}
+.ssi-appsent .bg{fill:var(--cream-100,#F6F1E7)}
+.ssi-appsent .fp{fill:var(--paper-0,#FFFFFF)} .ssi-appsent .fo{fill:var(--oat-200,#E9DFCC)} .ssi-appsent .fs{fill:var(--sand-200,#E8D7B9)}
+.ssi-appsent .fl{fill:var(--green-100,#CFE3C8)} .ssi-appsent .ft{fill:var(--terracotta-100,#F0DFD2)} .ssi-appsent .fT{fill:var(--terracotta-500,#C2593A)}
+.ssi-appsent .fy{fill:var(--ochre-500,#BF8B2E)} .ssi-appsent .fg{fill:var(--green-900,#1F3D2B)} .ssi-appsent .fc{fill:var(--clay-500,#8A6F4A)}
+.ssi-appsent .ff{fill:var(--green-700,#3F5B3A)} .ssi-appsent .fr{fill:var(--stone-300,#CFC6B6)} .ssi-appsent .fyt{fill:var(--ochre-100,#EFE5D1)}
+.ssi-appsent .tb{transform-box:fill-box;transform-origin:center}
+.ssi-appsent .tbb{transform-box:fill-box;transform-origin:50% 100%}
+@keyframes ssi-appsent-env{0.00%{transform:translate(0px,0px) scale(1)}5.00%{transform:translate(0.0px,0.0px) scale(1.00)}11.88%{transform:translate(19.9px,-22.0px) scale(0.96)}18.75%{transform:translate(40.6px,-38.0px) scale(0.91)}25.63%{transform:translate(62.2px,-48.0px) scale(0.87)}32.50%{transform:translate(84.5px,-52.0px) scale(0.82)}39.38%{transform:translate(107.7px,-50.0px) scale(0.78)}46.25%{transform:translate(131.6px,-42.0px) scale(0.74)}53.13%{transform:translate(156.4px,-28.0px) scale(0.69)}60.00%{transform:translate(182.0px,-8.0px) scale(0.65)}100.00%{transform:translate(182px,-8px) scale(.65)}}
+.ssi-appsent .env{transform-box:fill-box;transform-origin:center;transform:translate(182px,-8px) scale(.65);animation:ssi-appsent-env 2.0s cubic-bezier(.3,0,.3,1) both}
+@keyframes ssi-appsent-clk{0.00%{transform:scale(0)}67.50%{transform:scale(0)}77.50%{transform:scale(1.25)}85.00%{transform:scale(1)}100.00%{transform:scale(1)}} .ssi-appsent .clk{animation:ssi-appsent-clk 2.0s cubic-bezier(.2,0,0,1) both}
+@media (prefers-reduced-motion: reduce){.ssi-appsent *{animation:none !important;transition:none !important}}
+</style>
+<g clip-path="url(#ssi-appsent-clip)"><rect class="bg" x="0" y="0" width="320" height="200" rx="16"></rect><g filter="url(#ssi-appsent-ink)">
+<path class="k2" d="M20 172 H300"></path>
+<g transform="translate(-2 2)" class="fs"><rect x="196" y="78" width="96" height="94"></rect></g><rect x="196" y="78" width="96" height="94" class="k fp"></rect>
+<path class="fl" d="M192.0 70 h17.33 v14 q-8.67 7 -17.33 0 Z"></path><path class="fp" d="M209.3 70 h17.33 v14 q-8.67 7 -17.33 0 Z"></path><path class="fl" d="M226.7 70 h17.33 v14 q-8.67 7 -17.33 0 Z"></path><path class="fp" d="M244.0 70 h17.33 v14 q-8.67 7 -17.33 0 Z"></path><path class="fl" d="M261.3 70 h17.33 v14 q-8.67 7 -17.33 0 Z"></path><path class="fp" d="M278.6 70 h17.33 v14 q-8.67 7 -17.33 0 Z"></path><path class="k" d="M192 70 H296 V84 M192 70 V84 q8.67 7 17.33 0 q8.67 7 17.33 0 q8.67 7 17.33 0 q8.67 7 17.33 0 q8.67 7 17.33 0 q8.67 7 17.33 0 "></path>
+<rect x="206" y="98" width="40" height="40" rx="3" class="k2 fo"></rect><path class="k2" d="M206 120 H246"></path><rect x="254" y="104" width="28" height="68" rx="2" class="k2 fo"></rect>
+<g transform="translate(-2 2)" class="fs"><rect x="140" y="138" width="44" height="34" rx="3"></rect></g><rect x="140" y="138" width="44" height="34" rx="3" class="k fs"></rect><rect x="156" y="138" width="12" height="34" class="fl"></rect><path class="k2" d="M156 138 V172 M168 138 V172 M140 146 H184"></path>
+<path class="kc" d="M52 120 Q130 20 234 112"></path>
+<g class="env"><g transform="translate(52 120)"><g transform="translate(-17 -12)"><g transform="translate(-2 2)" class="ft"><rect x="0" y="0" width="34" height="24" rx="3"></rect></g><rect x="0" y="0" width="34" height="24" rx="3" class="k fp"></rect><path class="k2" d="M2 3 L17 14 L32 3"></path></g></g></g>
+<g class="clk tb"><g transform="translate(292 70)"><circle r="13" class="fo"></circle><circle r="13" class="k2"></circle><path class="k2" d="M0 -6 V0 L5 3"></path></g></g>
+</g></g>
+</svg>

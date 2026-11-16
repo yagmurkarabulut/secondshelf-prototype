@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="ss-ill ssi-readB" viewBox="0 0 320 240" role="img" aria-label="A round lens moves over your items on a table; each one is highlighted and ticked" data-photo="sample">
+<title>A round lens moves over your items on a table; each one is highlighted and ticked</title>
+<defs>
+<filter id="ssi-readB-ink" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="2" seed="7"></feTurbulence><feDisplacementMap in="SourceGraphic" scale="1.8" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter>
+<clipPath id="ssi-readB-clip"><rect x="0" y="0" width="320" height="240" rx="16"></rect></clipPath>
+</defs>
+<style>
+.ssi-readB .k{fill:none;stroke:var(--green-900,#1F3D2B);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.ssi-readB .k2{fill:none;stroke:var(--green-900,#1F3D2B);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ssi-readB .kp{fill:none;stroke:var(--paper-0,#FFFFFF);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ssi-readB .ka{fill:none;stroke:var(--terracotta-500,#C2593A);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.ssi-readB .kd{fill:none;stroke:var(--stone-500,#8C8477);stroke-width:2;stroke-linecap:round;stroke-dasharray:4 5}
+.ssi-readB .kc{fill:none;stroke:var(--clay-500,#8A6F4A);stroke-width:2;stroke-linecap:round;stroke-dasharray:3 4}
+.ssi-readB .bg{fill:var(--cream-100,#F6F1E7)}
+.ssi-readB .fp{fill:var(--paper-0,#FFFFFF)} .ssi-readB .fo{fill:var(--oat-200,#E9DFCC)} .ssi-readB .fs{fill:var(--sand-200,#E8D7B9)}
+.ssi-readB .fl{fill:var(--green-100,#CFE3C8)} .ssi-readB .ft{fill:var(--terracotta-100,#F0DFD2)} .ssi-readB .fT{fill:var(--terracotta-500,#C2593A)}
+.ssi-readB .fy{fill:var(--ochre-500,#BF8B2E)} .ssi-readB .fg{fill:var(--green-900,#1F3D2B)} .ssi-readB .fc{fill:var(--clay-500,#8A6F4A)}
+.ssi-readB .ff{fill:var(--green-700,#3F5B3A)} .ssi-readB .fr{fill:var(--stone-300,#CFC6B6)} .ssi-readB .fyt{fill:var(--ochre-100,#EFE5D1)}
+.ssi-readB .tb{transform-box:fill-box;transform-origin:center}
+.ssi-readB .tbb{transform-box:fill-box;transform-origin:50% 100%}
+@keyframes ssi-readB-h0{0.00%{opacity:0}14.44%{opacity:0}18.89%{opacity:1}88.89%{opacity:1}95.56%{opacity:0}100.00%{opacity:0}}
+@keyframes ssi-readB-t0{0.00%{transform:scale(0)}16.67%{transform:scale(0)}21.11%{transform:scale(1.25)}24.44%{transform:scale(1)}88.89%{transform:scale(1)}95.56%{transform:scale(0)}100.00%{transform:scale(0)}}
+.ssi-readB .h0{animation:ssi-readB-h0 4.5s ease infinite} .ssi-readB .t0{animation:ssi-readB-t0 4.5s cubic-bezier(.2,0,0,1) infinite}
+@keyframes ssi-readB-h1{0.00%{opacity:0}27.78%{opacity:0}32.22%{opacity:1}88.89%{opacity:1}95.56%{opacity:0}100.00%{opacity:0}}
+@keyframes ssi-readB-t1{0.00%{transform:scale(0)}30.00%{transform:scale(0)}34.44%{transform:scale(1.25)}37.78%{transform:scale(1)}88.89%{transform:scale(1)}95.56%{transform:scale(0)}100.00%{transform:scale(0)}}
+.ssi-readB .h1{animation:ssi-readB-h1 4.5s ease infinite} .ssi-readB .t1{animation:ssi-readB-t1 4.5s cubic-bezier(.2,0,0,1) infinite}
+@keyframes ssi-readB-h2{0.00%{opacity:0}40.00%{opacity:0}44.44%{opacity:1}88.89%{opacity:1}95.56%{opacity:0}100.00%{opacity:0}}
+@keyframes ssi-readB-t2{0.00%{transform:scale(0)}42.22%{transform:scale(0)}46.67%{transform:scale(1.25)}50.00%{transform:scale(1)}88.89%{transform:scale(1)}95.56%{transform:scale(0)}100.00%{transform:scale(0)}}
+.ssi-readB .h2{animation:ssi-readB-h2 4.5s ease infinite} .ssi-readB .t2{animation:ssi-readB-t2 4.5s cubic-bezier(.2,0,0,1) infinite}
+@keyframes ssi-readB-h3{0.00%{opacity:0}52.22%{opacity:0}56.67%{opacity:1}88.89%{opacity:1}95.56%{opacity:0}100.00%{opacity:0}}
+@keyframes ssi-readB-t3{0.00%{transform:scale(0)}54.44%{transform:scale(0)}58.89%{transform:scale(1.25)}62.22%{transform:scale(1)}88.89%{transform:scale(1)}95.56%{transform:scale(0)}100.00%{transform:scale(0)}}
+.ssi-readB .h3{animation:ssi-readB-h3 4.5s ease infinite} .ssi-readB .t3{animation:ssi-readB-t3 4.5s cubic-bezier(.2,0,0,1) infinite}
+@keyframes ssi-readB-lens{0.00%{transform:translate(-131px,-3px)}6.67%{transform:translate(-131px,-3px)}12.22%{transform:translate(0px,0px)}18.89%{transform:translate(0px,0px)}25.56%{transform:translate(56px,3px)}32.22%{transform:translate(56px,3px)}37.78%{transform:translate(96px,3px)}44.44%{transform:translate(96px,3px)}50.00%{transform:translate(145px,-2px)}56.67%{transform:translate(145px,-2px)}68.89%{transform:translate(289px,-3px)}100.00%{transform:translate(289px,-3px)}}
+.ssi-readB .lens{transform:translate(289px,-3px);animation:ssi-readB-lens 4.5s cubic-bezier(.45,0,.2,1) infinite}
+@media (prefers-reduced-motion: reduce){.ssi-readB *{animation:none !important}}
+.ssi-readB[data-photo="own"] .bg{fill:transparent} .ssi-readB[data-photo="own"] .scene,.ssi-readB[data-photo="own"] .hl{display:none} .ssi-readB[data-photo="own"] .vf{stroke:var(--paper-0,#FFFFFF)} .ssi-readB[data-photo="own"] .lens circle.fp{opacity:.2}
+</style>
+<g clip-path="url(#ssi-readB-clip)"><rect class="bg" x="0" y="0" width="320" height="240" rx="16"></rect><g filter="url(#ssi-readB-ink)">
+<rect x="16" y="16" width="288" height="208" rx="10" class="fo scene"></rect>
+<g class="scene"><g transform="translate(-2 2)" class="fs"><path d="M24 167 H296 L304 200 H16 Z"></path></g><path class="k fs" d="M24 167 H296 L304 200 H16 Z"></path><path class="k2" d="M60 184 H120 M200 184 H250"></path></g>
+<g class="scene"><g transform="translate(64 117) scale(1.7)"><g transform="translate(-1.5 1.5)" class="fp"><path d="M3 2 H17 L19 28 Q10 30 1 28 Z"></path></g><g class="k2"><path d="M3 2 H17 L19 28 Q10 30 1 28 Z"></path><path d="M3 6 H17"></path><rect x="5" y="11" width="10" height="11" rx="3"></rect><path d="M7 15 q1.5 -2.4 3 0 t3 0 M7 19 q1.5 -2.4 3 0 t3 0" stroke-width="1.5"></path></g></g></g>
+<g class="hl h0"><g transform="translate(64 117) scale(1.7)"><g transform="translate(-1.5 1.5)" class="fl"><path d="M3 2 H17 L19 28 Q10 30 1 28 Z"></path></g><g class="k2"><path d="M3 2 H17 L19 28 Q10 30 1 28 Z"></path><path d="M3 6 H17"></path><rect x="5" y="11" width="10" height="11" rx="3"></rect><path d="M7 15 q1.5 -2.4 3 0 t3 0 M7 19 q1.5 -2.4 3 0 t3 0" stroke-width="1.5"></path></g></g></g>
+<g class="hl t0 tb"><g transform="translate(81 103)"><circle r="8" class="fl"></circle><circle r="8" class="k2" style="stroke-width:1.6"></circle><path class="k2" style="stroke-width:2" d="M-3.4 0 l2.4 2.6 l4.4 -5.0"></path></g></g>
+<g class="scene"><g transform="translate(120 125) scale(1.7)"><g transform="translate(-1.5 1.5)" class="fp"><rect x="0" y="0" width="20" height="24" rx="3"></rect></g><rect x="0" y="8" width="20" height="8" class="fT" opacity="1"></rect><g class="k2"><rect x="0" y="0" width="20" height="24" rx="3"></rect><path d="M0 8 H20 M0 16 H20"></path></g></g></g>
+<g class="hl h1"><g transform="translate(120 125) scale(1.7)"><g transform="translate(-1.5 1.5)" class="fl"><rect x="0" y="0" width="20" height="24" rx="3"></rect></g><rect x="0" y="8" width="20" height="8" class="fT" opacity="1"></rect><g class="k2"><rect x="0" y="0" width="20" height="24" rx="3"></rect><path d="M0 8 H20 M0 16 H20"></path></g></g></g>
+<g class="hl t1 tb"><g transform="translate(137 111)"><circle r="8" class="fl"></circle><circle r="8" class="k2" style="stroke-width:1.6"></circle><path class="k2" style="stroke-width:2" d="M-3.4 0 l2.4 2.6 l4.4 -5.0"></path></g></g>
+<g class="scene"><g transform="translate(160 125) scale(1.7)"><g transform="translate(-1.5 1.5)" class="fp"><rect x="0" y="0" width="20" height="24" rx="3"></rect></g><rect x="0" y="8" width="20" height="8" class="fT" opacity="1"></rect><g class="k2"><rect x="0" y="0" width="20" height="24" rx="3"></rect><path d="M0 8 H20 M0 16 H20"></path></g></g></g>
+<g class="hl h2"><g transform="translate(160 125) scale(1.7)"><g transform="translate(-1.5 1.5)" class="fl"><rect x="0" y="0" width="20" height="24" rx="3"></rect></g><rect x="0" y="8" width="20" height="8" class="fT" opacity="1"></rect><g class="k2"><rect x="0" y="0" width="20" height="24" rx="3"></rect><path d="M0 8 H20 M0 16 H20"></path></g></g></g>
+<g class="hl t2 tb"><g transform="translate(177 111)"><circle r="8" class="fl"></circle><circle r="8" class="k2" style="stroke-width:1.6"></circle><path class="k2" style="stroke-width:2" d="M-3.4 0 l2.4 2.6 l4.4 -5.0"></path></g></g>
+<g class="scene"><g transform="translate(206 115) scale(1.7)"><g transform="translate(-1.5 1.5)" class="fp"><rect x="0" y="0" width="24" height="30" rx="2"></rect></g><g class="k2"><rect x="0" y="0" width="24" height="30" rx="2"></rect><path d="M0 7 H24"></path><rect x="5" y="12" width="14" height="12" rx="2"></rect></g><g class="fg"><circle cx="9" cy="16" r="1"></circle><circle cx="15" cy="16" r="1"></circle><circle cx="12" cy="20" r="1"></circle></g></g></g>
+<g class="hl h3"><g transform="translate(206 115) scale(1.7)"><g transform="translate(-1.5 1.5)" class="fl"><rect x="0" y="0" width="24" height="30" rx="2"></rect></g><g class="k2"><rect x="0" y="0" width="24" height="30" rx="2"></rect><path d="M0 7 H24"></path><rect x="5" y="12" width="14" height="12" rx="2"></rect></g><g class="fg"><circle cx="9" cy="16" r="1"></circle><circle cx="15" cy="16" r="1"></circle><circle cx="12" cy="20" r="1"></circle></g></g></g>
+<g class="hl t3 tb"><g transform="translate(226 101)"><circle r="8" class="fl"></circle><circle r="8" class="k2" style="stroke-width:1.6"></circle><path class="k2" style="stroke-width:2" d="M-3.4 0 l2.4 2.6 l4.4 -5.0"></path></g></g>
+<g class="lens"><circle cx="81" cy="143" r="31" class="fp" opacity=".35"></circle><circle cx="81" cy="143" r="31" class="k"></circle><circle cx="81" cy="143" r="36" class="kc"></circle><path class="fg" d="M107 108 Q108.19 113.81 114 115 Q108.19 116.19 107 122 Q105.81 116.19 100 115 Q105.81 113.81 107 108 Z"></path></g>
+<path class="k vf" d="M28 46 V28 H46 M274 28 H292 V46 M292 194 V212 H274 M46 212 H28 V194"></path>
+</g></g>
+</svg>
