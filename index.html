@@ -1705,6 +1705,10 @@ button.settings__row:active{background:var(--surface-canvas)}
 .hero{height:var(--size-hero);border-radius:var(--radius-lg);background:var(--surface-subtle);position:relative;margin-bottom:var(--space-24)}
 .hero::before{content:"";position:absolute;inset:var(--space-12);border:var(--border-w) dashed var(--border-strong);border-radius:var(--radius-md)}
 .hero .placeholder{position:absolute;inset:0;font:var(--type-body-small)}
+/* O01: the welcome-loop illustration replaces the community photo (no dashed placeholder frame) */
+.hero--art::before{content:none}
+.art.art--hero{width:100%;height:var(--size-hero);border-radius:var(--radius-lg);overflow:hidden}
+.art.art--hero>svg{width:100%;height:100%}
 .rolecards{display:flex;flex-direction:column;gap:var(--space-12)}
 .rolecard{display:flex;flex-direction:column;gap:var(--space-8);width:100%;text-align:left;background:var(--surface-default);border:var(--border-w) solid var(--border-strong);border-radius:var(--radius-lg);padding:var(--space-16);position:relative;transition:transform var(--motion-fast) var(--ease)}
 .rolecard[aria-checked="true"]{background:var(--surface-selected);border-color:var(--border-brand);border-width:2px}
@@ -3156,7 +3160,6 @@ const PHOTOS = {
   cafe: '', cafe2: '', cafe3: '',         // café interiors / counters (Café Daisy = cafe, Café Lumi = cafe2)
   bistro: '', restaurant: '', pizzeria: '', // Pizza Nonna = pizzeria
   bakery: '', grocery: '', deli: '', tearoom: '', canteen: '',
-  community: '',                          // O01 welcome "Community photo"
   hostShelf: '',                          // H01 "Café with a community shelf"
   avatar: ''                              // Brenda (Home greeting, Me profile row)
 };
@@ -5496,7 +5499,7 @@ const Banners = {
 Views.welcome = {
   html() {
     return `<span class="wordmark" data-logo>SecondShelf</span>
-      <div class="hero${PHOTOS.community ? ' has-photo' : ''}">${UI.photo(PHOTOS.community, 'Neighbours at a café with a community shelf')}<span class="placeholder">${icon('photo', 'icon--lg')}<strong>Community photo</strong><span>From the guideline stock set</span></span></div>
+      <div class="hero hero--art">${UI.art('welcome-loop', { cls: 'art--hero art--loop' })}</div>
       <h1 class="t-display">Food that’s still good, passed on.</h1>
       <p class="t-body-large c-secondary" style="margin-top:var(--space-12)">Leave sealed food you won’t eat on a café shelf near you, or find something you can use.</p>
       <div class="spacer"></div>

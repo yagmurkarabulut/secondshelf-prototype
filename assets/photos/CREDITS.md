@@ -26,7 +26,6 @@ Or download the image (about 800 px wide, WebP or JPEG, under 120 KB) into this 
 | `deli` | Deli Marta, Market Hall Deli | jar, pantry shelf | Deli shelf with jars (no alcohol in focus) |
 | `tearoom` | Tea Room Saga | cafe, jar | Tea tins or jars on a café shelf |
 | `canteen` | Canteen 12 | restaurant | Bright, simple canteen counter |
-| `community` | O01 welcome "Community photo" | community, cafe | Café with a shared shelf; people may appear, but not as the subject |
 | `hostShelf` | H01 "Café with a community shelf" | community, pantry shelf | Café shelf with jars and packs |
 | `avatar` | Brenda (Home greeting, Me) | portrait | One friendly portrait |
 
