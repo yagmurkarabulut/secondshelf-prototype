@@ -20,6 +20,13 @@ Open `preview.html` in a browser to see every file, switch the tap states and re
 | `empty-coupons.svg` | Still | G08 Active and Used tabs when empty, G08d with no coupon | 120 px tall |
 | `empty-search.svg` | Plays once (lens slides in) | R01b no results, map list "No shelves here" | 120 px tall |
 | `shelf-full.svg` | Still | G03b point full (optional), map sheet full state | 120 px tall |
+| `welcome-loop.svg` | Loops, 8 s (`art--loop`) | O01 Welcome hero: packs travel from one home to the café shelf and on to another | full width, `--size-hero` (240 px) tall, `.art--hero` |
+| `photo-reading.svg` | Loops, 4.5 s (`art--loop`); stateful `data-photo` = `sample` · `own` | G06a Reading your photo. `sample`: drawn items, a sweep, then a box and tick per item, left to right in the order of the item rows. `own`: transparent, only the frame corners and the sweep over the person's photo | fills the 4:3 capture frame (`.art--fill`) |
+| `photo-how.svg` | Loops, 5 s (`art--loop`) | G05 Photograph your items, empty camera frame | fills the 4:3 capture frame (`.art--fill`) |
+| `check-pack.svg` | One-shot, 3.2 s | R04 Check, then tap: a tick on the lid, then on the date (matches the two check rows) | 160 px tall on a Cream card (120 px if the screen is short) |
+| `report-missing.svg` | One-shot, 1.6 s | R07 "Report as missing?" sheet; plays each time the sheet opens | 120 px tall |
+| `application-sent.svg` | One-shot, 2 s | H03c Application sent; the small clock means "being checked", not approved | 160 px tall |
+| `rescue-bonus.svg` | Stateful `data-picked` 0–4 (CSS transitions) | G10 Rescue Bonus hero card. The gold bar is decoration: `UI.bonusBar` and "n of N items picked up" carry the meaning | 160 px tall |
 
 ## How to use them
 
@@ -34,6 +41,12 @@ Open `preview.html` in a browser to see every file, switch the tap states and re
   - `notfound`: phone sits just off the plate, a dashed terracotta target blinks where to aim, the screen shows a Slate "!".
   - `qr`: phone moves over the QR sticker, camera corners on the screen.
 - `shelf-fill.svg`: set `data-mine` to the number of units on the list (0–6; clamp above 6). Dashed outlines show free spots; each new unit drops into the next spot. The slot order matches the scripted photo result: fusilli pasta, tomato soup, tomato soup, crackers, then a jar and a box.
+- `photo-reading.svg`: set `data-photo` to `sample` (drawn items, boxes and ticks) or `own` (no drawn items; frame corners and sweep only, laid over the person's photo and a `--scrim` dim).
+- `rescue-bonus.svg`: set `data-picked` to 0–4, the share of the bonus picked up rounded to four slots (`Math.round(min(picked, total) / total * 4)`). Changing the value animates (packs rise away, Leaf hearts appear, the gold bar fills); the app mounts it at 0 and sets the real value two frames later.
+
+**Looping files** (`tap-the-tag` idle, `welcome-loop`, `photo-reading`, `photo-how`): in the app the last three carry the `art--loop` class, and `ArtLoops` pauses them (`animation-play-state: paused`) while the page is hidden or once their screen is no longer the active route.
+
+**Not inlined:** `proposed/` holds the variants that were not picked (`welcome-loop-a/b`, `photo-reading-b/c`). `tools/illus.js` only reads `*.svg` in this folder, so they never reach the app.
 
 **Colours** use the app's CSS custom properties (`--green-900`, `--oat-200`, `--terracotta-500` …) with hex fallbacks, so when inlined they follow `docs/design-system.md`. Patch meaning:
 
