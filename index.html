@@ -1839,6 +1839,7 @@ a.bonus{display:block;text-decoration:none;color:inherit}
 .r03__photo{position:relative;height:var(--size-illus);display:flex;align-items:center;justify-content:center}
 .r03__back{position:absolute;left:var(--space-16);top:max(env(safe-area-inset-top),var(--space-16));background:var(--surface-default);box-shadow:var(--shadow-card)}
 .r03__sheet{background:var(--surface-canvas);border-radius:var(--radius-xl) var(--radius-xl) 0 0;padding:var(--space-24) var(--space-20) var(--space-32);min-height:calc(100% - var(--size-illus))}
+.r04__art{background:var(--surface-canvas);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:var(--space-16)}
 .r04__checks{display:flex;flex-direction:column;gap:var(--space-12)}
 .r04__checks li{display:flex;align-items:center;gap:var(--space-12);min-height:var(--size-control);padding:var(--space-12) var(--space-16);border-radius:var(--radius-md);background:var(--tint-on-dark);font:var(--type-body);color:var(--text-on-primary)}
 .r04c__icon{margin:var(--space-32) 0}
@@ -1871,8 +1872,6 @@ a.bonus{display:block;text-decoration:none;color:inherit}
 .tab__badge{position:absolute;top:calc(var(--space-4) * -1);right:var(--space-8);min-width:var(--space-20);height:var(--space-20);padding:0 var(--space-4);border-radius:var(--radius-full);background:var(--surface-inverse);color:var(--text-on-inverse);font:var(--type-caption);display:grid;place-items:center}
 .pick__meta{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-8);margin-top:var(--space-4)}
 /* QA round 8: "Not here?" confirmation sheet + illustration placeholder slot */
-.art-slot{display:grid;place-items:center;height:var(--size-illus-sm);border:var(--border-w) dashed var(--border-strong);border-radius:var(--radius-lg);background:var(--surface-canvas)}
-.art-slot .icon{width:var(--size-icon-32);height:var(--size-icon-32);color:var(--icon-tertiary)}
 .confirm-sheet__warn{display:flex;gap:var(--space-8);align-items:center;font:var(--type-body-small);color:var(--text-secondary)}
 .confirm-sheet__warn .icon{color:var(--icon-secondary)}
 .pick.is-missing .pick__main{cursor:default}
@@ -5705,14 +5704,14 @@ Views.screens = {
 const REASONS = ['Missing', 'Opened or damaged', 'Past its date', 'Other'];
 /* R07 Report a problem (sheet over R03–R06) → R07b Report sent */
 /* QA round 8: "Not here?" asks first. A report can't be undone (the steward is told straight away),
-   so a bottom sheet names the item, says who is told and that it is final. The art slot is a placeholder
-   for an illustration the team will draw (data-art-slot="report-missing"). */
+   so a bottom sheet names the item, says who is told and that it is final. report-missing.svg plays once
+   each time the sheet opens (the sheet body is rebuilt, so the one-shot restarts). */
 function confirmMissing(venueId, itemId, { onDone, onOther } = {}) {
   const item = shelfOf(venueId).items.find(i => i.id === itemId); if (!item) return;
   const v = venue(venueId);
   Store.log('not_here_open', { item: itemId });
   openSheet('Report as missing?', `<div class="stack confirm-sheet">
-      <div class="art-slot" data-art-slot="report-missing" aria-hidden="true">${icon('needs-attention')}</div>
+      ${UI.art('report-missing', { cls: 'art--sm' })}
       <p class="t-body"><strong>${esc(item.name)}</strong> will be marked as missing at ${esc(v.name)}. The shelf steward will be told so they can check the shelf.</p>
       <p class="confirm-sheet__warn">${icon('info', 'icon--sm')}<span>You can’t undo this.</span></p>
       <div class="stack-8">${UI.button({ label: 'Yes, report missing', icon: 'needs-attention', block: true, attrs: 'data-cm-yes' })}
@@ -5809,6 +5808,7 @@ Views.takeTap = {
     return `${UI.stepHeader({ title: 'Pick up', step: 1, of: 2, first: true })}
       <h2 class="t-display tap-title">Check, then tap</h2>
       <p class="tap-sub">Inspect the real pack. If something is wrong, leave it and report it.</p>
+      <div class="r04__art">${UI.art('check-pack', { cls: 'art--illus' })}</div>
       <ul class="r04__checks"><li>${icon('sealed-food', 'icon--on-primary')}The seal is unbroken</li><li>${icon('best-before', 'icon--on-primary')}The date is fine</li></ul>
       <div class="spacer"></div>
       <div class="actions">${UI.button({ label: 'Continue', variant: 'on-brand', icon: 'continue', block: true, attrs: 'data-r04-continue' })}</div>`;
