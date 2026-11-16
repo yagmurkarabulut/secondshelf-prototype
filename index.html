@@ -5051,6 +5051,7 @@ Views.bonus = {
       <div class="stack">
         ${b ? `<article class="bonus bonus--hero"><div class="bonus__inner">
             <div class="bonus__head"><span class="tile tile--reward">${icon('rescue-bonus', 'icon--reward')}</span><div class="grow"><h2 class="t-title">${esc(venue(b.venue).name)}</h2><p class="t-small c-secondary">From your drop-off today</p></div></div>
+            ${UI.art('rescue-bonus', { cls: 'art--illus', attrs: `data-picked="${Views.bonus.from ?? 0}"` })}
             <p class="coupon__value" aria-label="Rescue Bonus value">${couponValue({ value: couponValueFor(b.total) })}</p>
             ${UI.bonusBar(b.picked, b.total, bonusFrom(b))}
             <p class="bonus__status" aria-live="polite">${Math.min(b.picked, b.total)} of ${b.total} items picked up</p></div></article>
@@ -5059,6 +5060,16 @@ Views.bonus = {
           ${rows.length ? `<ul class="statuslist">${rows.map(itemRow).join('')}</ul>` : `<div class="card">${UI.empty({ art: 'empty-shelf', title: 'Nothing on shelves yet', line: 'Food you leave on a shelf shows up here.', action: `<a class="btn btn--secondary" href="#/map" data-action="leave">${icon('sealed-food')}<span>Leave food</span></a>` })}</div>`}</section>
         ${UI.note('<strong>Pickups made without the app may not be counted.</strong>')}
       </div>`;
+  },
+  /* rescue-bonus.svg has four slots: the share picked up, rounded (2 of 4 → 2, 3 of 6 → 2). The gold bar in the drawing is
+     decoration; UI.bonusBar and "n of N items picked up" carry the meaning. */
+  level: b => b && b.total ? Math.round(Math.min(b.picked, b.total) / b.total * 4) : 0,
+  from: null,   // set by the moderator's "receiver picked up 2 items" so a re-render animates from the old value, not 0
+  mount(el) {
+    const svg = $('.ssi-bonus', el), b = Store.state.bonuses[0]; Views.bonus.from = null;
+    if (!svg || !b) return;
+    const set = () => svg.setAttribute('data-picked', String(Views.bonus.level(b)));
+    if (reduceMotion()) set(); else requestAnimationFrame(() => requestAnimationFrame(set));
   }
 };
 
@@ -5444,7 +5455,10 @@ const Mod = {
       if (!mine.length) { note('No items of yours are on a shelf. Leave food first.'); return; }
       const vId = mine[0][0], picks = []; let left = 2;
       mine.filter(m => m[0] === vId).forEach(([, i]) => { if (left > 0) { const q = Math.min(left, i.qty); picks.push({ id: i.id, qty: q }); left -= q; } });
+      const onBonus = location.hash === '#/bonus';
+      if (onBonus) Views.bonus.from = Views.bonus.level(s.bonuses[0]);
       Ops.pickup(vId, picks);
+      if (onBonus) { Router.render('none'); return; }
       if (location.hash.startsWith('#/home')) Router.render('none'); else Router.go('#/home');
     }
     if (k === 'travel') { s.seenTravel = false; Store.save(); if (location.hash === '#/home') Banners.travel(); else Router.go('#/home?sim=travel'); }
@@ -6066,6 +6080,7 @@ Views.hostReview = {
     const h = Store.state.host;
     return `<header class="topbar topbar--center">${UI.iconButton('close', 'Close', 'data-h03c-done')}<p class="topbar__title">Become a host</p><span class="icon-btn" aria-hidden="true"></span></header>
       <h1 class="t-h1">Application sent</h1>
+      ${UI.art('application-sent', { cls: 'art--illus' })}
       <p class="t-body c-secondary" style="margin:var(--space-8) 0 var(--space-16)">We’re checking your details. You can close the app; we’ll let you know at each step.</p>
       <div class="verify">${icon('paused', 'icon--warning')}<div><p class="verify__label">Under review</p><p class="verify__line">Reply within [To be agreed] days</p></div></div>
       ${timeline([['done', 'Application sent', `Today, ${h.appliedAt || nowHM()}`], ['now', 'Details verified', 'In progress'], ['next', 'Starter kit posted', 'Sign, NFC plate, QR sticker, window sticker'], ['next', 'Set up and go live', 'Tap the plate to activate your shelf']])}
