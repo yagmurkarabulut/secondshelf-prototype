@@ -1427,14 +1427,15 @@ button.settings__row:active{background:var(--surface-canvas)}
 
 /* ---- Photo capture frame ---- */
 .capture{position:relative;border-radius:var(--radius-lg);background:var(--surface-subtle);aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;padding:var(--space-24);overflow:hidden}
-.capture__guide{position:absolute;inset:var(--space-24);border:2px dashed var(--border-strong);border-radius:var(--radius-md)}
 .capture__msg{position:relative;text-align:center;display:flex;flex-direction:column;align-items:center;gap:var(--space-8)}
 .capture__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .capture__overlay{position:absolute;inset:0;z-index:2;background:var(--surface-brand);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--space-12);color:var(--text-on-primary);font:var(--type-title)}
 .capture__badge{display:inline-flex;align-items:center;gap:var(--space-12);padding:var(--space-12) var(--space-20);border-radius:var(--radius-full);background:var(--surface-brand);color:var(--text-on-primary)}
-.capture__overlay .spinner{width:var(--size-icon-24);height:var(--size-icon-24);border-width:3px}
-.capture__scan{position:absolute;left:0;right:0;height:3px;z-index:1;background:var(--surface-default);opacity:.8;animation:scan 1.5s var(--ease) infinite}
-@keyframes scan{from{top:10%}to{top:90%}}
+.capture__badge .spinner{width:var(--size-icon-24);height:var(--size-icon-24);border-width:3px}
+.capture--art{padding:0}
+.capture .art--fill{z-index:2}
+.capture__status{position:absolute;left:0;right:0;bottom:var(--space-12);z-index:3;display:flex;justify-content:center;font:var(--type-title)}
+.capture__tip{margin-top:var(--space-8);text-align:center}
 
 /* ---- List result row ---- */
 .result{display:flex;align-items:center;gap:var(--space-16);width:100%;text-align:left;background:var(--surface-default);border-radius:var(--radius-lg);padding:var(--space-16);min-height:var(--size-row-min)}
@@ -3532,11 +3533,14 @@ const UI = {
   },
   capture(state = 'empty', src = '') {
     const photo = src ? `<img class="capture__img" src="${esc(src)}" alt="Your photo">` : SAMPLE_PHOTO;
-    let inner = `<div class="capture__guide"></div><div class="capture__msg">${icon('camera')}<p class="t-title">Your items only</p><p class="t-small c-secondary">on a table or in your hands</p></div>`;
+    /* G05 empty: photo-how loop fills the frame, the tip moves under it. G06a reading: photo-reading loop;
+       own photo = the photo, a --scrim dim, then the file in data-photo="own" (corners and sweep only). */
+    let inner = UI.art('photo-how', { cls: 'art--fill art--loop' });
     if (state === 'captured') inner = photo;
-    if (state === 'reading') inner = `${src ? photo : ''}<span class="capture__scan" aria-hidden="true"></span><div class="capture__overlay${src ? ' capture__overlay--dim' : ''}" role="status"><span class="capture__badge"><span class="spinner" aria-hidden="true"></span><span>Reading your photo</span></span></div>`;
+    if (state === 'reading') inner = `${src ? `${photo}<div class="capture__overlay capture__overlay--dim" aria-hidden="true"></div>` : ''}${UI.art('photo-reading', { cls: 'art--fill art--loop', attrs: `data-photo="${src ? 'own' : 'sample'}"` })}<div class="capture__status" role="status"><span class="capture__badge"><span class="spinner" aria-hidden="true"></span><span>Reading your photo</span></span></div>`;
     if (state === 'unreadable') inner = src ? `${photo}<div class="capture__overlay capture__overlay--dim"></div>` : `<div class="capture__msg">${icon('needs-attention', 'icon--lg icon--problem')}</div>`;
-    return `<div class="capture" data-capture="${state}">${inner}</div>${state === 'unreadable' ? `<div style="margin-top:var(--space-12)">${UI.banner('problem', 'Couldn’t read the photo')}</div>` : ''}`;
+    const art = state === 'empty' || state === 'reading';
+    return `<div class="capture${art ? ' capture--art' : ''}" data-capture="${state}">${inner}</div>${state === 'empty' ? `<p class="t-small c-secondary capture__tip">Your items only · on a table or in your hands</p>` : ''}${state === 'unreadable' ? `<div style="margin-top:var(--space-12)">${UI.banner('problem', 'Couldn’t read the photo')}</div>` : ''}`;
   },
   verifyCard(state) {
     const m = { pending: ['paused', 'icon--warning', 'Registration check', 'In progress'], verified: ['verified', 'icon--success', 'Registration check', 'Verified'], info: ['needs-attention', 'icon--problem', 'Registration check', 'Needs info'] }[state];
